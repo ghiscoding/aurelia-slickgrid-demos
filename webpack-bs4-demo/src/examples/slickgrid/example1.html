@@ -1,0 +1,29 @@
+<template>
+  <!--The content below is only a placeholder and can be replaced.-->
+  <div class="container">
+    <h2>${title}</h2>
+    <div class="subtitle" innerhtml.bind="subTitle"></div>
+
+    <h4>Grid 1</h4>
+    <aurelia-slickgrid
+        grid-id="grid1"
+        column-definitions.bind="columnDefinitions1"
+        grid-options.bind="gridOptions2"
+        dataset.bind="dataset2"
+        grid-height="300"
+        grid-width="800">
+    </aurelia-slickgrid>
+
+    <hr/>
+
+    <h4>Grid 2</h4>
+    <aurelia-slickgrid
+        grid-id="grid2"
+        column-definitions.bind="columnDefinitions2"
+        grid-options.bind="gridOptions2"
+        dataset.bind="dataset2"
+        grid-height="300"
+        grid-width="800">
+    </aurelia-slickgrid>
+  </div>
+</template>

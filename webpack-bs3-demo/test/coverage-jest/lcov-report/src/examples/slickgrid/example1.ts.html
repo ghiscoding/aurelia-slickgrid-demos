@@ -1,0 +1,266 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Code coverage report for src/examples/slickgrid/example1.ts</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="..\..\..\prettify.css" />
+    <link rel="stylesheet" href="..\..\..\base.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style type='text/css'>
+        .coverage-summary .sorter {
+            background-image: url(..\..\..\sort-arrow-sprite.png);
+        }
+    </style>
+</head>
+<body>
+<div class='wrapper'>
+  <div class='pad1'>
+    <h1>
+      <a href="..\..\..\index.html">All files</a> / <a href="index.html">src/examples/slickgrid</a> example1.ts
+    </h1>
+    <div class='clearfix'>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">0% </span>
+        <span class="quiet">Statements</span>
+        <span class='fraction'>0/23</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">100% </span>
+        <span class="quiet">Branches</span>
+        <span class='fraction'>0/0</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">0% </span>
+        <span class="quiet">Functions</span>
+        <span class='fraction'>0/5</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">0% </span>
+        <span class="quiet">Lines</span>
+        <span class='fraction'>0/22</span>
+      </div>
+    </div>
+  </div>
+  <div class='status-line low'></div>
+<pre><table class="coverage">
+<tr><td class="line-count quiet">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { Column, FieldType, GridOption } from 'aurelia-slickgrid';
+&nbsp;
+<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >export class <span class="cstat-no" title="statement not covered" >Example1 </span>{</span></span>
+<span class="cstat-no" title="statement not covered" >  title = 'Example 1: Basic Grid';</span>
+<span class="cstat-no" title="statement not covered" >  subTitle = `Simple and Independent Grids with Fixed Sizes (800 x 300) using "grid-height" &amp;amp; "grid-width"`;</span>
+&nbsp;
+  gridOptions1: GridOption;
+  gridOptions2: GridOption;
+  columnDefinitions1: Column[];
+  columnDefinitions2: Column[];
+  dataset1: any[];
+  dataset2: any[];
+&nbsp;
+<span class="fstat-no" title="function not covered" >  constructor() {</span>
+    // define the grid options &amp; columns and then create the grid itself
+<span class="cstat-no" title="statement not covered" >    this.defineGrids();</span>
+  }
+&nbsp;
+<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >  attached() {</span></span>
+    // mock some data (different in each dataset)
+<span class="cstat-no" title="statement not covered" >    this.dataset1 = this.mockData();</span>
+<span class="cstat-no" title="statement not covered" >    this.dataset2 = this.mockData();</span>
+  }
+&nbsp;
+  /* Define grid Options and Columns */
+<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >  defineGrids() {</span></span>
+<span class="cstat-no" title="statement not covered" >    this.columnDefinitions1 = [</span>
+      { id: 'title', name: 'Title', field: 'title', sortable: true, minWidth: 100 },
+      { id: 'duration', name: 'Duration (days)', field: 'duration', sortable: true, minWidth: 100 },
+      { id: '%', name: '% Complete', field: 'percentComplete', sortable: true, minWidth: 100 },
+      { id: 'start', name: 'Start', field: 'start', minWidth: 100 },
+      { id: 'finish', name: 'Finish', field: 'finish', minWidth: 100 },
+      { id: 'effort-driven', name: 'Effort Driven', field: 'effortDriven', sortable: true, minWidth: 100 }
+    ];
+<span class="cstat-no" title="statement not covered" >    this.gridOptions1 = {</span>
+      enableAutoResize: false,
+      enableSorting: true
+    };
+&nbsp;
+    // copy the same Grid Options and Column Definitions to 2nd grid
+<span class="cstat-no" title="statement not covered" >    this.columnDefinitions2 = this.columnDefinitions1;</span>
+<span class="cstat-no" title="statement not covered" >    this.gridOptions2 = this.gridOptions1;</span>
+  }
+&nbsp;
+<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >  mockData() {</span></span>
+    // mock a dataset
+    const mockDataset = <span class="cstat-no" title="statement not covered" >[];</span>
+<span class="cstat-no" title="statement not covered" >    for (let i = 0; i &lt; 1000; i++) {</span>
+      const randomYear = <span class="cstat-no" title="statement not covered" >2000 + Math.floor(Math.random() * 10);</span>
+      const randomMonth = <span class="cstat-no" title="statement not covered" >Math.floor(Math.random() * 11);</span>
+      const randomDay = <span class="cstat-no" title="statement not covered" >Math.floor((Math.random() * 29));</span>
+      const randomPercent = <span class="cstat-no" title="statement not covered" >Math.round(Math.random() * 100);</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >      mockDataset[i] = {</span>
+        id: i,
+        title: 'Task ' + i,
+        duration: Math.round(Math.random() * 100) + '',
+        percentComplete: randomPercent,
+        start: `${randomMonth}/${randomDay}/${randomYear}`,
+        finish: `${randomMonth}/${randomDay}/${randomYear}`,
+        effortDriven: (i % 5 === 0)
+      };
+    }
+&nbsp;
+<span class="cstat-no" title="statement not covered" >    return mockDataset;</span>
+  }
+<span class="cstat-no" title="statement not covered" >}</span>
+&nbsp;</pre></td></tr>
+</table></pre>
+<div class='push'></div><!-- for sticky footer -->
+</div><!-- /wrapper -->
+<div class='footer quiet pad2 space-top1 center small'>
+  Code coverage
+  generated by <a href="https://istanbul.js.org/" target="_blank">istanbul</a> at Sat Mar 30 2019 00:23:48 GMT-0400 (Eastern Daylight Time)
+</div>
+</div>
+<script src="..\..\..\prettify.js"></script>
+<script>
+window.onload = function () {
+        if (typeof prettyPrint === 'function') {
+            prettyPrint();
+        }
+};
+</script>
+<script src="..\..\..\sorter.js"></script>
+</body>
+</html>

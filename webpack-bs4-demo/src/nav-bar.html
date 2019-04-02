@@ -1,0 +1,33 @@
+<template bindable="router">
+  <nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
+    <a class="navbar-brand" href="https://github.com/ghiscoding/aurelia-slickgrid">
+      <i class="fa fa-github"></i>
+      <span>${router.title}</span>
+    </a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarContent" aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    
+    <div class="navbar-collapse collapse" id="navbarContent">
+      <ul class="navbar-nav mr-auto">
+        <li>
+          <span class="nav-link" style="position: relative; top: 5px">
+            <iframe allowtransparency="true" scrolling="no" frameborder="0" src="https://buttons.github.io/buttons.html#href=https%3A%2F%2Fgithub.com%2Fghiscoding%2Faurelia-slickgrid&amp;aria-label=Star%20ghiscoding%2Faurelia-slickgrid%20on%20GitHub&amp;data-icon=octicon-star&amp;data-text=Star&amp;data-show-count=true"
+              style="width: 90px; height: 20px; border: none;"></iframe>
+          </span>
+        </li>
+        <li repeat.for="row of router.navigation" class="nav-item ${row.isActive ? 'active' : ''}">
+          <a class="nav-link" href.bind="row.href">${row.title}</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="https://ghiscoding.github.io/Aurelia-Bootstrap-Plugins/" target="_blank">Aurelia-Bootstrap-Plugins</a>
+        </li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li class="loader" if.bind="router.isNavigating">
+          <i class="fa fa-spinner fa-spin fa-2x"></i>
+        </li>
+      </ul>
+    </div>
+  </nav>
+</template>

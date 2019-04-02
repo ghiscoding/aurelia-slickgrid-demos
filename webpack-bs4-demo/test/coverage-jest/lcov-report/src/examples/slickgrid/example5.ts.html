@@ -1,0 +1,791 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Code coverage report for src/examples/slickgrid/example5.ts</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="..\..\..\prettify.css" />
+    <link rel="stylesheet" href="..\..\..\base.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style type='text/css'>
+        .coverage-summary .sorter {
+            background-image: url(..\..\..\sort-arrow-sprite.png);
+        }
+    </style>
+</head>
+<body>
+<div class='wrapper'>
+  <div class='pad1'>
+    <h1>
+      <a href="..\..\..\index.html">All files</a> / <a href="index.html">src/examples/slickgrid</a> example5.ts
+    </h1>
+    <div class='clearfix'>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">0% </span>
+        <span class="quiet">Statements</span>
+        <span class='fraction'>0/107</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">0% </span>
+        <span class="quiet">Branches</span>
+        <span class='fraction'>0/41</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">0% </span>
+        <span class="quiet">Functions</span>
+        <span class='fraction'>0/15</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">0% </span>
+        <span class="quiet">Lines</span>
+        <span class='fraction'>0/102</span>
+      </div>
+    </div>
+  </div>
+  <div class='status-line low'></div>
+<pre><table class="coverage">
+<tr><td class="line-count quiet">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96
+97
+98
+99
+100
+101
+102
+103
+104
+105
+106
+107
+108
+109
+110
+111
+112
+113
+114
+115
+116
+117
+118
+119
+120
+121
+122
+123
+124
+125
+126
+127
+128
+129
+130
+131
+132
+133
+134
+135
+136
+137
+138
+139
+140
+141
+142
+143
+144
+145
+146
+147
+148
+149
+150
+151
+152
+153
+154
+155
+156
+157
+158
+159
+160
+161
+162
+163
+164
+165
+166
+167
+168
+169
+170
+171
+172
+173
+174
+175
+176
+177
+178
+179
+180
+181
+182
+183
+184
+185
+186
+187
+188
+189
+190
+191
+192
+193
+194
+195
+196
+197
+198
+199
+200
+201
+202
+203
+204
+205
+206
+207
+208
+209
+210
+211
+212
+213
+214
+215
+216
+217
+218
+219
+220
+221
+222
+223
+224
+225
+226
+227
+228
+229
+230
+231
+232
+233
+234
+235
+236
+237
+238
+239
+240
+241
+242
+243</td><td class="line-coverage quiet"><span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js"><span class="cstat-no" title="statement not covered" >import { autoinject } from 'aurelia-framework';</span>
+import data from './sample-data/example-data';
+<span class="cstat-no" title="statement not covered" >import { HttpClient } from 'aurelia-http-client';</span>
+<span class="cstat-no" title="statement not covered" >import { AureliaGridInstance, Column, FieldType, Filters, GridOdataService, GridOption, Statistic } from 'aurelia-slickgrid';</span>
+&nbsp;
+const defaultPageSize = <span class="cstat-no" title="statement not covered" >20;</span>
+const sampleDataRoot = <span class="cstat-no" title="statement not covered" >'assets/data';</span>
+&nbsp;
+@autoinject()
+<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >export class <span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" >Example5 </span>{</span></span></span>
+<span class="cstat-no" title="statement not covered" >  title = 'Example 5: Grid with Backend OData Service';</span>
+<span class="cstat-no" title="statement not covered" >  subTitle = `</span>
+    Use it when you need to support Pagination with a OData endpoint (for simple JSON, use a regular grid)&lt;br/&gt;
+    Take a look at the (&lt;a href="https://github.com/ghiscoding/aurelia-slickgrid/wiki/OData" target="_blank"&gt;Wiki documentation&lt;/a&gt;)
+    &lt;br/&gt;
+    &lt;ul class="small"&gt;
+      &lt;li&gt;Only "Name" field is sortable for the demo (because we use JSON files), however "multiColumnSort: true" is also supported&lt;/li&gt;
+      &lt;li&gt;String column also support operator (&gt;, &gt;=, &lt;, &lt;=, &lt;&gt;, !=, =, ==, *)
+      &lt;ul&gt;
+        &lt;li&gt;The (*) can be used as startsWith (ex.: "abc*" =&gt; startsWith "abc") / endsWith (ex.: "*xyz" =&gt; endsWith "xyz")&lt;/li&gt;
+        &lt;li&gt;The other operators can be used on column type number for example: "&gt;=100" (greater than or equal to 100)&lt;/li&gt;
+      &lt;/ul&gt;
+      &lt;li&gt;OData Service could be replaced by other Service type in the future (GraphQL or whichever you provide)&lt;/li&gt;
+      &lt;li&gt;You can also preload a grid with certain "presets" like Filters / Sorters / Pagination &lt;a href="https://github.com/ghiscoding/aurelia-slickgrid/wiki/Grid-State-&amp;-Preset" target="_blank"&gt;Wiki - Grid Preset&lt;/a&gt;
+    &lt;/ul&gt;
+  `;
+  aureliaGrid: AureliaGridInstance;
+  columnDefinitions: Column[];
+  gridOptions: GridOption;
+<span class="cstat-no" title="statement not covered" >  dataset = [];</span>
+  statistics: Statistic;
+&nbsp;
+<span class="cstat-no" title="statement not covered" >  odataQuery = '';</span>
+<span class="cstat-no" title="statement not covered" >  processing = false;</span>
+<span class="cstat-no" title="statement not covered" >  status = { text: '', class: '' };</span>
+&nbsp;
+<span class="fstat-no" title="function not covered" >  constructor(private <span class="cstat-no" title="statement not covered" ></span>http: HttpClient)</span> {
+    // define the grid options &amp; columns and then create the grid itself
+<span class="cstat-no" title="statement not covered" >    this.defineGrid();</span>
+  }
+&nbsp;
+<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >  aureliaGridReady(</span>aureliaGrid: AureliaGridInstance) {</span>
+<span class="cstat-no" title="statement not covered" >    this.aureliaGrid = aureliaGrid;</span>
+  }
+&nbsp;
+<span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >  defineGrid() {</span></span></span>
+<span class="cstat-no" title="statement not covered" >    this.columnDefinitions = [</span>
+      {
+        id: 'name', name: 'Name', field: 'name', sortable: true, type: FieldType.string,
+        filterable: true,
+        filter: {
+          model: Filters.compoundInput
+        }
+      },
+      {
+        id: 'gender', name: 'Gender', field: 'gender', filterable: true, sortable: true,
+        filter: {
+          model: Filters.singleSelect,
+          collection: [{ value: '', label: '' }, { value: 'male', label: 'male' }, { value: 'female', label: 'female' }]
+        }
+      },
+      { id: 'company', name: 'Company', field: 'company' }
+    ];
+&nbsp;
+<span class="cstat-no" title="statement not covered" >    this.gridOptions = {</span>
+      enableAutoResize: true,
+      autoResize: {
+        containerId: 'demo-container',
+        sidePadding: 15
+      },
+      enableCellNavigation: true,
+      enableFiltering: true,
+      enableCheckboxSelector: true,
+      enableRowSelection: true,
+      pagination: {
+        pageSizes: [10, 15, 20, 25, 30, 40, 50, 75, 100],
+        pageSize: defaultPageSize,
+        totalItems: 0
+      },
+      backendServiceApi: {
+        service: new GridOdataService(),
+        preProcess: <span class="fstat-no" title="function not covered" >() =&gt; <span class="cstat-no" title="statement not covered" ></span>this.displaySpinner(true),</span>
+        process: <span class="fstat-no" title="function not covered" >(</span>query) =&gt; <span class="cstat-no" title="statement not covered" >this.getCustomerApiCall(query),</span>
+        postProcess: <span class="fstat-no" title="function not covered" >(</span>response) =&gt; {
+<span class="cstat-no" title="statement not covered" >          this.statistics = response.statistics;</span>
+<span class="cstat-no" title="statement not covered" >          this.displaySpinner(false);</span>
+<span class="cstat-no" title="statement not covered" >          this.getCustomerCallback(response);</span>
+        }
+      }
+    };
+  }
+&nbsp;
+<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >  displaySpinner(</span>isProcessing) {</span>
+<span class="cstat-no" title="statement not covered" >    this.processing = isProcessing;</span>
+<span class="cstat-no" title="statement not covered" >    this.status = (isProcessing)</span>
+      ? { text: 'processing...', class: 'alert alert-danger' }
+      : { text: 'done', class: 'alert alert-success' };
+  }
+&nbsp;
+<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >  getCustomerCallback(</span>data) {</span>
+    // totalItems property needs to be filled for pagination to work correctly
+    // however we need to force Aurelia to do a dirty check, doing a clone object will do just that
+<span class="cstat-no" title="statement not covered" >    this.gridOptions.pagination.totalItems = data['totalRecordCount'];</span>
+<span class="cstat-no" title="statement not covered" >    this.gridOptions = { ...{}, ...this.gridOptions };</span>
+<span class="cstat-no" title="statement not covered" >    if (this.statistics) {</span>
+<span class="cstat-no" title="statement not covered" >      this.statistics.totalItemCount = data['totalRecordCount'];</span>
+    }
+&nbsp;
+    // once pagination totalItems is filled, we can update the dataset
+<span class="cstat-no" title="statement not covered" >    this.dataset = data['items'];</span>
+<span class="cstat-no" title="statement not covered" >    this.odataQuery = data['query'];</span>
+  }
+&nbsp;
+<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >  getCustomerApiCall(</span>query) {</span>
+    // in your case, you will call your WebAPI function (wich needs to return a Promise)
+    // for the demo purpose, we will call a mock WebAPI function
+<span class="cstat-no" title="statement not covered" >    return this.getCustomerDataApiMock(query);</span>
+  }
+&nbsp;
+  /**
+   * This function is only here to mock a WebAPI call (since we are using a JSON file for the demo)
+   *  in your case the getCustomer() should be a WebAPI function returning a Promise
+   */
+<span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >  getCustomerDataApiMock(</span>query) {</span></span>
+    // the mock is returning a Promise, just like a WebAPI typically does
+<span class="cstat-no" title="statement not covered" >    return new Promise(<span class="fstat-no" title="function not covered" >(</span>resolve, reject) =&gt; {</span>
+      const queryParams = <span class="cstat-no" title="statement not covered" >query.toLowerCase().split('&amp;');</span>
+      let top: number;
+      let skip = <span class="cstat-no" title="statement not covered" >0;</span>
+      let orderBy = <span class="cstat-no" title="statement not covered" >'';</span>
+      let countTotalItems = <span class="cstat-no" title="statement not covered" >100;</span>
+      const columnFilters = <span class="cstat-no" title="statement not covered" >{};</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >      for (const param<span class="cstat-no" title="statement not covered" > of queryParams) {</span></span>
+<span class="cstat-no" title="statement not covered" >        if (param.indexOf('$top=') &gt; -1) {</span>
+<span class="cstat-no" title="statement not covered" >          top = +(param.substring('$top='.length));</span>
+        }
+<span class="cstat-no" title="statement not covered" >        if (param.indexOf('$skip=') &gt; -1) {</span>
+<span class="cstat-no" title="statement not covered" >          skip = +(param.substring('$skip='.length));</span>
+        }
+<span class="cstat-no" title="statement not covered" >        if (param.indexOf('$orderby=') &gt; -1) {</span>
+<span class="cstat-no" title="statement not covered" >          orderBy = param.substring('$orderby='.length);</span>
+        }
+<span class="cstat-no" title="statement not covered" >        if (param.indexOf('$filter=') &gt; -1) {</span>
+          const filterBy = <span class="cstat-no" title="statement not covered" >param.substring('$filter='.length).replace('%20', ' ');</span>
+<span class="cstat-no" title="statement not covered" >          if (filterBy.indexOf('substringof') &gt; -1) {</span>
+            const filterMatch = <span class="cstat-no" title="statement not covered" >filterBy.match(/substringof\('(.*?)',([a-zA-Z ]*)/);</span>
+            const fieldName = <span class="cstat-no" title="statement not covered" >filterMatch[2].trim();</span>
+<span class="cstat-no" title="statement not covered" >            columnFilters[fieldName] = {</span>
+              type: 'substring',
+              term: filterMatch[1].trim()
+            };
+          }
+<span class="cstat-no" title="statement not covered" >          if (filterBy.indexOf('eq') &gt; -1) {</span>
+            const filterMatch = <span class="cstat-no" title="statement not covered" >filterBy.match(/([a-zA-Z ]*) eq '(.*?)'/);</span>
+            const fieldName = <span class="cstat-no" title="statement not covered" >filterMatch[1].trim();</span>
+<span class="cstat-no" title="statement not covered" >            columnFilters[fieldName] = {</span>
+              type: 'equal',
+              term: filterMatch[2].trim()
+            };
+          }
+<span class="cstat-no" title="statement not covered" >          if (filterBy.indexOf('startswith') &gt; -1) {</span>
+            const filterMatch = <span class="cstat-no" title="statement not covered" >filterBy.match(/startswith\(([a-zA-Z ]*),\s?'(.*?)'/);</span>
+            const fieldName = <span class="cstat-no" title="statement not covered" >filterMatch[1].trim();</span>
+<span class="cstat-no" title="statement not covered" >            columnFilters[fieldName] = {</span>
+              type: 'starts',
+              term: filterMatch[2].trim()
+            };
+          }
+<span class="cstat-no" title="statement not covered" >          if (filterBy.indexOf('endswith') &gt; -1) {</span>
+            const filterMatch = <span class="cstat-no" title="statement not covered" >filterBy.match(/endswith\(([a-zA-Z ]*),\s?'(.*?)'/);</span>
+            const fieldName = <span class="cstat-no" title="statement not covered" >filterMatch[1].trim();</span>
+<span class="cstat-no" title="statement not covered" >            columnFilters[fieldName] = {</span>
+              type: 'ends',
+              term: filterMatch[2].trim()
+            };
+          }
+        }
+      }
+&nbsp;
+      const sort = <span class="cstat-no" title="statement not covered" >(orderBy.indexOf('asc') &gt; -1)</span>
+        ? 'ASC'
+        : (orderBy.indexOf('desc') &gt; -1)
+          ? 'DESC'
+          : '';
+&nbsp;
+      let url;
+<span class="cstat-no" title="statement not covered" >      switch (sort) {</span>
+        case 'ASC':
+<span class="cstat-no" title="statement not covered" >          url = `${sampleDataRoot}/customers_100_ASC.json`;</span>
+<span class="cstat-no" title="statement not covered" >          break;</span>
+        case 'DESC':
+<span class="cstat-no" title="statement not covered" >          url = `${sampleDataRoot}/customers_100_DESC.json`;</span>
+<span class="cstat-no" title="statement not covered" >          break;</span>
+        default:
+<span class="cstat-no" title="statement not covered" >          url = `${sampleDataRoot}/customers_100.json`;</span>
+<span class="cstat-no" title="statement not covered" >          break;</span>
+      }
+&nbsp;
+<span class="cstat-no" title="statement not covered" >      this.http.createRequest(url)</span>
+        .asGet()
+        .send()
+        .then(<span class="fstat-no" title="function not covered" >response =&gt; {</span>
+          const dataArray = <span class="cstat-no" title="statement not covered" >response.content as any[];</span>
+&nbsp;
+          // Read the result field from the JSON response.
+          const firstRow = <span class="cstat-no" title="statement not covered" >skip;</span>
+          let filteredData = <span class="cstat-no" title="statement not covered" >dataArray;</span>
+<span class="cstat-no" title="statement not covered" >          if (columnFilters) {</span>
+<span class="cstat-no" title="statement not covered" >            for (const columnId in columnFilters) {</span>
+<span class="cstat-no" title="statement not covered" >              if (columnFilters.hasOwnProperty(columnId)) {</span>
+<span class="cstat-no" title="statement not covered" >                filteredData = filteredData.filter(<span class="fstat-no" title="function not covered" >column =&gt; {</span></span>
+                  const filterType = <span class="cstat-no" title="statement not covered" >columnFilters[columnId].type;</span>
+                  const searchTerm = <span class="cstat-no" title="statement not covered" >columnFilters[columnId].term;</span>
+                  let colId = <span class="cstat-no" title="statement not covered" >columnId;</span>
+<span class="cstat-no" title="statement not covered" >                  if (columnId &amp;&amp; columnId.indexOf(' ') !== -1) {</span>
+                    const splitIds = <span class="cstat-no" title="statement not covered" >columnId.split(' ');</span>
+<span class="cstat-no" title="statement not covered" >                    colId = splitIds[splitIds.length - 1];</span>
+                  }
+                  const filterTerm = <span class="cstat-no" title="statement not covered" >column[colId];</span>
+<span class="cstat-no" title="statement not covered" >                  if (filterTerm) {</span>
+<span class="cstat-no" title="statement not covered" >                    switch (filterType) {</span>
+                      case 'equal': <span class="cstat-no" title="statement not covered" >return filterTerm.toLowerCase() === searchTerm;</span>
+                      case 'ends': <span class="cstat-no" title="statement not covered" >return filterTerm.toLowerCase().endsWith(searchTerm);</span>
+                      case 'starts': <span class="cstat-no" title="statement not covered" >return filterTerm.toLowerCase().startsWith(searchTerm);</span>
+                      case 'substring': <span class="cstat-no" title="statement not covered" >return (filterTerm.toLowerCase().indexOf(searchTerm) &gt; -1);</span>
+                    }
+                  }
+                });
+              }
+            }
+<span class="cstat-no" title="statement not covered" >            countTotalItems = filteredData.length;</span>
+          }
+          const updatedData = <span class="cstat-no" title="statement not covered" >filteredData.slice(firstRow, firstRow + top);</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >          setTimeout(<span class="fstat-no" title="function not covered" >() =&gt; {</span></span>
+<span class="cstat-no" title="statement not covered" >            resolve({ items: updatedData, totalRecordCount: countTotalItems, query });</span>
+          }, 500);
+        });
+    });
+  }
+<span class="cstat-no" title="statement not covered" >}</span>
+&nbsp;</pre></td></tr>
+</table></pre>
+<div class='push'></div><!-- for sticky footer -->
+</div><!-- /wrapper -->
+<div class='footer quiet pad2 space-top1 center small'>
+  Code coverage
+  generated by <a href="https://istanbul.js.org/" target="_blank">istanbul</a> at Sat Mar 30 2019 00:23:48 GMT-0400 (Eastern Daylight Time)
+</div>
+</div>
+<script src="..\..\..\prettify.js"></script>
+<script>
+window.onload = function () {
+        if (typeof prettyPrint === 'function') {
+            prettyPrint();
+        }
+};
+</script>
+<script src="..\..\..\sorter.js"></script>
+</body>
+</html>
