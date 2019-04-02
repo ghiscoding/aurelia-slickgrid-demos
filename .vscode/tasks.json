@@ -1,0 +1,68 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Start Client-CLI with RequireJS",
+      "type": "shell",
+      "command": "au run --watch",
+      "options": {
+        "cwd": "${workspaceFolder}/cli-requirejs-demo",
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "Build Webpack Bootstrap 3 Demo Page",
+      "type": "shell",
+      "command": "yarn start build",
+      "options": {
+        "cwd": "${workspaceFolder}/webpack-bs3-demo",
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "Build Webpack Bootstrap 3 Demo Page & Copy Files to GhPages Folder",
+      "type": "shell",
+      "command": "yarn run build-demo",
+      "options": {
+        "cwd": "${workspaceFolder}/webpack-bs3-demo",
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "Start Webpack Bootstrap 3 Demo Page",
+      "type": "shell",
+      "command": "yarn start",
+      "options": {
+        "cwd": "${workspaceFolder}/webpack-bs3-demo",
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "Build Webpack Bootstrap 4 Demo Page",
+      "type": "shell",
+      "command": "yarn start build",
+      "options": {
+        "cwd": "${workspaceFolder}/webpack-bs4-demo",
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "Build Webpack Bootstrap 4 Demo Page & Copy Files to GhPages Folder",
+      "type": "shell",
+      "command": "yarn run build-demo",
+      "options": {
+        "cwd": "${workspaceFolder}/webpack-bs4-demo",
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "Start Webpack Bootstrap 4 Demo Page",
+      "type": "shell",
+      "command": "yarn start",
+      "options": {
+        "cwd": "${workspaceFolder}/webpack-bs4-demo",
+      },
+      "problemMatcher": []
+    }
+  ]
+}
