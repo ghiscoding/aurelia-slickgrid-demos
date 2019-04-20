@@ -123,7 +123,10 @@ module.exports = ({production, server, extractCss, coverage, analyze} = {}) => (
         title, server, baseUrl
       }
     }),
-    new CopyWebpackPlugin([{ from: 'assets/', to: 'assets/' }]),
+    new CopyWebpackPlugin([
+      { from: 'assets/', to: 'assets/' },
+      { from: 'favicon.ico', to: 'favicon.ico' }
+    ]),
     ...when(extractCss, new MiniCssExtractPlugin({
       filename: production ? '[contenthash].css' : '[id].css',
       allChunks: true

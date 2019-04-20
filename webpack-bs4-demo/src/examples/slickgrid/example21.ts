@@ -1,18 +1,19 @@
+import { bindable } from 'aurelia-framework';
 import {
+  AureliaGridInstance,
   Column,
   FieldType,
-  Formatter,
+  FilterCallbackArg,
   Formatters,
   GridOption,
+  OperatorString,
 } from 'aurelia-slickgrid';
 
-// create my custom Formatter with the Formatter type
-const myCustomCheckmarkFormatter: Formatter = (row, cell, value, columnDef, dataContext) => {
-  // you can return a string of a object (of type FormatterResultObject), the 2 types are shown below
-  return value ? `<i class="fa fa-fire red" aria-hidden="true"></i>` : { text: '<i class="fa fa-snowflake-o" aria-hidden="true"></i>', addClasses: 'lightblue', toolTip: 'Freezing' };
-};
 
 export class Example21 {
+  @bindable() selectedColumn: Column;
+  @bindable() selectedOperator: string;
+  @bindable() searchValue: string;
   title = 'Example 21: Grid AutoHeight';
   subTitle = `
   The SlickGrid option "autoHeight" can be used if you wish to keep the full height of the grid without any scrolling
@@ -23,11 +24,13 @@ export class Example21 {
   </ul>
   `;
 
+  aureliaGrid: AureliaGridInstance;
   grid: any;
   dataView: any;
   columnDefinitions: Column[];
   gridOptions: GridOption;
   dataset: any[];
+  operatorList: OperatorString[] = ['=', '<', '<=', '>', '>=', '<>'];
 
   constructor() {
     // define the grid options & columns and then create the grid itself
@@ -39,48 +42,68 @@ export class Example21 {
     this.getData();
   }
 
+  aureliaGridReady(aureliaGrid: AureliaGridInstance) {
+    this.aureliaGrid = aureliaGrid;
+  }
+
   /* Define grid Options and Columns */
   defineGrid() {
     this.columnDefinitions = [
       {
         id: 'title', name: 'Title', field: 'title',
+        width: 100,
         sortable: true,
         type: FieldType.string
       },
       {
         id: 'duration', name: 'Duration (days)', field: 'duration',
+        width: 100,
         sortable: true,
         type: FieldType.number
       },
       {
         id: 'complete', name: '% Complete', field: 'percentComplete',
+        width: 100,
         formatter: Formatters.percentCompleteBar,
         type: FieldType.number
       },
       {
         id: 'start', name: 'Start', field: 'start',
+        width: 100,
         formatter: Formatters.dateIso,
         sortable: true,
         type: FieldType.date
       },
       {
         id: 'finish', name: 'Finish', field: 'finish',
+        width: 100,
         formatter: Formatters.dateIso, sortable: true,
         type: FieldType.date
       },
       {
         id: 'effort-driven', name: 'Effort Driven', field: 'effortDriven',
+        width: 100,
         formatter: Formatters.checkmark,
         type: FieldType.number
       }
     ];
 
     this.gridOptions = {
+      // if you want to disable autoResize and use a fixed width which requires horizontal scrolling
+      // it's advised to disable the autoFitColumnsOnFirstLoad as well
+      // enableAutoResize: false,
+      // autoFitColumnsOnFirstLoad: false,
+
       autoHeight: true,
       autoResize: {
         containerId: 'demo-container',
         sidePadding: 15
       },
+
+      // enable the filtering but hide the user filter row since we use our own single filter
+      enableFiltering: true,
+      showHeaderRow: false, // hide the filter row (header row)
+
       enableGridMenu: false, // disable grid menu & remove vertical scroll
       alwaysShowVerticalScroll: false,
       enableColumnPicker: true,
@@ -118,5 +141,42 @@ export class Example21 {
       phone += Math.round(Math.random() * 9) + '';
     }
     return phone;
+  }
+
+  //
+  // -- if any of the Search form input changes, we'll call the updateFilter() method
+  //
+
+  selectedOperatorChanged() {
+    this.updateFilter();
+  }
+
+  selectedColumnChanged() {
+    this.updateFilter();
+  }
+
+  searchValueChanged() {
+    this.updateFilter();
+  }
+
+  updateFilter() {
+    const fieldName = this.selectedColumn.field;
+    const filter = {};
+    const filterArg: FilterCallbackArg = {
+      columnDef: this.selectedColumn,
+      operator: this.selectedOperator as OperatorString, // or fix one yourself like '='
+      searchTerms: [this.searchValue || '']
+    };
+
+    if (this.searchValue) {
+      // pass a columnFilter object as an object which it's property name must be a column field name (e.g.: 'duration': {...} )
+      filter[fieldName] = filterArg;
+    }
+
+    this.aureliaGrid.dataView.setFilterArgs({
+      columnFilters: filter,
+      grid: this.aureliaGrid.slickGrid
+    });
+    this.aureliaGrid.dataView.refresh();
   }
 }
