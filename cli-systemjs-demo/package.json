@@ -1,0 +1,61 @@
+{
+  "name": "cli-systemjs",
+  "description": "An Aurelia client application.",
+  "version": "0.1.0",
+  "repository": {
+    "type": "???",
+    "url": "???"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "aurelia-animator-css": "^1.0.4",
+    "aurelia-bootstrapper": "^2.3.2",
+    "aurelia-fetch-client": "^1.0.0",
+    "aurelia-http-client": "^1.2.1",
+    "aurelia-i18n": "^2.3.2",
+    "aurelia-slickgrid": "^2.9.2",
+    "bootstrap": "^3.4.1",
+    "flatpickr": "^4.2.4",
+    "font-awesome": "^4.7.0",
+    "jquery": "^3.3.1",
+    "moment": "^2.22.2",
+    "text-encoding-utf-8": "^1.0.2",
+    "whatwg-fetch": "^3.0.0"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.4.0",
+    "@babel/plugin-proposal-class-properties": "^7.4.0",
+    "@babel/plugin-proposal-decorators": "^7.4.0",
+    "@babel/preset-env": "^7.4.2",
+    "@babel/register": "^7.4.0",
+    "aurelia-cli": "^1.0.0-beta.15",
+    "aurelia-testing": "^1.0.0",
+    "aurelia-tools": "^2.0.0",
+    "babel-eslint": "^10.0.1",
+    "browser-sync": "^2.26.3",
+    "connect-history-api-fallback": "^1.6.0",
+    "core-js": "^3.0.0",
+    "debounce": "^1.2.0",
+    "gulp": "^4.0.0",
+    "gulp-babel": "^8.0.0",
+    "gulp-cache": "^1.1.1",
+    "gulp-eslint": "^5.0.0",
+    "gulp-notify": "^3.2.0",
+    "gulp-plumber": "^1.2.1",
+    "gulp-rename": "^1.4.0",
+    "gulp-watch": "^5.0.1",
+    "minimatch": "^3.0.4",
+    "regenerator-runtime": "0.13.2",
+    "systemjs": "^0.21.5",
+    "systemjs-plugin-text": "^0.0.11",
+    "through2": "^3.0.0",
+    "vinyl-fs": "^3.0.3"
+  },
+  "scripts": {
+    "build": "au build",
+    "start": "au run"
+  },
+  "engines": {
+    "node": ">=8.9.0"
+  }
+}

@@ -11,6 +11,15 @@
       "problemMatcher": []
     },
     {
+      "label": "Start Client-CLI with SystemJS",
+      "type": "shell",
+      "command": "au run --watch",
+      "options": {
+        "cwd": "${workspaceFolder}/cli-systemjs-demo",
+      },
+      "problemMatcher": []
+    },
+    {
       "label": "Build Webpack Bootstrap 3 Demo Page",
       "type": "shell",
       "command": "yarn start build",
