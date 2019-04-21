@@ -2,17 +2,32 @@
   <h2>${title}</h2>
   <div class="subtitle" innerhtml.bind="subTitle"></div>
 
-  <div class="col-sm-12">
-    <span>
-      <button class="btn btn-sm btn-default" click.delegate="addNewItem()">Add New Mocked Item</button>
-      <button class="btn btn-sm btn-default" click.delegate="updateSecondItem()">Update 2nd Row Item with Random Duration</button>
-      <button class="btn btn-sm btn-default" click.delegate="highlighFifthRow()">Highlight 5th Row</button>
-    </span>
-    <hr/>
-  </div>
+  <hr/>
 
+  <div class="row">
+    <button class="btn btn-default btn-sm" click.delegate="switchLanguage()">
+      <i class="fa fa-language"></i>
+      Switch Language
+    </button>
+    <label>Locale</label>: ${selectedLanguage + '.json'}
+
+    <span style="margin-left: 20px">
+      <button class="btn btn-default btn-sm" click.delegate="exportToFile('csv')">
+        <i class="fa fa-download"></i>
+        Download to CSV
+      </button>
+      <button class="btn btn-default btn-sm" click.delegate="exportToFile('txt')">
+        <i class="fa fa-download"></i>
+        Download to Text
+      </button>
+      <button class="btn btn-default btn-sm" click.delegate="dynamicallyAddTitleHeader()">
+        <i class="fa fa-plus"></i>
+        Dynamically Duplicate Title Column
+      </button>
+    </span>
+  </div>
   <aurelia-slickgrid
-    grid-id="grid1"
+    grid-id="grid12"
     column-definitions.bind="columnDefinitions"
     grid-options.bind="gridOptions"
     dataset.bind="dataset"

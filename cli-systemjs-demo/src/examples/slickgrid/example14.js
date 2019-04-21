@@ -1,266 +1,96 @@
-import { inject } from 'aurelia-framework';
-import { EventAggregator } from 'aurelia-event-aggregator';
-import { Aggregators, FieldType, Formatters, GroupTotalFormatters, SortDirectionNumber, Sorters } from 'aurelia-slickgrid';
+import { FieldType } from 'aurelia-slickgrid';
 
-@inject(EventAggregator)
-export class Example13 {
-  title = 'Example 13: Grouping & Aggregators';
+export class Example14 {
+  title = 'Example 14: Column Span & Header Grouping';
   subTitle = `
-    <ul>
-      <li><a href="https://github.com/ghiscoding/aurelia-slickgrid/wiki/Grouping-&-Aggregators" target="_blank">Wiki docs</a></li>
-      <li>Fully dynamic and interactive multi-level grouping with filtering and aggregates over 50'000 items</li>
-      <li>Each grouping level can have its own aggregates (over child rows, child groups, or all descendant rows)..</li>
-      <li>Use "Aggregators" and "GroupTotalFormatters" directly from Aurelia-Slickgrid</li>
-    </ul>
+  This example demonstrates how to easily span a row over multiple columns & how to group header titles.
+  <ul>
+    <li>
+      Row Colspan - (<a href="https://github.com/ghiscoding/aurelia-slickgrid/wiki/Row-Colspan" target="_blank">Wiki docs</a>) |
+      Header Grouping - (<a href="https://github.com/ghiscoding/aurelia-slickgrid/wiki/Header-Title-Grouping" target="_blank">Wiki docs</a>)
+    </li>
+    <li>Note that you can add Sort but remember that it will sort by the data that the row contains, even if the data is visually hidden by colspan it will still sort it</li>
+    <li>
+      Header Grouping spanning accross multiple columns is working but has some UI issues on window resize.
+      If anyone can fix it, probably some CSS issues, please let us know.
+    </li>
+  </ul>
   `;
-
   columnDefinitions;
   gridOptions;
   dataset = [];
-  dataviewObj;
-  processing = false;
-  subOnBeforeExport;
-  subOnAfterExport;
 
-  constructor(ea) {
-    this.ea = ea;
+  constructor() {
     // define the grid options & columns and then create the grid itself
     this.defineGrid();
   }
 
   attached() {
     // populate the dataset once the grid is ready
-    this.loadData(500);
-
-    this.subOnBeforeExport = this.ea.subscribe('asg:onBeforeExportToFile', () => this.processing = true);
-    this.subOnAfterExport = this.ea.subscribe('asg:onAfterExportToFile', () => this.processing = false);
+    this.getData();
   }
 
-  detached() {
-    this.subOnAfterExport.dispose();
-    this.subOnBeforeExport.dispose();
-  }
-
-  /* Define grid Options and Columns */
   defineGrid() {
     this.columnDefinitions = [
-      {
-        id: 'sel', name: '#', field: 'num', width: 40,
-        maxWidth: 70,
-        resizable: true,
-        selectable: false,
-        focusable: false
-      },
-      {
-        id: 'title', name: 'Title', field: 'title',
-        width: 50,
-        minWidth: 50,
-        cssClass: 'cell-title',
-        sortable: true
-      },
-      {
-        id: 'duration', name: 'Duration', field: 'duration',
-        minWidth: 50, width: 60,
-        sortable: true,
-        type: FieldType.number,
-        groupTotalsFormatter: GroupTotalFormatters.sumTotals,
-        params: { groupFormatterPrefix: 'Total: ' }
-      },
-      {
-        id: '%', name: '% Complete', field: 'percentComplete',
-        minWidth: 70, width: 90,
-        formatter: Formatters.percentCompleteBar,
-        sortable: true,
-        groupTotalsFormatter: GroupTotalFormatters.avgTotalsPercentage,
-        params: { groupFormatterPrefix: '<i>Avg</i>: ' }
-      },
-      {
-        id: 'start', name: 'Start', field: 'start',
-        minWidth: 60,
-        sortable: true,
-        formatter: Formatters.dateIso,
-        exportWithFormatter: true
-      },
-      {
-        id: 'finish', name: 'Finish', field: 'finish',
-        minWidth: 60,
-        sortable: true,
-        formatter: Formatters.dateIso,
-        exportWithFormatter: true
-      },
-      {
-        id: 'cost', name: 'Cost', field: 'cost',
-        minWidth: 70,
-        width: 100,
-        sortable: true,
-        exportWithFormatter: true,
-        formatter: Formatters.dollar,
-        groupTotalsFormatter: GroupTotalFormatters.sumTotalsDollar,
-        params: { groupFormatterPrefix: '<b>Total</b>: ' /*, groupFormatterSuffix: ' USD'*/ }
-      },
-      {
-        id: 'effort-driven', name: 'Effort Driven',
-        minWidth: 20, width: 80, maxWidth: 80,
-        cssClass: 'cell-effort-driven',
-        field: 'effortDriven',
-        formatter: Formatters.checkmark, sortable: true
-      }
+      { id: 'title', name: 'Title', field: 'title', sortable: true, columnGroup: 'Common Factor' },
+      { id: 'duration', name: 'Duration', field: 'duration', columnGroup: 'Common Factor' },
+      { id: 'start', name: 'Start', field: 'start', columnGroup: 'Period' },
+      { id: 'finish', name: 'Finish', field: 'finish', columnGroup: 'Period' },
+      { id: '%', name: '% Complete', field: 'percentComplete', selectable: false, columnGroup: 'Analysis' },
+      { id: 'effort-driven', name: 'Effort Driven', field: 'effortDriven', type: FieldType.boolean, columnGroup: 'Analysis' }
     ];
 
     this.gridOptions = {
-      autoResize: {
-        containerId: 'demo-container',
-        sidePadding: 15
-      },
-      enableGrouping: true,
-      exportOptions: {
-        sanitizeDataExport: true
-      }
+      enableAutoResize: false,
+      enableCellNavigation: true,
+      enableColumnReorder: false,
+      enableSorting: true,
+      createPreHeaderPanel: true,
+      showPreHeaderPanel: true,
+      preHeaderPanelHeight: 25,
+      explicitInitialization: true,
+      colspanCallback: this.renderDifferentColspan
     };
   }
 
-  loadData(rowCount) {
-    // mock a dataset
+  getData() {
+    // Set up some test columns.
     this.dataset = [];
-    for (let i = 0; i < rowCount; i++) {
-      const randomYear = 2000 + Math.floor(Math.random() * 10);
-      const randomMonth = Math.floor(Math.random() * 11);
-      const randomDay = Math.floor((Math.random() * 29));
-      const randomPercent = Math.round(Math.random() * 100);
-
+    for (let i = 0; i < 500; i++) {
       this.dataset[i] = {
-        id: 'id_' + i,
-        num: i,
+        id: i,
         title: 'Task ' + i,
-        duration: Math.round(Math.random() * 100) + '',
-        percentComplete: randomPercent,
-        percentCompleteNumber: randomPercent,
-        start: new Date(randomYear, randomMonth, randomDay),
-        finish: new Date(randomYear, (randomMonth + 1), randomDay),
-        cost: Math.round(Math.random() * 10000) / 100,
+        duration: '5 days',
+        percentComplete: Math.round(Math.random() * 100),
+        start: '01/01/2009',
+        finish: '01/05/2009',
         effortDriven: (i % 5 === 0)
       };
     }
   }
 
-  onDataviewCreated(dataview) {
-    this.dataviewObj = dataview;
-  }
-
-  clearGrouping() {
-    this.dataviewObj.setGrouping([]);
-  }
-
-  collapseAllGroups() {
-    this.dataviewObj.collapseAllGroups();
-  }
-
-  expandAllGroups() {
-    this.dataviewObj.expandAllGroups();
-  }
-
-  groupByDuration() {
-    this.dataviewObj.setGrouping({
-      getter: 'duration',
-      formatter: (g) => {
-        return `Duration:  ${g.value} <span style="color:green">(${g.count} items)</span>`;
-      },
-      comparer: (a, b) => {
-        return Sorters.numeric(a.value, b.value, SortDirectionNumber.asc);
-      },
-      aggregators: [
-        new Aggregators.Avg('percentComplete'),
-        new Aggregators.Sum('cost')
-      ],
-      aggregateCollapsed: false,
-      lazyTotalsCalculation: true
-    });
-  }
-
-  groupByDurationOrderByCount(aggregateCollapsed) {
-    this.dataviewObj.setGrouping({
-      getter: 'duration',
-      formatter: (g) => {
-        return `Duration:  ${g.value} <span style="color:green">(${g.count} items)</span>`;
-      },
-      comparer: (a, b) => {
-        return a.count - b.count;
-      },
-      aggregators: [
-        new Aggregators.Avg('percentComplete'),
-        new Aggregators.Sum('cost')
-      ],
-      aggregateCollapsed,
-      lazyTotalsCalculation: true
-    });
-  }
-
-  groupByDurationEffortDriven() {
-    this.dataviewObj.setGrouping([
-      {
-        getter: 'duration',
-        formatter: (g) => {
-          return `Duration:  ${g.value}  <span style="color:green">(${g.count} items)</span>`;
-        },
-        aggregators: [
-          new Aggregators.Sum('duration'),
-          new Aggregators.Sum('cost')
-        ],
-        aggregateCollapsed: true,
-        lazyTotalsCalculation: true
-      },
-      {
-        getter: 'effortDriven',
-        formatter: (g) => {
-          return `Effort-Driven:  ${(g.value ? 'True' : 'False')} <span style="color:green">(${g.count} items)</span>`;
-        },
-        aggregators: [
-          new Aggregators.Avg('percentComplete'),
-          new Aggregators.Sum('cost')
-        ],
-        collapsed: true,
-        lazyTotalsCalculation: true
-      }
-    ]);
-  }
-
-  groupByDurationEffortDrivenPercent() {
-    this.dataviewObj.setGrouping([
-      {
-        getter: 'duration',
-        formatter: (g) => {
-          return `Duration:  ${g.value}  <span style="color:green">(${g.count} items)</span>`;
-        },
-        aggregators: [
-          new Aggregators.Sum('duration'),
-          new Aggregators.Sum('cost')
-        ],
-        aggregateCollapsed: true,
-        lazyTotalsCalculation: true
-      },
-      {
-        getter: 'effortDriven',
-        formatter: (g) => {
-          return `Effort-Driven:  ${(g.value ? 'True' : 'False')}  <span style="color:green">(${g.count} items)</span>`;
-        },
-        aggregators: [
-          new Aggregators.Sum('duration'),
-          new Aggregators.Sum('cost')
-        ],
-        lazyTotalsCalculation: true
-      },
-      {
-        getter: 'percentComplete',
-        formatter: (g) => {
-          return `% Complete:  ${g.value}  <span style="color:green">(${g.count} items)</span>`;
-        },
-        aggregators: [
-          new Aggregators.Avg('percentComplete')
-        ],
-        aggregateCollapsed: true,
-        collapsed: true,
-        lazyTotalsCalculation: true
-      }
-    ]);
+  /**
+   * A callback to render different row column span
+   * Your callback will always have the "item" argument which you can use to decide on the colspan
+   * Your return must always be in the form of:: return { columns: {}}
+   */
+  renderDifferentColspan(item) {
+    if (item.id % 2 === 1) {
+      return {
+        columns: {
+          duration: {
+            colspan: 3 // "duration" will span over 3 columns
+          }
+        }
+      };
+    } else {
+      return {
+        columns: {
+          0: {
+            colspan: '*' // starting at column index 0, we will span accross all column (*)
+          }
+        }
+      };
+    }
   }
 }

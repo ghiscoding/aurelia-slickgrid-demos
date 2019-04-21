@@ -1,152 +1,121 @@
-import { I18N } from 'aurelia-i18n';
-import { inject } from 'aurelia-framework';
-import { FieldType, Filters, Formatters } from 'aurelia-slickgrid';
+import { FieldType, Formatters } from 'aurelia-slickgrid';
 
-@inject(I18N)
-export class Example9 {
-  title = 'Example 9: Grid Menu Control';
+export class Example2 {
+  title = 'Example 10: Grid with Row Selection';
   subTitle = `
-    This example demonstrates using the <b>Slick.Controls.GridMenu</b> plugin to easily add a Grid Menu (aka hamburger menu) on the top right corner of the grid.<br/>
-    (<a href="https://github.com/ghiscoding/aurelia-slickgrid/wiki/Grid-Menu" target="_blank">Wiki docs</a>)
+    Row selection, single or multi-select (<a href="https://github.com/ghiscoding/aurelia-slickgrid/wiki/Row-Selection" target="_blank">Wiki docs</a>).
     <ul>
-      <li>The Grid Menu uses the following icon by default "fa-bars"&nbsp;&nbsp;<span class="fa fa-bars"></span>&nbsp;&nbsp;(which looks like a hamburger, hence the name)</li>
-      <ul><li>Another icon which you could use is "fa-ellipsis-v"&nbsp;&nbsp;<span class="fa fa-ellipsis-v"></span>&nbsp;&nbsp;(which is shown in this example)</li></ul>
-      <li>By default the Grid Menu shows all columns which you can show/hide</li>
-      <li>You can configure multiple "commands" to show up in the Grid Menu and use the "onGridMenuCommand()" callback</li>
-      <li>Doing a "right+click" over any column header will also provide a way to show/hide a column (via the Column Picker Plugin)</li>
+      <li>Single Select, you can click on any cell to make the row active</li>
+      <li>Multiple Selections, you need to specifically click on the checkbox to make 1 or more selections</li>
+      <li>Note that "enableExcelCopyBuffer" cannot be used at the same time as Row Selection because there can exist only 1 SelectionModel at a time</li>
     </ul>
   `;
 
-  aureliaGrid;
-  columnDefinitions;
-  gridOptions;
-  dataset = [];
-  dataView;
-  gridObj;
-  selectedLanguage;
-  visibleColumns;
+  columnDefinitions1;
+  columnDefinitions2;
+  gridOptions1;
+  gridOptions2;
+  dataset1;
+  dataset2;
+  selectedTitles;
+  selectedTitle = '';
 
-  constructor(i18n) {
-    this.i18n = i18n;
+  constructor() {
     // define the grid options & columns and then create the grid itself
-    this.defineGrid();
-    this.selectedLanguage = this.i18n.getLocale();
+    this.defineGrids();
   }
 
   attached() {
     // populate the dataset once the grid is ready
-    this.getData();
+    this.dataset1 = this.prepareData();
+    this.dataset2 = this.prepareData();
   }
 
-  aureliaGridReady(aureliaGrid) {
-    this.aureliaGrid = aureliaGrid;
-    this.gridObj = aureliaGrid && aureliaGrid.slickGrid;
-    this.dataView = aureliaGrid && aureliaGrid.dataView;
-  }
-
-  defineGrid() {
-    this.columnDefinitions = [
-      { id: 'title', name: 'Title', field: 'title', headerKey: 'TITLE', filterable: true, type: FieldType.string },
-      { id: 'duration', name: 'Duration', field: 'duration', headerKey: 'DURATION', sortable: true, filterable: true, type: FieldType.string },
-      {
-        id: '%', name: '% Complete', field: 'percentComplete', sortable: true, filterable: true,
-        type: FieldType.number,
-        formatter: Formatters.percentCompleteBar,
-        filter: { model: Filters.compoundSlider, params: { hideSliderNumber: false } }
-      },
-      { id: 'start', name: 'Start', field: 'start', headerKey: 'START', filterable: true, type: FieldType.dateUs, filter: { model: Filters.compoundDate } },
-      { id: 'finish', name: 'Finish', field: 'finish', headerKey: 'FINISH', filterable: true, type: FieldType.dateUs, filter: { model: Filters.compoundDate } },
-      {
-        id: 'completed', name: 'Completed', field: 'completed', headerKey: 'COMPLETED', maxWidth: 80, formatter: Formatters.checkmark,
-        type: FieldType.boolean,
-        minWidth: 100,
-        sortable: true,
-        filterable: true,
-        filter: {
-          collection: [{ value: '', label: '' }, { value: true, label: 'true' }, { value: false, label: 'false' }],
-          model: Filters.singleSelect
-        }
-      }
+  /* Define grid Options and Columns */
+  defineGrids() {
+    this.columnDefinitions1 = [
+      { id: 'title', name: 'Title', field: 'title', sortable: true, type: FieldType.string },
+      { id: 'duration', name: 'Duration (days)', field: 'duration', sortable: true, type: FieldType.number },
+      { id: 'complete', name: '% Complete', field: 'percentComplete', formatter: Formatters.percentCompleteBar, type: FieldType.number, sortable: true },
+      { id: 'start', name: 'Start', field: 'start', formatter: Formatters.dateIso, sortable: true, type: FieldType.dateIso, exportWithFormatter: true },
+      { id: 'finish', name: 'Finish', field: 'finish', formatter: Formatters.dateIso, sortable: true, type: FieldType.date, exportWithFormatter: true },
+      { id: 'effort-driven', name: 'Effort Driven', field: 'effortDriven', formatter: Formatters.checkmark, type: FieldType.number, sortable: true }
     ];
-
-    this.gridOptions = {
-      columnPicker: {
-        hideForceFitButton: true,
-        hideSyncResizeButton: true,
-        onColumnsChanged: (e, args) => {
-          console.log('Column selection changed from Column Picker, visible columns: ', args.columns);
-        }
-      },
-      enableAutoResize: true,
-      enableGridMenu: true,
-      autoResize: {
-        containerId: 'demo-container',
-        sidePadding: 15
-      },
-      enableFiltering: true,
+    this.columnDefinitions2 = [
+      { id: 'title', name: 'Title', field: 'title', sortable: true, type: FieldType.string },
+      { id: 'duration', name: 'Duration (days)', field: 'duration', sortable: true, type: FieldType.number },
+      { id: 'complete', name: '% Complete', field: 'percentComplete', formatter: Formatters.percentCompleteBar, type: FieldType.number, sortable: true },
+      { id: 'start', name: 'Start', field: 'start', formatter: Formatters.dateIso, sortable: true, type: FieldType.dateIso, exportWithFormatter: true },
+      { id: 'finish', name: 'Finish', field: 'finish', formatter: Formatters.dateIso, sortable: true, type: FieldType.date, exportWithFormatter: true },
+      { id: 'effort-driven', name: 'Effort Driven', field: 'effortDriven', formatter: Formatters.checkmark, type: FieldType.number, sortable: true }
+    ];
+    this.gridOptions1 = {
+      enableAutoResize: false,
       enableCellNavigation: true,
-      gridMenu: {
-        // all titles optionally support translation keys, if you wish to use that feature then use the title properties finishing by 'Key'
-        // example "customTitle" for a plain string OR "customTitleKey" to use a translation key
-        customTitleKey: 'CUSTOM_COMMANDS',
-        iconCssClass: 'fa fa-ellipsis-v',
-        hideForceFitButton: true,
-        hideSyncResizeButton: true,
-        hideToggleFilterCommand: false, // show/hide internal custom commands
-        menuWidth: 17,
-        resizeOnShowHeaderRow: true,
-        customItems: [
-          // add Custom Items Commands at the bottom of the already existing internal custom items
-          // you cannot override an internal items but you can hide them and create your own
-          // also note that the internal custom commands are in the positionOrder range of 50-60,
-          // if you want yours at the bottom then start with 61, below 50 will make your command(s) on top
-          {
-            iconCssClass: 'fa fa-question-circle',
-            titleKey: 'HELP',
-            disabled: false,
-            command: 'help',
-            positionOrder: 99
-          },
-          {
-            title: 'Disabled command',
-            disabled: true,
-            command: 'disabled-command',
-            positionOrder: 98
-          }
-        ],
-        onCommand: (e, args) => {
-          if (args.command === 'help') {
-            alert('Command: ' + args.command);
-          }
-        },
-        onColumnsChanged: (e, args) => {
-          console.log('Column selection changed from Grid Menu, visible columns: ', args.columns);
-        }
+      enableCheckboxSelector: true,
+      checkboxSelector: {
+        // remove the unnecessary "Select All" checkbox in header when in single selection mode
+        hideSelectAllCheckbox: true
       },
-      enableTranslate: true,
-      i18n: this.i18n
+      rowSelectionOptions: {
+        // True (Single Selection), False (Multiple Selections)
+        selectActiveRow: true
+      },
+      enableRowSelection: true
+    };
+    this.gridOptions2 = {
+      enableAutoResize: false,
+      enableCellNavigation: true,
+      rowSelectionOptions: {
+        // True (Single Selection), False (Multiple Selections)
+        selectActiveRow: false
+      },
+      enableCheckboxSelector: true,
+      enableRowSelection: true,
+      preselectedRows: [0, 2]
     };
   }
 
-  getData() {
-    // Set up some test columns.
+  prepareData() {
+    // mock a dataset
     const mockDataset = [];
     for (let i = 0; i < 500; i++) {
+      const randomYear = 2000 + Math.floor(Math.random() * 10);
+      const randomMonth = Math.floor(Math.random() * 11);
+      const randomDay = Math.floor((Math.random() * 29));
+      const randomPercent = Math.round(Math.random() * 100);
+
       mockDataset[i] = {
         id: i,
         title: 'Task ' + i,
-        duration: Math.round(Math.random() * 25) + ' days',
-        percentComplete: Math.round(Math.random() * 100),
-        start: '01/01/2009',
-        finish: '01/05/2009',
-        completed: (i % 5 === 0)
+        duration: Math.round(Math.random() * 100) + '',
+        percentComplete: randomPercent,
+        percentCompleteNumber: randomPercent,
+        start: new Date(randomYear, randomMonth, randomDay),
+        finish: new Date(randomYear, (randomMonth + 1), randomDay),
+        effortDriven: (i % 5 === 0)
       };
     }
-    this.dataset = mockDataset;
+    return mockDataset;
   }
 
-  switchLanguage() {
-    this.selectedLanguage = (this.selectedLanguage === 'en') ? 'fr' : 'en';
-    this.i18n.setLocale(this.selectedLanguage);
+  onGrid1SelectedRowsChanged(e, args) {
+    const grid = args && args.grid;
+    if (Array.isArray(args.rows)) {
+      this.selectedTitle = args.rows.map(idx => {
+        const item = grid.getDataItem(idx);
+        return item.title || '';
+      });
+    }
+  }
+
+  onGrid2SelectedRowsChanged(e, args) {
+    const grid = args && args.grid;
+    if (grid && Array.isArray(args.rows)) {
+      this.selectedTitles = args.rows.map(idx => {
+        const item = grid.getDataItem(idx);
+        return item.title || '';
+      });
+    }
   }
 }

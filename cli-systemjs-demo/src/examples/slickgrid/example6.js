@@ -1,42 +1,64 @@
+import { EventAggregator } from 'aurelia-event-aggregator';
 import { inject } from 'aurelia-framework';
+import { I18N } from 'aurelia-i18n';
 import { HttpClient } from 'aurelia-http-client';
-import { FieldType, Filters, GridOdataService } from 'aurelia-slickgrid';
+import {
+  FieldType,
+  Filters,
+  Formatters,
+  GraphqlService,
+  OperatorType,
+  SortDirection
+} from 'aurelia-slickgrid';
 
 const defaultPageSize = 20;
-const sampleDataRoot = 'src/examples/slickgrid/sample-data';
+const GRAPHQL_QUERY_DATASET_NAME = 'users';
 
-@inject(HttpClient)
-export class Example5 {
-  title = 'Example 5: Grid with Backend OData Service';
+@inject(EventAggregator, HttpClient, I18N)
+export class Example6 {
+  title = 'Example 6: Grid with Backend GraphQL Service';
   subTitle = `
-    Use it when you need to support Pagination with a OData endpoint (for simple JSON, use a regular grid)<br/>
-    Take a look at the (<a href="https://github.com/ghiscoding/aurelia-slickgrid/wiki/OData" target="_blank">Wiki documentation</a>)
-    <br/>
+  Use it when you need to support Pagination with a GraphQL endpoint (for simple JSON, use a regular grid).
+  <br/>Take a look at the (<a href="https://github.com/ghiscoding/aurelia-slickgrid/wiki/GraphQL" target="_blank">Wiki docs</a>)
     <ul class="small">
+      <li><span class="red">(*) NO DATA SHOWING</span> - just change filters &amp; page and look at the "GraphQL Query" changing</li>
       <li>Only "Name" field is sortable for the demo (because we use JSON files), however "multiColumnSort: true" is also supported</li>
       <li>String column also support operator (>, >=, <, <=, <>, !=, =, ==, *)
       <ul>
         <li>The (*) can be used as startsWith (ex.: "abc*" => startsWith "abc") / endsWith (ex.: "*xyz" => endsWith "xyz")</li>
-        <li>The other operators can be used on column type number for example: ">=100" (greater than or equal to 100)</li>
+        <li>The other operators can be used on column type number for example: ">=100" (greater or equal than 100)</li>
       </ul>
-      <li>OData Service could be replaced by other Service type in the future (GraphQL or whichever you provide)</li>
       <li>You can also preload a grid with certain "presets" like Filters / Sorters / Pagination <a href="https://github.com/ghiscoding/aurelia-slickgrid/wiki/Grid-State-&-Preset" target="_blank">Wiki - Grid Preset</a>
     </ul>
   `;
+
   aureliaGrid;
   columnDefinitions;
   gridOptions;
   dataset = [];
   statistics;
 
-  odataQuery = '';
+  isWithCursor = false;
+  graphqlQuery = '';
   processing = false;
+  selectedLanguage;
   status = { text: '', class: '' };
+  Subscription;
 
-  constructor(http) {
+  constructor(ea, http, i18n) {
+    this.ea = ea;
     this.http = http;
+    this.i18n = i18n;
+
     // define the grid options & columns and then create the grid itself
     this.defineGrid();
+    this.selectedLanguage = this.i18n.getLocale();
+    this.Subscription = this.ea.subscribe('gridStateService:changed', (data) => console.log(data));
+  }
+
+  detached() {
+    this.saveCurrentGridState();
+    this.Subscription.dispose();
   }
 
   aureliaGridReady(aureliaGrid) {
@@ -45,46 +67,84 @@ export class Example5 {
 
   defineGrid() {
     this.columnDefinitions = [
+      { id: 'name', field: 'name', headerKey: 'NAME', filterable: true, sortable: true, type: FieldType.string, width: 60 },
       {
-        id: 'name', name: 'Name', field: 'name', sortable: true, type: FieldType.string,
-        filterable: true,
-        filter: {
-          model: Filters.compoundInput
-        }
-      },
-      {
-        id: 'gender', name: 'Gender', field: 'gender', filterable: true, sortable: true,
+        id: 'gender', field: 'gender', headerKey: 'GENDER', filterable: true, sortable: true, width: 60,
         filter: {
           model: Filters.singleSelect,
-          collection: [{ value: '', label: '' }, { value: 'male', label: 'male' }, { value: 'female', label: 'female' }]
+          collection: [{ value: '', label: '' }, { value: 'male', label: 'male', labelKey: 'MALE' }, { value: 'female', label: 'female', labelKey: 'FEMALE' }]
         }
       },
-      { id: 'company', name: 'Company', field: 'company' }
+      {
+        id: 'company', field: 'company', headerKey: 'COMPANY', width: 60,
+        sortable: true,
+        filterable: true,
+        filter: {
+          model: Filters.multipleSelect,
+          collection: [{ value: 'acme', label: 'Acme' }, { value: 'abc', label: 'Company ABC' }, { value: 'xyz', label: 'Company XYZ' }]
+        }
+      },
+      { id: 'billing.address.street', field: 'billing.address.street', headerKey: 'BILLING.ADDRESS.STREET', width: 60, filterable: true, sortable: true },
+      {
+        id: 'billing.address.zip', field: 'billing.address.zip', headerKey: 'BILLING.ADDRESS.ZIP', width: 60,
+        type: FieldType.number,
+        filterable: true, sortable: true,
+        filter: {
+          model: Filters.compoundInput
+        },
+        formatter: Formatters.multiple, params: { formatters: [Formatters.complexObject, Formatters.translate] }
+      }
     ];
 
     this.gridOptions = {
-      enableAutoResize: true,
-      autoResize: {
-        containerId: 'demo-container',
-        sidePadding: 15
-      },
-      enableCellNavigation: true,
+      enableAutoResize: false,
       enableFiltering: true,
+      enableCellNavigation: true,
       enableCheckboxSelector: true,
       enableRowSelection: true,
+      enableTranslate: true,
+      i18n: this.i18n,
+      gridMenu: {
+        resizeOnShowHeaderRow: true
+      },
       pagination: {
         pageSizes: [10, 15, 20, 25, 30, 40, 50, 75, 100],
         pageSize: defaultPageSize,
         totalItems: 0
       },
+
+      presets: {
+        columns: [
+          { columnId: 'name', width: 120 },
+          { columnId: 'gender', width: 55 },
+          { columnId: 'company' },
+          { columnId: 'billing.address.zip' }, // flip column position of Street/Zip to Zip/Street
+          { columnId: 'billing.address.street', width: 120 }
+        ],
+        // you can also type operator as string, e.g.: operator: 'EQ'
+        filters: [
+          { columnId: 'gender', searchTerms: ['male'], operator: OperatorType.equal },
+          { columnId: 'name', searchTerms: ['John Doe'], operator: OperatorType.contains },
+          { columnId: 'company', searchTerms: ['xyz'], operator: 'IN' }
+        ],
+        sorters: [
+          // direction can typed as 'asc' (uppercase or lowercase) and/or use the SortDirection type
+          { columnId: 'name', direction: 'asc' },
+          { columnId: 'company', direction: SortDirection.DESC }
+        ],
+        pagination: { pageNumber: 2, pageSize: 20 }
+      },
+
       backendServiceApi: {
-        service: new GridOdataService(),
+        service: new GraphqlService(),
+        options: this.getBackendOptions(this.isWithCursor),
+        // you can define the onInit callback OR enable the "executeProcessCommandOnInit" flag in the service init
+        // onInit: (query) => this.getCustomerApiCall(query)
         preProcess: () => this.displaySpinner(true),
         process: (query) => this.getCustomerApiCall(query),
-        postProcess: (response) => {
-          this.statistics = response.statistics;
+        postProcess: (result) => {
+          this.statistics = result.statistics;
           this.displaySpinner(false);
-          this.getCustomerCallback(response);
         }
       }
     };
@@ -97,146 +157,62 @@ export class Example5 {
       : { text: 'done', class: 'alert alert-success' };
   }
 
-  getCustomerCallback(data) {
-    // totalItems property needs to be filled for pagination to work correctly
-    // however we need to force Aurelia to do a dirty check, doing a clone object will do just that
-    this.gridOptions.pagination.totalItems = data.totalRecordCount;
-    this.gridOptions = { ...{}, ...this.gridOptions };
-    if (this.statistics) {
-      this.statistics.totalItemCount = data.totalRecordCount;
-    }
+  getBackendOptions(withCursor) {
+    // with cursor, paginationOptions can be: { first, last, after, before }
+    // without cursor, paginationOptions can be: { first, last, offset }
+    return {
+      columnDefinitions: this.columnDefinitions,
+      datasetName: GRAPHQL_QUERY_DATASET_NAME,
+      isWithCursor: withCursor,
+      addLocaleIntoQuery: true,
+      extraQueryArguments: [{
+        field: 'userId',
+        value: 123
+      }],
 
-    // once pagination totalItems is filled, we can update the dataset
-    this.dataset = data.items;
-    this.odataQuery = data.query;
-  }
-
-  getCustomerApiCall(query) {
-    // in your case, you will call your WebAPI function (wich needs to return a Promise)
-    // for the demo purpose, we will call a mock WebAPI function
-    return this.getCustomerDataApiMock(query);
+      // when dealing with complex objects, we want to keep our field name with double quotes
+      // example with gender: query { users (orderBy:[{field:"gender",direction:ASC}]) {}
+      keepArgumentFieldDoubleQuotes: true
+    };
   }
 
   /**
-   * This function is only here to mock a WebAPI call (since we are using a JSON file for the demo)
-   *  in your case the getCustomer() should be a WebAPI function returning a Promise
+   * Calling your GraphQL backend server should always return a Promise of type GraphqlResult
+   *
+   * @param query
+   * @return Promise<GraphqlResult>
    */
-  getCustomerDataApiMock(query) {
-    // the mock is returning a Promise, just like a WebAPI typically does
+  getCustomerApiCall(query) {
+    // in your case, you will call your WebAPI function (wich needs to return a Promise)
+    // for the demo purpose, we will call a mock WebAPI function
+    const mockedResult = {
+      // the dataset name is the only unknown property
+      // will be the same defined in your GraphQL Service init, in our case GRAPHQL_QUERY_DATASET_NAME
+      data: {
+        [GRAPHQL_QUERY_DATASET_NAME]: {
+          nodes: [],
+          pageInfo: {
+            hasNextPage: true
+          },
+          totalCount: 100
+        }
+      }
+    };
+
     return new Promise((resolve, reject) => {
-      const queryParams = query.toLowerCase().split('&');
-      let top;
-      let skip = 0;
-      let orderBy = '';
-      let countTotalItems = 100;
-      const columnFilters = {};
-
-      for (const param of queryParams) {
-        if (param.indexOf('$top=') > -1) {
-          top = +(param.substring('$top='.length));
-        }
-        if (param.indexOf('$skip=') > -1) {
-          skip = +(param.substring('$skip='.length));
-        }
-        if (param.indexOf('$orderby=') > -1) {
-          orderBy = param.substring('$orderby='.length);
-        }
-        if (param.indexOf('$filter=') > -1) {
-          const filterBy = param.substring('$filter='.length).replace('%20', ' ');
-          if (filterBy.indexOf('substringof') > -1) {
-            const filterMatch = filterBy.match(/substringof\('(.*?)',([a-zA-Z ]*)/);
-            const fieldName = filterMatch[2].trim();
-            columnFilters[fieldName] = {
-              type: 'substring',
-              term: filterMatch[1].trim()
-            };
-          }
-          if (filterBy.indexOf('eq') > -1) {
-            const filterMatch = filterBy.match(/([a-zA-Z ]*) eq '(.*?)'/);
-            const fieldName = filterMatch[1].trim();
-            columnFilters[fieldName] = {
-              type: 'equal',
-              term: filterMatch[2].trim()
-            };
-          }
-          if (filterBy.indexOf('startswith') > -1) {
-            const filterMatch = filterBy.match(/startswith\(([a-zA-Z ]*),\s?'(.*?)'/);
-            const fieldName = filterMatch[1].trim();
-            columnFilters[fieldName] = {
-              type: 'starts',
-              term: filterMatch[2].trim()
-            };
-          }
-          if (filterBy.indexOf('endswith') > -1) {
-            const filterMatch = filterBy.match(/endswith\(([a-zA-Z ]*),\s?'(.*?)'/);
-            const fieldName = filterMatch[1].trim();
-            columnFilters[fieldName] = {
-              type: 'ends',
-              term: filterMatch[2].trim()
-            };
-          }
-        }
-      }
-
-      const sort = (orderBy.indexOf('asc') > -1)
-        ? 'ASC'
-        : (orderBy.indexOf('desc') > -1)
-          ? 'DESC'
-          : '';
-
-      let url;
-      switch (sort) {
-        case 'ASC':
-          url = `${sampleDataRoot}/customers_100_ASC.json`;
-          break;
-        case 'DESC':
-          url = `${sampleDataRoot}/customers_100_DESC.json`;
-          break;
-        default:
-          url = `${sampleDataRoot}/customers_100.json`;
-          break;
-      }
-
-      this.http.createRequest(url)
-        .asGet()
-        .send()
-        .then(response => {
-          const dataArray = response.content;
-
-          // Read the result field from the JSON response.
-          const firstRow = skip;
-          let filteredData = dataArray;
-          if (columnFilters) {
-            for (const columnId in columnFilters) {
-              if (columnFilters.hasOwnProperty(columnId)) {
-                filteredData = filteredData.filter(column => {
-                  const filterType = columnFilters[columnId].type;
-                  const searchTerm = columnFilters[columnId].term;
-                  let colId = columnId;
-                  if (columnId && columnId.indexOf(' ') !== -1) {
-                    const splitIds = columnId.split(' ');
-                    colId = splitIds[splitIds.length - 1];
-                  }
-                  const filterTerm = column[colId];
-                  if (filterTerm) {
-                    switch (filterType) {
-                      case 'equal': return filterTerm.toLowerCase() === searchTerm;
-                      case 'ends': return filterTerm.toLowerCase().endsWith(searchTerm);
-                      case 'starts': return filterTerm.toLowerCase().startsWith(searchTerm);
-                      case 'substring': return (filterTerm.toLowerCase().indexOf(searchTerm) > -1);
-                    }
-                  }
-                });
-              }
-            }
-            countTotalItems = filteredData.length;
-          }
-          const updatedData = filteredData.slice(firstRow, firstRow + top);
-
-          setTimeout(() => {
-            resolve({ items: updatedData, totalRecordCount: countTotalItems, query });
-          }, 500);
-        });
+      setTimeout(() => {
+        this.graphqlQuery = this.aureliaGrid.backendService.buildQuery();
+        resolve(mockedResult);
+      }, 500);
     });
+  }
+
+  saveCurrentGridState() {
+    console.log('GraphQL current grid state', this.aureliaGrid.gridStateService.getCurrentGridState());
+  }
+
+  switchLanguage() {
+    this.selectedLanguage = (this.selectedLanguage === 'en') ? 'fr' : 'en';
+    this.i18n.setLocale(this.selectedLanguage);
   }
 }

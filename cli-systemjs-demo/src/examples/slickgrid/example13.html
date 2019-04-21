@@ -2,35 +2,50 @@
   <h2>${title}</h2>
   <div class="subtitle" innerhtml.bind="subTitle"></div>
 
+  <div class="row col-sm-12">
+    <button class="btn btn-default btn-xs" click.delegate="loadData(500)">
+      500 rows
+    </button>
+    <button class="btn btn-default btn-xs" click.delegate="loadData(50000)">
+      50k rows
+    </button>
+    <button class="btn btn-default btn-xs" click.delegate="clearGrouping()">
+      Clear grouping
+    </button>
+    <button class="btn btn-default btn-xs" click.delegate="collapseAllGroups()">
+      Collapse all groups
+    </button>
+    <button class="btn btn-default btn-xs" click.delegate="expandAllGroups()">
+      Expand all groups
+    </button>
+  </div>
+
   <hr/>
 
-  <div class="row">
-    <button class="btn btn-default btn-sm" click.delegate="switchLanguage()">
-      <i class="fa fa-language"></i>
-      Switch Language
+  <div class="row col-sm-12">
+    <button class="btn btn-default btn-xs" click.delegate="groupByDuration()">
+      Group by duration &amp; sort groups by value
     </button>
-    <label>Locale</label>: ${selectedLanguage + '.json'}
-
-    <span style="margin-left: 20px">
-      <button class="btn btn-default btn-sm" click.delegate="exportToFile('csv')">
-        <i class="fa fa-download"></i>
-        Download to CSV
-      </button>
-      <button class="btn btn-default btn-sm" click.delegate="exportToFile('txt')">
-        <i class="fa fa-download"></i>
-        Download to Text
-      </button>
-      <button class="btn btn-default btn-sm" click.delegate="dynamicallyAddTitleHeader()">
-        <i class="fa fa-plus"></i>
-        Dynamically Duplicate Title Column
-      </button>
+    <button class="btn btn-default btn-xs" click.delegate="groupByDurationOrderByCount(false)">
+      Group by duration &amp; sort groups by count
+    </button>
+  </div>
+  <div class="row col-sm-12">
+    <button class="btn btn-default btn-xs" click.delegate="groupByDurationOrderByCount(true)">
+      Group by duration &amp; sort groups by count, aggregate collapsed
+    </button>
+    <button class="btn btn-default btn-xs" click.delegate="groupByDurationEffortDriven()">
+      Group by duration then effort-driven
+    </button>
+    <button class="btn btn-default btn-xs" click.delegate="groupByDurationEffortDrivenPercent()">
+      Group by duration then effort-driven then percent.
+    </button>
+    <span hidden.bind="!processing">
+      <i class="fa fa-refresh fa-spin fa-lg fa-fw"></i>
     </span>
   </div>
-  <aurelia-slickgrid
-    grid-id="grid12"
-    column-definitions.bind="columnDefinitions"
-    grid-options.bind="gridOptions"
-    dataset.bind="dataset"
-    asg-on-aurelia-grid-created.delegate="aureliaGridReady($event.detail)">
+
+  <aurelia-slickgrid grid-id="grid1" column-definitions.bind="columnDefinitions" grid-options.bind="gridOptions" dataset.bind="dataset"
+    asg-on-dataview-created.delegate="onDataviewCreated($event.detail)">
   </aurelia-slickgrid>
 </template>

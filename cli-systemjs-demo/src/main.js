@@ -1,6 +1,7 @@
 import 'core-js/stable';
 import 'regenerator-runtime/runtime';
 import 'bootstrap';
+import Backend from 'i18next-xhr-backend';
 import environment from './environment';
 
 export function configure(aurelia) {
@@ -13,18 +14,29 @@ export function configure(aurelia) {
     config.options.gridMenu.iconCssClass = 'fa fa-bars';
   });
 
+  // aurelia i18n to handle multiple locales
+  aurelia.use.plugin('aurelia-i18n', (instance) => {
+    // register backend plugin
+    instance.i18next.use(Backend);
+
+    return instance.setup({
+      backend: {
+        loadPath: './assets/i18n/{{lng}}/{{ns}}.json',
+      },
+      lng: 'en',
+      ns: ['aurelia-slickgrid'],
+      defaultNS: 'aurelia-slickgrid',
+      attributes: ['t', 'i18n'],
+      fallbackLng: 'en',
+      debug: false
+    });
+  });
+
   aurelia.use.developmentLogging(environment.debug ? 'debug' : 'warn');
 
   if (environment.testing) {
     aurelia.use.plugin('aurelia-testing');
   }
-
-  //Uncomment the line below to enable animation.
-  // aurelia.use.plugin('aurelia-animator-css');
-  //if the css animator is enabled, add swap-order="after" to all router-view elements
-
-  //Anyone wanting to use HTMLImports to load views, will need to install the following plugin.
-  // aurelia.use.plugin('aurelia-html-import-template-loader');
 
   aurelia.start().then(() => aurelia.setRoot());
 }

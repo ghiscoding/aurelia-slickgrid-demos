@@ -1,19 +1,19 @@
 import { I18N } from 'aurelia-i18n';
 import { inject } from 'aurelia-framework';
-import { Formatters } from 'aurelia-slickgrid';
+import { FieldType, Filters, Formatters } from 'aurelia-slickgrid';
 
 @inject(I18N)
-export class Example8 {
-  title = 'Example 8: Header Menu Plugin';
+export class Example9 {
+  title = 'Example 9: Grid Menu Control';
   subTitle = `
-    This example demonstrates using the <b>Slick.Plugins.HeaderMenu</b> plugin to easily add menus to colum headers.<br/>
-    These menus can be specified directly in the column definition, and are very easy to configure and use.
-    (<a href="https://github.com/ghiscoding/aurelia-slickgrid/wiki/Header-Menu-&-Header-Buttons" target="_blank">Wiki docs</a>)
+    This example demonstrates using the <b>Slick.Controls.GridMenu</b> plugin to easily add a Grid Menu (aka hamburger menu) on the top right corner of the grid.<br/>
+    (<a href="https://github.com/ghiscoding/aurelia-slickgrid/wiki/Grid-Menu" target="_blank">Wiki docs</a>)
     <ul>
-      <li>Now enabled by default in the Global Grid Options, it will add the default commands of (hide column, sort asc/desc)</li>
-      <li>Hover over any column header to see an arrow showing up on the right</li>
-      <li>Try Sorting (multi-sort) the 2 columns "Duration" and "% Complete" (the other ones are disabled)</li>
-      <li>Try hiding any columns (you use the "Column Picker" plugin by doing a right+click on the header to show the column back)</li>
+      <li>The Grid Menu uses the following icon by default "fa-bars"&nbsp;&nbsp;<span class="fa fa-bars"></span>&nbsp;&nbsp;(which looks like a hamburger, hence the name)</li>
+      <ul><li>Another icon which you could use is "fa-ellipsis-v"&nbsp;&nbsp;<span class="fa fa-ellipsis-v"></span>&nbsp;&nbsp;(which is shown in this example)</li></ul>
+      <li>By default the Grid Menu shows all columns which you can show/hide</li>
+      <li>You can configure multiple "commands" to show up in the Grid Menu and use the "onGridMenuCommand()" callback</li>
+      <li>Doing a "right+click" over any column header will also provide a way to show/hide a column (via the Column Picker Plugin)</li>
     </ul>
   `;
 
@@ -44,58 +44,83 @@ export class Example8 {
     this.dataView = aureliaGrid && aureliaGrid.dataView;
   }
 
-  detached() {
-    // unsubscrible any Slick.Event you might have used
-    // a reminder again, these are SlickGrid Event, not Event Aggregator events
-    this.gridObj.onSort.unsubscribe();
-  }
-
   defineGrid() {
     this.columnDefinitions = [
-      { id: 'title', name: 'Title', field: 'title', headerKey: 'TITLE' },
-      { id: 'duration', name: 'Duration', field: 'duration', headerKey: 'DURATION', sortable: true },
-      { id: '%', name: '% Complete', field: 'percentComplete', sortable: true },
-      { id: 'start', name: 'Start', field: 'start', headerKey: 'START' },
-      { id: 'finish', name: 'Finish', field: 'finish', headerKey: 'FINISH' },
-      { id: 'completed', name: 'Completed', field: 'completed', headerKey: 'COMPLETED', formatter: Formatters.checkmark }
+      { id: 'title', name: 'Title', field: 'title', headerKey: 'TITLE', filterable: true, type: FieldType.string },
+      { id: 'duration', name: 'Duration', field: 'duration', headerKey: 'DURATION', sortable: true, filterable: true, type: FieldType.string },
+      {
+        id: '%', name: '% Complete', field: 'percentComplete', sortable: true, filterable: true,
+        type: FieldType.number,
+        formatter: Formatters.percentCompleteBar,
+        filter: { model: Filters.compoundSlider, params: { hideSliderNumber: false } }
+      },
+      { id: 'start', name: 'Start', field: 'start', headerKey: 'START', filterable: true, type: FieldType.dateUs, filter: { model: Filters.compoundDate } },
+      { id: 'finish', name: 'Finish', field: 'finish', headerKey: 'FINISH', filterable: true, type: FieldType.dateUs, filter: { model: Filters.compoundDate } },
+      {
+        id: 'completed', name: 'Completed', field: 'completed', headerKey: 'COMPLETED', maxWidth: 80, formatter: Formatters.checkmark,
+        type: FieldType.boolean,
+        minWidth: 100,
+        sortable: true,
+        filterable: true,
+        filter: {
+          collection: [{ value: '', label: '' }, { value: true, label: 'true' }, { value: false, label: 'false' }],
+          model: Filters.singleSelect
+        }
+      }
     ];
 
-    this.columnDefinitions.forEach((columnDef) => {
-      columnDef.header = {
-        menu: {
-          items: [
-            // add Custom Header Menu Item Commands at the bottom of the already existing internal custom items
-            // you cannot override an internal command but you can hide them and create your own
-            // also note that the internal custom commands are in the positionOrder range of 50-60,
-            // if you want yours at the bottom then start with 61, below 50 will make your command(s) on top
-            {
-              iconCssClass: 'fa fa-question-circle',
-              disabled: (columnDef.id === 'effort-driven'), // you can disable a command with certain logic
-              titleKey: 'HELP', // use "title" as plain string OR "titleKey" when using a translation key
-              command: 'help',
-              positionOrder: 99
-            }
-          ]
-        }
-      };
-    });
-
     this.gridOptions = {
+      columnPicker: {
+        hideForceFitButton: true,
+        hideSyncResizeButton: true,
+        onColumnsChanged: (e, args) => {
+          console.log('Column selection changed from Column Picker, visible columns: ', args.columns);
+        }
+      },
       enableAutoResize: true,
-      enableHeaderMenu: true,
+      enableGridMenu: true,
       autoResize: {
         containerId: 'demo-container',
         sidePadding: 15
       },
-      enableFiltering: false,
+      enableFiltering: true,
       enableCellNavigation: true,
-      headerMenu: {
-        hideSortCommands: false,
-        hideColumnHideCommand: false,
+      gridMenu: {
+        // all titles optionally support translation keys, if you wish to use that feature then use the title properties finishing by 'Key'
+        // example "customTitle" for a plain string OR "customTitleKey" to use a translation key
+        customTitleKey: 'CUSTOM_COMMANDS',
+        iconCssClass: 'fa fa-ellipsis-v',
+        hideForceFitButton: true,
+        hideSyncResizeButton: true,
+        hideToggleFilterCommand: false, // show/hide internal custom commands
+        menuWidth: 17,
+        resizeOnShowHeaderRow: true,
+        customItems: [
+          // add Custom Items Commands at the bottom of the already existing internal custom items
+          // you cannot override an internal items but you can hide them and create your own
+          // also note that the internal custom commands are in the positionOrder range of 50-60,
+          // if you want yours at the bottom then start with 61, below 50 will make your command(s) on top
+          {
+            iconCssClass: 'fa fa-question-circle',
+            titleKey: 'HELP',
+            disabled: false,
+            command: 'help',
+            positionOrder: 99
+          },
+          {
+            title: 'Disabled command',
+            disabled: true,
+            command: 'disabled-command',
+            positionOrder: 98
+          }
+        ],
         onCommand: (e, args) => {
           if (args.command === 'help') {
-            alert('Please help!!!');
+            alert('Command: ' + args.command);
           }
+        },
+        onColumnsChanged: (e, args) => {
+          console.log('Column selection changed from Grid Menu, visible columns: ', args.columns);
         }
       },
       enableTranslate: true,

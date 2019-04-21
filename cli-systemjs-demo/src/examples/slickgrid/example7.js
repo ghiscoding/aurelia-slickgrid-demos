@@ -1,218 +1,161 @@
-import { EventAggregator } from 'aurelia-event-aggregator';
-import { inject } from 'aurelia-framework';
-import { I18N } from 'aurelia-i18n';
-import { HttpClient } from 'aurelia-http-client';
-import {
-  FieldType,
-  Filters,
-  Formatters,
-  GraphqlService,
-  OperatorType,
-  SortDirection
-} from 'aurelia-slickgrid';
+let columnsWithHighlightingById = {};
 
-const defaultPageSize = 20;
-const GRAPHQL_QUERY_DATASET_NAME = 'users';
+// create a custom Formatter to highlight negative values in red
+const highlightingFormatter = (row, cell, value, columnDef, dataContext) => {
+  if (columnsWithHighlightingById[columnDef.id] && value < 0) {
+    return `<div style="color:red; font-weight:bold;">${value}</div>`;
+  } else {
+    return value;
+  }
+};
 
-@inject(EventAggregator, HttpClient, I18N)
-export class Example6 {
-  title = 'Example 6: Grid with Backend GraphQL Service';
+export class Example7 {
+  title = 'Example 7: Header Button Plugin';
   subTitle = `
-  Use it when you need to support Pagination with a GraphQL endpoint (for simple JSON, use a regular grid).
-  <br/>Take a look at the (<a href="https://github.com/ghiscoding/aurelia-slickgrid/wiki/GraphQL" target="_blank">Wiki docs</a>)
-    <ul class="small">
-      <li><span class="red">(*) NO DATA SHOWING</span> - just change filters &amp; page and look at the "GraphQL Query" changing</li>
-      <li>Only "Name" field is sortable for the demo (because we use JSON files), however "multiColumnSort: true" is also supported</li>
-      <li>String column also support operator (>, >=, <, <=, <>, !=, =, ==, *)
+    This example demonstrates using the <b>Slick.Plugins.HeaderButtons</b> plugin to easily add buttons to colum headers.
+    These buttons can be specified directly in the column definition, and are very easy to configure and use.
+    (<a href="https://github.com/ghiscoding/aurelia-slickgrid/wiki/Header-Menu-&-Header-Buttons" target="_blank">Wiki docs</a>)
       <ul>
-        <li>The (*) can be used as startsWith (ex.: "abc*" => startsWith "abc") / endsWith (ex.: "*xyz" => endsWith "xyz")</li>
-        <li>The other operators can be used on column type number for example: ">=100" (greater or equal than 100)</li>
-      </ul>
-      <li>You can also preload a grid with certain "presets" like Filters / Sorters / Pagination <a href="https://github.com/ghiscoding/aurelia-slickgrid/wiki/Grid-State-&-Preset" target="_blank">Wiki - Grid Preset</a>
+      <li>Resize the 1st column to see all icon/command</li>
+      <li>Mouse hover the 2nd column to see it's icon/command</li>
+      <li>For all the other columns, click on top-right red circle icon to enable highlight of negative numbers.</li>
     </ul>
   `;
-
-  aureliaGrid;
   columnDefinitions;
   gridOptions;
   dataset = [];
-  statistics;
+  aureliaGrid;
+  gridObj;
 
-  isWithCursor = false;
-  graphqlQuery = '';
-  processing = false;
-  selectedLanguage;
-  status = { text: '', class: '' };
-  Subscription;
-
-  constructor(ea, http, i18n) {
-    this.ea = ea;
-    this.http = http;
-    this.i18n = i18n;
-
+  constructor() {
     // define the grid options & columns and then create the grid itself
     this.defineGrid();
-    this.selectedLanguage = this.i18n.getLocale();
-    this.Subscription = this.ea.subscribe('gridStateService:changed', (data) => console.log(data));
+    columnsWithHighlightingById = {};
   }
 
-  detached() {
-    this.saveCurrentGridState();
-    this.Subscription.dispose();
+  attached() {
+    // populate the dataset once the grid is ready
+    this.getData();
   }
 
   aureliaGridReady(aureliaGrid) {
     this.aureliaGrid = aureliaGrid;
+    this.gridObj = aureliaGrid && aureliaGrid.slickGrid;
   }
 
   defineGrid() {
-    this.columnDefinitions = [
-      { id: 'name', field: 'name', headerKey: 'NAME', filterable: true, sortable: true, type: FieldType.string, width: 60 },
-      {
-        id: 'gender', field: 'gender', headerKey: 'GENDER', filterable: true, sortable: true, width: 60,
-        filter: {
-          model: Filters.singleSelect,
-          collection: [{ value: '', label: '' }, { value: 'male', label: 'male', labelKey: 'MALE' }, { value: 'female', label: 'female', labelKey: 'FEMALE' }]
-        }
-      },
-      {
-        id: 'company', field: 'company', headerKey: 'COMPANY', width: 60,
-        sortable: true,
-        filterable: true,
-        filter: {
-          model: Filters.multipleSelect,
-          collection: [{ value: 'acme', label: 'Acme' }, { value: 'abc', label: 'Company ABC' }, { value: 'xyz', label: 'Company XYZ' }]
-        }
-      },
-      { id: 'billing.address.street', field: 'billing.address.street', headerKey: 'BILLING.ADDRESS.STREET', width: 60, filterable: true, sortable: true },
-      {
-        id: 'billing.address.zip', field: 'billing.address.zip', headerKey: 'BILLING.ADDRESS.ZIP', width: 60,
-        type: FieldType.number,
-        filterable: true, sortable: true,
-        filter: {
-          model: Filters.compoundInput
-        },
-        formatter: Formatters.multiple, params: { formatters: [Formatters.complexObject, Formatters.translate] }
-      }
-    ];
+    this.columnDefinitions = [];
 
     this.gridOptions = {
-      enableAutoResize: false,
-      enableFiltering: true,
+      enableAutoResize: true,
+      enableHeaderButton: true,
+      enableHeaderMenu: false,
+      autoResize: {
+        containerId: 'demo-container',
+        sidePadding: 15
+      },
+      enableFiltering: false,
       enableCellNavigation: true,
-      enableCheckboxSelector: true,
-      enableRowSelection: true,
-      enableTranslate: true,
-      i18n: this.i18n,
-      gridMenu: {
-        resizeOnShowHeaderRow: true
-      },
-      pagination: {
-        pageSizes: [10, 15, 20, 25, 30, 40, 50, 75, 100],
-        pageSize: defaultPageSize,
-        totalItems: 0
-      },
+      headerButton: {
+        onCommand: (e, args) => {
+          const column = args.column;
+          const button = args.button;
+          const command = args.command;
 
-      presets: {
-        columns: [
-          { columnId: 'name', width: 120 },
-          { columnId: 'gender', width: 55 },
-          { columnId: 'company' },
-          { columnId: 'billing.address.zip' }, // flip column position of Street/Zip to Zip/Street
-          { columnId: 'billing.address.street', width: 120 }
-        ],
-        // you can also type operator as string, e.g.: operator: 'EQ'
-        filters: [
-          { columnId: 'gender', searchTerms: ['male'], operator: OperatorType.equal },
-          { columnId: 'name', searchTerms: ['John Doe'], operator: OperatorType.contains },
-          { columnId: 'company', searchTerms: ['xyz'], operator: 'IN' }
-        ],
-        sorters: [
-          // direction can typed as 'asc' (uppercase or lowercase) and/or use the SortDirection type
-          { columnId: 'name', direction: 'asc' },
-          { columnId: 'company', direction: SortDirection.DESC }
-        ],
-        pagination: { pageNumber: 2, pageSize: 20 }
-      },
-
-      backendServiceApi: {
-        service: new GraphqlService(),
-        options: this.getBackendOptions(this.isWithCursor),
-        // you can define the onInit callback OR enable the "executeProcessCommandOnInit" flag in the service init
-        // onInit: (query) => this.getCustomerApiCall(query)
-        preProcess: () => this.displaySpinner(true),
-        process: (query) => this.getCustomerApiCall(query),
-        postProcess: (result) => {
-          this.statistics = result.statistics;
-          this.displaySpinner(false);
+          if (command === 'toggle-highlight') {
+            if (button.cssClass === 'fa fa-circle red') {
+              delete columnsWithHighlightingById[column.id];
+              button.cssClass = 'fa fa-circle-o red faded';
+              button.tooltip = 'Highlight negative numbers.';
+            } else {
+              columnsWithHighlightingById[column.id] = true;
+              button.cssClass = 'fa fa-circle red';
+              button.tooltip = 'Remove highlight.';
+            }
+            this.gridObj.invalidate();
+          }
         }
       }
     };
   }
 
-  displaySpinner(isProcessing) {
-    this.processing = isProcessing;
-    this.status = (isProcessing)
-      ? { text: 'processing...', class: 'alert alert-danger' }
-      : { text: 'done', class: 'alert alert-success' };
-  }
-
-  getBackendOptions(withCursor) {
-    // with cursor, paginationOptions can be: { first, last, after, before }
-    // without cursor, paginationOptions can be: { first, last, offset }
-    return {
-      columnDefinitions: this.columnDefinitions,
-      datasetName: GRAPHQL_QUERY_DATASET_NAME,
-      isWithCursor: withCursor,
-      addLocaleIntoQuery: true,
-      extraQueryArguments: [{
-        field: 'userId',
-        value: 123
-      }],
-
-      // when dealing with complex objects, we want to keep our field name with double quotes
-      // example with gender: query { users (orderBy:[{field:"gender",direction:ASC}]) {}
-      keepArgumentFieldDoubleQuotes: true
-    };
-  }
-
-  /**
-   * Calling your GraphQL backend server should always return a Promise of type GraphqlResult
-   *
-   * @param query
-   * @return Promise<GraphqlResult>
-   */
-  getCustomerApiCall(query) {
-    // in your case, you will call your WebAPI function (wich needs to return a Promise)
-    // for the demo purpose, we will call a mock WebAPI function
-    const mockedResult = {
-      // the dataset name is the only unknown property
-      // will be the same defined in your GraphQL Service init, in our case GRAPHQL_QUERY_DATASET_NAME
-      data: {
-        [GRAPHQL_QUERY_DATASET_NAME]: {
-          nodes: [],
-          pageInfo: {
-            hasNextPage: true
-          },
-          totalCount: 100
+  getData() {
+    // Set up some test columns.
+    for (let i = 0; i < 9; i++) {
+      this.columnDefinitions.push({
+        id: i,
+        name: 'Column' + (i + 1),
+        field: i + '',
+        width: 100, // have the 2 first columns wider
+        sortable: true,
+        formatter: highlightingFormatter,
+        header: {
+          buttons: [
+            {
+              cssClass: 'fa fa-circle-o red faded',
+              command: 'toggle-highlight',
+              tooltip: 'Highlight negative numbers.'
+            }
+          ]
         }
-      }
+      });
+    }
+
+    // Set multiple buttons on the first column to demonstrate overflow.
+    this.columnDefinitions[0].name = 'Resize me!';
+    this.columnDefinitions[0].header = {
+      buttons: [
+        {
+          cssClass: 'fa fa-tag',
+          handler: (e) => {
+            alert('Tag');
+          }
+        },
+        {
+          cssClass: 'fa fa-comment',
+          handler: (e) => {
+            alert('Comment');
+          }
+        },
+        {
+          cssClass: 'fa fa-info-circle',
+          handler: (e) => {
+            alert('Info');
+          }
+        },
+        {
+          cssClass: 'fa fa-question-circle',
+          handler: (e) => {
+            alert('Help');
+          }
+        }
+      ]
     };
 
-    return new Promise((resolve, reject) => {
-      setTimeout(() => {
-        this.graphqlQuery = this.aureliaGrid.backendService.buildQuery();
-        resolve(mockedResult);
-      }, 500);
-    });
-  }
+    // Set a button on the second column to demonstrate hover.
+    this.columnDefinitions[1].name = 'Hover me!';
+    this.columnDefinitions[1].header = {
+      buttons: [
+        {
+          cssClass: 'fa fa-question-circle',
+          showOnHover: true,
+          tooltip: 'This button only appears on hover.',
+          handler: (e) => {
+            alert('Help');
+          }
+        }
+      ]
+    };
 
-  saveCurrentGridState() {
-    console.log('GraphQL current grid state', this.aureliaGrid.gridStateService.getCurrentGridState());
-  }
-
-  switchLanguage() {
-    this.selectedLanguage = (this.selectedLanguage === 'en') ? 'fr' : 'en';
-    this.i18n.setLocale(this.selectedLanguage);
+    // mock a dataset
+    const mockDataset = [];
+    for (let i = 0; i < 100; i++) {
+      const d = (mockDataset[i] = {});
+      d.id = i;
+      for (let j = 0; j < this.columnDefinitions.length; j++) {
+        d[j] = Math.round(Math.random() * 10) - 5;
+      }
+    }
+    this.dataset = mockDataset;
   }
 }

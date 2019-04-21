@@ -2,43 +2,20 @@
   <h2>${title}</h2>
   <div class="subtitle" innerhtml.bind="subTitle"></div>
 
-  <div class="row">
-    <div class="col-sm-8">
-      <div class="alert alert-success">
-        <strong>(single select) Selected Row:</strong>
-        <span innerhtml.bind="selectedTitle"></span>
-      </div>
-    </div>
+  <div class="col-sm-12">
+    <span>
+      <button class="btn btn-sm btn-default" click.delegate="addNewItem()">Add New Mocked Item</button>
+      <button class="btn btn-sm btn-default" click.delegate="updateSecondItem()">Update 2nd Row Item with Random Duration</button>
+      <button class="btn btn-sm btn-default" click.delegate="highlighFifthRow()">Highlight 5th Row</button>
+    </span>
+    <hr/>
   </div>
 
   <aurelia-slickgrid
     grid-id="grid1"
-    column-definitions.bind="columnDefinitions1"
-    grid-options.bind="gridOptions1"
-    dataset.bind="dataset1"
-    grid-height="200"
-    grid-width="800"
-    sg-on-selected-rows-changed.delegate="onGrid1SelectedRowsChanged($event.detail.eventData, $event.detail.args)">
-  </aurelia-slickgrid>
-
-  <hr>
-
-  <div class="row">
-    <div class="col-sm-8">
-      <div class="alert alert-success">
-        <strong>(multi-select) Selected Row(s):</strong>
-        <span innerhtml.bind="selectedTitles"></span>
-      </div>
-    </div>
-  </div>
-
-  <aurelia-slickgrid
-    grid-id="grid2"
-    column-definitions.bind="columnDefinitions2"
-    grid-options.bind="gridOptions2"
-    dataset.bind="dataset2"
-    grid-height="200"
-    grid-width="800"
-    sg-on-selected-rows-changed.delegate="onGrid2SelectedRowsChanged($event.detail.eventData, $event.detail.args)">
+    column-definitions.bind="columnDefinitions"
+    grid-options.bind="gridOptions"
+    dataset.bind="dataset"
+    asg-on-aurelia-grid-created.delegate="aureliaGridReady($event.detail)">
   </aurelia-slickgrid>
 </template>
