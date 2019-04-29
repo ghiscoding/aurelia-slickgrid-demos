@@ -142,6 +142,8 @@ export class Example3 {
         type: FieldType.string,
         editor: {
           model: Editors.longText,
+          placeholder: 'something',
+          title: 'some title',
           validator: myCustomTitleValidator, // use a custom validator
         },
         minWidth: 100,
@@ -249,7 +251,7 @@ export class Example3 {
         type: FieldType.date,
         editor: {
           model: Editors.date,
-          // override any of the Flatpickr options through "editorOptions"
+          // override any of the Flatpickr options through "filterOptions"
           // please note that there's no TSlint on this property since it's generic for any filter, so make sure you entered the correct filter option(s)
           editorOptions: {
             minDate: 'today'
@@ -314,9 +316,9 @@ export class Example3 {
         dataKey: 'code',
         labelKey: 'name',
         type: FieldType.object,
+        sorter: Sorters.objectString,
         filterable: true,
         sortable: true,
-        sorter: Sorters.objectString,
         minWidth: 100,
         editor: {
           model: Editors.autoComplete,
@@ -484,9 +486,11 @@ export class Example3 {
     const tempDataset = [];
     for (let i = startingIndex; i < (startingIndex + itemCount); i++) {
       const randomYear = 2000 + Math.floor(Math.random() * 10);
+      const randomFinishYear = (new Date().getFullYear() - 3) + Math.floor(Math.random() * 10); // use only years not lower than 3 years ago
       const randomMonth = Math.floor(Math.random() * 11);
       const randomDay = Math.floor((Math.random() * 29));
       const randomPercent = Math.round(Math.random() * 100);
+      const randomFinish = new Date(randomFinishYear, (randomMonth + 1), randomDay);
 
       tempDataset.push({
         id: i,
@@ -495,10 +499,11 @@ export class Example3 {
         percentComplete: randomPercent,
         percentCompleteNumber: randomPercent,
         start: new Date(randomYear, randomMonth, randomDay),
-        finish: new Date(randomYear, (randomMonth + 1), randomDay),
+        finish: randomFinish < new Date() ? '' : randomFinish, // make sure the random date is earlier than today
         effortDriven: (i % 5 === 0),
         prerequisites: (i % 2 === 0) && i !== 0 && i < 12 ? [i, i - 1] : [],
         countryOfOrigin: (i % 2) ? { code: 'CA', name: 'Canada' } : { code: 'US', name: 'United States' },
+        countryOfOriginName: (i % 2) ? 'Canada' : 'United States',
         cityOfOrigin: (i % 2) ? 'Vancouver, BC, Canada' : 'Boston, MA, United States',
       });
     }
