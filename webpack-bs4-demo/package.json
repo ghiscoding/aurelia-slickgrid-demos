@@ -15,7 +15,10 @@
     "start": "nps",
     "test": "nps test",
     "build": "nps build",
-    "build-demo": "npm-run-all build del-ghpage copy-ghpage:dist",
+    "prebuild-demo": "npm run del-ghpage",
+    "build-demo": "npm run build",
+    "postbuild-demo": "npm-run-all copy-ghpage:dist copy:circleci-config",
+    "copy:circleci-config": "cross-env copyfiles -f .circleci/**/*.* ../../aurelia-slickgrid-bs4-GhPages/.circleci/",
     "copy-ghpage:dist": "cross-env copyfiles --up 1 dist/**/*.* ../../aurelia-slickgrid-bs4-GhPages",
     "del-ghpage": "cross-env rimraf ../../aurelia-slickgrid-bs4-GhPages/**/*.*"
   },
