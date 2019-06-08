@@ -36,7 +36,7 @@ const myCustomTitleValidator: EditorValidator = (value: any, args: EditorArgs) =
 
   // to get the editor object, you'll need to use "internalColumnEditor"
   // don't use "editor" property since that one is what SlickGrid uses internally by it's editor factory
-  // const columnEditor = args && args.column && args.column.internalColumnEditor;
+  const columnEditor = args && args.column && args.column.internalColumnEditor;
 
   if (value == null || value === undefined || !value.length) {
     return { valid: false, msg: 'This is a required field' };
@@ -85,6 +85,7 @@ export class Example3 {
   isAutoEdit: boolean = true;
   alertWarning: any;
   selectedLanguage: string;
+  duplicateTitleHeaderCount = 1;
 
   constructor(private http: HttpClient, private httpFetch: FetchClient, private i18n: I18N) {
     // define the grid options & columns and then create the grid itself
@@ -271,6 +272,7 @@ export class Example3 {
           // here we use $.ajax just because I'm not sure how to configure Aurelia HttpClient with JSONP and CORS
           editorOptions: {
             minLength: 3,
+            forceUserInput: true,
             source: (request, response) => {
               $.ajax({
                 url: 'http://gd.geobytes.com/AutoCompleteCity',
@@ -545,6 +547,22 @@ export class Example3 {
       autoCommitEdit: this.gridOptions.autoCommitEdit
     });
     return true;
+  }
+
+  dynamicallyAddTitleHeader() {
+    const newCol = {
+      id: `title${this.duplicateTitleHeaderCount++}`,
+      name: 'Title',
+      field: 'title',
+      editor: {
+        model: Editors.text,
+        required: true,
+        validator: myCustomTitleValidator, // use a custom validator
+      },
+      sortable: true, minWidth: 100, filterable: true, params: { useFormatterOuputToFilter: true }
+    };
+    this.columnDefinitions.push(newCol);
+    this.columnDefinitions = this.columnDefinitions.slice();
   }
 
   setAutoEdit(isAutoEdit) {
