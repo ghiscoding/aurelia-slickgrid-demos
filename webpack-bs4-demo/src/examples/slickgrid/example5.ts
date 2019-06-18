@@ -1,7 +1,16 @@
 import { autoinject } from 'aurelia-framework';
-import data from './sample-data/example-data';
 import { HttpClient } from 'aurelia-http-client';
-import { AureliaGridInstance, Column, FieldType, Filters, GridOdataService, GridOption, Statistic } from 'aurelia-slickgrid';
+import {
+  AureliaGridInstance,
+  Column,
+  FieldType,
+  Filters,
+  GridOdataService,
+  GridOption,
+  OperatorType,
+  SortDirection,
+  Statistic,
+} from 'aurelia-slickgrid';
 
 const defaultPageSize = 20;
 const sampleDataRoot = 'assets/data';
@@ -68,14 +77,31 @@ export class Example5 {
         containerId: 'demo-container',
         sidePadding: 15
       },
+      checkboxSelector: {
+        // you can toggle these 2 properties to show the "select all" checkbox in different location
+        hideInFilterHeaderRow: false,
+        hideInColumnTitleRow: true
+      },
       enableCellNavigation: true,
       enableFiltering: true,
       enableCheckboxSelector: true,
       enableRowSelection: true,
       pagination: {
-        pageSizes: [10, 15, 20, 25, 30, 40, 50, 75, 100],
+        pageSizes: [10, 20, 50, 100, 500],
         pageSize: defaultPageSize,
         totalItems: 0
+      },
+      presets: {
+        // you can also type operator as string, e.g.: operator: 'EQ'
+        filters: [
+          { columnId: 'gender', searchTerms: ['male'], operator: OperatorType.equal },
+        ],
+        sorters: [
+          // direction can be written as 'asc' (uppercase or lowercase) and/or use the SortDirection type
+          { columnId: 'name', direction: 'asc' },
+          { columnId: 'gender', direction: SortDirection.DESC }
+        ],
+        pagination: { pageNumber: 2, pageSize: 20 }
       },
       backendServiceApi: {
         service: new GridOdataService(),
