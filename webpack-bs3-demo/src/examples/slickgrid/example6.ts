@@ -15,7 +15,7 @@ import {
   GridStateChange,
   OperatorType,
   SortDirection,
-  Statistic
+  Statistic,
 } from 'aurelia-slickgrid';
 
 const defaultPageSize = 20;
@@ -29,7 +29,7 @@ export class Example6 {
   <br/>Take a look at the (<a href="https://github.com/ghiscoding/aurelia-slickgrid/wiki/GraphQL" target="_blank">Wiki docs</a>)
     <ul class="small">
       <li><span class="red">(*) NO DATA SHOWING</span> - just change filters &amp; page and look at the "GraphQL Query" changing</li>
-      <li>This example also demos the Grid State feature, open the console log to see the changes</li>
+      <li>Only "Name" field is sortable for the demo (because we use JSON files), however "multiColumnSort: true" is also supported</li>
       <li>String column also support operator (>, >=, <, <=, <>, !=, =, ==, *)
       <ul>
         <li>The (*) can be used as startsWith (ex.: "abc*" => startsWith "abc") / endsWith (ex.: "*xyz" => endsWith "xyz")</li>
@@ -84,7 +84,10 @@ export class Example6 {
         filterable: true,
         filter: {
           model: Filters.multipleSelect,
-          collection: [{ value: 'acme', label: 'Acme' }, { value: 'abc', label: 'Company ABC' }, { value: 'xyz', label: 'Company XYZ' }]
+          collection: [{ value: 'acme', label: 'Acme' }, { value: 'abc', label: 'Company ABC' }, { value: 'xyz', label: 'Company XYZ' }],
+          filterOptions: {
+            filter: true // adds a filter on top of the multi-select dropdown
+          }
         }
       },
       { id: 'billing.address.street', field: 'billing.address.street', headerKey: 'BILLING.ADDRESS.STREET', width: 60, filterable: true, sortable: true },
@@ -131,7 +134,7 @@ export class Example6 {
           { columnId: 'company', searchTerms: ['xyz'], operator: 'IN' }
         ],
         sorters: [
-          // direction can typed as 'asc' (uppercase or lowercase) and/or use the SortDirection type
+          // direction can written as 'asc' (uppercase or lowercase) and/or use the SortDirection type
           { columnId: 'name', direction: 'asc' },
           { columnId: 'company', direction: SortDirection.DESC }
         ],
@@ -141,6 +144,7 @@ export class Example6 {
       backendServiceApi: {
         service: new GraphqlService(),
         options: this.getBackendOptions(this.isWithCursor),
+        onError: (e) => console.log(e),
         // you can define the onInit callback OR enable the "executeProcessCommandOnInit" flag in the service init
         // onInit: (query) => this.getCustomerApiCall(query)
         preProcess: () => this.displaySpinner(true),
@@ -151,6 +155,12 @@ export class Example6 {
         }
       },
     };
+  }
+
+  clearAllFiltersAndSorts() {
+    if (this.aureliaGrid && this.aureliaGrid.gridService) {
+      this.aureliaGrid.gridService.clearAllFiltersAndSorts();
+    }
   }
 
   displaySpinner(isProcessing) {
