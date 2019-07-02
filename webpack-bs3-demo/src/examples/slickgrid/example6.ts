@@ -12,6 +12,7 @@ import {
   GraphqlService,
   GraphqlServiceOption,
   GridOption,
+  GridStateChange,
   OperatorType,
   SortDirection,
   Statistic
@@ -28,7 +29,7 @@ export class Example6 {
   <br/>Take a look at the (<a href="https://github.com/ghiscoding/aurelia-slickgrid/wiki/GraphQL" target="_blank">Wiki docs</a>)
     <ul class="small">
       <li><span class="red">(*) NO DATA SHOWING</span> - just change filters &amp; page and look at the "GraphQL Query" changing</li>
-      <li>Only "Name" field is sortable for the demo (because we use JSON files), however "multiColumnSort: true" is also supported</li>
+      <li>This example also demos the Grid State feature, open the console log to see the changes</li>
       <li>String column also support operator (>, >=, <, <=, <>, !=, =, ==, *)
       <ul>
         <li>The (*) can be used as startsWith (ex.: "abc*" => startsWith "abc") / endsWith (ex.: "*xyz" => endsWith "xyz")</li>
@@ -207,6 +208,11 @@ export class Example6 {
         resolve(mockedResult);
       }, 500);
     });
+  }
+
+  /** Dispatched event of a Grid State Changed event */
+  gridStateChanged(gridStateChanges: GridStateChange) {
+    console.log('GraphQL sample, Grid State changed:: ', gridStateChanges);
   }
 
   saveCurrentGridState() {

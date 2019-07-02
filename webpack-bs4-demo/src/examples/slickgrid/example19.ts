@@ -1,7 +1,9 @@
-import { autoinject, PLATFORM } from 'aurelia-framework';
+import { autoinject, bindable, PLATFORM } from 'aurelia-framework';
 import { Subscription } from 'aurelia-event-aggregator';
 import {
+  AureliaGridInstance,
   Column,
+  ExtensionName,
   FieldType,
   Filters,
   Formatters,
@@ -10,15 +12,18 @@ import {
 
 @autoinject()
 export class Example19 {
+  @bindable detailViewRowCount = 10;
   title = 'Example 19: Row Detail View';
   subTitle = `
     Add functionality to show extra information with a Row Detail View
     <ul>
       <li>Click on the row "+" icon or anywhere on the row to open it (the latter can be changed via property "useRowClick: false")</li>
       <li>Pass a View/Model as a Template to the Row Detail</li>
+      <li>You can use "expandableOverride()" callback to override logic to display expand icon on every row (for example only show it every 2nd row)</li>
     </ul>
   `;
 
+  aureliaGrid: AureliaGridInstance;
   gridOptions: GridOption;
   columnDefinitions: Column[];
   dataset: any[];
@@ -27,6 +32,10 @@ export class Example19 {
   constructor() {
     // define the grid options & columns and then create the grid itself
     this.defineGrid();
+  }
+
+  aureliaGridReady(aureliaGrid: AureliaGridInstance) {
+    this.aureliaGrid = aureliaGrid;
   }
 
   attached() {
@@ -72,6 +81,9 @@ export class Example19 {
         // load only once and reuse the same item detail without calling process method
         loadOnce: true,
 
+        // limit expanded row to only 1 at a time
+        singleRowExpand: false,
+
         // false by default, clicking anywhere on the row will open the detail view
         // when set to false, only the "+" icon would open the row detail
         // if you use editor or cell navigation you would want this flag set to false (default)
@@ -80,7 +92,11 @@ export class Example19 {
         // how many grid rows do we want to use for the row detail panel (this is only set once and will be used for all row detail)
         // also note that the detail view adds an extra 1 row for padding purposes
         // so if you choose 4 panelRows, the display will in fact use 5 rows
-        panelRows: 7,
+        panelRows: this.detailViewRowCount,
+
+        // you can override the logic for showing (or not) the expand icon
+        // for example, display the expand icon only on every 2nd row
+        // expandableOverride: (row: number, dataContext: any, grid: any) => (dataContext.id % 2 === 1),
 
         // Preload View Template
         preloadView: PLATFORM.moduleName('examples/slickgrid/example19-preload.html'),
@@ -111,6 +127,15 @@ export class Example19 {
         finish: new Date(randomYear, (randomMonth + 1), randomDay),
         effortDriven: (i % 5 === 0)
       };
+    }
+  }
+
+  changeDetailViewRowCount() {
+    if (this.aureliaGrid && this.aureliaGrid.extensionService) {
+      const rowDetailInstance = this.aureliaGrid.extensionService.getSlickgridAddonInstance(ExtensionName.rowDetailView);
+      const options = rowDetailInstance.getOptions();
+      options.panelRows = this.detailViewRowCount; // change number of rows dynamically
+      rowDetailInstance.setOptions(options);
     }
   }
 

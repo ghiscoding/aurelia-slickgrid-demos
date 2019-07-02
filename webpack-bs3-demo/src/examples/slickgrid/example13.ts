@@ -70,6 +70,7 @@ export class Example13 {
         minWidth: 70, width: 90,
         formatter: Formatters.percentCompleteBar,
         sortable: true,
+        type: FieldType.number,
         groupTotalsFormatter: GroupTotalFormatters.avgTotalsPercentage,
         params: { groupFormatterPrefix: '<i>Avg</i>: ' }
       },
