@@ -1,9 +1,11 @@
-import { autoinject } from 'aurelia-framework';
+import { autoinject, bindable } from 'aurelia-framework';
 import {
   Aggregators,
   AureliaGridInstance,
   Column,
+  DelimiterType,
   FieldType,
+  FileType,
   Filters,
   Formatters,
   GridOption,
@@ -22,7 +24,7 @@ export class Example18 {
   <li>This example shows 3 ways of grouping</li>
   <ol>
   <li>Drag any Column Header on the top placeholder to group by that column (support moti-columns grouping by adding more columns to the drop area).</li>
-  <li>Use buttons and defined functions to group by wichever field you want</li>
+  <li>Use buttons and defined functions to group by whichever field you want</li>
   <li>Use the Select dropdown to group, the position of the Selects represent the grouping level</li>
   </ol>
   <li>Fully dynamic and interactive multi-level grouping with filtering and aggregates ovor 50'000 items</li>
@@ -65,9 +67,7 @@ export class Example18 {
         sortable: true,
         grouping: {
           getter: 'title',
-          formatter: (g) => {
-            return `Title:  ${g.value}  <span style="color:green">(${g.count} items)</span>`;
-          },
+          formatter: (g) => `Title:  ${g.value}  <span style="color:green">(${g.count} items)</span>`,
           aggregators: [
             new Aggregators.Sum('cost')
           ],
@@ -85,9 +85,7 @@ export class Example18 {
         groupTotalsFormatter: GroupTotalFormatters.sumTotals,
         grouping: {
           getter: 'duration',
-          formatter: (g) => {
-            return `Duration:  ${g.value}  <span style="color:green">(${g.count} items)</span>`;
-          },
+          formatter: (g) => `Duration:  ${g.value}  <span style="color:green">(${g.count} items)</span>`,
           comparer: (a, b) => {
             return this.durationOrderByCount ? (a.count - b.count) : Sorters.numeric(a.value, b.value, SortDirectionNumber.asc);
           },
@@ -109,9 +107,7 @@ export class Example18 {
         groupTotalsFormatter: GroupTotalFormatters.avgTotalsPercentage,
         grouping: {
           getter: 'percentComplete',
-          formatter: (g) => {
-            return `% Complete:  ${g.value}  <span style="color:green">(${g.count} items)</span>`;
-          },
+          formatter: (g) => `% Complete:  ${g.value}  <span style="color:green">(${g.count} items)</span>`,
           aggregators: [
             new Aggregators.Sum('cost')
           ],
@@ -131,9 +127,7 @@ export class Example18 {
         exportWithFormatter: true,
         grouping: {
           getter: 'start',
-          formatter: (g) => {
-            return `Start: ${g.value}  <span style="color:green">(${g.count} items)</span>`;
-          },
+          formatter: (g) => `Start: ${g.value}  <span style="color:green">(${g.count} items)</span>`,
           aggregators: [
             new Aggregators.Sum('cost')
           ],
@@ -153,9 +147,7 @@ export class Example18 {
         exportWithFormatter: true,
         grouping: {
           getter: 'finish',
-          formatter: (g) => {
-            return `Finish: ${g.value} <span style="color:green">(${g.count} items)</span>`;
-          },
+          formatter: (g) => `Finish: ${g.value} <span style="color:green">(${g.count} items)</span>`,
           aggregators: [
             new Aggregators.Sum('cost')
           ],
@@ -174,9 +166,7 @@ export class Example18 {
         type: FieldType.number,
         grouping: {
           getter: 'cost',
-          formatter: (g) => {
-            return `Cost: ${g.value} <span style="color:green">(${g.count} items)</span>`;
-          },
+          formatter: (g) => `Cost: ${g.value} <span style="color:green">(${g.count} items)</span>`,
           aggregators: [
             new Aggregators.Sum('cost')
           ],
@@ -197,9 +187,7 @@ export class Example18 {
         formatter: Formatters.checkmark,
         grouping: {
           getter: 'effortDriven',
-          formatter: (g) => {
-            return `Effort-Driven: ${g.value ? 'True' : 'False'} <span style="color:green">(${g.count} items)</span>`;
-          },
+          formatter: (g) => `Effort-Driven: ${g.value ? 'True' : 'False'} <span style="color:green">(${g.count} items)</span>`,
           aggregators: [
             new Aggregators.Sum('cost')
           ],
@@ -289,6 +277,14 @@ export class Example18 {
     this.dataviewObj.expandAllGroups();
   }
 
+  exportToCsv(type = 'csv') {
+    this.aureliaGrid.exportService.exportToFile({
+      delimiter: (type === 'csv') ? DelimiterType.comma : DelimiterType.tab,
+      filename: 'myExport',
+      format: (type === 'csv') ? FileType.csv : FileType.txt
+    });
+  }
+
   groupByDuration() {
     this.clearGrouping();
     if (this.draggableGroupingPlugin && this.draggableGroupingPlugin.setDroppedGroups) {
@@ -333,7 +329,6 @@ export class Example18 {
   }
 
   onGroupChanged(change: { caller?: string; groupColumns: Grouping[] }) {
-    // the "caller" property might not be in the SlickGrid core lib yet, reference PR https://github.com/6pac/SlickGrid/pull/303
     const caller = change && change.caller || [];
     const groups = change && change.groupColumns || [];
 

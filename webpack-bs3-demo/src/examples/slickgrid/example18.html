@@ -15,19 +15,23 @@
       </button>
       <button class="btn btn-default btn-xs"
               click.delegate="clearGroupsAndSelects()">
-        Clear grouping
+        <i class="fa fa-times"></i> Clear grouping
       </button>
       <button class="btn btn-default btn-xs"
               click.delegate="collapseAllGroups()">
-        Collapse all groups
+        <i class="fa fa-compress"></i> Collapse all groups
       </button>
       <button class="btn btn-default btn-xs"
               click.delegate="expandAllGroups()">
-        Expand all groups
+        <i class="fa fa-expand"></i> Expand all groups
       </button>
       <button class="btn btn-default btn-xs"
               click.delegate="toggleDraggableGroupingRow()">
         Toggle Draggable Grouping Row
+      </button>
+      <button class="btn btn-default btn-xs"
+              click.delegate="exportToCsv('csv')">
+        <i class="fa fa-download"></i> Export to CSV
       </button>
     </div>
 
@@ -71,7 +75,7 @@
     <hr>
   </div>
 
-  <aurelia-slickgrid grid-id="grid18"
+  <aurelia-slickgrid grid-id="grid1"
                      column-definitions.bind="columnDefinitions"
                      grid-options.bind="gridOptions"
                      dataset.bind="dataset"
