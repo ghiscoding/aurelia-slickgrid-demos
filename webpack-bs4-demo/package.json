@@ -18,9 +18,9 @@
     "prebuild-demo": "npm run del-ghpage",
     "build-demo": "npm run build",
     "postbuild-demo": "npm-run-all copy-ghpage:dist copy:circleci-config",
-    "copy:circleci-config": "cross-env copyfiles -f .circleci/**/*.* ../../aurelia-slickgrid-bs4-GhPages/.circleci/",
-    "copy-ghpage:dist": "cross-env copyfiles --up 1 dist/**/*.* ../../aurelia-slickgrid-bs4-GhPages",
-    "del-ghpage": "cross-env rimraf ../../aurelia-slickgrid-bs4-GhPages/**/*.*"
+    "copy:circleci-config": "cross-env copyfiles -f .circleci/**/*.* ../../aurelia-slickgrid-demos-GhPages/.circleci/",
+    "copy-ghpage:dist": "cross-env copyfiles --up 1 dist/**/*.* ../../aurelia-slickgrid-demos-GhPages",
+    "del-ghpage": "cross-env rimraf ../../aurelia-slickgrid-demos-GhPages/**/*.*"
   },
   "dependencies": {
     "aurelia-animator-css": "^1.0.4",
