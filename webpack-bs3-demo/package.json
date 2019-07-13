@@ -31,7 +31,7 @@
     "aurelia-http-client": "^1.3.0",
     "aurelia-i18n": "^2.3.2",
     "aurelia-polyfills": "^1.3.0",
-    "aurelia-slickgrid": "^2.12.1",
+    "aurelia-slickgrid": "^2.12.2",
     "bluebird": "^3.5.2",
     "bootstrap": "^3.4.1",
     "bootstrap-select": "1.13.2",
