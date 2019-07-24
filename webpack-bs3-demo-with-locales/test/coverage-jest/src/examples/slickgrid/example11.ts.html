@@ -1,0 +1,797 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Code coverage report for src/examples/slickgrid/example11.ts</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="..\..\..\prettify.css" />
+    <link rel="stylesheet" href="..\..\..\base.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style type='text/css'>
+        .coverage-summary .sorter {
+            background-image: url(..\..\..\sort-arrow-sprite.png);
+        }
+    </style>
+</head>
+<body>
+<div class='wrapper'>
+  <div class='pad1'>
+    <h1>
+      <a href="..\..\..\index.html">All files</a> / <a href="index.html">src/examples/slickgrid</a> example11.ts
+    </h1>
+    <div class='clearfix'>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">0% </span>
+        <span class="quiet">Statements</span>
+        <span class='fraction'>0/66</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">0% </span>
+        <span class="quiet">Branches</span>
+        <span class='fraction'>0/13</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">0% </span>
+        <span class="quiet">Functions</span>
+        <span class='fraction'>0/14</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">0% </span>
+        <span class="quiet">Lines</span>
+        <span class='fraction'>0/62</span>
+      </div>
+    </div>
+  </div>
+  <div class='status-line low'></div>
+<pre><table class="coverage">
+<tr><td class="line-count quiet">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96
+97
+98
+99
+100
+101
+102
+103
+104
+105
+106
+107
+108
+109
+110
+111
+112
+113
+114
+115
+116
+117
+118
+119
+120
+121
+122
+123
+124
+125
+126
+127
+128
+129
+130
+131
+132
+133
+134
+135
+136
+137
+138
+139
+140
+141
+142
+143
+144
+145
+146
+147
+148
+149
+150
+151
+152
+153
+154
+155
+156
+157
+158
+159
+160
+161
+162
+163
+164
+165
+166
+167
+168
+169
+170
+171
+172
+173
+174
+175
+176
+177
+178
+179
+180
+181
+182
+183
+184
+185
+186
+187
+188
+189
+190
+191
+192
+193
+194
+195
+196
+197
+198
+199
+200
+201
+202
+203
+204
+205
+206
+207
+208
+209
+210
+211
+212
+213
+214
+215
+216
+217
+218
+219
+220
+221
+222
+223
+224
+225
+226
+227
+228
+229
+230
+231
+232
+233
+234
+235
+236
+237
+238
+239
+240
+241
+242
+243
+244
+245</td><td class="line-coverage quiet"><span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js"><span class="cstat-no" title="statement not covered" >import { autoinject } from 'aurelia-framework';</span>
+<span class="cstat-no" title="statement not covered" >import {</span>
+  AureliaGridInstance,
+  Column,
+  Editors,
+  FieldType,
+  Formatters,
+  GridOption,
+  GridService,
+  OnEventArgs
+} from 'aurelia-slickgrid';
+<span class="cstat-no" title="statement not covered" >import './custom-styles.scss';</span>
+&nbsp;
+@autoinject()
+<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >export class <span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" >Example11 </span>{</span></span></span>
+<span class="cstat-no" title="statement not covered" >  title = 'Example 11: Add / Update / Highlight a Datagrid Item';</span>
+<span class="cstat-no" title="statement not covered" >  subTitle = `</span>
+      Add / Update / Hightlight an Item from the Datagrid (&lt;a href="https://github.com/ghiscoding/aurelia-slickgrid/wiki/Add,-Update-or-Highlight-a-Datagrid-Item" target="_blank"&gt;Wiki docs&lt;/a&gt;).
+      &lt;ul&gt;
+        &lt;li&gt;&lt;b&gt;Note:&lt;/b&gt; this demo is &lt;b&gt;only&lt;/b&gt; on the datagrid (client) side, you still need to deal with the backend yourself&lt;/li&gt;
+        &lt;li&gt;Adding an item, will always be showing as the 1st item in the grid because that is the best visual place to add it&lt;/li&gt;
+        &lt;li&gt;Add/Update an item requires a valid Slickgrid Selection Model, you have 2 choices to deal with this:&lt;/li&gt;
+        &lt;ul&gt;&lt;li&gt;You can enable "enableCheckboxSelector" or "enableRowSelection" to True&lt;/li&gt;&lt;/ul&gt;
+        &lt;li&gt;Click on any of the buttons below to test this out&lt;/li&gt;
+        &lt;li&gt;You can change the highlighted color &amp;amp; animation by changing the &lt;a href="https://github.com/ghiscoding/aurelia-slickgrid/blob/master/aurelia-slickgrid/src/aurelia-slickgrid/styles/_variables.scss" target="_blank"&gt;SASS Variables&lt;/a&gt;&lt;/li&gt;
+        &lt;ul&gt;
+          &lt;li&gt;"$row-highlight-background-color" or "$row-highlight-fade-animation"&lt;/li&gt;
+        &lt;/ul&gt;
+        &lt;li&gt;You can also add CSS class(es) on the fly (or on page load) on rows with certain criteria, (e.g. click on last button)
+        &lt;ul&gt;
+          &lt;li&gt;Example, click on button "Highlight Rows with Duration over 50" to see row styling changing. &lt;a href="https://github.com/ghiscoding/aurelia-slickgrid/wiki/Dynamically-Add-CSS-Classes-to-Item-Rows" target="_blank"&gt;Wiki doc&lt;/a&gt;&lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/ul&gt;
+    `;
+&nbsp;
+  aureliaGrid: AureliaGridInstance;
+  grid: any;
+  gridService: any;
+  dataView: any;
+  columnDefinitions: Column[];
+  gridOptions: GridOption;
+  dataset: any[];
+  updatedObject: any;
+&nbsp;
+<span class="fstat-no" title="function not covered" >  constructor() {</span>
+    // define the grid options &amp; columns and then create the grid itself
+<span class="cstat-no" title="statement not covered" >    this.defineGrid();</span>
+  }
+&nbsp;
+<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >  attached() {</span></span>
+    // populate the dataset once the grid is ready
+<span class="cstat-no" title="statement not covered" >    this.getData();</span>
+  }
+&nbsp;
+<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >  aureliaGridReady(</span>aureliaGrid: AureliaGridInstance) {</span>
+<span class="cstat-no" title="statement not covered" >    this.aureliaGrid = aureliaGrid;</span>
+<span class="cstat-no" title="statement not covered" >    this.dataView = aureliaGrid.dataView;</span>
+<span class="cstat-no" title="statement not covered" >    this.grid = aureliaGrid.slickGrid;</span>
+<span class="cstat-no" title="statement not covered" >    this.gridService = aureliaGrid.gridService;</span>
+    // if you want to change background color of Duration over 50 right after page load,
+    // you would put the code here, also make sure to re-render the grid for the styling to be applied right away
+    /*
+    this.dataView.getItemMetadata = this.updateItemMetadataForDurationOver50(this.dataView.getItemMetadata);
+    this.grid.invalidate();
+    this.grid.render();
+    */
+  }
+&nbsp;
+  /* Define grid Options and Columns */
+<span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >  defineGrid() {</span></span></span>
+<span class="cstat-no" title="statement not covered" >    this.columnDefinitions = [</span>
+      {
+        id: 'delete',
+        field: 'id',
+        excludeFromHeaderMenu: true,
+        formatter: Formatters.deleteIcon,
+        minWidth: 30,
+        maxWidth: 30,
+        // use onCellClick OR grid.onClick.subscribe which you can see down below
+        onCellClick: <span class="fstat-no" title="function not covered" >(</span>e: Event, args: OnEventArgs) =&gt; {
+<span class="cstat-no" title="statement not covered" >          console.log(args);</span>
+<span class="cstat-no" title="statement not covered" >          if (confirm('Are you sure?')) {</span>
+<span class="cstat-no" title="statement not covered" >            this.aureliaGrid.gridService.deleteDataGridItemById(args.dataContext.id);</span>
+          }
+        }
+      },
+      {
+        id: 'title', name: 'Title', field: 'title',
+        sortable: true,
+        type: FieldType.string,
+        editor: {
+          model: Editors.longText
+        }
+      },
+      {
+        id: 'duration', name: 'Duration (days)', field: 'duration',
+        sortable: true,
+        type: FieldType.number,
+        editor: {
+          model: Editors.text
+        },
+        onCellChange: <span class="fstat-no" title="function not covered" >(</span>e: Event, args: OnEventArgs) =&gt; {
+<span class="cstat-no" title="statement not covered" >          alert('onCellChange directly attached to the column definition');</span>
+<span class="cstat-no" title="statement not covered" >          console.log(args);</span>
+        }
+      },
+      {
+        id: 'complete', name: '% Complete', field: 'percentComplete',
+        formatter: Formatters.percentCompleteBar,
+        type: FieldType.number,
+        editor: {
+          model: Editors.integer
+        }
+      },
+      {
+        id: 'start', name: 'Start', field: 'start',
+        formatter: Formatters.dateIso,
+        sortable: true,
+        type: FieldType.date,
+        /*
+        editor: {
+          model: Editors.date
+        }
+        */
+      },
+      {
+        id: 'finish', name: 'Finish', field: 'finish',
+        formatter: Formatters.dateIso, sortable: true,
+        type: FieldType.date
+      },
+      {
+        id: 'effort-driven', name: 'Effort Driven', field: 'effortDriven',
+        formatter: Formatters.checkmark,
+        type: FieldType.number,
+        editor: {
+          model: Editors.checkbox
+        }
+      }
+    ];
+&nbsp;
+<span class="cstat-no" title="statement not covered" >    this.gridOptions = {</span>
+      asyncEditorLoading: false,
+      autoResize: {
+        containerId: 'demo-container',
+        sidePadding: 15
+      },
+      editable: true,
+      enableColumnPicker: true,
+      enableCellNavigation: true,
+      enableRowSelection: true
+    };
+  }
+&nbsp;
+<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >  getData() {</span></span>
+    // mock a dataset
+    const mockedDataset = <span class="cstat-no" title="statement not covered" >[];</span>
+<span class="cstat-no" title="statement not covered" >    for (let i = 0; i &lt; 1000; i++) {</span>
+      const randomYear = <span class="cstat-no" title="statement not covered" >2000 + Math.floor(Math.random() * 10);</span>
+      const randomMonth = <span class="cstat-no" title="statement not covered" >Math.floor(Math.random() * 11);</span>
+      const randomDay = <span class="cstat-no" title="statement not covered" >Math.floor((Math.random() * 29));</span>
+      const randomPercent = <span class="cstat-no" title="statement not covered" >Math.round(Math.random() * 100);</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >      mockedDataset[i] = {</span>
+        id: i,
+        title: 'Task ' + i,
+        duration: Math.round(Math.random() * 100) + '',
+        percentComplete: randomPercent,
+        percentCompleteNumber: randomPercent,
+        start: new Date(randomYear, randomMonth, randomDay),
+        finish: new Date(randomYear, (randomMonth + 1), randomDay),
+        effortDriven: (i % 5 === 0)
+      };
+    }
+<span class="cstat-no" title="statement not covered" >    this.dataset = mockedDataset;</span>
+  }
+&nbsp;
+<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >  addNewItem() {</span></span>
+    const newId = <span class="cstat-no" title="statement not covered" >this.dataset.length;</span>
+    const randomYear = <span class="cstat-no" title="statement not covered" >2000 + Math.floor(Math.random() * 10);</span>
+    const randomMonth = <span class="cstat-no" title="statement not covered" >Math.floor(Math.random() * 11);</span>
+    const randomDay = <span class="cstat-no" title="statement not covered" >Math.floor((Math.random() * 29));</span>
+    const randomPercent = <span class="cstat-no" title="statement not covered" >Math.round(Math.random() * 100);</span>
+&nbsp;
+    const newItem = <span class="cstat-no" title="statement not covered" >{</span>
+      id: newId,
+      title: 'Task ' + newId,
+      duration: Math.round(Math.random() * 100) + '',
+      percentComplete: randomPercent,
+      percentCompleteNumber: randomPercent,
+      start: new Date(randomYear, randomMonth, randomDay),
+      finish: new Date(randomYear, (randomMonth + 2), randomDay),
+      effortDriven: true
+    };
+<span class="cstat-no" title="statement not covered" >    this.aureliaGrid.gridService.addItemToDatagrid(newItem);</span>
+  }
+&nbsp;
+  /** Change the Duration Rows Background Color */
+<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >  changeDurationBackgroundColor() {</span></span>
+<span class="cstat-no" title="statement not covered" >    this.dataView.getItemMetadata = this.updateItemMetadataForDurationOver50(this.dataView.getItemMetadata);</span>
+    // also re-render the grid for the styling to be applied right away
+<span class="cstat-no" title="statement not covered" >    this.grid.invalidate();</span>
+<span class="cstat-no" title="statement not covered" >    this.grid.render();</span>
+    // or use the Aurelia-SlickGrid GridService
+    // this.gridService.renderGrid();
+  }
+&nbsp;
+  /** Highlight the 5th row using the Aurelia-Slickgrid GridService */
+<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >  highlighFifthRow() {</span></span>
+<span class="cstat-no" title="statement not covered" >    this.aureliaGrid.gridService.highlightRow(4, 1500);</span>
+  }
+&nbsp;
+  /**
+   * Change the SlickGrid Item Metadata, we will add a CSS class on all rows with a Duration over 50
+   * For more info, you can see this SO https://stackoverflow.com/a/19985148/1212166
+   */
+<span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >  updateItemMetadataForDurationOver50(</span>previousItemMetadata: any) {</span></span>
+    const newCssClass = <span class="cstat-no" title="statement not covered" >'duration-bg';</span>
+<span class="cstat-no" title="statement not covered" >    return <span class="fstat-no" title="function not covered" >(</span>rowNumber: number) =&gt; {</span>
+      const item = <span class="cstat-no" title="statement not covered" >this.dataView.getItem(rowNumber);</span>
+      let meta = <span class="cstat-no" title="statement not covered" >{</span>
+        cssClasses: ''
+      };
+<span class="cstat-no" title="statement not covered" >      if (typeof previousItemMetadata === 'object') {</span>
+<span class="cstat-no" title="statement not covered" >        meta = previousItemMetadata(rowNumber);</span>
+      }
+<span class="cstat-no" title="statement not covered" >      if (meta &amp;&amp; item &amp;&amp; item.duration) {</span>
+        const duration = <span class="cstat-no" title="statement not covered" >+item.duration;</span> // convert to number
+<span class="cstat-no" title="statement not covered" >        if (duration &gt; 50) {</span>
+<span class="cstat-no" title="statement not covered" >          meta.cssClasses = (meta.cssClasses || '') + ' ' + newCssClass;</span>
+        }
+      }
+<span class="cstat-no" title="statement not covered" >      return meta;</span>
+    };
+  }
+&nbsp;
+<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >  updateSecondItem() {</span></span>
+    const updatedItem = <span class="cstat-no" title="statement not covered" >this.aureliaGrid.gridService.getDataItemByRowNumber(1);</span>
+<span class="cstat-no" title="statement not covered" >    updatedItem.duration = Math.round(Math.random() * 100);</span>
+<span class="cstat-no" title="statement not covered" >    this.aureliaGrid.gridService.updateDataGridItem(updatedItem);</span>
+&nbsp;
+    // OR by id
+    // this.aureliaGrid.gridService.updateDataGridItemById(updatedItem.id, updatedItem);
+  }
+<span class="cstat-no" title="statement not covered" >}</span>
+&nbsp;</pre></td></tr>
+</table></pre>
+<div class='push'></div><!-- for sticky footer -->
+</div><!-- /wrapper -->
+<div class='footer quiet pad2 space-top1 center small'>
+  Code coverage
+  generated by <a href="https://istanbul.js.org/" target="_blank">istanbul</a> at Sat Mar 30 2019 00:23:48 GMT-0400 (Eastern Daylight Time)
+</div>
+</div>
+<script src="..\..\..\prettify.js"></script>
+<script>
+window.onload = function () {
+        if (typeof prettyPrint === 'function') {
+            prettyPrint();
+        }
+};
+</script>
+<script src="..\..\..\sorter.js"></script>
+</body>
+</html>

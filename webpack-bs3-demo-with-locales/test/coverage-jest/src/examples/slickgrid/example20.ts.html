@@ -1,0 +1,644 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Code coverage report for src/examples/slickgrid/example20.ts</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="..\..\..\prettify.css" />
+    <link rel="stylesheet" href="..\..\..\base.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style type='text/css'>
+        .coverage-summary .sorter {
+            background-image: url(..\..\..\sort-arrow-sprite.png);
+        }
+    </style>
+</head>
+<body>
+<div class='wrapper'>
+  <div class='pad1'>
+    <h1>
+      <a href="..\..\..\index.html">All files</a> / <a href="index.html">src/examples/slickgrid</a> example20.ts
+    </h1>
+    <div class='clearfix'>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">0% </span>
+        <span class="quiet">Statements</span>
+        <span class='fraction'>0/39</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">0% </span>
+        <span class="quiet">Branches</span>
+        <span class='fraction'>0/14</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">0% </span>
+        <span class="quiet">Functions</span>
+        <span class='fraction'>0/9</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">0% </span>
+        <span class="quiet">Lines</span>
+        <span class='fraction'>0/37</span>
+      </div>
+    </div>
+  </div>
+  <div class='status-line low'></div>
+<pre><table class="coverage">
+<tr><td class="line-count quiet">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96
+97
+98
+99
+100
+101
+102
+103
+104
+105
+106
+107
+108
+109
+110
+111
+112
+113
+114
+115
+116
+117
+118
+119
+120
+121
+122
+123
+124
+125
+126
+127
+128
+129
+130
+131
+132
+133
+134
+135
+136
+137
+138
+139
+140
+141
+142
+143
+144
+145
+146
+147
+148
+149
+150
+151
+152
+153
+154
+155
+156
+157
+158
+159
+160
+161
+162
+163
+164
+165
+166
+167
+168
+169
+170
+171
+172
+173
+174
+175
+176
+177
+178
+179
+180
+181
+182
+183
+184
+185
+186
+187
+188
+189
+190
+191
+192
+193
+194</td><td class="line-coverage quiet"><span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js"><span class="cstat-no" title="statement not covered" >import { autoinject } from 'aurelia-framework';</span>
+<span class="cstat-no" title="statement not covered" >import { I18N } from 'aurelia-i18n';</span>
+<span class="cstat-no" title="statement not covered" >import { AureliaGridInstance, Column, Formatters, GridOption, Filters, FieldType } from 'aurelia-slickgrid';</span>
+<span class="cstat-no" title="statement not covered" >import './example20.scss'; </span>// provide custom CSS/SASS styling
+&nbsp;
+@autoinject()
+<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >export class <span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" >Example20 </span>{</span></span></span>
+<span class="cstat-no" title="statement not covered" >  title = 'Example 20: Pinned (frozen) Columns/Rows';</span>
+<span class="cstat-no" title="statement not covered" >  subTitle = `</span>
+    This example demonstrates the use of Pinned (aka frozen) Columns and/or Rows&lt;br/&gt;
+    &lt;ul&gt;
+      &lt;li&gt;Option to pin any number of columns (left only) or rows&lt;/li&gt;
+      &lt;li&gt;Option to pin the rows at the bottom instead of the top (default)&lt;/li&gt;
+      &lt;li&gt;You can also dynamically any of these options, through SlickGrid "setOptions()"&lt;/li&gt;
+      &lt;li&gt;Possibility to change the styling of the line border between pinned columns/rows&lt;/li&gt;
+    &lt;/ul&gt;
+  `;
+&nbsp;
+  aureliaGrid: AureliaGridInstance;
+  columnDefinitions: Column[];
+  gridObj: any;
+  gridOptions: GridOption;
+<span class="cstat-no" title="statement not covered" >  frozenColumnCount = 2;</span>
+<span class="cstat-no" title="statement not covered" >  frozenRowCount = 3;</span>
+<span class="cstat-no" title="statement not covered" >  isFrozenBottom = false;</span>
+  dataset: any[];
+  selectedLanguage: string;
+&nbsp;
+<span class="fstat-no" title="function not covered" >  constructor(private <span class="cstat-no" title="statement not covered" ></span>i18n: I18N)</span> {
+<span class="cstat-no" title="statement not covered" >    this.selectedLanguage = this.i18n.getLocale();</span>
+<span class="cstat-no" title="statement not covered" >    this.defineGrid();</span>
+  }
+&nbsp;
+<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >  aureliaGridReady(</span>aureliaGrid: AureliaGridInstance) {</span>
+<span class="cstat-no" title="statement not covered" >    this.aureliaGrid = aureliaGrid;</span>
+<span class="cstat-no" title="statement not covered" >    this.gridObj = aureliaGrid &amp;&amp; aureliaGrid.slickGrid;</span>
+  }
+&nbsp;
+<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >  attached() {</span></span>
+    // populate the dataset once the grid is ready
+<span class="cstat-no" title="statement not covered" >    this.getData();</span>
+  }
+&nbsp;
+  /* Define grid Options and Columns */
+<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >  defineGrid() {</span></span>
+<span class="cstat-no" title="statement not covered" >    this.columnDefinitions = [</span>
+      {
+        id: 'sel', name: '#', field: 'id',
+        minWidth: 40, width: 40, maxWidth: 40,
+        cannotTriggerInsert: true,
+        resizable: false,
+        unselectable: true,
+      },
+      {
+        id: 'title', name: 'Title', field: 'title',
+        minWidth: 100, width: 120,
+        filterable: true,
+        sortable: true
+      },
+      {
+        id: 'duration', name: 'Duration', field: 'duration',
+        minWidth: 100, width: 120,
+        filterable: true,
+        sortable: true
+      },
+      {
+        id: 'percentComplete', name: '% Complete', field: 'percentComplete',
+        resizable: false,
+        minWidth: 130, width: 140,
+        formatter: Formatters.percentCompleteBar,
+        type: FieldType.number,
+        filterable: true,
+        filter: { model: Filters.slider, operator: '&gt;=' },
+        sortable: true
+      },
+      {
+        id: 'start', name: 'Start', field: 'start',
+        minWidth: 100, width: 120,
+        filterable: true,
+        sortable: true
+      },
+      {
+        id: 'finish', name: 'Finish', field: 'finish',
+        minWidth: 100, width: 120,
+        filterable: true,
+        sortable: true
+      },
+      {
+        id: 'effortDriven', name: 'Effort Driven', field: 'effortDriven',
+        minWidth: 100, width: 120,
+        formatter: Formatters.checkmark,
+        filterable: true,
+        filter: {
+          collection: [{ value: '', label: '' }, { value: true, label: 'True' }, { value: false, label: 'False' }],
+          model: Filters.singleSelect
+        },
+        sortable: true
+      },
+      {
+        id: 'title1', name: 'Title1', field: 'title1',
+        minWidth: 100, width: 120,
+        filterable: true,
+        sortable: true
+      },
+      {
+        id: 'title2', name: 'Title2', field: 'title2',
+        minWidth: 100, width: 120,
+        filterable: true,
+        sortable: true
+      },
+      {
+        id: 'title3', name: 'Title3', field: 'title3',
+        minWidth: 100, width: 120,
+        filterable: true,
+        sortable: true
+      },
+      {
+        id: 'title4', name: 'Title4', field: 'title4',
+        minWidth: 100, width: 120,
+        filterable: true,
+        sortable: true
+      }
+    ];
+&nbsp;
+<span class="cstat-no" title="statement not covered" >    this.gridOptions = {</span>
+      enableAutoResize: true,
+      autoResize: {
+        containerId: 'demo-container',
+        sidePadding: 15
+      },
+      alwaysShowVerticalScroll: false, // disable scroll since we don't want it to show on the left pinned columns
+      enableCellNavigation: true,
+      enableFiltering: true,
+      asyncEditorLoading: true,
+      forceFitColumns: false,
+      autoEdit: false,
+      frozenColumn: this.frozenColumnCount,
+      frozenRow: this.frozenRowCount,
+      // frozenBottom: true, // if you want to freeze the bottom instead of the top, you can enable this property
+      showHeaderRow: true,
+      syncColumnCellResize: false,
+    };
+  }
+&nbsp;
+<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >  getData() {</span></span>
+    // Set up some test columns.
+    const mockDataset = <span class="cstat-no" title="statement not covered" >[];</span>
+<span class="cstat-no" title="statement not covered" >    for (let i = 0; i &lt; 500; i++) {</span>
+<span class="cstat-no" title="statement not covered" >      mockDataset[i] = {</span>
+        id: i,
+        title: 'Task ' + i,
+        duration: Math.round(Math.random() * 25) + ' days',
+        percentComplete: Math.round(Math.random() * 100),
+        start: '01/01/2009',
+        finish: '01/05/2009',
+        effortDriven: (i % 5 === 0),
+        title1: Math.round(Math.random() * 25),
+        title2: Math.round(Math.random() * 25),
+        title3: Math.round(Math.random() * 25),
+        title4: Math.round(Math.random() * 25),
+      };
+    }
+<span class="cstat-no" title="statement not covered" >    this.dataset = mockDataset;</span>
+  }
+&nbsp;
+  /** change dynamically, through slickgrid "setOptions()" the number of pinned columns */
+<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >  changeFrozenColumnCount() {</span></span>
+<span class="cstat-no" title="statement not covered" >    if (this.gridObj &amp;&amp; this.gridObj.setOptions) {</span>
+<span class="cstat-no" title="statement not covered" >      this.gridObj.setOptions({</span>
+        frozenColumn: this.frozenColumnCount
+      });
+    }
+  }
+&nbsp;
+  /** change dynamically, through slickgrid "setOptions()" the number of pinned rows */
+<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >  changeFrozenRowCount() {</span></span>
+<span class="cstat-no" title="statement not covered" >    if (this.gridObj &amp;&amp; this.gridObj.setOptions) {</span>
+<span class="cstat-no" title="statement not covered" >      this.gridObj.setOptions({</span>
+        frozenRow: this.frozenRowCount
+      });
+    }
+  }
+&nbsp;
+  /** toggle dynamically, through slickgrid "setOptions()" the top/bottom pinned location */
+<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >  toggleFrozenBottomRows() {</span></span>
+<span class="cstat-no" title="statement not covered" >    if (this.gridObj &amp;&amp; this.gridObj.setOptions) {</span>
+<span class="cstat-no" title="statement not covered" >      this.gridObj.setOptions({</span>
+        frozenBottom: !this.isFrozenBottom
+      });
+<span class="cstat-no" title="statement not covered" >      this.isFrozenBottom = !this.isFrozenBottom; </span>// toggle the variable
+    }
+  }
+<span class="cstat-no" title="statement not covered" >}</span>
+&nbsp;</pre></td></tr>
+</table></pre>
+<div class='push'></div><!-- for sticky footer -->
+</div><!-- /wrapper -->
+<div class='footer quiet pad2 space-top1 center small'>
+  Code coverage
+  generated by <a href="https://istanbul.js.org/" target="_blank">istanbul</a> at Sat Mar 30 2019 00:23:48 GMT-0400 (Eastern Daylight Time)
+</div>
+</div>
+<script src="..\..\..\prettify.js"></script>
+<script>
+window.onload = function () {
+        if (typeof prettyPrint === 'function') {
+            prettyPrint();
+        }
+};
+</script>
+<script src="..\..\..\sorter.js"></script>
+</body>
+</html>
