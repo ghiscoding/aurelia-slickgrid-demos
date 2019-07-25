@@ -47,7 +47,7 @@ http://localhost:8081
 
 ### Build Demo
 ```bash
-run build-demo # OR yarn run build-demo
+run build # OR yarn run build
 ```
 
 ## Webpack and Bootstrap 4 (with TypeScript)
@@ -66,5 +66,5 @@ http://localhost:8081
 
 ### Build Demo
 ```bash
-run build-demo # OR yarn run build-demo
+run build # OR yarn run build
 ```
