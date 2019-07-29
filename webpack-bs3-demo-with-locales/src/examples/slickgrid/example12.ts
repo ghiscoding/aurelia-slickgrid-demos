@@ -18,36 +18,19 @@ const URL_SAMPLE_COLLECTION_DATA = 'assets/data/collection_500_numbers.json';
 const taskTranslateFormatter: Formatter = (row: number, cell: number, value: any, columnDef: any, dataContext: any, grid: any) => {
   return value !== undefined ? `Titre ${value}` : '';
 };
+const exportBooleanFormatter: Formatter = (row: number, cell: number, value: any, columnDef: any, dataContext: any, grid: any) => {
+  return value ? 'Vrai' : 'Faux';
+};
 
 @autoinject()
 export class Example12 {
-  title = 'Example 12: Localization with Custom Locales - French Locale displayed';
-  subTitle = `Provide custom locales to the grid options
-    Take a look at the (<a href="https://github.com/ghiscoding/aurelia-slickgrid/wiki/Localization" target="_blank">Wiki documentation</a>)
-    <ol class="small">
-      <li>You first need to "enableTranslate" in the Grid Options</li>
-      <li>In the Column Definitions, you have following options</li>
-      <ul>
-        <li>To translate a header title, use "translate key (i>
-        <li>For the cell values, you need to use a Formatter, there's 2 ways of doing it</li>
-        <ul>
-          <li>formatter: myCustomTranslateFormatter <b>&lt;= "Title" column uses it</b></li>
-          <li>formatter: Formatters.translate <b>&lt;= "Completed" column uses it</b></li>
-        </ul>
-      </ul>
-      <li>For date localization, you need to create your own custom formatter. </li>
-      <ul>
-        <li>You can easily implement logic to switch between Formatters "dateIso" or "dateUs", depending on current locale.</li>
-      </ul>
-      <li>For the Select (dropdown) filter, you can fill in the "labelKey" property, if found it will use it, else it will use "label"</li>
-        <ul>
-          <li>What if your select options have totally different value/label pair? In this case, you can use the <b>customStructure: { label: 'customLabel', value: 'customValue'}</b> to change the property name(s) to use.'</li>
-          <li>What if you want to use "customStructure" and translation? Simply pass this flag <b>enableTranslateLabel: true</b></li>
-          <li>More info on the Select Filter <a href="https://github.com/ghiscoding/aurelia-slickgrid/wiki/Select-Filter" target="_blank">Wiki page</a>
-        </ul>
-        <li>For more info about "Download to File", read the <a href="https://github.com/ghiscoding/aurelia-slickgrid/wiki/Export-to-File" target="_blank">Wiki page</a></li>
-      </ol>
-    `;
+  title = 'Example 12: Localization with Custom Locales';
+  subTitle = `This Examples uses French Locales but you could use your own custom locales
+    <ul>
+      <li>Defining your own Custom Locales must include all necessary text, see the default (<a href="https://github.com/ghiscoding/aurelia-slickgrid-demos/blob/master/webpack-bs3-demo-with-locales/src/locales/en.ts" target="_blank">English Custom Locales</a>)</li>
+      <li>Support Custom Locales (through the "locales" grid option), following these steps (<a href="https://github.com/ghiscoding/aurelia-slickgrid/wiki/Localization-with-Custom-Locales" target="_blank">Wiki docs</a>)</li>
+      <li>For more info about "Download to File", read the <a href=https://github.com/ghiscoding/aurelia-slickgrid/wiki/Export-to-File" target="_blank">Wiki page</a></li>
+    </ul>`;
 
   aureliaGrid: AureliaGridInstance;
   gridOptions: GridOption;
@@ -77,16 +60,10 @@ export class Example12 {
       { id: 'description', name: 'Description', field: 'description', filterable: true, sortable: true, minWidth: 80 },
       {
         id: 'duration', name: 'Durée (jours)', field: 'duration', sortable: true,
+        formatter: Formatters.percentCompleteBar,
         minWidth: 100,
         filterable: true,
-        filter: {
-          collectionAsync: this.http.fetch(URL_SAMPLE_COLLECTION_DATA),
-          customStructure: {
-            value: 'value',
-            label: 'label'
-          },
-          model: Filters.multipleSelect,
-        }
+        filter: { model: Filters.compoundSlider, operator: '>=' }
       },
       { id: 'start', name: 'Début', field: 'start', formatter: Formatters.dateIso, outputType: FieldType.dateIso, type: FieldType.date, minWidth: 100, filterable: true, filter: { model: Filters.compoundDate } },
       { id: 'finish', name: 'Fin', field: 'finish', formatter: Formatters.dateIso, outputType: FieldType.dateIso, type: FieldType.date, minWidth: 100, filterable: true, filter: { model: Filters.compoundDate } },
@@ -94,10 +71,14 @@ export class Example12 {
         id: 'completedBool', name: 'Complétée', field: 'completedBool', minWidth: 100,
         sortable: true,
         formatter: Formatters.checkmark,
+        exportCustomFormatter: exportBooleanFormatter,
         filterable: true,
         filter: {
-          collection: [{ value: '', label: '' }, { value: true, label: 'Vrai' }, { value: false, label: 'Faux' }],
-          model: Filters.singleSelect
+          collection: [{ value: true, label: 'Vrai' }, { value: false, label: 'Faux' }],
+          model: Filters.multipleSelect,
+          filterOptions: {
+            autoDropWidth: true
+          }
         }
       }
     ];
@@ -148,7 +129,7 @@ export class Example12 {
   }
 
   dynamicallyAddTitleHeader() {
-    const newCol = { id: `title${this.duplicateTitleHeaderCount++}`, field: 'id', sortable: true, minWidth: 100, filterable: true, params: { useFormatterOuputToFilter: true } };
+    const newCol = { id: `title${this.duplicateTitleHeaderCount++}`, field: 'id', name: 'Titre', sortable: true, minWidth: 100, filterable: true, formatter: taskTranslateFormatter, params: { useFormatterOuputToFilter: true } };
     this.columnDefinitions.push(newCol);
   }
 

@@ -29,6 +29,15 @@
       "problemMatcher": []
     },
     {
+      "label": "Build Webpack Bootstrap 3 Demo Page - with Custom Locales",
+      "type": "shell",
+      "command": "yarn start build",
+      "options": {
+        "cwd": "${workspaceFolder}/webpack-bs3-demo-with-locales",
+      },
+      "problemMatcher": []
+    },
+    {
       "label": "Build Webpack Bootstrap 3 Demo Page & Copy Files to GhPages Folder",
       "type": "shell",
       "command": "yarn run build-demo",
@@ -43,6 +52,15 @@
       "command": "yarn start",
       "options": {
         "cwd": "${workspaceFolder}/webpack-bs3-demo",
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "Start Webpack Bootstrap 3 Demo Page - with Custom Locales",
+      "type": "shell",
+      "command": "yarn start",
+      "options": {
+        "cwd": "${workspaceFolder}/webpack-bs3-demo-with-locales",
       },
       "problemMatcher": []
     },
