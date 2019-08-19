@@ -1,5 +1,4 @@
 import { autoinject } from 'aurelia-framework';
-import { I18N } from 'aurelia-i18n';
 import { CustomInputFilter } from './custom-inputFilter';
 import {
   AureliaGridInstance,
@@ -21,14 +20,6 @@ const NB_ITEMS = 1200;
 function randomBetween(min: number, max: number): number {
   return Math.floor(Math.random() * (max - min + 1) + min);
 }
-
-// create a custom translate Formatter (typically you would move that a separate file, for separation of concerns)
-const taskTranslateFormatter: Formatter = (row: number, cell: number, value: any, columnDef: any, dataContext: any, grid: any) => {
-  const gridOptions = (grid && typeof grid.getOptions === 'function') ? grid.getOptions() : {};
-  const i18n = gridOptions.i18n;
-
-  return i18n && i18n.tr && i18n.tr('TASK_X', { x: value });
-};
 
 @autoinject()
 export class Example23 {
@@ -59,14 +50,9 @@ export class Example23 {
   selectedLanguage: string;
   statistics: Statistic;
 
-  constructor(private i18n: I18N) {
+  constructor() {
     // define the grid options & columns and then create the grid itself
     this.defineGrid();
-
-    // always start with English for Cypress E2E tests to be consistent
-    const defaultLang = 'en';
-    this.i18n.setLocale(defaultLang);
-    this.selectedLanguage = defaultLang;
   }
 
   attached() {
@@ -86,8 +72,7 @@ export class Example23 {
   defineGrid() {
     this.columnDefinitions = [
       {
-        id: 'title', name: 'Title', field: 'id', headerKey: 'TITLE', minWidth: 100,
-        formatter: taskTranslateFormatter,
+        id: 'title', name: 'Title', field: 'id', minWidth: 100,
         sortable: true,
         filterable: true,
         params: { useFormatterOuputToFilter: true }
@@ -101,7 +86,7 @@ export class Example23 {
         }
       },
       {
-        id: 'complete', name: '% Complete', field: 'percentComplete', headerKey: 'PERCENT_COMPLETE', minWidth: 120,
+        id: 'complete', name: '% Complete', field: 'percentComplete', minWidth: 120,
         sortable: true,
         formatter: Formatters.progressBar,
         type: FieldType.number,
@@ -115,11 +100,11 @@ export class Example23 {
         }
       },
       {
-        id: 'start', name: 'Start', field: 'start', headerKey: 'START', formatter: Formatters.dateIso, sortable: true, minWidth: 75, width: 100, exportWithFormatter: true,
+        id: 'start', name: 'Start', field: 'start', formatter: Formatters.dateIso, sortable: true, minWidth: 75, width: 100, exportWithFormatter: true,
         type: FieldType.date, filterable: true, filter: { model: Filters.compoundDate }
       },
       {
-        id: 'finish', name: 'Finish', field: 'finish', headerKey: 'FINISH', formatter: Formatters.dateIso, sortable: true, minWidth: 75, width: 120, exportWithFormatter: true,
+        id: 'finish', name: 'Finish', field: 'finish', formatter: Formatters.dateIso, sortable: true, minWidth: 75, width: 120, exportWithFormatter: true,
         type: FieldType.date,
         filterable: true,
         filter: {
@@ -127,7 +112,7 @@ export class Example23 {
         }
       },
       {
-        id: 'duration', field: 'duration', headerKey: 'DURATION', maxWidth: 90,
+        id: 'duration', field: 'duration', maxWidth: 90,
         type: FieldType.number,
         sortable: true,
         filterable: true, filter: {
@@ -136,7 +121,7 @@ export class Example23 {
         }
       },
       {
-        id: 'completed', name: 'Completed', field: 'completed', headerKey: 'COMPLETED', minWidth: 85, maxWidth: 90,
+        id: 'completed', name: 'Completed', field: 'completed', minWidth: 85, maxWidth: 90,
         formatter: Formatters.checkmark,
         exportWithFormatter: true, // you can set this property in the column definition OR in the grid options, column def has priority over grid options
         filterable: true,
@@ -159,8 +144,6 @@ export class Example23 {
       enableExcelCopyBuffer: true,
       enableFiltering: true,
       // enableFilterTrimWhiteSpace: true,
-      enableTranslate: true,
-      i18n: this.i18n,
 
       // use columnDef searchTerms OR use presets as shown below
       presets: {
@@ -229,10 +212,5 @@ export class Example23 {
         };
       });
     }
-  }
-
-  switchLanguage() {
-    const nextLocale = (this.selectedLanguage === 'en') ? 'fr' : 'en';
-    this.i18n.setLocale(nextLocale).then(() => this.selectedLanguage = nextLocale);
   }
 }

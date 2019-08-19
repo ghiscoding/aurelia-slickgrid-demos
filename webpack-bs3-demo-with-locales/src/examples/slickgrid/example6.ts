@@ -16,6 +16,7 @@ import {
   SortDirection,
   Statistic,
 } from 'aurelia-slickgrid';
+import * as moment from 'moment-mini';
 import { localeFrench } from 'locales/fr';
 
 const defaultPageSize = 20;
@@ -96,9 +97,20 @@ export class Example6 {
         filter: {
           model: Filters.compoundInput
         },
-        formatter: Formatters.multiple, params: { formatters: [Formatters.complexObject, Formatters.translate] }
+        formatter: Formatters.complexObject
+      },
+      {
+        id: 'finish', field: 'finish', name: 'Date', formatter: Formatters.dateIso, sortable: true, minWidth: 90, width: 120, exportWithFormatter: true,
+        type: FieldType.date,
+        filterable: true,
+        filter: {
+          model: Filters.dateRange,
+        }
       },
     ];
+
+    const presetLowestDay = moment().add(-2, 'days').format('YYYY-MM-DD');
+    const presetHighestDay = moment().add(20, 'days').format('YYYY-MM-DD');
 
     this.gridOptions = {
       enableAutoResize: false,
@@ -124,12 +136,16 @@ export class Example6 {
           { columnId: 'company' },
           { columnId: 'billing.address.zip' }, // flip column position of Street/Zip to Zip/Street
           { columnId: 'billing.address.street', width: 120 },
+          { columnId: 'finish', width: 130 },
         ],
         // you can also type operator as string, e.g.: operator: 'EQ'
         filters: [
           { columnId: 'gender', searchTerms: ['male'], operator: OperatorType.equal },
           { columnId: 'name', searchTerms: ['John Doe'], operator: OperatorType.contains },
-          { columnId: 'company', searchTerms: ['xyz'], operator: 'IN' }
+          { columnId: 'company', searchTerms: ['xyz'], operator: 'IN' },
+
+          // use a date range with 2 searchTerms values
+          { columnId: 'finish', searchTerms: [presetLowestDay, presetHighestDay], operator: OperatorType.rangeInclusive },
         ],
         sorters: [
           // direction can written as 'asc' (uppercase or lowercase) and/or use the SortDirection type
