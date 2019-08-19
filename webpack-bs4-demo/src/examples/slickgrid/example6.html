@@ -1,19 +1,16 @@
 <template>
   <h2>${title}</h2>
-  <div class="subtitle"
-       innerhtml.bind="subTitle"></div>
+  <div class="subtitle" innerhtml.bind="subTitle"></div>
 
   <div class="row">
     <div class="col-sm-4">
-      <div class.bind="status.class"
-           role="alert">
+      <div class.bind="status.class" role="alert">
         <strong>Status: </strong> ${status.text}
         <span hidden.bind="!processing">
           <i class="fa fa-refresh fa-spin fa-lg fa-fw"></i>
         </span>
       </div>
-      <button class="btn btn-outline-secondary btn-sm"
-              click.delegate="switchLanguage()">Switch Language</button>
+      <button class="btn btn-outline-secondary btn-sm" click.delegate="switchLanguage()">Switch Language</button>
       <span><label>Locale</label>: ${selectedLanguage + '.json'}</span>
       <br />
       <span if.bind="statistics">
@@ -29,13 +26,9 @@
     </div>
   </div>
 
-  <aurelia-slickgrid grid-id="grid1"
-                     column-definitions.bind="columnDefinitions"
-                     grid-options.bind="gridOptions"
-                     dataset.bind="dataset"
-                     grid-height="200"
-                     grid-width="800"
-                     asg-on-aurelia-grid-created.delegate="aureliaGridReady($event.detail)"
-                     asg-on-grid-state-changed.delegate="gridStateChanged($event)">
+  <aurelia-slickgrid grid-id="grid1" column-definitions.bind="columnDefinitions" grid-options.bind="gridOptions"
+    dataset.bind="dataset" grid-height="200" grid-width="900"
+    asg-on-aurelia-grid-created.delegate="aureliaGridReady($event.detail)"
+    asg-on-grid-state-changed.delegate="gridStateChanged($event)">
   </aurelia-slickgrid>
 </template>

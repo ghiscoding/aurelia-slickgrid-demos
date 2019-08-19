@@ -18,7 +18,7 @@ export class Index {
       { route: 'example9', moduleId: PLATFORM.moduleName('./example9'), name: 'example9', nav: true, title: '9- Grid Menu Control' },
       { route: 'example10', moduleId: PLATFORM.moduleName('./example10'), name: 'example10', nav: true, title: '10- Row Selection / 2 Grids' },
       { route: 'example11', moduleId: PLATFORM.moduleName('./example11'), name: 'example11', nav: true, title: '11- Add/Update Grid Item' },
-      { route: 'example12', moduleId: PLATFORM.moduleName('./example12'), name: 'example12', nav: true, title: '12- Localization (i18n)' },
+      { route: 'example12', moduleId: PLATFORM.moduleName('./example12'), name: 'example12', nav: true, title: '12- Custom Locales' },
       { route: 'example13', moduleId: PLATFORM.moduleName('./example13'), name: 'example13', nav: true, title: '13- Grouping & Aggregators' },
       { route: 'example14', moduleId: PLATFORM.moduleName('./example14'), name: 'example14', nav: true, title: '14- Column Span & Header Grouping' },
       { route: 'example15', moduleId: PLATFORM.moduleName('./example15'), name: 'example15', nav: true, title: '15- Grid State & Local Storage' },
@@ -29,6 +29,7 @@ export class Index {
       { route: 'example20', moduleId: PLATFORM.moduleName('./example20'), name: 'example20', nav: true, title: '20- Pinned Columns/Rows' },
       { route: 'example21', moduleId: PLATFORM.moduleName('./example21'), name: 'example21', nav: true, title: '21- Grid AutoHeight (full height)' },
       { route: 'example22', moduleId: PLATFORM.moduleName('./example22'), name: 'example22', nav: true, title: '22- with Bootstrap Tabs' },
+      { route: 'example23', moduleId: PLATFORM.moduleName('./example23'), name: 'example23', nav: true, title: '23- Filter by Range of Values' },
     ];
 
     config.map(mapping);
