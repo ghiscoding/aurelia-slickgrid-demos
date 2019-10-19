@@ -1,4 +1,4 @@
-import { autoinject } from 'aurelia-framework';
+import { autoinject, bindable } from 'aurelia-framework';
 import {
   Aggregators,
   AureliaGridInstance,
@@ -275,6 +275,13 @@ export class Example18 {
 
   expandAllGroups() {
     this.dataviewObj.expandAllGroups();
+  }
+
+  exportToExcel() {
+    this.aureliaGrid.excelExportService.exportToExcel({
+      filename: 'Export',
+      format: FileType.xlsx
+    });
   }
 
   exportToCsv(type = 'csv') {

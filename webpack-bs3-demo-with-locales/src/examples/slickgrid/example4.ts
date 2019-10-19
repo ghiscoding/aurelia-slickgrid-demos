@@ -2,7 +2,7 @@ import { HttpClient as FetchClient } from 'aurelia-fetch-client';
 import { HttpClient } from 'aurelia-http-client';
 import { autoinject } from 'aurelia-framework';
 import { CustomInputFilter } from './custom-inputFilter';
-import { AureliaGridInstance, Column, FieldType, Filters, Formatters, GridOption, OperatorType, Statistic } from 'aurelia-slickgrid';
+import { AureliaGridInstance, Column, FieldType, Filters, Formatters, GridOption, OperatorType, Metrics } from 'aurelia-slickgrid';
 
 function randomBetween(min, max) {
   return Math.floor(Math.random() * (max - min + 1) + min);
@@ -36,7 +36,7 @@ export class Example4 {
   columnDefinitions: Column[];
   gridOptions: GridOption;
   dataset: any[];
-  statistics: Statistic;
+  metrics: Metrics;
 
   constructor(private http: HttpClient, private httpFetch: FetchClient) {
     this.defineGrid();
@@ -255,10 +255,10 @@ export class Example4 {
     console.log('Client sample, current Grid State:: ', this.aureliaGrid.gridStateService.getCurrentGridState());
   }
 
-  refreshStatistics(e, args) {
+  refreshMetrics(e, args) {
     if (args && args.current > 0) {
       setTimeout(() => {
-        this.statistics = {
+        this.metrics = {
           startTime: new Date(),
           itemCount: args && args.current,
           totalItemCount: this.dataset.length

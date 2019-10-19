@@ -36,7 +36,7 @@ export class Example6 {
   columnDefinitions;
   gridOptions;
   dataset = [];
-  statistics;
+  metrics;
 
   isWithCursor = false;
   graphqlQuery = '';
@@ -143,7 +143,7 @@ export class Example6 {
         preProcess: () => this.displaySpinner(true),
         process: (query) => this.getCustomerApiCall(query),
         postProcess: (result) => {
-          this.statistics = result.statistics;
+          this.metrics = result.metrics;
           this.displaySpinner(false);
         }
       }

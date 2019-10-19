@@ -14,10 +14,10 @@ import {
   GraphqlServiceOption,
   GridOption,
   GridStateChange,
+  Metrics,
   MultipleSelectOption,
   OperatorType,
   SortDirection,
-  Statistic,
 } from 'aurelia-slickgrid';
 
 const defaultPageSize = 20;
@@ -45,7 +45,7 @@ export class Example6 {
   columnDefinitions: Column[];
   gridOptions: GridOption;
   dataset = [];
-  statistics: Statistic;
+  metrics: Metrics;
 
   isWithCursor = false;
   graphqlQuery = '';
@@ -161,7 +161,7 @@ export class Example6 {
         preProcess: () => this.displaySpinner(true),
         process: (query) => this.getCustomerApiCall(query),
         postProcess: (result: GraphqlResult) => {
-          this.statistics = result.statistics;
+          this.metrics = result.metrics;
           this.displaySpinner(false);
         }
       }
@@ -234,6 +234,14 @@ export class Example6 {
   /** Dispatched event of a Grid State Changed event */
   gridStateChanged(gridStateChanges: GridStateChange) {
     console.log('GraphQL sample, Grid State changed:: ', gridStateChanges);
+  }
+
+  goToFirstPage() {
+    this.aureliaGrid.paginationService.goToFirstPage();
+  }
+
+  goToLastPage() {
+    this.aureliaGrid.paginationService.goToLastPage();
   }
 
   saveCurrentGridState() {

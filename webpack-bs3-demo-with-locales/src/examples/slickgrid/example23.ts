@@ -11,7 +11,7 @@ import {
   JQueryUiSliderOption,
   MultipleSelectOption,
   OperatorType,
-  Statistic,
+  Metrics,
 } from 'aurelia-slickgrid';
 import * as moment from 'moment-mini';
 
@@ -48,7 +48,7 @@ export class Example23 {
   gridOptions: GridOption;
   dataset: any[];
   selectedLanguage: string;
-  statistics: Statistic;
+  metrics: Metrics;
 
   constructor() {
     // define the grid options & columns and then create the grid itself
@@ -202,10 +202,10 @@ export class Example23 {
     console.log('Client sample, current Grid State:: ', this.aureliaGrid.gridStateService.getCurrentGridState());
   }
 
-  refreshStatistics(e, args) {
+  refreshMetrics(e, args) {
     if (args && args.current > 0) {
       setTimeout(() => {
-        this.statistics = {
+        this.metrics = {
           startTime: new Date(),
           itemCount: args && args.current,
           totalItemCount: this.dataset.length

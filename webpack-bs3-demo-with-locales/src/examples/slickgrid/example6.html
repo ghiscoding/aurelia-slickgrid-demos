@@ -1,28 +1,34 @@
 <template>
   <h2>${title}</h2>
-  <div class="subtitle"
-       innerhtml.bind="subTitle"></div>
+  <div class="subtitle" innerhtml.bind="subTitle"></div>
 
   <div class="row">
     <div class="col-sm-5">
-      <div class.bind="status.class"
-           role="alert">
+      <div class.bind="status.class" role="alert">
         <strong>Status: </strong> ${status.text}
         <span hidden.bind="!processing">
           <i class="fa fa-refresh fa-spin fa-lg fa-fw"></i>
         </span>
       </div>
-      <button class="btn btn-default btn-sm"
-              click.delegate="clearAllFiltersAndSorts()">
+      <button class="btn btn-default btn-sm" click.delegate="clearAllFiltersAndSorts()">
         <i class="fa fa-filter text-danger"></i>
         Clear all Filter & Sorts
       </button>
       <br />
-      <span if.bind="statistics">
-        <b>Statistics:</b> ${statistics.endTime | dateFormat: 'DD MMM, h:mm:ss a'} | ${statistics.executionTime}ms |
-        ${statistics.totalItemCount}
+      <span if.bind="metrics">
+        <b>Metrics:</b> ${metrics.endTime | dateFormat: 'DD MMM, h:mm:ss a'} | ${metrics.executionTime}ms |
+        ${metrics.totalItemCount}
         items
       </span>
+      <div class="row col-md-12">
+        <label>Programmatically go to first/last page:</label>
+        <button class="btn btn-default btn-xs" click.delegate="goToFirstPage()">
+          <i class="fa fa-caret-left fa-lg"></i>
+        </button>
+        <button class="btn btn-default btn-xs" click.delegate="goToLastPage()">
+          <i class="fa fa-caret-right fa-lg"></i>
+        </button>
+      </div>
     </div>
     <div class="col-sm-7">
       <div class="alert alert-info">
@@ -31,13 +37,9 @@
     </div>
   </div>
 
-  <aurelia-slickgrid grid-id="grid1"
-                     column-definitions.bind="columnDefinitions"
-                     grid-options.bind="gridOptions"
-                     dataset.bind="dataset"
-                     grid-height="200"
-                     grid-width="800"
-                     asg-on-aurelia-grid-created.delegate="aureliaGridReady($event.detail)"
-                     asg-on-grid-state-changed.delegate="gridStateChanged($event)">
+  <aurelia-slickgrid grid-id="grid1" column-definitions.bind="columnDefinitions" grid-options.bind="gridOptions"
+    dataset.bind="dataset" grid-height="200" grid-width="800"
+    asg-on-aurelia-grid-created.delegate="aureliaGridReady($event.detail)"
+    asg-on-grid-state-changed.delegate="gridStateChanged($event)">
   </aurelia-slickgrid>
 </template>

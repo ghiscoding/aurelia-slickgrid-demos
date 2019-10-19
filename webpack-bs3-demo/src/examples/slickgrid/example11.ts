@@ -15,27 +15,27 @@ import './custom-styles.scss';
 export class Example11 {
   title = 'Example 11: Add / Update / Highlight a Datagrid Item';
   subTitle = `
-      Add / Update / Hightlight an Item from the Datagrid (<a href="https://github.com/ghiscoding/aurelia-slickgrid/wiki/Add,-Update-or-Highlight-a-Datagrid-Item" target="_blank">Wiki docs</a>).
-      <ul>
-        <li><b>Note:</b> this demo is <b>only</b> on the datagrid (client) side, you still need to deal with the backend yourself</li>
-        <li>Adding an item, will always be showing as the 1st item in the grid because that is the best visual place to add it</li>
-        <li>Add/Update an item requires a valid Slickgrid Selection Model, you have 2 choices to deal with this:</li>
-        <ul><li>You can enable "enableCheckboxSelector" or "enableRowSelection" to True</li></ul>
-        <li>Click on any of the buttons below to test this out</li>
-        <li>You can change the highlighted color &amp; animation by changing the <a href="https://github.com/ghiscoding/aurelia-slickgrid/blob/master/aurelia-slickgrid/src/aurelia-slickgrid/styles/_variables.scss" target="_blank">SASS Variables</a></li>
-        <ul>
-          <li>"$row-highlight-background-color" or "$row-highlight-fade-animation"</li>
-        </ul>
-        <li>You can also add CSS class(es) on the fly (or on page load) on rows with certain criteria, (e.g. click on last button)
-        <ul>
-          <li>Example, click on button "Highlight Rows with Duration over 50" to see row styling changing. <a href="https://github.com/ghiscoding/aurelia-slickgrid/wiki/Dynamically-Add-CSS-Classes-to-Item-Rows" target="_blank">Wiki doc</a></li>
-        </ul>
-      </ul>
-    `;
+  Add / Update / Hightlight an Item from the Datagrid (<a href="https://github.com/ghiscoding/aurelia-slickgrid/wiki/Add,-Update-or-Highlight-a-Datagrid-Item" target="_blank">Wiki docs</a>).
+  <ul>
+    <li><b>Note:</b> this demo is <b>only</b> on the datagrid (client) side, you still need to deal with the backend yourself</li>
+    <li>Adding an item, will always be showing as the 1st item in the grid because that is the best visual place to add it</li>
+    <li>Add/Update an item requires a valid Slickgrid Selection Model, you have 2 choices to deal with this:</li>
+    <ul><li>You can enable "enableCheckboxSelector" or "enableRowSelection" to True</li></ul>
+    <li>Click on any of the buttons below to test this out</li>
+    <li>You can change the highlighted color &amp; animation by changing the <a href="https://github.com/ghiscoding/aurelia-slickgrid/blob/master/aurelia-slickgrid/src/aurelia-slickgrid/styles/_variables.scss" target="_blank">SASS Variables</a></li>
+    <ul>
+      <li>"$row-highlight-background-color" or "$row-highlight-fade-animation"</li>
+    </ul>
+    <li>You can also add CSS class(es) on the fly (or on page load) on rows with certain criteria, (e.g. click on last button)
+    <ul>
+      <li>Example, click on button "Highlight Rows with Duration over 50" to see row styling changing. <a href="https://github.com/ghiscoding/aurelia-slickgrid/wiki/Dynamically-Add-CSS-Classes-to-Item-Rows" target="_blank">Wiki doc</a></li>
+    </ul>
+  </ul>
+  `;
 
   aureliaGrid: AureliaGridInstance;
   grid: any;
-  gridService: any;
+  gridService: GridService;
   dataView: any;
   columnDefinitions: Column[];
   gridOptions: GridOption;
@@ -174,7 +174,7 @@ export class Example11 {
     this.dataset = mockedDataset;
   }
 
-  addNewItem() {
+  addNewItem(insertPosition?: 'top' | 'bottom') {
     const newId = this.dataset.length;
     const randomYear = 2000 + Math.floor(Math.random() * 10);
     const randomMonth = Math.floor(Math.random() * 11);
@@ -191,7 +191,7 @@ export class Example11 {
       finish: new Date(randomYear, (randomMonth + 2), randomDay),
       effortDriven: true
     };
-    this.aureliaGrid.gridService.addItemToDatagrid(newItem);
+    this.aureliaGrid.gridService.addItem(newItem, { position: insertPosition });
   }
 
   /** Change the Duration Rows Background Color */
@@ -206,6 +206,7 @@ export class Example11 {
 
   /** Highlight the 5th row using the Aurelia-Slickgrid GridService */
   highlighFifthRow() {
+    this.scrollGridTop();
     this.aureliaGrid.gridService.highlightRow(4, 1500);
   }
 
@@ -234,11 +235,29 @@ export class Example11 {
   }
 
   updateSecondItem() {
+    this.scrollGridTop();
     const updatedItem = this.aureliaGrid.gridService.getDataItemByRowNumber(1);
     updatedItem.duration = Math.round(Math.random() * 100);
-    this.aureliaGrid.gridService.updateDataGridItem(updatedItem);
+    this.aureliaGrid.gridService.updateItem(updatedItem);
 
     // OR by id
-    // this.aureliaGrid.gridService.updateDataGridItemById(updatedItem.id, updatedItem);
+    // this.aureliaGrid.gridService.updateItemById(updatedItem.id, updatedItem);
+
+    // OR multiple changes
+    /*
+    const updatedItem1 = this.aureliaGrid.gridService.getDataItemByRowNumber(1);
+    const updatedItem2 = this.aureliaGrid.gridService.getDataItemByRowNumber(2);
+    updatedItem1.duration = Math.round(Math.random() * 100);
+    updatedItem2.duration = Math.round(Math.random() * 100);
+    this.aureliaGrid.gridService.updateItems([updatedItem1, updatedItem2], true);
+    */
+  }
+
+  scrollGridBottom() {
+    this.aureliaGrid.slickGrid.navigateBottom();
+  }
+
+  scrollGridTop() {
+    this.aureliaGrid.slickGrid.navigateTop();
   }
 }

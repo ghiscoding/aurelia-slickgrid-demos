@@ -10,9 +10,9 @@
           <i class="fa fa-refresh fa-spin fa-lg fa-fw"></i>
         </span>
       </div>
-      <span if.bind="statistics">
-        <b>Statistics:</b> ${statistics.endTime | dateFormat: 'DD MMM, h:mm:ss a'} | ${statistics.executionTime}ms |
-        ${statistics.totalItemCount}
+      <span if.bind="metrics">
+        <b>Metrics:</b> ${metrics.endTime | dateFormat: 'DD MMM, h:mm:ss a'} | ${metrics.executionTime}ms |
+        ${metrics.totalItemCount}
         items
       </span>
     </div>
@@ -31,7 +31,21 @@
             click.delegate="setOdataVersion(4)"> 4
         </label>
       </span>
+      <label class="checkbox-inline control-label" for="enableCount" style="margin-left: 20px">
+        <input type="checkbox" id="enableCount" data-test="enable-count" checked.bind="isCountEnabled"
+          click.delegate="changeCountEnableFlag()">
+        <span style="font-weight: bold">Enable Count</span> (add to OData query)
+      </label>
     </div>
+  </div>
+  <div class="row col-md-12">
+    <label>Programmatically go to first/last page:</label>
+    <button class="btn btn-outline-secondary btn-xs" click.delegate="goToFirstPage()">
+      <i class="fa fa-caret-left fa-lg"></i>
+    </button>
+    <button class="btn btn-outline-secondary btn-xs" click.delegate="goToLastPage()">
+      <i class="fa fa-caret-right fa-lg"></i>
+    </button>
   </div>
 
   <aurelia-slickgrid grid-id="grid5" column-definitions.bind="columnDefinitions" grid-options.bind="gridOptions"
