@@ -10,6 +10,7 @@ export const localeEnglish = {
   TEXT_ENDS_WITH: 'Ends With',
   TEXT_EQUALS: 'Equals',
   TEXT_EXPORT_IN_CSV_FORMAT: 'Export in CSV format',
+  TEXT_EXPORT_TO_EXCEL: 'Export to Excel',
   TEXT_FORCE_FIT_COLUMNS: 'Force fit columns',
   TEXT_GROUP_BY: 'Group By',
   TEXT_HIDE_COLUMN: 'Hide Column',

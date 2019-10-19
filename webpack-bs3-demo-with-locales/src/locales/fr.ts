@@ -10,6 +10,7 @@ export const localeFrench = {
   TEXT_ENDS_WITH: 'Se termine par',
   TEXT_EQUALS: 'Égale',
   TEXT_EXPORT_IN_CSV_FORMAT: 'Exporter en format CSV',
+  TEXT_EXPORT_TO_EXCEL: 'Exporter vers Excel',
   TEXT_FORCE_FIT_COLUMNS: 'Ajustement forcé des colonnes',
   TEXT_GROUP_BY: 'Grouper par',
   TEXT_HIDE_COLUMN: 'Cacher la colonne',
