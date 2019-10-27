@@ -9,6 +9,8 @@ export function configure(aurelia) {
 
   aurelia.use.plugin('aurelia-slickgrid', config => {
     // change any of the default global options
+    config.options.enableExport = true;
+    config.options.enableExcelExport = false;
     config.options.gridMenu.iconCssClass = 'fa fa-bars';
   });
 

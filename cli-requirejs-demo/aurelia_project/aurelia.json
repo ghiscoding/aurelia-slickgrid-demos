@@ -60,6 +60,7 @@
           "text",
           "jquery",
           "moment",
+          "moment-mini",
           "text-encoding-utf-8",
           {
             "name": "i18next",
@@ -114,11 +115,6 @@
             ]
           },
           {
-            "name": "lodash.isequal",
-            "path": "../node_modules/lodash.isequal",
-            "main": "index"
-          },
-          {
             "name": "multiple-select",
             "path": "../node_modules/aurelia-slickgrid/dist/lib/multiple-select",
             "main": "multiple-select",
@@ -135,11 +131,6 @@
             ]
           },
           {
-            "name": "jquery-event",
-            "path": "../node_modules/slickgrid/lib",
-            "main": "jquery.event.drag-2.3.0"
-          },
-          {
             "name": "slick-gridmenu",
             "path": "../node_modules/slickgrid/controls",
             "main": "slick.gridmenu.js"
@@ -150,18 +141,31 @@
             "main": "jquery-ui"
           },
           {
+            "name": "jszip",
+            "path": "../node_modules/jszip/dist",
+            "main": "jszip.min"
+          },
+          {
             "name": "slickgrid",
             "main": "slick.grid",
             "path": "../node_modules/slickgrid",
             "deps": [
               "jquery",
-              "jquery-event",
               "jquery-ui-dist"
             ],
             "resources": [
               "controls/*.js",
               "plugins/*.js",
               "slick.groupitemmetadataprovider.js"
+            ]
+          },
+          {
+            "name": "excel-builder-webpack",
+            "path": "../node_modules/excel-builder-webpack",
+            "main": "src/excel-builder",
+            "deps": [
+              "jszip",
+              "lodash"
             ]
           },
           {
