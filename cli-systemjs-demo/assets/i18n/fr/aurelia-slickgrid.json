@@ -9,6 +9,7 @@
   "ENDS_WITH": "Se termine par",
   "EQUALS": "Égale",
   "EXPORT_TO_CSV": "Exporter en format CSV",
+  "EXPORT_TO_EXCEL": "Exporter vers Excel",
   "EXPORT_TO_TAB_DELIMITED": "Exporter en format texte (délimité par tabulation)",
   "FROM_TO_OF_TOTAL_ITEMS": "{{from}}-{{to}} de {{totalItems}} éléments",
   "FORCE_FIT_COLUMNS": "Ajustement forcé des colonnes",
@@ -34,7 +35,6 @@
   "TOGGLE_FILTER_ROW": "Basculer la ligne des filtres",
   "TOGGLE_PRE_HEADER_ROW": "Basculer la ligne de pré-en-tête",
   "X_OF_Y_SELECTED": "# de % sélectionné",
-
   "BILLING": {
     "ADDRESS": {
       "STREET": "Adresse de facturation",
@@ -44,6 +44,7 @@
   "DURATION": "Durée",
   "COMPANY": "Compagnie",
   "COMPLETED": "Terminé",
+  "PERCENT_COMPLETE": "% Achevée",
   "CUSTOM_COMMANDS": "Commandes Personnalisées",
   "FALSE": "Faux",
   "FEMALE": "Féminin",
