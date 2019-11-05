@@ -1,3 +1,4 @@
+
 # You may want to customise this file depending on your Operating System
 # and the editor that you use.
 #
@@ -28,9 +29,9 @@ Thumbs.db
 node_modules
 
 # Compiled files
-scripts
-dist
-
-# lock files
-yarn.lock
-yarn-error.log
+/scripts
+/src/environment.js
+/src/environment.ts
+/dist
+/test/coverage-jest
+/test/coverage-karma
