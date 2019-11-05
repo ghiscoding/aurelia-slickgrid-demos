@@ -1,4 +1,5 @@
 # Aurelia-Slickgrid - Client Demos
+## [Aurelia-Slickgrid](https://github.com/ghiscoding/aurelia-slickgrid) library client demos with different bundler types.
 
 ###
 If you use Visual Studio Code, you can also run each of the demo through the multiple VSCode Tasks.
@@ -36,6 +37,20 @@ http://localhost:9000
 ```bash
 git clone https://github.com/ghiscoding/aurelia-slickgrid-demos
 cd webpack-bs3-demo
+npm install # OR yarn install
+npm start # OR yarn start
+```
+
+Then open your browser to
+```html
+http://localhost:8080
+```
+
+## Webpack and Bootstrap 3 with single Locale (with TypeScript but without I18N)
+### Install and Start Demo
+```bash
+git clone https://github.com/ghiscoding/aurelia-slickgrid-demos
+cd webpack-bs3-demo-with-locales
 npm install # OR yarn install
 npm start # OR yarn start
 ```
