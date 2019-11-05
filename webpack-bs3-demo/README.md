@@ -1,9 +1,9 @@
-# Aurelia-Slickgrid-Bootstrap4-Demo
+# Aurelia-Slickgrid-Bootstrap3-Demo
 
 ### Install and Start Demo
 ```bash
 git clone https://github.com/ghiscoding/aurelia-slickgrid-demos
-cd webpack-bs4-demo
+cd webpack-bs3-demo
 npm install # OR yarn install
 npm start # OR yarn start
 ```
