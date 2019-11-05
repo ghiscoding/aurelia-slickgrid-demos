@@ -5,30 +5,22 @@
   <hr />
 
   <div class="row">
-    <button class="btn btn-default btn-sm" click.delegate="switchLanguage()">
-      <i class="fa fa-language"></i>
-      Switch Language
-    </button>
-    <label>Locale</label>: ${selectedLanguage + '.json'}
-
     <span style="margin-left: 20px">
       <button class="btn btn-default btn-sm" click.delegate="exportToFile('csv')">
         <i class="fa fa-download"></i>
-        Download to CSV
+        Télécharger en format CSV
       </button>
       <button class="btn btn-default btn-sm" click.delegate="exportToFile('txt')">
         <i class="fa fa-download"></i>
-        Download to Text
+        Télécharger en format Text
       </button>
       <button class="btn btn-default btn-sm" click.delegate="exportToExcel()">
         <i class="fa fa-file-excel-o text-success"></i>
-        Download to Excel
+        Télécharger en format Text
       </button>
-    </span>
-    <span style="margin-left: 10px">
       <button class="btn btn-default btn-sm" click.delegate="dynamicallyAddTitleHeader()">
         <i class="fa fa-plus"></i>
-        Dynamically Duplicate Title Column
+        Ajouter la colonne Titre dynamiquement
       </button>
     </span>
   </div>

@@ -42,7 +42,7 @@ npm start # OR yarn start
 
 Then open your browser to
 ```html
-http://localhost:8081
+http://localhost:8080
 ```
 
 ### Build Demo
@@ -61,7 +61,7 @@ npm start # OR yarn start
 
 Then open your browser to
 ```html
-http://localhost:8081
+http://localhost:8080
 ```
 
 ### Build Demo
