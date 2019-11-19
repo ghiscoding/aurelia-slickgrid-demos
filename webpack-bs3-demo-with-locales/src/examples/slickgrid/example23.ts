@@ -202,6 +202,18 @@ export class Example23 {
     console.log('Client sample, current Grid State:: ', this.aureliaGrid.gridStateService.getCurrentGridState());
   }
 
+  setFiltersDynamically() {
+    const presetLowestDay = moment().add(-5, 'days').format('YYYY-MM-DD');
+    const presetHighestDay = moment().add(25, 'days').format('YYYY-MM-DD');
+
+    // we can Set Filters Dynamically (or different filters) afterward through the FilterService
+    this.aureliaGrid.filterService.updateFilters([
+      { columnId: 'duration', searchTerms: ['14..78'], operator: 'RangeInclusive' },
+      { columnId: 'complete', operator: 'RangeExclusive', searchTerms: [12, 82] },
+      { columnId: 'finish', operator: 'RangeInclusive', searchTerms: [presetLowestDay, presetHighestDay] },
+    ]);
+  }
+
   refreshMetrics(e, args) {
     if (args && args.current >= 0) {
       setTimeout(() => {

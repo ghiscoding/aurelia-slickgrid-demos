@@ -7,7 +7,7 @@ import { AureliaGridInstance, Column, FieldType, Filters, Formatters, GridOption
 function randomBetween(min, max) {
   return Math.floor(Math.random() * (max - min + 1) + min);
 }
-const NB_ITEMS = 500;
+const NB_ITEMS = 1500;
 const URL_SAMPLE_COLLECTION_DATA = 'assets/data/collection_500_numbers.json';
 
 @autoinject()
@@ -253,6 +253,16 @@ export class Example4 {
   /** Save current Filters, Sorters in LocaleStorage or DB */
   saveCurrentGridState() {
     console.log('Client sample, current Grid State:: ', this.aureliaGrid.gridStateService.getCurrentGridState());
+  }
+
+  setFiltersDynamically() {
+    // we can Set Filters Dynamically (or different filters) afterward through the FilterService
+    this.aureliaGrid.filterService.updateFilters([
+      { columnId: 'duration', searchTerms: [2, 25, 48, 50] },
+      { columnId: 'complete', searchTerms: [95], operator: '<' },
+      { columnId: 'effort-driven', searchTerms: [true] },
+      { columnId: 'start', operator: '>=', searchTerms: ['2001-02-28'] },
+    ]);
   }
 
   refreshMetrics(e, args) {

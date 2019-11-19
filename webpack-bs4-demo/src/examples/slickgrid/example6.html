@@ -10,7 +10,13 @@
           <i class="fa fa-refresh fa-spin fa-lg fa-fw"></i>
         </span>
       </div>
-      <button class="btn btn-outline-secondary btn-sm" click.delegate="switchLanguage()">Switch Language</button>
+      <button class="btn btn-outline-secondary btn-sm" data-test="set-dynamic-filter"
+        click.delegate="setFiltersDynamically()">
+        Set Filters Dynamically
+      </button>
+      <button class="btn btn-outline-secondary btn-sm" click.delegate="switchLanguage()">
+        Switch Language
+      </button>
       <span><label>Locale</label>: ${selectedLanguage + '.json'}</span>
       <br />
       <span if.bind="metrics">
