@@ -299,6 +299,12 @@ export class Example5 {
     ]);
   }
 
+  setSortingDynamically() {
+    this.aureliaGrid.sortService.updateSorting([
+      { columnId: 'name', direction: 'DESC' },
+    ]);
+  }
+
   // THE FOLLOWING METHODS ARE ONLY FOR DEMO PURPOSES DO NOT USE THIS CODE
   // ---
 

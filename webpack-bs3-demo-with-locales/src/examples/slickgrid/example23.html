@@ -9,7 +9,7 @@
     items
   </span>
   <button class="btn btn-default btn-sm" click.delegate="aureliaGrid.filterService.clearFilters()"
-    data-test="clear-filter-button">
+          data-test="clear-filter-button">
     Clear Filters
   </button>
   <button class="btn btn-default btn-sm" click.delegate="aureliaGrid.sortService.clearSorting()">
@@ -18,10 +18,13 @@
   <button class="btn btn-default btn-sm" data-test="set-dynamic-filter" click.delegate="setFiltersDynamically()">
     Set Filters Dynamically
   </button>
+  <button class="btn btn-default btn-sm" data-test="set-dynamic-sorting" click.delegate="setSortingDynamically()">
+    Set Sorting Dynamically
+  </button>
 
   <aurelia-slickgrid grid-id="grid23" column-definitions.bind="columnDefinitions" grid-options.bind="gridOptions"
-    dataset.bind="dataset" asg-on-aurelia-grid-created.delegate="aureliaGridReady($event.detail)"
-    asg-on-grid-state-changed.delegate="gridStateChanged($event.detail)"
-    sg-on-row-count-changed.delegate="refreshMetrics($event.detail.eventData, $event.detail.args)">
+                     dataset.bind="dataset" asg-on-aurelia-grid-created.delegate="aureliaGridReady($event.detail)"
+                     asg-on-grid-state-changed.delegate="gridStateChanged($event.detail)"
+                     sg-on-row-count-changed.delegate="refreshMetrics($event.detail.eventData, $event.detail.args)">
   </aurelia-slickgrid>
 </template>

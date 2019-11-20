@@ -265,6 +265,14 @@ export class Example4 {
     ]);
   }
 
+  setSortingDynamically() {
+    this.aureliaGrid.sortService.updateSorting([
+      // orders matter, whichever is first in array will be the first sorted column
+      { columnId: 'duration', direction: 'ASC' },
+      { columnId: 'start', direction: 'DESC' },
+    ]);
+  }
+
   refreshMetrics(e, args) {
     if (args && args.current >= 0) {
       setTimeout(() => {

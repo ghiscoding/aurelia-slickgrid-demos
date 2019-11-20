@@ -11,7 +11,7 @@
         </span>
       </div>
       <button class="btn btn-outline-secondary btn-sm" data-test="set-dynamic-filter"
-        click.delegate="setFiltersDynamically()">
+              click.delegate="setFiltersDynamically()">
         Set Filters Dynamically
       </button>
       <button class="btn btn-outline-secondary btn-sm" click.delegate="switchLanguage()">
@@ -32,6 +32,10 @@
         <button class="btn btn-outline-secondary btn-xs" click.delegate="goToLastPage()">
           <i class="fa fa-caret-right fa-lg"></i>
         </button>
+        <button class="btn btn-outline-secondary btn-sm" data-test="set-dynamic-sorting"
+                click.delegate="setSortingDynamically()">
+          Set Sorting Dynamically
+        </button>
       </div>
     </div>
     <div class="col-sm-8">
@@ -42,8 +46,8 @@
   </div>
 
   <aurelia-slickgrid grid-id="grid1" column-definitions.bind="columnDefinitions" grid-options.bind="gridOptions"
-    dataset.bind="dataset" grid-height="200" grid-width="900"
-    asg-on-aurelia-grid-created.delegate="aureliaGridReady($event.detail)"
-    asg-on-grid-state-changed.delegate="gridStateChanged($event)">
+                     dataset.bind="dataset" grid-height="200" grid-width="900"
+                     asg-on-aurelia-grid-created.delegate="aureliaGridReady($event.detail)"
+                     asg-on-grid-state-changed.delegate="gridStateChanged($event)">
   </aurelia-slickgrid>
 </template>
