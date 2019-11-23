@@ -15,7 +15,7 @@ import {
 } from 'aurelia-slickgrid';
 import * as moment from 'moment-mini';
 
-const NB_ITEMS = 1200;
+const NB_ITEMS = 1500;
 
 function randomBetween(min: number, max: number): number {
   return Math.floor(Math.random() * (max - min + 1) + min);
@@ -47,8 +47,13 @@ export class Example23 {
   columnDefinitions: Column[];
   gridOptions: GridOption;
   dataset: any[];
-  selectedLanguage: string;
   metrics: Metrics;
+  filterList = [
+    { value: '', label: '' },
+    { value: 'currentYearTasks', label: 'Current Year Completed Tasks' },
+    { value: 'nextYearTasks', label: 'Next Year Active Tasks' }
+  ];
+  selectedPredefinedFilter: string;
 
   constructor() {
     // define the grid options & columns and then create the grid itself
@@ -72,7 +77,7 @@ export class Example23 {
   defineGrid() {
     this.columnDefinitions = [
       {
-        id: 'title', name: 'Title', field: 'id', minWidth: 100,
+        id: 'title', name: 'Title', field: 'id', headerKey: 'TITLE', minWidth: 100,
         sortable: true,
         filterable: true,
         params: { useFormatterOuputToFilter: true }
@@ -86,7 +91,7 @@ export class Example23 {
         }
       },
       {
-        id: 'complete', name: '% Complete', field: 'percentComplete', minWidth: 120,
+        id: 'percentComplete', name: '% Complete', field: 'percentComplete', headerKey: 'PERCENT_COMPLETE', minWidth: 120,
         sortable: true,
         formatter: Formatters.progressBar,
         type: FieldType.number,
@@ -100,11 +105,11 @@ export class Example23 {
         }
       },
       {
-        id: 'start', name: 'Start', field: 'start', formatter: Formatters.dateIso, sortable: true, minWidth: 75, width: 100, exportWithFormatter: true,
+        id: 'start', name: 'Start', field: 'start', headerKey: 'START', formatter: Formatters.dateIso, sortable: true, minWidth: 75, width: 100, exportWithFormatter: true,
         type: FieldType.date, filterable: true, filter: { model: Filters.compoundDate }
       },
       {
-        id: 'finish', name: 'Finish', field: 'finish', formatter: Formatters.dateIso, sortable: true, minWidth: 75, width: 120, exportWithFormatter: true,
+        id: 'finish', name: 'Finish', field: 'finish', headerKey: 'FINISH', formatter: Formatters.dateIso, sortable: true, minWidth: 75, width: 120, exportWithFormatter: true,
         type: FieldType.date,
         filterable: true,
         filter: {
@@ -112,7 +117,7 @@ export class Example23 {
         }
       },
       {
-        id: 'duration', field: 'duration', maxWidth: 90,
+        id: 'duration', field: 'duration', headerKey: 'DURATION', maxWidth: 90,
         type: FieldType.number,
         sortable: true,
         filterable: true, filter: {
@@ -121,7 +126,7 @@ export class Example23 {
         }
       },
       {
-        id: 'completed', name: 'Completed', field: 'completed', minWidth: 85, maxWidth: 90,
+        id: 'completed', name: 'Completed', field: 'completed', headerKey: 'COMPLETED', minWidth: 85, maxWidth: 90,
         formatter: Formatters.checkmark,
         exportWithFormatter: true, // you can set this property in the column definition OR in the grid options, column def has priority over grid options
         filterable: true,
@@ -144,22 +149,23 @@ export class Example23 {
       enableExcelCopyBuffer: true,
       enableFiltering: true,
       // enableFilterTrimWhiteSpace: true,
+      enableTranslate: true,
 
       // use columnDef searchTerms OR use presets as shown below
       presets: {
         filters: [
           //  you can use the 2 dots separator on all Filters which support ranges
           { columnId: 'duration', searchTerms: ['4..88'] },
-          // { columnId: 'complete', searchTerms: ['5..80'] }, // without operator will default to 'RangeExclusive'
+          // { columnId: 'percentComplete', searchTerms: ['5..80'] }, // without operator will default to 'RangeExclusive'
           // { columnId: 'finish', operator: 'RangeInclusive', searchTerms: [`${presetLowestDay}..${presetHighestDay}`] },
 
           // or you could also use 2 searchTerms values, instead of using the 2 dots (only works with SliderRange & DateRange Filters)
           // BUT make sure to provide the operator, else the filter service won't know that this is really a range
-          { columnId: 'complete', operator: 'RangeInclusive', searchTerms: [5, 80] }, // same result with searchTerms: ['5..80']
+          { columnId: 'percentComplete', operator: 'RangeInclusive', searchTerms: [5, 80] }, // same result with searchTerms: ['5..80']
           { columnId: 'finish', operator: 'RangeInclusive', searchTerms: [presetLowestDay, presetHighestDay] },
         ],
         sorters: [
-          { columnId: 'complete', direction: 'DESC' },
+          { columnId: 'percentComplete', direction: 'DESC' },
           { columnId: 'duration', direction: 'ASC' },
         ],
       }
@@ -192,6 +198,11 @@ export class Example23 {
     return tempDataset;
   }
 
+  clearFilters() {
+    this.selectedPredefinedFilter = '';
+    this.aureliaGrid.filterService.clearFilters();
+  }
+
   /** Dispatched event of a Grid State Changed event */
   gridStateChanged(gridState) {
     console.log('Client sample, Grid State changed:: ', gridState);
@@ -200,26 +211,6 @@ export class Example23 {
   /** Save current Filters, Sorters in LocaleStorage or DB */
   saveCurrentGridState() {
     console.log('Client sample, current Grid State:: ', this.aureliaGrid.gridStateService.getCurrentGridState());
-  }
-
-  setFiltersDynamically() {
-    const presetLowestDay = moment().add(-5, 'days').format('YYYY-MM-DD');
-    const presetHighestDay = moment().add(25, 'days').format('YYYY-MM-DD');
-
-    // we can Set Filters Dynamically (or different filters) afterward through the FilterService
-    this.aureliaGrid.filterService.updateFilters([
-      { columnId: 'duration', searchTerms: ['14..78'], operator: 'RangeInclusive' },
-      { columnId: 'complete', operator: 'RangeExclusive', searchTerms: [15, 85] },
-      { columnId: 'finish', operator: 'RangeInclusive', searchTerms: [presetLowestDay, presetHighestDay] },
-    ]);
-  }
-
-  setSortingDynamically() {
-    this.aureliaGrid.sortService.updateSorting([
-      // orders matter, whichever is first in array will be the first sorted column
-      { columnId: 'start', direction: 'DESC' },
-      { columnId: 'complete', direction: 'ASC' },
-    ]);
   }
 
   refreshMetrics(e, args) {
@@ -232,5 +223,43 @@ export class Example23 {
         };
       });
     }
+  }
+
+  setFiltersDynamically() {
+    const presetLowestDay = moment().add(-5, 'days').format('YYYY-MM-DD');
+    const presetHighestDay = moment().add(25, 'days').format('YYYY-MM-DD');
+
+    // we can Set Filters Dynamically (or different filters) afterward through the FilterService
+    this.aureliaGrid.filterService.updateFilters([
+      { columnId: 'duration', searchTerms: ['14..78'], operator: 'RangeInclusive' },
+      { columnId: 'percentComplete', operator: 'RangeExclusive', searchTerms: [15, 85] },
+      { columnId: 'finish', operator: 'RangeInclusive', searchTerms: [presetLowestDay, presetHighestDay] },
+    ]);
+  }
+
+  setSortingDynamically() {
+    this.aureliaGrid.sortService.updateSorting([
+      // orders matter, whichever is first in array will be the first sorted column
+      { columnId: 'finish', direction: 'DESC' },
+      { columnId: 'percentComplete', direction: 'ASC' },
+    ]);
+  }
+
+  usePredefinedFilter() {
+    let filters = [];
+    const currentYear = moment().year();
+
+    switch (this.selectedPredefinedFilter) {
+      case 'currentYearTasks':
+        filters = [
+          { columnId: 'finish', operator: OperatorType.rangeInclusive, searchTerms: [`${currentYear}-01-01`, `${currentYear}-12-31`] },
+          { columnId: 'completed', operator: OperatorType.equal, searchTerms: [true] },
+        ];
+        break;
+      case 'nextYearTasks':
+        filters = [{ columnId: 'start', operator: '>=', searchTerms: [`${currentYear + 1}-01-01`] }];
+        break;
+    }
+    this.aureliaGrid.filterService.updateFilters(filters);
   }
 }

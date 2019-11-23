@@ -16,7 +16,7 @@ import {
 } from 'aurelia-slickgrid';
 import * as moment from 'moment-mini';
 
-const NB_ITEMS = 1200;
+const NB_ITEMS = 1500;
 
 function randomBetween(min: number, max: number): number {
   return Math.floor(Math.random() * (max - min + 1) + min);
@@ -58,6 +58,12 @@ export class Example23 {
   dataset: any[];
   selectedLanguage: string;
   metrics: Metrics;
+  filterList = [
+    { value: '', label: '' },
+    { value: 'currentYearTasks', label: 'Current Year Completed Tasks' },
+    { value: 'nextYearTasks', label: 'Next Year Active Tasks' }
+  ];
+  selectedPredefinedFilter: string;
 
   constructor(private i18n: I18N) {
     // define the grid options & columns and then create the grid itself
@@ -101,7 +107,7 @@ export class Example23 {
         }
       },
       {
-        id: 'complete', name: '% Complete', field: 'percentComplete', headerKey: 'PERCENT_COMPLETE', minWidth: 120,
+        id: 'percentComplete', name: '% Complete', field: 'percentComplete', headerKey: 'PERCENT_COMPLETE', minWidth: 120,
         sortable: true,
         formatter: Formatters.progressBar,
         type: FieldType.number,
@@ -167,16 +173,16 @@ export class Example23 {
         filters: [
           //  you can use the 2 dots separator on all Filters which support ranges
           { columnId: 'duration', searchTerms: ['4..88'] },
-          // { columnId: 'complete', searchTerms: ['5..80'] }, // without operator will default to 'RangeExclusive'
+          // { columnId: 'percentComplete', searchTerms: ['5..80'] }, // without operator will default to 'RangeExclusive'
           // { columnId: 'finish', operator: 'RangeInclusive', searchTerms: [`${presetLowestDay}..${presetHighestDay}`] },
 
           // or you could also use 2 searchTerms values, instead of using the 2 dots (only works with SliderRange & DateRange Filters)
           // BUT make sure to provide the operator, else the filter service won't know that this is really a range
-          { columnId: 'complete', operator: 'RangeInclusive', searchTerms: [5, 80] }, // same result with searchTerms: ['5..80']
+          { columnId: 'percentComplete', operator: 'RangeInclusive', searchTerms: [5, 80] }, // same result with searchTerms: ['5..80']
           { columnId: 'finish', operator: 'RangeInclusive', searchTerms: [presetLowestDay, presetHighestDay] },
         ],
         sorters: [
-          { columnId: 'complete', direction: 'DESC' },
+          { columnId: 'percentComplete', direction: 'DESC' },
           { columnId: 'duration', direction: 'ASC' },
         ],
       }
@@ -209,6 +215,11 @@ export class Example23 {
     return tempDataset;
   }
 
+  clearFilters() {
+    this.selectedPredefinedFilter = '';
+    this.aureliaGrid.filterService.clearFilters();
+  }
+
   /** Dispatched event of a Grid State Changed event */
   gridStateChanged(gridState) {
     console.log('Client sample, Grid State changed:: ', gridState);
@@ -238,7 +249,7 @@ export class Example23 {
     // we can Set Filters Dynamically (or different filters) afterward through the FilterService
     this.aureliaGrid.filterService.updateFilters([
       { columnId: 'duration', searchTerms: ['14..78'], operator: 'RangeInclusive' },
-      { columnId: 'complete', operator: 'RangeExclusive', searchTerms: [15, 85] },
+      { columnId: 'percentComplete', operator: 'RangeExclusive', searchTerms: [15, 85] },
       { columnId: 'finish', operator: 'RangeInclusive', searchTerms: [presetLowestDay, presetHighestDay] },
     ]);
   }
@@ -246,13 +257,31 @@ export class Example23 {
   setSortingDynamically() {
     this.aureliaGrid.sortService.updateSorting([
       // orders matter, whichever is first in array will be the first sorted column
-      { columnId: 'start', direction: 'DESC' },
-      { columnId: 'complete', direction: 'ASC' },
+      { columnId: 'finish', direction: 'DESC' },
+      { columnId: 'percentComplete', direction: 'ASC' },
     ]);
   }
 
   switchLanguage() {
     const nextLocale = (this.selectedLanguage === 'en') ? 'fr' : 'en';
     this.i18n.setLocale(nextLocale).then(() => this.selectedLanguage = nextLocale);
+  }
+
+  usePredefinedFilter() {
+    let filters = [];
+    const currentYear = moment().year();
+
+    switch (this.selectedPredefinedFilter) {
+      case 'currentYearTasks':
+        filters = [
+          { columnId: 'finish', operator: OperatorType.rangeInclusive, searchTerms: [`${currentYear}-01-01`, `${currentYear}-12-31`] },
+          { columnId: 'completed', operator: OperatorType.equal, searchTerms: [true] },
+        ];
+        break;
+      case 'nextYearTasks':
+        filters = [{ columnId: 'start', operator: '>=', searchTerms: [`${currentYear + 1}-01-01`] }];
+        break;
+    }
+    this.aureliaGrid.filterService.updateFilters(filters);
   }
 }
