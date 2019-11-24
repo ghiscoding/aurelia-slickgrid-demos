@@ -245,11 +245,11 @@ export class Example23 {
     ]);
   }
 
-  usePredefinedFilter() {
+  predefinedFilterChanged(newPredefinedFilter) {
     let filters = [];
     const currentYear = moment().year();
 
-    switch (this.selectedPredefinedFilter) {
+    switch (newPredefinedFilter) {
       case 'currentYearTasks':
         filters = [
           { columnId: 'finish', operator: OperatorType.rangeInclusive, searchTerms: [`${currentYear}-01-01`, `${currentYear}-12-31`] },

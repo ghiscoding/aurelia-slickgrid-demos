@@ -267,11 +267,11 @@ export class Example23 {
     this.i18n.setLocale(nextLocale).then(() => this.selectedLanguage = nextLocale);
   }
 
-  usePredefinedFilter() {
+  predefinedFilterChanged(newPredefinedFilter) {
     let filters = [];
     const currentYear = moment().year();
 
-    switch (this.selectedPredefinedFilter) {
+    switch (newPredefinedFilter) {
       case 'currentYearTasks':
         filters = [
           { columnId: 'finish', operator: OperatorType.rangeInclusive, searchTerms: [`${currentYear}-01-01`, `${currentYear}-12-31`] },
