@@ -122,6 +122,7 @@ export class Example4 {
           },
           // we could add certain option(s) to the "multiple-select" plugin
           filterOptions: {
+            filter: true,
             maxHeight: 250,
             width: 175,
 
