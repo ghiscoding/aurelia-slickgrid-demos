@@ -51,7 +51,7 @@ export class Example9 {
 
   defineGrid() {
     this.columnDefinitions = [
-      { id: 'title', name: 'Title', field: 'title', headerKey: 'TITLE', filterable: true, type: FieldType.string },
+      { id: 'title', name: 'Title', field: 'title', header: 'Title', filterable: true, type: FieldType.string },
       {
         id: 'phone', name: 'Phone Number using mask', field: 'phone',
         filterable: true, sortable: true, minWidth: 100,
@@ -101,23 +101,21 @@ export class Example9 {
       enableFiltering: true,
       enableCellNavigation: true,
       gridMenu: {
-        // all titles optionally support translation keys, if you wish to use that feature then use the title properties finishing by 'Key'
-        // example "customTitle" for a plain string OR "customTitleKey" to use a translation key
-        customTitleKey: 'CUSTOM_COMMANDS',
-        iconCssClass: 'fa fa-ellipsis-v',
+        customTitle: 'Commands',
+        iconCssClass: 'fa fa-ellipsis-v', // defaults to "fa-bars"
         hideForceFitButton: true,
         hideSyncResizeButton: true,
         hideToggleFilterCommand: false, // show/hide internal custom commands
         menuWidth: 17,
         resizeOnShowHeaderRow: true,
         customItems: [
-          // add Custom Items Commands at the bottom of the already existing internal custom items
+          // add Custom Items Commands which will be appended to the existing internal custom items
           // you cannot override an internal items but you can hide them and create your own
           // also note that the internal custom commands are in the positionOrder range of 50-60,
-          // if you want yours at the bottom then start with 61, below 50 will make your command(s) on top
+          // if you want yours at the bottom then start with 61, below 50 will make your command(s) show on top
           {
             iconCssClass: 'fa fa-question-circle',
-            titleKey: 'HELP',
+            title: 'Help',
             disabled: false,
             command: 'help',
             positionOrder: 99
