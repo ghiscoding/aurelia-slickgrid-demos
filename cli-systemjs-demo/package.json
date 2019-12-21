@@ -13,7 +13,7 @@
     "aurelia-fetch-client": "^1.0.0",
     "aurelia-http-client": "^1.2.1",
     "aurelia-i18n": "^2.3.2",
-    "aurelia-slickgrid": "^2.15.2",
+    "aurelia-slickgrid": "^2.16.0",
     "bootstrap": "^3.4.1",
     "flatpickr": "^4.2.4",
     "font-awesome": "^4.7.0",
