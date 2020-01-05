@@ -177,10 +177,10 @@ export class Example6 {
   }
 
   /**
-   * Calling your GraphQL backend server should always return a Promise of type GraphqlResult
+   * Calling your GraphQL backend server should always return a Promise of type GraphqlPaginatedResult
    *
    * @param query
-   * @return Promise<GraphqlResult>
+   * @return Promise<GraphqlPaginatedResult>
    */
   getCustomerApiCall(query) {
     // in your case, you will call your WebAPI function (wich needs to return a Promise)
