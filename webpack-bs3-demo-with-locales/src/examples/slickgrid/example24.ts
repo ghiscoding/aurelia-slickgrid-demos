@@ -1,3 +1,4 @@
+import { autoinject } from 'aurelia-framework';
 import {
   AureliaGridInstance,
   Column,
@@ -10,7 +11,6 @@ import {
   GridOption,
 } from 'aurelia-slickgrid';
 import './example24.scss'; // provide custom CSS/SASS styling
-import { autoinject } from 'aurelia-framework';
 
 const actionFormatter: Formatter = (row, cell, value, columnDef, dataContext) => {
   if (dataContext.priority === 3) { // option 3 is High
@@ -39,14 +39,11 @@ const priorityExportFormatter: Formatter = (row, cell, value, columnDef, dataCon
     return '';
   }
   const count = +(value >= 3 ? 3 : value);
-  const text = count === 3 ? 'High' : (count === 2 ? 'Medium' : 'Low');
-
-  return text;
+  return count === 3 ? 'High' : (count === 2 ? 'Medium' : 'Low');
 };
 
-// create a custom translate Formatter (typically you would move that a separate file, for separation of concerns)
-const taskTranslateFormatter: Formatter = (row: number, cell: number, value: any, columnDef: any, dataContext: any, grid: any) => {
-  return `Task ${value}`;
+const taskFormatter: Formatter = (row: number, cell: number, value: any, columnDef: any, dataContext: any, grid: any) => {
+  return value !== undefined ? `Title ${value}` : '';
 };
 
 @autoinject()
@@ -107,48 +104,45 @@ export class Example24 {
     this.columnDefinitions = [
       { id: 'id', name: '#', field: 'id', maxWidth: 45, sortable: true, filterable: true },
       {
-        id: 'title', name: 'Title', field: 'id', header: 'Title', minWidth: 100,
-        formatter: taskTranslateFormatter,
+        id: 'title', name: 'Title', field: 'id', minWidth: 100,
+        formatter: taskFormatter,
         sortable: true,
         filterable: true,
         params: { useFormatterOuputToFilter: true }
       },
       {
-        id: 'percentComplete', header: 'Percent Complete', field: 'percentComplete', minWidth: 100,
+        id: 'percentComplete', name: 'Percent Complete', field: 'percentComplete', minWidth: 100,
         exportWithFormatter: false,
         sortable: true, filterable: true,
         filter: { model: Filters.slider, operator: '>=' },
         formatter: Formatters.percentCompleteBar, type: FieldType.number,
       },
       {
-        id: 'start', name: 'Start', field: 'start', header: 'Start', minWidth: 100,
+        id: 'start', name: 'Start', field: 'start', minWidth: 100,
         formatter: Formatters.dateIso, outputType: FieldType.dateIso, type: FieldType.date,
         filterable: true, filter: { model: Filters.compoundDate }
       },
-      { id: 'finish', name: 'Finish', field: 'finish', header: 'Finish', formatter: Formatters.dateIso, outputType: FieldType.dateIso, type: FieldType.date, minWidth: 100, filterable: true, filter: { model: Filters.compoundDate } },
+      { id: 'finish', name: 'Finish', field: 'finish', formatter: Formatters.dateIso, outputType: FieldType.dateIso, type: FieldType.date, minWidth: 100, filterable: true, filter: { model: Filters.compoundDate } },
       {
-        id: 'priority', header: 'Priority', field: 'priority',
+        id: 'priority', name: 'Priority', field: 'priority',
         exportCustomFormatter: priorityExportFormatter,
         formatter: priorityFormatter,
         sortable: true, filterable: true,
         filter: {
           collection: [{ value: '', label: '' }, { value: 1, label: 'Low' }, { value: 2, label: 'Medium' }, { value: 3, label: 'High' }],
           model: Filters.singleSelect,
-          enableTranslateLabel: true,
           filterOptions: {
             autoDropWidth: true
           }
         }
       },
       {
-        id: 'completed', header: 'Completed', field: 'completed',
-        exportCustomFormatter: Formatters.translateBoolean,
+        id: 'completed', name: 'Completed', field: 'completed',
         formatter: Formatters.checkmark,
         sortable: true, filterable: true,
         filter: {
           collection: [{ value: '', label: '' }, { value: true, label: 'True' }, { value: false, label: 'False' }],
           model: Filters.singleSelect,
-          enableTranslateLabel: true,
           filterOptions: {
             autoDropWidth: true
           }

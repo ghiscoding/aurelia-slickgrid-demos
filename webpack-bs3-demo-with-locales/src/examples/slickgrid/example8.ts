@@ -1,4 +1,3 @@
-import { I18N } from 'aurelia-i18n';
 import { autoinject } from 'aurelia-framework';
 import { AureliaGridInstance, Column, Formatters, GridOption } from 'aurelia-slickgrid';
 import './example8.scss'; // provide custom CSS/SASS styling
@@ -34,10 +33,9 @@ export class Example8 {
   selectedLanguage: string;
   visibleColumns;
 
-  constructor(private i18n: I18N) {
+  constructor() {
     // define the grid options & columns and then create the grid itself
     this.defineGrid();
-    this.selectedLanguage = this.i18n.getLocale();
   }
 
   attached() {
@@ -59,12 +57,12 @@ export class Example8 {
 
   defineGrid() {
     this.columnDefinitions = [
-      { id: 'title', name: 'Title', field: 'title', headerKey: 'TITLE' },
-      { id: 'duration', name: 'Duration', field: 'duration', headerKey: 'DURATION', sortable: true },
-      { id: 'percentComplete', name: '% Complete', field: 'percentComplete', headerKey: 'PERCENT_COMPLETE', sortable: true },
-      { id: 'start', name: 'Start', field: 'start', headerKey: 'START' },
-      { id: 'finish', name: 'Finish', field: 'finish', headerKey: 'FINISH' },
-      { id: 'completed', name: 'Completed', field: 'completed', headerKey: 'COMPLETED', formatter: Formatters.checkmark }
+      { id: 'title', name: 'Title', field: 'title', },
+      { id: 'duration', name: 'Duration', field: 'duration', sortable: true },
+      { id: 'percentComplete', name: '% Complete', field: 'percentComplete', sortable: true },
+      { id: 'start', name: 'Start', field: 'start', },
+      { id: 'finish', name: 'Finish', field: 'finish', },
+      { id: 'completed', name: 'Completed', field: 'completed', formatter: Formatters.checkmark }
     ];
 
     this.columnDefinitions.forEach((columnDef) => {
@@ -82,7 +80,7 @@ export class Example8 {
               // HOWEVER note that if you use "itemUsabilityOverride" has precedence when it is defined
               // disabled: (columnDef.id === 'completed'),
 
-              titleKey: 'HELP', // use "title" as plain string OR "titleKey" when using a translation key
+              title: 'Help',
               command: 'help',
               tooltip: 'Need assistance?',
               cssClass: 'bold',     // container css class
@@ -131,8 +129,6 @@ export class Example8 {
           }
         }
       },
-      enableTranslate: true,
-      i18n: this.i18n
     };
   }
 
@@ -151,10 +147,5 @@ export class Example8 {
       };
     }
     this.dataset = mockDataset;
-  }
-
-  switchLanguage() {
-    this.selectedLanguage = (this.selectedLanguage === 'en') ? 'fr' : 'en';
-    this.i18n.setLocale(this.selectedLanguage);
   }
 }

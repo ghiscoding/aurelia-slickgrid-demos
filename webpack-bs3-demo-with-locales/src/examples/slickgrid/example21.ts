@@ -25,8 +25,6 @@ export class Example21 {
   `;
 
   aureliaGrid: AureliaGridInstance;
-  grid: any;
-  dataView: any;
   columnDefinitions: Column[];
   gridOptions: GridOption;
   dataset: any[];
@@ -173,10 +171,12 @@ export class Example21 {
       filter[fieldName] = filterArg;
     }
 
-    this.aureliaGrid.dataView.setFilterArgs({
-      columnFilters: filter,
-      grid: this.aureliaGrid.slickGrid
-    });
-    this.aureliaGrid.dataView.refresh();
+    if (this.aureliaGrid && this.aureliaGrid.dataView) {
+      this.aureliaGrid.dataView.setFilterArgs({
+        columnFilters: filter,
+        grid: this.aureliaGrid.slickGrid
+      });
+      this.aureliaGrid.dataView.refresh();
+    }
   }
 }

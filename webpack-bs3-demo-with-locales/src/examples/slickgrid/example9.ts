@@ -1,4 +1,3 @@
-import { I18N } from 'aurelia-i18n';
 import { autoinject } from 'aurelia-framework';
 import {
   AureliaGridInstance,
@@ -35,14 +34,9 @@ export class Example9 {
   gridObj: any;
   selectedLanguage: string;
 
-  constructor(private i18n: I18N) {
+  constructor() {
     // define the grid options & columns and then create the grid itself
     this.defineGrid();
-
-    // always start with English for Cypress E2E tests to be consistent
-    const defaultLang = 'en';
-    this.i18n.setLocale(defaultLang);
-    this.selectedLanguage = defaultLang;
   }
 
   attached() {
@@ -58,18 +52,18 @@ export class Example9 {
 
   defineGrid() {
     this.columnDefinitions = [
-      { id: 'title', name: 'Title', field: 'title', headerKey: 'TITLE', filterable: true, type: FieldType.string },
-      { id: 'duration', name: 'Duration', field: 'duration', headerKey: 'DURATION', sortable: true, filterable: true, type: FieldType.string },
+      { id: 'title', name: 'Title', field: 'title', filterable: true, type: FieldType.string },
+      { id: 'duration', name: 'Duration', field: 'duration', sortable: true, filterable: true, type: FieldType.string },
       {
-        id: 'percentComplete', name: '% Complete', field: 'percentComplete', headerKey: 'PERCENT_COMPLETE', sortable: true, filterable: true,
+        id: 'percentComplete', name: '% Complete', field: 'percentComplete', sortable: true, filterable: true,
         type: FieldType.number,
         formatter: Formatters.percentCompleteBar,
         filter: { model: Filters.compoundSlider, params: { hideSliderNumber: false } }
       },
-      { id: 'start', name: 'Start', field: 'start', headerKey: 'START', filterable: true, type: FieldType.dateUs, filter: { model: Filters.compoundDate } },
-      { id: 'finish', name: 'Finish', field: 'finish', headerKey: 'FINISH', filterable: true, type: FieldType.dateUs, filter: { model: Filters.compoundDate } },
+      { id: 'start', name: 'Start', field: 'start', filterable: true, type: FieldType.dateUs, filter: { model: Filters.compoundDate } },
+      { id: 'finish', name: 'Finish', field: 'finish', filterable: true, type: FieldType.dateUs, filter: { model: Filters.compoundDate } },
       {
-        id: 'completed', name: 'Completed', field: 'completed', headerKey: 'COMPLETED', maxWidth: 80, formatter: Formatters.checkmark,
+        id: 'completed', name: 'Completed', field: 'completed', maxWidth: 80, formatter: Formatters.checkmark,
         type: FieldType.boolean,
         minWidth: 100,
         sortable: true,
@@ -102,9 +96,7 @@ export class Example9 {
           // we could disable the menu entirely by returning false
           return true;
         },
-        // all titles optionally support translation keys, if you wish to use that feature then use the title properties with the 'Key' suffix (e.g: titleKey)
-        // example "customTitle" for a plain string OR "customTitleKey" to use a translation key
-        customTitleKey: 'CUSTOM_COMMANDS',
+        customTitle: 'Custom Commands',
         iconCssClass: 'fa fa-ellipsis-v', // defaults to "fa-bars"
         hideForceFitButton: true,
         hideSyncResizeButton: true,
@@ -118,7 +110,7 @@ export class Example9 {
           // if you want yours at the bottom then start with 61, below 50 will make your command(s) show on top
           {
             iconCssClass: 'fa fa-question-circle',
-            titleKey: 'HELP',
+            title: 'Help',
             disabled: false,
             command: 'help',
             positionOrder: 90,
@@ -176,8 +168,6 @@ export class Example9 {
           console.log('Column selection changed from Grid Menu, visible columns: ', args.columns);
         }
       },
-      enableTranslate: true,
-      i18n: this.i18n
     };
   }
 
@@ -205,11 +195,6 @@ export class Example9 {
       phone += Math.round(Math.random() * 9) + '';
     }
     return phone;
-  }
-
-  switchLanguage() {
-    const nextLocale = (this.selectedLanguage === 'en') ? 'fr' : 'en';
-    this.i18n.setLocale(nextLocale).then(() => this.selectedLanguage = nextLocale);
   }
 
   toggleGridMenu(e) {
