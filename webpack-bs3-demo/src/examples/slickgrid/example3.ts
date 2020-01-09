@@ -357,6 +357,8 @@ export class Example3 {
         field: 'prerequisites',
         filterable: true,
         formatter: taskFormatter,
+        exportWithFormatter: true,
+        sanitizeDataExport: true,
         minWidth: 100,
         sortable: true,
         type: FieldType.string,
