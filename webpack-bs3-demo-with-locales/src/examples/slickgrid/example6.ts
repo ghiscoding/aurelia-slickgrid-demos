@@ -1,6 +1,7 @@
 import { Subscription, EventAggregator } from 'aurelia-event-aggregator';
 import { autoinject } from 'aurelia-framework';
 import { HttpClient } from 'aurelia-http-client';
+import * as moment from 'moment-mini';
 import {
   AureliaGridInstance,
   Column,
@@ -9,7 +10,7 @@ import {
   Formatters,
   GraphqlPaginatedResult,
   GraphqlService,
-  GraphqlServiceOption,
+  GraphqlServiceApi,
   GridOption,
   GridStateChange,
   Metrics,
@@ -17,8 +18,6 @@ import {
   OperatorType,
   SortDirection,
 } from 'aurelia-slickgrid';
-import * as moment from 'moment-mini';
-import { localeFrench } from 'locales/fr';
 
 const defaultPageSize = 20;
 const GRAPHQL_QUERY_DATASET_NAME = 'users';
@@ -51,17 +50,19 @@ export class Example6 {
   graphqlQuery = '';
   processing = false;
   status = { text: '', class: '' };
-  Subscription: Subscription;
+  subscription: Subscription;
 
   constructor(private ea: EventAggregator, private http: HttpClient) {
     // define the grid options & columns and then create the grid itself
     this.defineGrid();
-    this.Subscription = this.ea.subscribe('gridStateService:changed', (data) => console.log(data));
+
+    // always start with English for Cypress E2E tests to be consistent
+    this.subscription = this.ea.subscribe('gridStateService:changed', (data) => console.log(data));
   }
 
   detached() {
     this.saveCurrentGridState();
-    this.Subscription.dispose();
+    this.subscription.dispose();
   }
 
   aureliaGridReady(aureliaGrid: AureliaGridInstance) {
@@ -114,33 +115,28 @@ export class Example6 {
     const presetHighestDay = moment().add(20, 'days').format('YYYY-MM-DD');
 
     this.gridOptions = {
-      enableAutoResize: false,
       enableFiltering: true,
       enableCellNavigation: true,
-      enableCheckboxSelector: true,
-      enableRowSelection: true,
       gridMenu: {
         resizeOnShowHeaderRow: true,
       },
-      // Provide a custom locales set
-      // locales: localeFrench,
+      enablePagination: true, // you could optionally disable the Pagination
       pagination: {
         pageSizes: [10, 15, 20, 25, 30, 40, 50, 75, 100],
         pageSize: defaultPageSize,
         totalItems: 0
       },
-
       presets: {
         columns: [
-          { columnId: 'name', width: 120 },
+          { columnId: 'name', width: 100 },
           { columnId: 'gender', width: 55 },
           { columnId: 'company' },
           { columnId: 'billingAddressZip' }, // flip column position of Street/Zip to Zip/Street
           { columnId: 'billingAddressStreet', width: 120 },
           { columnId: 'finish', width: 130 },
         ],
-        // you can also type operator as string, e.g.: operator: 'EQ'
         filters: [
+          // you can use OperatorType or type them as string, e.g.: operator: 'EQ'
           { columnId: 'gender', searchTerms: ['male'], operator: OperatorType.equal },
           { columnId: 'name', searchTerms: ['John Doe'], operator: OperatorType.contains },
           { columnId: 'company', searchTerms: ['xyz'], operator: 'IN' },
@@ -155,11 +151,18 @@ export class Example6 {
         ],
         pagination: { pageNumber: 2, pageSize: 20 }
       },
-
       backendServiceApi: {
         service: new GraphqlService(),
-        options: this.getBackendOptions(this.isWithCursor),
-        onError: (e) => console.log(e),
+        options: {
+          datasetName: GRAPHQL_QUERY_DATASET_NAME, // the only REQUIRED property
+          extraQueryArguments: [{     // optionally add some extra query arguments as input query arguments
+            field: 'userId',
+            value: 123
+          }],
+          // when dealing with complex objects, we want to keep our field name with double quotes
+          // example with gender: query { users (orderBy:[{field:"gender",direction:ASC}]) {}
+          keepArgumentFieldDoubleQuotes: true
+        },
         // you can define the onInit callback OR enable the "executeProcessCommandOnInit" flag in the service init
         // onInit: (query) => this.getCustomerApiCall(query)
         preProcess: () => this.displaySpinner(true),
@@ -168,7 +171,7 @@ export class Example6 {
           this.metrics = result.metrics;
           this.displaySpinner(false);
         }
-      },
+      } as GraphqlServiceApi
     };
   }
 
@@ -183,25 +186,6 @@ export class Example6 {
     this.status = (isProcessing)
       ? { text: 'processing...', class: 'alert alert-danger' }
       : { text: 'done', class: 'alert alert-success' };
-  }
-
-  getBackendOptions(withCursor: boolean): GraphqlServiceOption {
-    // with cursor, paginationOptions can be: { first, last, after, before }
-    // without cursor, paginationOptions can be: { first, last, offset }
-    return {
-      columnDefinitions: this.columnDefinitions,
-      datasetName: GRAPHQL_QUERY_DATASET_NAME,
-      isWithCursor: withCursor,
-      addLocaleIntoQuery: true,
-      extraQueryArguments: [{
-        field: 'userId',
-        value: 123
-      }],
-
-      // when dealing with complex objects, we want to keep our field name with double quotes
-      // example with gender: query { users (orderBy:[{field:"gender",direction:ASC}]) {}
-      keepArgumentFieldDoubleQuotes: true
-    };
   }
 
   /**
@@ -228,13 +212,8 @@ export class Example6 {
       setTimeout(() => {
         this.graphqlQuery = this.aureliaGrid.backendService.buildQuery();
         resolve(mockedResult);
-      }, 500);
+      }, 250);
     });
-  }
-
-  /** Dispatched event of a Grid State Changed event */
-  gridStateChanged(gridStateChanges: GridStateChange) {
-    console.log('GraphQL sample, Grid State changed:: ', gridStateChanges);
   }
 
   goToFirstPage() {
@@ -243,6 +222,11 @@ export class Example6 {
 
   goToLastPage() {
     this.aureliaGrid.paginationService.goToLastPage();
+  }
+
+  /** Dispatched event of a Grid State Changed event */
+  gridStateChanged(gridStateChanges: GridStateChange) {
+    console.log('GraphQL sample, Grid State changed:: ', gridStateChanges);
   }
 
   saveCurrentGridState() {

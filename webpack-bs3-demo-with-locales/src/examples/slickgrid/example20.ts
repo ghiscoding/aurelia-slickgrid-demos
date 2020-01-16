@@ -6,7 +6,7 @@ import './example20.scss'; // provide custom CSS/SASS styling
 export class Example20 {
   title = 'Example 20: Pinned (frozen) Columns/Rows';
   subTitle = `
-    This example demonstrates the use of Pinned (aka frozen) Columns and/or Rows<br/>
+    This example demonstrates the use of Pinned (aka frozen) Columns and/or Rows (<a href="https://github.com/ghiscoding/aurelia-slickgrid/wiki/Pinned-(aka-Frozen)-Columns-Rows" target="_blank">Wiki docs</a>)
     <ul>
       <li>Option to pin any number of columns (left only) or rows</li>
       <li>Option to pin the rows at the bottom instead of the top (default)</li>
@@ -23,6 +23,7 @@ export class Example20 {
   frozenRowCount = 3;
   isFrozenBottom = false;
   dataset: any[];
+  selectedLanguage: string;
 
   constructor() {
     this.defineGrid();
@@ -120,22 +121,16 @@ export class Example20 {
     ];
 
     this.gridOptions = {
-      enableAutoResize: true,
       autoResize: {
         containerId: 'demo-container',
         sidePadding: 15
       },
       alwaysShowVerticalScroll: false, // disable scroll since we don't want it to show on the left pinned columns
       enableCellNavigation: true,
-      enableFiltering: true,
-      asyncEditorLoading: true,
-      forceFitColumns: false,
-      autoEdit: false,
+      enableExcelCopyBuffer: true,
       frozenColumn: this.frozenColumnCount,
       frozenRow: this.frozenRowCount,
       // frozenBottom: true, // if you want to freeze the bottom instead of the top, you can enable this property
-      showHeaderRow: true,
-      syncColumnCellResize: false,
     };
   }
 

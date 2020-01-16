@@ -11,7 +11,7 @@ import {
   Formatters,
   GraphqlPaginatedResult,
   GraphqlService,
-  GraphqlServiceOption,
+  GraphqlServiceApi,
   GridOption,
   GridStateChange,
   Metrics,
@@ -52,18 +52,22 @@ export class Example6 {
   processing = false;
   selectedLanguage: string;
   status = { text: '', class: '' };
-  Subscription: Subscription;
+  subscription: Subscription;
 
   constructor(private ea: EventAggregator, private http: HttpClient, private i18n: I18N) {
     // define the grid options & columns and then create the grid itself
     this.defineGrid();
-    this.selectedLanguage = this.i18n.getLocale();
-    this.Subscription = this.ea.subscribe('gridStateService:changed', (data) => console.log(data));
+
+    // always start with English for Cypress E2E tests to be consistent
+    const defaultLang = 'en';
+    this.i18n.setLocale(defaultLang);
+    this.selectedLanguage = defaultLang;
+    this.subscription = this.ea.subscribe('gridStateService:changed', (data) => console.log(data));
   }
 
   detached() {
     this.saveCurrentGridState();
-    this.Subscription.dispose();
+    this.subscription.dispose();
   }
 
   aureliaGridReady(aureliaGrid: AureliaGridInstance) {
@@ -131,6 +135,7 @@ export class Example6 {
       gridMenu: {
         resizeOnShowHeaderRow: true,
       },
+      enablePagination: true, // you could optionally disable the Pagination
       pagination: {
         pageSizes: [10, 15, 20, 25, 30, 40, 50, 75, 100],
         pageSize: defaultPageSize,
@@ -163,7 +168,17 @@ export class Example6 {
       },
       backendServiceApi: {
         service: new GraphqlService(),
-        options: this.getBackendOptions(this.isWithCursor),
+        options: {
+          datasetName: GRAPHQL_QUERY_DATASET_NAME, // the only REQUIRED property
+          addLocaleIntoQuery: true,   // optionally add current locale into the query
+          extraQueryArguments: [{     // optionally add some extra query arguments as input query arguments
+            field: 'userId',
+            value: 123
+          }],
+          // when dealing with complex objects, we want to keep our field name with double quotes
+          // example with gender: query { users (orderBy:[{field:"gender",direction:ASC}]) {}
+          keepArgumentFieldDoubleQuotes: true
+        },
         // you can define the onInit callback OR enable the "executeProcessCommandOnInit" flag in the service init
         // onInit: (query) => this.getCustomerApiCall(query)
         preProcess: () => this.displaySpinner(true),
@@ -172,7 +187,7 @@ export class Example6 {
           this.metrics = result.metrics;
           this.displaySpinner(false);
         }
-      }
+      } as GraphqlServiceApi
     };
   }
 
@@ -187,25 +202,6 @@ export class Example6 {
     this.status = (isProcessing)
       ? { text: 'processing...', class: 'alert alert-danger' }
       : { text: 'done', class: 'alert alert-success' };
-  }
-
-  getBackendOptions(withCursor: boolean): GraphqlServiceOption {
-    // with cursor, paginationOptions can be: { first, last, after, before }
-    // without cursor, paginationOptions can be: { first, last, offset }
-    return {
-      columnDefinitions: this.columnDefinitions,
-      datasetName: GRAPHQL_QUERY_DATASET_NAME,
-      isWithCursor: withCursor,
-      addLocaleIntoQuery: true,
-      extraQueryArguments: [{
-        field: 'userId',
-        value: 123
-      }],
-
-      // when dealing with complex objects, we want to keep our field name with double quotes
-      // example with gender: query { users (orderBy:[{field:"gender",direction:ASC}]) {}
-      keepArgumentFieldDoubleQuotes: true
-    };
   }
 
   /**
