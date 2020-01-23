@@ -77,7 +77,7 @@ export class Example6 {
   defineGrid() {
     this.columnDefinitions = [
       {
-        id: 'name', field: 'name', headerKey: 'NAME', width: 60,
+        id: 'name', field: 'name', nameKey: 'NAME', width: 60,
         type: FieldType.string,
         sortable: true,
         filterable: true,
@@ -86,14 +86,14 @@ export class Example6 {
         }
       },
       {
-        id: 'gender', field: 'gender', headerKey: 'GENDER', filterable: true, sortable: true, width: 60,
+        id: 'gender', field: 'gender', nameKey: 'GENDER', filterable: true, sortable: true, width: 60,
         filter: {
           model: Filters.singleSelect,
           collection: [{ value: '', label: '' }, { value: 'male', label: 'male', labelKey: 'MALE' }, { value: 'female', label: 'female', labelKey: 'FEMALE' }]
         }
       },
       {
-        id: 'company', field: 'company', headerKey: 'COMPANY', width: 60,
+        id: 'company', field: 'company', nameKey: 'COMPANY', width: 60,
         sortable: true,
         filterable: true,
         filter: {
@@ -104,9 +104,9 @@ export class Example6 {
           } as MultipleSelectOption
         }
       },
-      { id: 'billingAddressStreet', field: 'billing.address.street', headerKey: 'BILLING.ADDRESS.STREET', width: 60, filterable: true, sortable: true },
+      { id: 'billingAddressStreet', field: 'billing.address.street', nameKey: 'BILLING.ADDRESS.STREET', width: 60, filterable: true, sortable: true },
       {
-        id: 'billingAddressZip', field: 'billing.address.zip', headerKey: 'BILLING.ADDRESS.ZIP', width: 60,
+        id: 'billingAddressZip', field: 'billing.address.zip', nameKey: 'BILLING.ADDRESS.ZIP', width: 60,
         type: FieldType.number,
         filterable: true, sortable: true,
         filter: {

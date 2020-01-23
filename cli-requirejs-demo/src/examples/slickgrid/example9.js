@@ -46,18 +46,18 @@ export class Example9 {
 
   defineGrid() {
     this.columnDefinitions = [
-      { id: 'title', name: 'Title', field: 'title', headerKey: 'TITLE', filterable: true, type: FieldType.string },
-      { id: 'duration', name: 'Duration', field: 'duration', headerKey: 'DURATION', sortable: true, filterable: true, type: FieldType.string },
+      { id: 'title', name: 'Title', field: 'title', nameKey: 'TITLE', filterable: true, type: FieldType.string },
+      { id: 'duration', name: 'Duration', field: 'duration', nameKey: 'DURATION', sortable: true, filterable: true, type: FieldType.string },
       {
         id: '%', name: '% Complete', field: 'percentComplete', sortable: true, filterable: true,
         type: FieldType.number,
         formatter: Formatters.percentCompleteBar,
         filter: { model: Filters.compoundSlider, params: { hideSliderNumber: false } }
       },
-      { id: 'start', name: 'Start', field: 'start', headerKey: 'START', filterable: true, type: FieldType.dateUs, filter: { model: Filters.compoundDate } },
-      { id: 'finish', name: 'Finish', field: 'finish', headerKey: 'FINISH', filterable: true, type: FieldType.dateUs, filter: { model: Filters.compoundDate } },
+      { id: 'start', name: 'Start', field: 'start', nameKey: 'START', filterable: true, type: FieldType.dateUs, filter: { model: Filters.compoundDate } },
+      { id: 'finish', name: 'Finish', field: 'finish', nameKey: 'FINISH', filterable: true, type: FieldType.dateUs, filter: { model: Filters.compoundDate } },
       {
-        id: 'completed', name: 'Completed', field: 'completed', headerKey: 'COMPLETED', maxWidth: 80, formatter: Formatters.checkmark,
+        id: 'completed', name: 'Completed', field: 'completed', nameKey: 'COMPLETED', maxWidth: 80, formatter: Formatters.checkmark,
         type: FieldType.boolean,
         minWidth: 100,
         sortable: true,
