@@ -1,4 +1,3 @@
-import { EventAggregator } from 'aurelia-event-aggregator';
 import { inject } from 'aurelia-framework';
 import { I18N } from 'aurelia-i18n';
 import { HttpClient } from 'aurelia-http-client';
@@ -14,7 +13,7 @@ import {
 const defaultPageSize = 20;
 const GRAPHQL_QUERY_DATASET_NAME = 'users';
 
-@inject(EventAggregator, HttpClient, I18N)
+@inject(HttpClient, I18N)
 export class Example6 {
   title = 'Example 6: Grid with Backend GraphQL Service';
   subTitle = `
@@ -45,15 +44,13 @@ export class Example6 {
   status = { text: '', class: '' };
   Subscription;
 
-  constructor(ea, http, i18n) {
-    this.ea = ea;
+  constructor(http, i18n) {
     this.http = http;
     this.i18n = i18n;
 
     // define the grid options & columns and then create the grid itself
     this.defineGrid();
     this.selectedLanguage = this.i18n.getLocale();
-    this.Subscription = this.ea.subscribe('gridStateService:changed', (data) => console.log(data));
   }
 
   detached() {

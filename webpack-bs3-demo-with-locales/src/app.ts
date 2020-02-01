@@ -1,5 +1,5 @@
 
-import { Aurelia, autoinject, PLATFORM } from 'aurelia-framework';
+import { autoinject, PLATFORM } from 'aurelia-framework';
 import { Router, RouterConfiguration } from 'aurelia-router';
 
 @autoinject()

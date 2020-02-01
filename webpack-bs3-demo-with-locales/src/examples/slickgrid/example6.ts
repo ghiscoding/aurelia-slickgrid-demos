@@ -1,4 +1,3 @@
-import { EventAggregator } from 'aurelia-event-aggregator';
 import { autoinject } from 'aurelia-framework';
 import { HttpClient } from 'aurelia-http-client';
 import * as moment from 'moment-mini';
@@ -51,7 +50,7 @@ export class Example6 {
   processing = false;
   status = { text: '', class: '' };
 
-  constructor(private ea: EventAggregator, private http: HttpClient, private i18n: I18N) {
+  constructor(private http: HttpClient) {
     // define the grid options & columns and then create the grid itself
     this.defineGrid();
   }
@@ -106,7 +105,7 @@ export class Example6 {
         filter: {
           model: Filters.compoundInput
         },
-        formatter: Formatters.multiple, params: { formatters: [Formatters.complexObject, Formatters.translate] }
+        formatter: Formatters.complexObject
       },
       {
         id: 'finish', field: 'finish', name: 'Date', formatter: Formatters.dateIso, sortable: true, minWidth: 90, width: 120, exportWithFormatter: true,
@@ -125,11 +124,9 @@ export class Example6 {
     this.gridOptions = {
       enableFiltering: true,
       enableCellNavigation: true,
-      enableTranslate: true,
       createPreHeaderPanel: true,
       showPreHeaderPanel: true,
       preHeaderPanelHeight: 28,
-      i18n: this.i18n,
       gridMenu: {
         resizeOnShowHeaderRow: true,
       },

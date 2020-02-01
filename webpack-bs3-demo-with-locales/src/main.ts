@@ -25,17 +25,19 @@ Bluebird.config({
 
 // if you use CSS instead of SASS
 import 'aurelia-slickgrid/dist/styles/css/slickgrid-theme-bootstrap.css';
+import { GridOption } from 'aurelia-slickgrid';
 
 export function configure(aurelia: Aurelia) {
   aurelia.use
     .standardConfiguration()
     .feature(PLATFORM.moduleName('resources/index'));
 
-  aurelia.use.plugin(PLATFORM.moduleName('aurelia-slickgrid'), config => {
+  aurelia.use.plugin(PLATFORM.moduleName('aurelia-slickgrid'), (config: { options: GridOption }) => {
     // change any of the default global options
     config.options.gridMenu.iconCssClass = 'fa fa-bars';
-
+    config.options.enableTranslate = false;
     // Provide a custom locales set
+    // config.options.locale = 'fr';
     // config.options.locales = localeFrench;
   });
 

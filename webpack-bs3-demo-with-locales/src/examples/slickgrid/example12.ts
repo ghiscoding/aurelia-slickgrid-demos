@@ -11,11 +11,10 @@ import {
   GridOption
 } from 'aurelia-slickgrid';
 import { localeFrench } from 'locales/fr';
-import { HttpClient } from 'aurelia-fetch-client';
 
-const URL_SAMPLE_COLLECTION_DATA = 'assets/data/collection_500_numbers.json';
+const NB_ITEMS = 1500;
 
-const taskTranslateFormatter: Formatter = (row: number, cell: number, value: any, columnDef: any, dataContext: any, grid: any) => {
+const taskFormatter: Formatter = (row: number, cell: number, value: any, columnDef: any, dataContext: any, grid: any) => {
   return value !== undefined ? `Titre ${value}` : '';
 };
 const exportBooleanFormatter: Formatter = (row: number, cell: number, value: any, columnDef: any, dataContext: any, grid: any) => {
@@ -39,14 +38,14 @@ export class Example12 {
   selectedLanguage: string;
   duplicateTitleHeaderCount = 1;
 
-  constructor(private http: HttpClient) {
+  constructor() {
     // define the grid options & columns and then create the grid itself
     this.defineGrid();
   }
 
   attached() {
     // populate the dataset once the grid is ready
-    this.getData();
+    this.getData(NB_ITEMS);
   }
 
   aureliaGridReady(aureliaGrid: AureliaGridInstance) {
@@ -56,7 +55,7 @@ export class Example12 {
   /* Define grid Options and Columns */
   defineGrid() {
     this.columnDefinitions = [
-      { id: 'title', name: 'Titre', field: 'id', sortable: true, minWidth: 100, filterable: true, formatter: taskTranslateFormatter, params: { useFormatterOuputToFilter: true } },
+      { id: 'title', name: 'Titre', field: 'id', sortable: true, minWidth: 100, filterable: true, formatter: taskFormatter, params: { useFormatterOuputToFilter: true } },
       { id: 'description', name: 'Description', field: 'description', filterable: true, sortable: true, minWidth: 80 },
       {
         id: 'duration', name: 'Durée (jours)', field: 'duration', sortable: true,
@@ -95,8 +94,20 @@ export class Example12 {
       enableFiltering: true,
 
       // Provide a custom locales set
+      locale: 'fr',
       locales: localeFrench,
-
+      showCustomFooter: true, // display some metrics in the bottom custom footer
+      customFooterOptions: {
+        metricTexts: {
+          // default text displayed in the metrics section on the right
+          items: 'Éléments',
+          of: 'de',
+          lastUpdateKey: 'Dernière mise à jour',
+        },
+        dateFormat: 'YYYY-MM-DD hh:mm a',
+        hideTotalItemCount: false,
+        hideLastUpdateTimestamp: false,
+      },
       excelExportOptions: {
         // set at the grid option level, meaning all column will evaluate the Formatter (when it has a Formatter defined)
         exportWithFormatter: true,
@@ -114,10 +125,10 @@ export class Example12 {
     };
   }
 
-  getData() {
+  getData(count: number) {
     // mock a dataset
     this.dataset = [];
-    for (let i = 0; i < 1000; i++) {
+    for (let i = 0; i < count; i++) {
       const randomYear = 2000 + Math.floor(Math.random() * 10);
       const randomMonth = Math.floor(Math.random() * 11);
       const randomDay = Math.floor((Math.random() * 29));
@@ -136,7 +147,7 @@ export class Example12 {
   }
 
   dynamicallyAddTitleHeader() {
-    const newCol = { id: `title${this.duplicateTitleHeaderCount++}`, field: 'id', name: 'Titre', sortable: true, minWidth: 100, filterable: true, formatter: taskTranslateFormatter, params: { useFormatterOuputToFilter: true } };
+    const newCol = { id: `title${this.duplicateTitleHeaderCount++}`, field: 'id', name: 'Titre', formatter: taskFormatter, sortable: true, minWidth: 100, filterable: true, params: { useFormatterOuputToFilter: true } };
     this.columnDefinitions.push(newCol);
   }
 

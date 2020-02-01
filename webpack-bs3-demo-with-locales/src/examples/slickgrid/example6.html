@@ -24,16 +24,7 @@
           Set Sorting Dynamically
         </button>
       </div>
-      <div class="row col-md-12">
-        <button class="btn btn-default btn-sm" click.delegate="switchLanguage()" data-test="language-button">
-          <i class="fa fa-language"></i>
-          Switch Language
-        </button>
-        <b>Locale:</b>
-        <span style="font-style: italic" data-test="selected-locale">
-          ${selectedLanguage + '.json'}
-        </span>
-      </div>
+
       <br />
       <div if.bind="metrics" style="margin: 10px 0px">
         <b>Metrics:</b> ${metrics.endTime | dateFormat: 'DD MMM, h:mm:ss a'} | ${metrics.executionTime}ms |

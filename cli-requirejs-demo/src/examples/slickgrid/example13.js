@@ -1,8 +1,5 @@
-import { inject } from 'aurelia-framework';
-import { EventAggregator } from 'aurelia-event-aggregator';
 import { Aggregators, FieldType, Formatters, GroupTotalFormatters, SortDirectionNumber, Sorters } from 'aurelia-slickgrid';
 
-@inject(EventAggregator)
 export class Example13 {
   title = 'Example 13: Grouping & Aggregators';
   subTitle = `
@@ -22,8 +19,7 @@ export class Example13 {
   subOnBeforeExport;
   subOnAfterExport;
 
-  constructor(ea) {
-    this.ea = ea;
+  constructor() {
     // define the grid options & columns and then create the grid itself
     this.defineGrid();
   }
@@ -31,9 +27,6 @@ export class Example13 {
   attached() {
     // populate the dataset once the grid is ready
     this.loadData(500);
-
-    this.subOnBeforeExport = this.ea.subscribe('asg:onBeforeExportToFile', () => this.processing = true);
-    this.subOnAfterExport = this.ea.subscribe('asg:onAfterExportToFile', () => this.processing = false);
   }
 
   detached() {
