@@ -12,6 +12,8 @@ import {
   GridOption
 } from 'aurelia-slickgrid';
 
+const NB_ITEMS = 1500;
+
 // create a custom translate Formatter (typically you would move that a separate file, for separation of concerns)
 const taskTranslateFormatter: Formatter = (row: number, cell: number, value: any, columnDef: any, dataContext: any, grid: any) => {
   const gridOptions = (grid && typeof grid.getOptions === 'function') ? grid.getOptions() : {};
@@ -60,12 +62,16 @@ export class Example12 {
   constructor(private i18n: I18N) {
     // define the grid options & columns and then create the grid itself
     this.defineGrid();
-    this.selectedLanguage = this.i18n.getLocale();
+
+    // always start with English for Cypress E2E tests to be consistent
+    const defaultLang = 'en';
+    this.i18n.setLocale(defaultLang);
+    this.selectedLanguage = defaultLang;
   }
 
   attached() {
     // populate the dataset once the grid is ready
-    this.getData();
+    this.getData(NB_ITEMS);
   }
 
   aureliaGridReady(aureliaGrid: AureliaGridInstance) {
@@ -136,6 +142,21 @@ export class Example12 {
       enableFiltering: true,
       enableTranslate: true,
       i18n: this.i18n,
+      showCustomFooter: true, // display some metrics in the bottom custom footer
+      customFooterOptions: {
+        metricTexts: {
+          // default text displayed in the metrics section on the right
+          // all texts optionally support translation keys,
+          // if you wish to use that feature then use the text properties with the 'Key' suffix (e.g: itemsKey, ofKey, lastUpdateKey)
+          // example "items" for a plain string OR "itemsKey" to use a translation key
+          itemsKey: 'ITEMS',
+          ofKey: 'OF',
+          lastUpdateKey: 'LAST_UPDATE',
+        },
+        dateFormat: 'YYYY-MM-DD hh:mm a',
+        hideTotalItemCount: false,
+        hideLastUpdateTimestamp: false,
+      },
       exportOptions: {
         // set at the grid option level, meaning all column will evaluate the Formatter (when it has a Formatter defined)
         exportWithFormatter: true,
@@ -148,10 +169,10 @@ export class Example12 {
     };
   }
 
-  getData() {
+  getData(count: number) {
     // mock a dataset
     this.dataset = [];
-    for (let i = 0; i < 1000; i++) {
+    for (let i = 0; i < count; i++) {
       const randomYear = 2000 + Math.floor(Math.random() * 10);
       const randomMonth = Math.floor(Math.random() * 11);
       const randomDay = Math.floor((Math.random() * 29));
@@ -189,8 +210,9 @@ export class Example12 {
     });
   }
 
-  switchLanguage() {
-    this.selectedLanguage = (this.selectedLanguage === 'en') ? 'fr' : 'en';
-    this.i18n.setLocale(this.selectedLanguage);
+  async switchLanguage() {
+    const nextLanguage = (this.selectedLanguage === 'en') ? 'fr' : 'en';
+    await this.i18n.setLocale(nextLanguage);
+    this.selectedLanguage = nextLanguage;
   }
 }
