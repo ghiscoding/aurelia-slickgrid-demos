@@ -1,4 +1,4 @@
-import { Subscription, EventAggregator } from 'aurelia-event-aggregator';
+import { EventAggregator } from 'aurelia-event-aggregator';
 import { autoinject } from 'aurelia-framework';
 import { HttpClient } from 'aurelia-http-client';
 import * as moment from 'moment-mini';
@@ -50,17 +50,14 @@ export class Example6 {
   graphqlQuery = '';
   processing = false;
   status = { text: '', class: '' };
-  subscription: Subscription;
 
   constructor(private ea: EventAggregator, private http: HttpClient, private i18n: I18N) {
     // define the grid options & columns and then create the grid itself
     this.defineGrid();
-    this.subscription = this.ea.subscribe('gridStateService:changed', (data) => console.log(data));
   }
 
   detached() {
     this.saveCurrentGridState();
-    this.subscription.dispose();
   }
 
   aureliaGridReady(aureliaGrid: AureliaGridInstance) {
@@ -82,7 +79,7 @@ export class Example6 {
         id: 'gender', field: 'gender', name: 'Gender', filterable: true, sortable: true, width: 60, columnGroup: 'Customer Information',
         filter: {
           model: Filters.singleSelect,
-          collection: [{ value: '', label: '' }, { value: 'male', label: 'male' }, { value: 'female', label: 'female' }]
+          collection: [{ value: '', label: '' }, { value: 'male', label: 'Male' }, { value: 'female', label: 'Female' }]
         }
       },
       {
@@ -229,7 +226,7 @@ export class Example6 {
       setTimeout(() => {
         this.graphqlQuery = this.aureliaGrid.backendService.buildQuery();
         resolve(mockedResult);
-      }, 250);
+      }, 150);
     });
   }
 
@@ -270,11 +267,5 @@ export class Example6 {
       { columnId: 'billingAddressZip', direction: 'DESC' },
       { columnId: 'company', direction: 'ASC' },
     ]);
-  }
-
-  async switchLanguage() {
-    const nextLanguage = (this.selectedLanguage === 'en') ? 'fr' : 'en';
-    await this.i18n.setLocale(nextLanguage);
-    this.selectedLanguage = nextLanguage;
   }
 }

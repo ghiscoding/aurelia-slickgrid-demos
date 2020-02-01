@@ -1,18 +1,22 @@
-import { autoinject } from 'aurelia-framework';
-import { Column, FieldType, Filters, Formatters, GridOption } from 'aurelia-slickgrid';
+import { autoinject, bindable } from 'aurelia-framework';
+import { AureliaGridInstance, Column, FieldType, Filters, Formatters, GridOption, GridStateChange } from 'aurelia-slickgrid';
+import './example10.scss'; // provide custom CSS/SASS styling
 
 @autoinject()
 export class Example2 {
-  title = 'Example 10: Grid with Row Selection';
+  title = 'Example 10: Multiple Grids with Row Selection';
   subTitle = `
     Row selection, single or multi-select (<a href="https://github.com/ghiscoding/aurelia-slickgrid/wiki/Row-Selection" target="_blank">Wiki docs</a>).
     <ul>
       <li>Single Select, you can click on any cell to make the row active</li>
       <li>Multiple Selections, you need to specifically click on the checkbox to make 1 or more selections</li>
-      <li>Note that "enableExcelCopyBuffer" cannot be used at the same time as Row Selection because there can exist only 1 SelectionModel at a time</li>
+      <li>NOTE: Any Row Selection(s) will be reset when using Pagination and changing Page (you will need to set it back manually if you want it back)</li>
     </ul>
   `;
+  @bindable() isGrid2WithPagination = true;
 
+  aureliaGrid1: AureliaGridInstance;
+  aureliaGrid2: AureliaGridInstance;
   columnDefinitions1: Column[];
   columnDefinitions2: Column[];
   gridOptions1: GridOption;
@@ -21,6 +25,7 @@ export class Example2 {
   dataset2: any[];
   selectedTitles: any[];
   selectedTitle = '';
+  selectedGrid2IDs: number[];
 
   constructor() {
     // define the grid options & columns and then create the grid itself
@@ -29,64 +34,63 @@ export class Example2 {
 
   attached() {
     // populate the dataset once the grid is ready
-    this.dataset1 = this.prepareData();
-    this.dataset2 = this.prepareData();
+    this.dataset1 = this.prepareData(495);
+    this.dataset2 = this.prepareData(525);
+  }
+
+  aureliaGrid1Ready(aureliaGrid: AureliaGridInstance) {
+    this.aureliaGrid1 = aureliaGrid;
+  }
+
+  aureliaGrid2Ready(aureliaGrid: AureliaGridInstance) {
+    this.aureliaGrid2 = aureliaGrid;
   }
 
   /* Define grid Options and Columns */
   defineGrids() {
     this.columnDefinitions1 = [
-      { id: 'title', name: 'Title', field: 'title', sortable: true, type: FieldType.string },
-      { id: 'duration', name: 'Duration (days)', field: 'duration', sortable: true, type: FieldType.number },
-      { id: 'complete', name: '% Complete', field: 'percentComplete', formatter: Formatters.percentCompleteBar, type: FieldType.number, sortable: true },
-      { id: 'start', name: 'Start', field: 'start', formatter: Formatters.dateIso, sortable: true, type: FieldType.dateIso, exportWithFormatter: true },
-      { id: 'finish', name: 'Finish', field: 'finish', formatter: Formatters.dateIso, sortable: true, type: FieldType.date, exportWithFormatter: true },
-      { id: 'effort-driven', name: 'Effort Driven', field: 'effortDriven', formatter: Formatters.checkmark, type: FieldType.number, sortable: true }
-    ];
-    this.columnDefinitions2 = [
-      {
-        id: 'title', name: 'Title', field: 'title',
-        sortable: true,
-        type: FieldType.string,
-        filterable: true
-      },
-      {
-        id: 'duration', name: 'Duration (days)', field: 'duration',
-        sortable: true,
-        type: FieldType.number,
-        filterable: true
-      },
-      {
-        id: 'complete', name: '% Complete', field: 'percentComplete',
-        formatter: Formatters.percentCompleteBar,
-        type: FieldType.number,
-        filterable: true,
-        sortable: true
-      },
+      { id: 'title', name: 'Title', field: 'title', sortable: true, type: FieldType.string, filterable: true },
+      { id: 'duration', name: 'Duration (days)', field: 'duration', sortable: true, type: FieldType.number, filterable: true },
+      { id: 'complete', name: '% Complete', field: 'percentComplete', formatter: Formatters.percentCompleteBar, type: FieldType.number, filterable: true, sortable: true },
       {
         id: 'start', name: 'Start', field: 'start',
-        filterable: true,
-        sortable: true,
-        formatter: Formatters.dateIso,
-        exportWithFormatter: true,
-        type: FieldType.date,
-        filter: { model: Filters.compoundDate },
+        formatter: Formatters.dateIso, exportWithFormatter: true, type: FieldType.date,
+        filterable: true, sortable: true, filter: { model: Filters.compoundDate },
       },
       {
         id: 'finish', name: 'Finish', field: 'finish',
-        filterable: true,
-        sortable: true,
-        formatter: Formatters.dateIso,
-        exportWithFormatter: true,
-        type: FieldType.date,
-        filter: { model: Filters.compoundDate },
+        formatter: Formatters.dateIso, exportWithFormatter: true, type: FieldType.date,
+        filterable: true, sortable: true, filter: { model: Filters.compoundDate },
       },
       {
         id: 'effort-driven', name: 'Effort Driven', field: 'effortDriven',
-        formatter: Formatters.checkmark,
-        type: FieldType.boolean,
-        sortable: true,
-        filterable: true,
+        formatter: Formatters.checkmark, type: FieldType.boolean,
+        sortable: true, filterable: true,
+        filter: {
+          collection: [{ value: '', label: '' }, { value: true, label: 'true' }, { value: false, label: 'false' }],
+          model: Filters.singleSelect,
+        }
+      }
+    ];
+
+    this.columnDefinitions2 = [
+      { id: 'title', name: 'Title', field: 'title', sortable: true, type: FieldType.string, filterable: true },
+      { id: 'duration', name: 'Duration (days)', field: 'duration', sortable: true, type: FieldType.number, filterable: true },
+      { id: 'complete', name: '% Complete', field: 'percentComplete', formatter: Formatters.percentCompleteBar, type: FieldType.number, filterable: true, sortable: true },
+      {
+        id: 'start', name: 'Start', field: 'start',
+        formatter: Formatters.dateIso, exportWithFormatter: true, type: FieldType.date,
+        filterable: true, sortable: true, filter: { model: Filters.compoundDate },
+      },
+      {
+        id: 'finish', name: 'Finish', field: 'finish',
+        formatter: Formatters.dateIso, exportWithFormatter: true, type: FieldType.date,
+        filterable: true, sortable: true, filter: { model: Filters.compoundDate },
+      },
+      {
+        id: 'effort-driven', name: 'Effort Driven', field: 'effortDriven',
+        formatter: Formatters.checkmark, type: FieldType.boolean,
+        sortable: true, filterable: true,
         filter: {
           collection: [{ value: '', label: '' }, { value: true, label: 'true' }, { value: false, label: 'false' }],
           model: Filters.singleSelect,
@@ -97,17 +101,39 @@ export class Example2 {
     this.gridOptions1 = {
       enableAutoResize: false,
       enableCellNavigation: true,
+      enableRowSelection: true,
       enableCheckboxSelector: true,
+      enableFiltering: true,
       checkboxSelector: {
         // remove the unnecessary "Select All" checkbox in header when in single selection mode
-        hideSelectAllCheckbox: true
+        hideSelectAllCheckbox: true,
+
+        // you can override the logic for showing (or not) the expand icon
+        // for example, display the expand icon only on every 2nd row
+        // selectableOverride: (row: number, dataContext: any, grid: any) => (dataContext.id % 2 === 1)
       },
+      multiSelect: false,
       rowSelectionOptions: {
         // True (Single Selection), False (Multiple Selections)
         selectActiveRow: true,
       },
-      enableRowSelection: true
+      columnPicker: {
+        hideForceFitButton: true
+      },
+      gridMenu: {
+        hideForceFitButton: true
+      },
+      enablePagination: true,
+      pagination: {
+        pageSizes: [5, 10, 15, 20, 25, 50, 75, 100],
+        pageSize: 5
+      },
+      // we can use some Presets, for the example Pagination
+      presets: {
+        pagination: { pageNumber: 2, pageSize: 5 },
+      },
     };
+
     this.gridOptions2 = {
       enableAutoResize: false,
       enableCellNavigation: true,
@@ -123,14 +149,31 @@ export class Example2 {
       },
       enableCheckboxSelector: true,
       enableRowSelection: true,
-      preselectedRows: [0, 2]
+      enablePagination: true,
+      pagination: {
+        pageSizes: [5, 10, 15, 20, 25, 50, 75, 100],
+        pageSize: 5
+      },
+      // 1. pre-select some grid row indexes (less recommended, better use the Presets, see below)
+      // preselectedRows: [0, 2],
+
+      // 2. or use the Presets to pre-select some rows
+      presets: {
+        // you can presets row selection here as well, you can choose 1 of the following 2 ways of setting the selection
+        // by their index position in the grid (UI) or by the object IDs, the default is "dataContextIds" and if provided it will use it and disregard "gridRowIndexes"
+        // the RECOMMENDED is to use "dataContextIds" since that will always work even with Pagination, while "gridRowIndexes" is only good for 1 page
+        rowSelection: {
+          // gridRowIndexes: [2],           // the row position of what you see on the screen (UI)
+          dataContextIds: [3, 12, 13, 522]  // (recommended) select by the your data object IDs
+        }
+      },
     };
   }
 
-  prepareData() {
+  prepareData(count: number) {
     // mock a dataset
     const mockDataset = [];
-    for (let i = 0; i < 500; i++) {
+    for (let i = 0; i < count; i++) {
       const randomYear = 2000 + Math.floor(Math.random() * 10);
       const randomMonth = Math.floor(Math.random() * 11);
       const randomDay = Math.floor((Math.random() * 29));
@@ -150,22 +193,54 @@ export class Example2 {
     return mockDataset;
   }
 
+  goToGrid1FirstPage() {
+    this.aureliaGrid1.paginationService.goToFirstPage();
+  }
+
+  goToGrid1LastPage() {
+    this.aureliaGrid1.paginationService.goToLastPage();
+  }
+
+  goToGrid2FirstPage() {
+    this.aureliaGrid2.paginationService.goToFirstPage();
+  }
+
+  goToGrid2LastPage() {
+    this.aureliaGrid2.paginationService.goToLastPage();
+  }
+
+  /** Dispatched event of a Grid State Changed event */
+  grid1StateChanged(gridStateChanges: GridStateChange) {
+    console.log('Grid State changed:: ', gridStateChanges);
+    console.log('Grid State changed:: ', gridStateChanges.change);
+  }
+
+  /** Dispatched event of a Grid State Changed event */
+  grid2StateChanged(gridStateChanges: GridStateChange) {
+    console.log('Grid State changed:: ', gridStateChanges);
+    console.log('Grid State changed:: ', gridStateChanges.change);
+
+    if (gridStateChanges.gridState.rowSelection) {
+      this.selectedGrid2IDs = (gridStateChanges.gridState.rowSelection.dataContextIds || []) as number[];
+      this.selectedGrid2IDs = this.selectedGrid2IDs.sort((a, b) => a - b); // sort by ID
+      this.selectedTitles = this.selectedGrid2IDs.map(dataContextId => `Task ${dataContextId}`);
+    }
+  }
+
+  // Toggle the Pagination of Grid2
+  // IMPORTANT, the Pagination MUST BE CREATED on initial page load before you can start toggling it
+  // Basically you cannot toggle a Pagination that doesn't exist (must created at the time as the grid)
+  isGrid2WithPaginationChanged() {
+    // this.isGrid2WithPagination = !this.isGrid2WithPagination;
+    this.aureliaGrid2.paginationService.togglePaginationVisibility(this.isGrid2WithPagination);
+  }
+
   onGrid1SelectedRowsChanged(e, args) {
     const grid = args && args.grid;
     if (Array.isArray(args.rows)) {
       this.selectedTitle = args.rows.map(idx => {
         const item = grid.getDataItem(idx);
-        return item.title || '';
-      });
-    }
-  }
-
-  onGrid2SelectedRowsChanged(e, args) {
-    const grid = args && args.grid;
-    if (grid && Array.isArray(args.rows)) {
-      this.selectedTitles = args.rows.map(idx => {
-        const item = grid.getDataItem(idx);
-        return item.title || '';
+        return item && item.title || '';
       });
     }
   }

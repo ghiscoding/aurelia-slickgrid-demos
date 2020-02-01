@@ -2,7 +2,18 @@ import { HttpClient as FetchClient } from 'aurelia-fetch-client';
 import { HttpClient } from 'aurelia-http-client';
 import { autoinject } from 'aurelia-framework';
 import { CustomInputFilter } from './custom-inputFilter';
-import { AureliaGridInstance, Column, FieldType, Filters, Formatters, GridOption, OperatorType, Metrics } from 'aurelia-slickgrid';
+import {
+  AureliaGridInstance,
+  Column,
+  FieldType,
+  Filters,
+  FlatpickrOption,
+  Formatters,
+  GridOption,
+  Metrics,
+  MultipleSelectOption,
+  OperatorType,
+} from 'aurelia-slickgrid';
 
 function randomBetween(min, max) {
   return Math.floor(Math.random() * (max - min + 1) + min);
@@ -25,7 +36,10 @@ export class Example4 {
     </ul>
     <li>Date Filters</li>
     <ul>
-      <li>FieldType of dateUtc/date (from dataset) can use an extra option of "filterSearchType" to let user filter more easily. For example, in the "UTC Date" field below, you can type "&gt;02/28/2017", also when dealing with UTC you have to take the time difference in consideration.</li>
+      <li>
+        FieldType of dateUtc/date (from dataset) can use an extra option of "filterSearchType" to let user filter more easily.
+        For example, in the "UTC Date" field below, you can type "&gt;02/28/2017", also when dealing with UTC you have to take the time difference in consideration.
+      </li>
     </ul>
     <li>On String filters, (*) can be used as startsWith (Hello* => matches "Hello Word") ... endsWith (*Doe => matches: "John Doe")</li>
     <li>Custom Filter are now possible, "Description" column below, is a customized InputFilter with different placeholder. See <a href="https://github.com/ghiscoding/aurelia-slickgrid/wiki/Custom-Filter" target="_blank">Wiki - Custom Filter</a></li>
@@ -74,7 +88,8 @@ export class Example4 {
         id: 'description', name: 'Description', field: 'description', filterable: true, sortable: true, minWidth: 80,
         type: FieldType.string,
         filter: {
-          model: new CustomInputFilter() // create a new instance to make each Filter independent from each other customFilter
+          model: new CustomInputFilter(), // create a new instance to make each Filter independent from each other customFilter
+          enableTrimWhiteSpace: true
         }
       },
       {
@@ -122,14 +137,13 @@ export class Example4 {
           },
           // we could add certain option(s) to the "multiple-select" plugin
           filterOptions: {
-            filter: true,
             maxHeight: 250,
             width: 175,
 
             // if we want to display shorter text as the selected text (on the select filter itself, parent element)
             // we can use "useSelectOptionLabel" or "useSelectOptionLabelToHtml" the latter will parse html
             useSelectOptionLabelToHtml: true
-          }
+          } as MultipleSelectOption
         }
       },
       {
@@ -137,7 +151,7 @@ export class Example4 {
         filterable: true, filter: { model: Filters.compoundInputNumber }
       },
       {
-        id: 'start', name: 'Start', field: 'start', formatter: Formatters.dateIso, sortable: true, minWidth: 75, exportWithFormatter: true,
+        id: 'start', name: 'Start', field: 'start', formatter: Formatters.dateIso, sortable: true, minWidth: 75, exportWithFormatter: false,
         type: FieldType.date, filterable: true, filter: { model: Filters.compoundDate }
       },
       {
@@ -146,14 +160,13 @@ export class Example4 {
       },
       {
         id: 'utcDate', name: 'UTC Date', field: 'utcDate', formatter: Formatters.dateTimeIsoAmPm, sortable: true, minWidth: 115,
-        type: FieldType.dateUtc, outputType: FieldType.dateTimeIsoAmPm, filterable: true,
+        type: FieldType.dateUtc, outputType: FieldType.dateTimeIsoAmPm,
+        filterable: true,
         filter: {
           model: Filters.compoundDate,
           // override any of the Flatpickr options through "filterOptions"
           // please note that there's no TSlint on this property since it's generic for any filter, so make sure you entered the correct filter option(s)
-          filterOptions: {
-            minDate: 'today'
-          }
+          filterOptions: { minDate: 'today' } as FlatpickrOption
         }
       },
       {
@@ -173,17 +186,13 @@ export class Example4 {
           // enableRenderHtml: true,
           // collection: [{ value: '', label: '' }, { value: true, label: 'True', labelPrefix: `<i class="fa fa-check"></i> ` }, { value: false, label: 'False' }],
 
-          collection: [{ isEffort: '', label: '' }, { isEffort: true, label: 'True' }, { isEffort: false, label: 'False' }],
-          customStructure: {
-            value: 'isEffort',
-            label: 'label'
-          },
+          collection: ['', 'True', 'False'],
           model: Filters.singleSelect,
 
           // we could add certain option(s) to the "multiple-select" plugin
           filterOptions: {
             maxHeight: 250
-          },
+          } as MultipleSelectOption,
         }
       }
     ];
@@ -193,12 +202,16 @@ export class Example4 {
         containerId: 'demo-container',
         sidePadding: 15
       },
+      enableExcelExport: true,
+      enableExcelCopyBuffer: true,
       enableFiltering: true,
+      // enableFilterTrimWhiteSpace: true,
+      showCustomFooter: true, // display some metrics in the bottom custom footer
 
       // use columnDef searchTerms OR use presets as shown below
       presets: {
         filters: [
-          { columnId: 'duration', searchTerms: [10, 220] },
+          { columnId: 'duration', searchTerms: [10, 98] },
           // { columnId: 'complete', searchTerms: ['5'], operator: '>' },
           { columnId: 'usDateShort', operator: '<', searchTerms: ['4/20/25'] },
           // { columnId: 'effort-driven', searchTerms: [true] }
@@ -216,14 +229,15 @@ export class Example4 {
     const tempDataset = [];
     for (let i = startingIndex; i < (startingIndex + itemCount); i++) {
       const randomDuration = Math.round(Math.random() * 100);
-      const randomYear = randomBetween(2000, 2025);
-      const randomYearShort = randomBetween(10, 25);
+      const randomYear = randomBetween(2000, 2035);
+      const randomYearShort = randomBetween(10, 35);
       const randomMonth = randomBetween(1, 12);
       const randomMonthStr = (randomMonth < 10) ? `0${randomMonth}` : randomMonth;
       const randomDay = randomBetween(10, 28);
       const randomPercent = randomBetween(0, 100);
       const randomHour = randomBetween(10, 23);
       const randomTime = randomBetween(10, 59);
+      const randomMilliseconds = `${randomBetween(1, 9)}${randomBetween(10, 99)}`;
       const randomIsEffort = (i % 3 === 0);
 
       tempDataset.push({
@@ -235,7 +249,7 @@ export class Example4 {
         percentCompleteNumber: randomPercent,
         start: (i % 4) ? null : new Date(randomYear, randomMonth, randomDay),          // provide a Date format
         usDateShort: `${randomMonth}/${randomDay}/${randomYearShort}`, // provide a date US Short in the dataset
-        utcDate: `${randomYear}-${randomMonthStr}-${randomDay}T${randomHour}:${randomTime}:${randomTime}Z`,
+        utcDate: `${randomYear}-${randomMonthStr}-${randomDay}T${randomHour}:${randomTime}:${randomTime}.${randomMilliseconds}Z`,
         effortDriven: {
           isEffort: randomIsEffort,
           label: randomIsEffort ? 'Effort' : 'NoEffort',
@@ -279,6 +293,7 @@ export class Example4 {
       setTimeout(() => {
         this.metrics = {
           startTime: new Date(),
+          endTime: new Date(),
           itemCount: args && args.current || 0,
           totalItemCount: this.dataset.length || 0
         };
