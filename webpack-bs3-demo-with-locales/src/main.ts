@@ -37,7 +37,7 @@ export function configure(aurelia: Aurelia) {
     config.options.gridMenu.iconCssClass = 'fa fa-bars';
     config.options.enableTranslate = false;
     // Provide a custom locales set
-    // config.options.locale = 'fr';
+    // config.options.locale = 'fr'; // this helps certain elements to know which locale to use, for example the Date Filter/Editor
     // config.options.locales = localeFrench;
   });
 

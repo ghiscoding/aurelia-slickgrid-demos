@@ -94,7 +94,7 @@ export class Example12 {
       enableFiltering: true,
 
       // Provide a custom locales set
-      locale: 'fr',
+      locale: 'fr', // this helps certain elements to know which locale to use, for example the Date Filter/Editor
       locales: localeFrench,
       showCustomFooter: true, // display some metrics in the bottom custom footer
       customFooterOptions: {
