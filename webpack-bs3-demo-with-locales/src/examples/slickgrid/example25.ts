@@ -1,6 +1,5 @@
 import { EventAggregator } from 'aurelia-event-aggregator';
 import { autoinject } from 'aurelia-framework';
-import { I18N } from 'aurelia-i18n';
 import { HttpClient, json } from 'aurelia-fetch-client';
 import {
   AureliaGridInstance,
@@ -48,14 +47,9 @@ export class Example25 {
   selectedLanguage: string;
   status = { text: '', class: '' };
 
-  constructor(private ea: EventAggregator, private http: HttpClient, private i18n: I18N) {
+  constructor(private http: HttpClient) {
     // define the grid options & columns and then create the grid itself
     this.defineGrid();
-
-    // always start with English for Cypress E2E tests to be consistent
-    const defaultLang = 'en';
-    this.i18n.setLocale(defaultLang);
-    this.selectedLanguage = defaultLang;
   }
 
   aureliaGridReady(aureliaGrid: AureliaGridInstance) {
@@ -148,11 +142,9 @@ export class Example25 {
       enableFiltering: true,
       enableCellNavigation: true,
       enablePagination: false,
-      enableTranslate: true,
       createPreHeaderPanel: true,
       showPreHeaderPanel: true,
       preHeaderPanelHeight: 28,
-      i18n: this.i18n,
       datasetIdPropertyName: 'code',
       showCustomFooter: true, // display some metrics in the bottom custom footer
       backendServiceApi: {
@@ -245,10 +237,5 @@ export class Example25 {
       { columnId: 'billingAddressZip', direction: 'DESC' },
       { columnId: 'company', direction: 'ASC' },
     ]);
-  }
-
-  switchLanguage() {
-    this.selectedLanguage = (this.selectedLanguage === 'en') ? 'fr' : 'en';
-    this.i18n.setLocale(this.selectedLanguage);
   }
 }

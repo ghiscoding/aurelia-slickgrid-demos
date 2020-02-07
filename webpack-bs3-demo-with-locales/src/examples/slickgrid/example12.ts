@@ -8,7 +8,8 @@ import {
   Filters,
   Formatter,
   Formatters,
-  GridOption
+  GridOption,
+  GridStateChange,
 } from 'aurelia-slickgrid';
 import { localeFrench } from 'locales/fr';
 
@@ -92,6 +93,13 @@ export class Example12 {
       enableExcelExport: true,
       enableExport: true,
       enableFiltering: true,
+      checkboxSelector: {
+        // you can toggle these 2 properties to show the "select all" checkbox in different location
+        hideInFilterHeaderRow: false,
+        hideInColumnTitleRow: true
+      },
+      enableCheckboxSelector: true,
+      enableRowSelection: true,
 
       // Provide a custom locales set
       locale: 'fr', // this helps certain elements to know which locale to use, for example the Date Filter/Editor
@@ -164,5 +172,11 @@ export class Example12 {
       filename: 'myExport',
       format: (type === 'csv') ? FileType.csv : FileType.txt
     });
+  }
+
+  /** Dispatched event of a Grid State Changed event */
+  gridStateChanged(gridStateChanges: GridStateChange) {
+    console.log('Grid State changed:: ', gridStateChanges);
+    console.log('Grid State changed:: ', gridStateChanges.change);
   }
 }
