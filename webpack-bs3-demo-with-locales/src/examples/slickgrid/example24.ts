@@ -238,9 +238,12 @@ export class Example24 {
       enableFiltering: true,
       enableSorting: true,
       excelExportOptions: {
-        exportWithFormatter: true
-      },
+        exportWithFormatter: true,
+        customColumnWidth: 15,
 
+        // you can customize how the header titles will be styled (defaults to Bold)
+        columnHeaderStyle: { font: { bold: true, italic: true } }
+      },
       enableContextMenu: true,
       enableCellMenu: true,
 
