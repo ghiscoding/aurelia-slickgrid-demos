@@ -3,12 +3,14 @@ import { HttpClient as FetchClient } from 'aurelia-fetch-client';
 import { HttpClient } from 'aurelia-http-client';
 import {
   AureliaGridInstance,
+  AutocompleteOption,
   Column,
   Editors,
   EditorArgs,
   EditorValidator,
   FieldType,
   Filters,
+  FlatpickrOption,
   Formatters,
   GridOption,
   OnEventArgs,
@@ -25,6 +27,7 @@ declare var Slick: any;
 const NB_ITEMS = 100;
 const URL_SAMPLE_COLLECTION_DATA = 'assets/data/collection_100_numbers.json';
 const URL_COUNTRIES_COLLECTION = 'assets/data/countries.json';
+const URL_COUNTRY_NAMES = 'assets/data/country_names.json';
 
 // you can create custom validator to pass to an inline editor
 const myCustomTitleValidator: EditorValidator = (value: any, args: EditorArgs) => {
@@ -36,9 +39,8 @@ const myCustomTitleValidator: EditorValidator = (value: any, args: EditorArgs) =
     return { valid: false, msg: 'This is a required field' };
   } else if (!/^Task\s\d+$/.test(value)) {
     return { valid: false, msg: 'Your title is invalid, it must start with "Task" followed by a number' };
-  } else {
-    return { valid: true, msg: '' };
   }
+  return { valid: true, msg: '' };
 };
 
 // create a custom Formatter to show the Task + value
@@ -178,6 +180,18 @@ export class Example3 {
           maxValue: 100,
           // params: { hideSliderNumber: true },
         },
+        /*
+        editor: {
+          // default is 0 decimals, if no decimals is passed it will accept 0 or more decimals
+          // however if you pass the "decimalPlaces", it will validate with that maximum
+          model: Editors.float,
+          minValue: 0,
+          maxValue: 365,
+          // the default validation error message is in English but you can override it by using "errorMessage"
+          // errorMessage: this.i18n.tr('INVALID_FLOAT', { maxDecimal: 2 }),
+          params: { decimalPlaces: 2 },
+        },
+        */
       }, {
         id: 'complete',
         name: '% Complete',
@@ -236,9 +250,7 @@ export class Example3 {
           model: Editors.date,
           // override any of the Flatpickr options through "filterOptions"
           // please note that there's no TSlint on this property since it's generic for any filter, so make sure you entered the correct filter option(s)
-          editorOptions: {
-            minDate: 'today'
-          }
+          editorOptions: { minDate: 'today' } as FlatpickrOption
         },
       }, {
         id: 'cityOfOrigin', name: 'City of Origin', field: 'cityOfOrigin',
@@ -267,7 +279,7 @@ export class Example3 {
                 }
               });
             }
-          },
+          } as AutocompleteOption,
         },
         filter: {
           model: Filters.autoComplete,
@@ -292,7 +304,7 @@ export class Example3 {
                 }
               });
             }
-          },
+          } as AutocompleteOption,
         }
       }, {
         id: 'countryOfOrigin', name: 'Country of Origin', field: 'countryOfOrigin',
@@ -313,6 +325,19 @@ export class Example3 {
           model: Filters.autoComplete,
           customStructure: { label: 'name', value: 'code' },
           collectionAsync: this.httpFetch.fetch(URL_COUNTRIES_COLLECTION),
+        }
+      }, {
+        id: 'countryOfOriginName', name: 'Country of Origin Name', field: 'countryOfOriginName',
+        filterable: true,
+        sortable: true,
+        minWidth: 100,
+        editor: {
+          model: Editors.autoComplete,
+          collectionAsync: this.httpFetch.fetch(URL_COUNTRY_NAMES),
+        },
+        filter: {
+          model: Filters.autoComplete,
+          collectionAsync: this.httpFetch.fetch(URL_COUNTRY_NAMES),
         }
       }, {
         id: 'effort-driven',
@@ -544,8 +569,29 @@ export class Example3 {
       },
       sortable: true, minWidth: 100, filterable: true, params: { useFormatterOuputToFilter: true }
     };
+
+    // you can dynamically add your column to your column definitions
+    // and then use the spread operator [...cols] OR slice to force Aurelia to review the changes
     this.columnDefinitions.push(newCol);
-    this.columnDefinitions = this.columnDefinitions.slice();
+    this.columnDefinitions = this.columnDefinitions.slice(); // or use spread operator [...cols]
+
+    // NOTE if you use an Extensions (Checkbox Selector, Row Detail, ...) that modifies the column definitions in any way
+    // you MUST use "getColumns()", using this will be ALL columns including the 1st column that is created internally
+    // for example if you use the Checkbox Selector (row selection), you MUST use the code below
+    /*
+    const allColumns = this.gridObj.getColumns();
+    allColumns.push(newCol);
+    this.columnDefinitions = [...allColumns]; // (or use slice) reassign to column definitions for Aurelia to do dirty checking
+    */
+  }
+
+  dynamicallyRemoveLastColumn() {
+    const allColumns = this.gridObj.getColumns();
+
+    // remove your column the full set of columns
+    // and use slice or spread [...] to trigger an Aurelia dirty change
+    allColumns.pop();
+    this.columnDefinitions = allColumns.slice();
   }
 
   setAutoEdit(isAutoEdit) {
