@@ -22,7 +22,7 @@
   },
   "platform": {
     "hmr": false,
-    "open": false,
+    "open": true,
     "port": 8080,
     "host": "localhost",
     "output": "dist"
