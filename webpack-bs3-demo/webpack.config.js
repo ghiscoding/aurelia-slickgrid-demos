@@ -112,6 +112,7 @@ module.exports = ({ production } = {}, { extractCss, analyze, tests, hmr, port, 
     contentBase: outDir,
     // serve index.html for all 404 (required for push-state)
     historyApiFallback: true,
+    open: true,
     hot: hmr || project.platform.hmr,
     port: port || project.platform.port,
     host: host || project.platform.host
@@ -152,7 +153,7 @@ module.exports = ({ production } = {}, { extractCss, analyze, tests, hmr, port, 
       // use Bluebird as the global Promise implementation:
       { test: /[\/\\]node_modules[\/\\]bluebird[\/\\].+\.js$/, loader: 'expose-loader?Promise' },
       // exposes jQuery globally as $ and as jQuery:
-      { test: require.resolve('jquery'), loader: 'expose-loader?$!expose-loader?jQuery' },
+      // { test: require.resolve('jquery'), loader: 'expose-loader?$!expose-loader?jQuery' },
       // embed small images and fonts as Data Urls and larger ones as files:
       { test: /\.(png|gif|jpg|cur)$/i, loader: 'url-loader', options: { limit: 8192 } },
       { test: /\.woff2(\?v=[0-9]\.[0-9]\.[0-9])?$/i, loader: 'url-loader', options: { limit: 10000, mimetype: 'application/font-woff2' } },
