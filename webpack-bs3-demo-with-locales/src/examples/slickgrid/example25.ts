@@ -1,4 +1,3 @@
-import { EventAggregator } from 'aurelia-event-aggregator';
 import { autoinject } from 'aurelia-framework';
 import { HttpClient, json } from 'aurelia-fetch-client';
 import {
@@ -17,6 +16,20 @@ import {
 import './example25.scss'; // provide custom CSS/SASS styling
 
 const COUNTRIES_API = 'https://countries.trevorblades.com/';
+
+export interface Country {
+  countryCode: string;
+  countryName: string;
+  countryNative: string;
+  countryPhone: number;
+  countryCurrency: string;
+  countryEmoji: string;
+  continentCode: string;
+  continentName: string;
+  languageCode: string;
+  languageName: string;
+  languageNative: string;
+};
 
 @autoinject()
 export class Example25 {
@@ -142,6 +155,7 @@ export class Example25 {
       enableFiltering: true,
       enableCellNavigation: true,
       enablePagination: false,
+      enableTranslate: true,
       createPreHeaderPanel: true,
       showPreHeaderPanel: true,
       preHeaderPanelHeight: 28,
@@ -160,7 +174,7 @@ export class Example25 {
         // you can define the onInit callback OR enable the "executeProcessCommandOnInit" flag in the service init
         preProcess: () => this.displaySpinner(true),
         process: (query) => this.getCountries(query),
-        postProcess: (result: GraphqlResult) => {
+        postProcess: (result: GraphqlResult<Country>) => {
           this.metrics = result.metrics;
           this.displaySpinner(false);
         }
@@ -182,7 +196,7 @@ export class Example25 {
   // --
 
   /** Calling the GraphQL backend API to get the Countries with the Query created by the "process" method of GraphqlService  */
-  getCountries(query: string): Promise<GraphqlResult> {
+  getCountries(query: string): Promise<GraphqlResult<Country>> {
     return new Promise(async resolve => {
       const response = await this.http.fetch(COUNTRIES_API, {
         method: 'post',
