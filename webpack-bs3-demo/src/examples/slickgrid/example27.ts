@@ -172,7 +172,7 @@ export class Example27 {
     // force a resort because of the tree data structure
     setTimeout(() => {
       const titleColumn = this.columnDefinitions.find(col => col.id === 'title');
-      this.aureliaGrid.sortService.onLocalSortChanged(this.gridObj, this.dataViewObj, [{ columnId: 'title', sortCol: titleColumn, sortAsc: true }]);
+      this.aureliaGrid.sortService.onLocalSortChanged(this.gridObj, [{ columnId: 'title', sortCol: titleColumn, sortAsc: true }]);
 
       // scroll into the position, after insertion cycle, where the item was added
       const rowIndex = this.dataViewObj.getRowById(newItem.id);
