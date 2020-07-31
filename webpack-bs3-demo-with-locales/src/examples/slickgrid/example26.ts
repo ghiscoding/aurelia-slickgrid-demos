@@ -48,7 +48,6 @@ export class Example26 {
   `;
   private _commandQueue = [];
   aureliaGrid: AureliaGridInstance;
-  gridObj: any;
   gridOptions: GridOption;
   columnDefinitions: Column[];
   dataset: any[];
@@ -76,11 +75,6 @@ export class Example26 {
     this.dataset = this.mockData(NB_ITEMS);
   }
 
-  aureliaGridReady(aureliaGrid: AureliaGridInstance) {
-    this.aureliaGrid = aureliaGrid;
-    this.gridObj = aureliaGrid && aureliaGrid.slickGrid;
-  }
-
   /* Define grid Options and Columns */
   defineGrid() {
     this.columnDefinitions = [
@@ -92,7 +86,9 @@ export class Example26 {
         sortable: true,
         type: FieldType.string,
         editor: {
-          model: Editors.longText
+          model: Editors.longText,
+          minLength: 5,
+          maxLength: 255,
         },
         minWidth: 100,
         onCellChange: (e: Event, args: OnEventArgs) => {
@@ -332,7 +328,7 @@ export class Example26 {
 
   changeAutoCommit() {
     this.gridOptions.autoCommitEdit = !this.gridOptions.autoCommitEdit;
-    this.gridObj.setOptions({
+    this.aureliaGrid.slickGrid.setOptions({
       autoCommitEdit: this.gridOptions.autoCommitEdit
     });
     return true;
@@ -346,7 +342,7 @@ export class Example26 {
 
   setAutoEdit(isAutoEdit) {
     this.isAutoEdit = isAutoEdit;
-    this.gridObj.setOptions({
+    this.aureliaGrid.slickGrid.setOptions({
       autoEdit: isAutoEdit
     });
     return true;
@@ -361,7 +357,7 @@ export class Example26 {
     const command = this._commandQueue.pop();
     if (command && Slick.GlobalEditorLock.cancelCurrentEdit()) {
       command.undo();
-      this.gridObj.gotoCell(command.row, command.cell, false);
+      this.aureliaGrid.slickGrid.gotoCell(command.row, command.cell, false);
     }
   }
 }

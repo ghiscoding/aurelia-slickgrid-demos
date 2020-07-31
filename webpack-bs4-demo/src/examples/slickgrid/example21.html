@@ -1,38 +1,38 @@
 <template>
   <h2>${title}</h2>
   <div class="subtitle"
-       innerhtml.bind="subTitle"></div>
+    innerhtml.bind="subTitle"></div>
 
   <form class="form-inline">
-      <label class="my-1 mr-2" for="columnSelect">Single Search:</label>
-      <select value.bind="selectedColumn" id="columnSelect"
-              class="form-control mb-2 mr-sm-2">
-        <option repeat.for="column of columnDefinitions"
-                model.bind="column">
-          ${column.name}
-        </option>
-      </select>
+    <label class="my-1 mr-2" for="columnSelect">Single Search:</label>
+    <select value.bind="selectedColumn" id="columnSelect"
+      class="form-control mb-2 mr-sm-2">
+      <option repeat.for="column of columnDefinitions"
+        model.bind="column">
+        ${column.name}
+      </option>
+    </select>
 
     <select value.bind="selectedOperator"
-            class="form-control mb-2 mr-sm-2">
+      class="form-control mb-2 mr-sm-2">
       <option repeat.for="operator of operatorList"
-              model.bind="operator">
+        model.bind="operator">
         ${operator}
       </option>
     </select>
 
     <input type="text"
-           class="form-control mb-2 mr-sm-2"
-           placeholder="search value"
-           value.bind="searchValue" />
+      class="form-control mb-2 mr-sm-2"
+      placeholder="search value"
+      value.bind="searchValue" />
   </form>
 
   <hr />
 
   <aurelia-slickgrid grid-id="grid21"
-                     column-definitions.bind="columnDefinitions"
-                     grid-options.bind="gridOptions"
-                     dataset.bind="dataset"
-                     asg-on-aurelia-grid-created.delegate="aureliaGridReady($event.detail)">
+    column-definitions.bind="columnDefinitions"
+    grid-options.bind="gridOptions"
+    dataset.bind="dataset"
+    instances.bind="aureliaGrid">
   </aurelia-slickgrid>
 </template>

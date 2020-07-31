@@ -28,7 +28,10 @@
     </span>
   </div>
 
-  <aurelia-slickgrid grid-id="grid23" column-definitions.bind="columnDefinitions" grid-options.bind="gridOptions"
-    dataset.bind="dataset" asg-on-aurelia-grid-created.delegate="aureliaGridReady($event.detail)">
+  <aurelia-slickgrid grid-id="grid24"
+    column-definitions.bind="columnDefinitions"
+    grid-options.bind="gridOptions"
+    dataset.bind="dataset"
+    instances.bind="aureliaGrid">
   </aurelia-slickgrid>
 </template>

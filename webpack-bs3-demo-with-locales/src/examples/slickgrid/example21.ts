@@ -40,10 +40,6 @@ export class Example21 {
     this.getData();
   }
 
-  aureliaGridReady(aureliaGrid: AureliaGridInstance) {
-    this.aureliaGrid = aureliaGrid;
-  }
-
   /* Define grid Options and Columns */
   defineGrid() {
     this.columnDefinitions = [
