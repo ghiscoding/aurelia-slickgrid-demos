@@ -55,7 +55,7 @@ export class Example27 {
       { id: 'duration', name: 'Duration', field: 'duration', minWidth: 90, filterable: true },
       {
         id: 'percentComplete', name: '% Complete', field: 'percentComplete', minWidth: 120, maxWidth: 200,
-        sortable: true, filterable: true, filter: { model: Filters.slider, operator: '>=' },
+        sortable: true, filterable: true, filter: { model: Filters.compoundSlider, operator: '>=' },
         formatter: Formatters.percentCompleteBar, type: FieldType.number,
       },
       {
@@ -99,6 +99,9 @@ export class Example27 {
       // change header/cell row height for material design theme
       headerRowHeight: 45,
       rowHeight: 40,
+      presets: {
+        filters: [{ columnId: 'percentComplete', searchTerms: [25], operator: '>=' }]
+      },
 
       // use Material Design SVG icons
       contextMenu: {
@@ -107,22 +110,22 @@ export class Example27 {
         iconClearGroupingCommand: 'mdi mdi-close',
         iconCopyCellValueCommand: 'mdi mdi-content-copy',
         iconExportCsvCommand: 'mdi mdi-download',
-        iconExportExcelCommand: 'mdi mdi-file-excel-outline text-success has-text-success',
+        iconExportExcelCommand: 'mdi mdi-file-excel-outline',
         iconExportTextDelimitedCommand: 'mdi mdi-download',
       },
       gridMenu: {
         iconCssClass: 'mdi mdi-menu',
         iconClearAllFiltersCommand: 'mdi mdi-filter-remove-outline',
-        iconClearAllSortingCommand: 'mdi mdi-swap-vertical text-danger',
+        iconClearAllSortingCommand: 'mdi mdi-swap-vertical',
         iconExportCsvCommand: 'mdi mdi-download',
-        iconExportExcelCommand: 'mdi mdi-file-excel-outline text-success has-text-success',
+        iconExportExcelCommand: 'mdi mdi-file-excel-outline',
         iconExportTextDelimitedCommand: 'mdi mdi-download',
         iconRefreshDatasetCommand: 'mdi mdi-sync',
         iconToggleFilterCommand: 'mdi mdi-flip-vertical',
         iconTogglePreHeaderCommand: 'mdi mdi-flip-vertical',
       },
       headerMenu: {
-        iconClearFilterCommand: 'mdi mdi mdi-filter-remove-outline text-danger',
+        iconClearFilterCommand: 'mdi mdi mdi-filter-remove-outline',
         iconClearSortCommand: 'mdi mdi-swap-vertical',
         iconSortAscCommand: 'mdi mdi-sort-ascending',
         iconSortDescCommand: 'mdi mdi-flip-v mdi-sort-descending',
