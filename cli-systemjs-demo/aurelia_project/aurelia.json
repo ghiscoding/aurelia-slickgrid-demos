@@ -157,9 +157,9 @@
             "main": "jquery-ui"
           },
           {
-            "name": "excel-builder-webpack",
-            "path": "../node_modules/excel-builder-webpack",
-            "main": "src/excel-builder",
+            "name": "excel-builder-webpacker",
+            "path": "../node_modules/excel-builder-webpacker",
+            "main": "dist/index",
             "exports": "ExcelBuilder",
             "deps": [
               "jszip",
