@@ -42,7 +42,6 @@ export class Example6 {
   processing = false;
   selectedLanguage;
   status = { text: '', class: '' };
-  Subscription;
 
   constructor(http, i18n) {
     this.http = http;
@@ -55,7 +54,6 @@ export class Example6 {
 
   detached() {
     this.saveCurrentGridState();
-    this.Subscription.dispose();
   }
 
   aureliaGridReady(aureliaGrid) {
