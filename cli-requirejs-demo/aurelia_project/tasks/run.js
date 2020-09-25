@@ -1,33 +1,25 @@
 import gulp from 'gulp';
-import browserSync from 'browser-sync';
-import historyApiFallback from 'connect-history-api-fallback/lib';
-import {CLIOptions} from 'aurelia-cli';
 import project from '../aurelia.json';
+import * as devServer from './dev-server';
+import {CLIOptions} from 'aurelia-cli';
 import build from './build';
 import watch from './watch';
 
+if (!CLIOptions.hasFlag('watch')) {
+  // "au run" always runs in watch mode
+  CLIOptions.instance.args.push('--watch');
+}
+
 let serve = gulp.series(
   build,
-  done => {
-    browserSync({
-      online: false,
-      open: false,
-      port: 9000,
-      logLevel: 'silent',
-      server: {
-        baseDir: [project.platform.baseDir],
-        middleware: [historyApiFallback(), function(req, res, next) {
-          res.setHeader('Access-Control-Allow-Origin', '*');
-          next();
-        }]
-      }
-    }, function (err, bs) {
-      if (err) return done(err);
-      let urls = bs.options.get('urls').toJS();
-      log(`Application Available At: ${urls.local}`);
-      log(`BrowserSync Available At: ${urls.ui}`);
-      done();
+  function startDevServer(done) {
+    devServer.run({
+      open: CLIOptions.hasFlag('open') || project.platform.open,
+      port: CLIOptions.getFlagValue('port') || project.platform.port,
+      host: CLIOptions.getFlagValue('host') || project.platform.host || "localhost",
+      baseDir: project.platform.baseDir
     });
+    done();
   }
 );
 
@@ -37,18 +29,16 @@ function log(message) {
 
 function reload() {
   log('Refreshing the browser');
-  browserSync.reload();
+  devServer.reload();
 }
 
-let run;
+const run = gulp.series(
+  serve,
+  done => { watch(reload); done(); }
+);
 
-if (CLIOptions.hasFlag('watch')) {
-  run = gulp.series(
-    serve,
-    done => { watch(reload); done(); }
-  );
-} else {
-  run = serve;
-}
+const shutdownDevServer = () => {
+  devServer.destroy();
+};
 
-export default run;
+export { run as default, serve , shutdownDevServer };
