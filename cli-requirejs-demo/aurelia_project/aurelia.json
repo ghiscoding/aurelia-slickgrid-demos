@@ -88,18 +88,6 @@
           },
           "text",
           {
-            "name": "bootstrap",
-            "path": "../node_modules/bootstrap/dist",
-            "main": "js/bootstrap.min",
-            "deps": [
-              "jquery"
-            ],
-            "exports": "$",
-            "resources": [
-              "css/bootstrap.css"
-            ]
-          },
-          {
             "name": "multiple-select",
             "path": "../node_modules/aurelia-slickgrid/dist/lib/multiple-select",
             "main": "multiple-select",
