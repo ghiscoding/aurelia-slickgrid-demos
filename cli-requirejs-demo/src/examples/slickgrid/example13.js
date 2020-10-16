@@ -16,8 +16,6 @@ export class Example13 {
   dataset = [];
   dataviewObj;
   processing = false;
-  subOnBeforeExport;
-  subOnAfterExport;
 
   constructor() {
     // define the grid options & columns and then create the grid itself
@@ -30,8 +28,7 @@ export class Example13 {
   }
 
   detached() {
-    this.subOnAfterExport.dispose();
-    this.subOnBeforeExport.dispose();
+    
   }
 
   /* Define grid Options and Columns */
