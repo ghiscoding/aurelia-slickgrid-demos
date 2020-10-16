@@ -32,7 +32,7 @@ Then open your browser to
 http://localhost:8080
 ```
 
-## Webpack and Bootstrap 3 with single Locale (with TypeScript but without I18N)
+## Webpack and Bootstrap 3 with single Locale & without I18N (TypeScript)
 ### Install and Start Demo
 ```bash
 git clone https://github.com/ghiscoding/aurelia-slickgrid-demos
