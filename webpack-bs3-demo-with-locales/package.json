@@ -67,7 +67,6 @@
     "jest": "^24.1.0",
     "jest-cli": "^24.1.0",
     "jest-transform-stub": "^2.0.0",
-    "json-loader": "^0.5.7",
     "mini-css-extract-plugin": "^0.4.3",
     "minimatch": "^3.0.4",
     "node-sass": "^4.13.0",

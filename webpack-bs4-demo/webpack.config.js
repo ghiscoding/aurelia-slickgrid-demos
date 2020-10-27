@@ -181,7 +181,6 @@ module.exports = ({ production } = {}, { extractCss, analyze, tests, hmr, port, 
       'jQuery': 'jquery',
       'window.jQuery': 'jquery',
       'window.$': 'jquery',
-      'Promise': ['promise-polyfill', 'default']
     }),
     new ModuleDependenciesPlugin({
       'aurelia-testing': ['./compile-spy', './view-spy']
