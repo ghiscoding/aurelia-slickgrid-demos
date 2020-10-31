@@ -1,5 +1,4 @@
 import { autoinject } from 'aurelia-framework';
-import { HttpClient } from 'aurelia-http-client';
 import * as moment from 'moment-mini';
 import {
   AureliaGridInstance,
@@ -50,7 +49,7 @@ export class Example6 {
   processing = false;
   status = { text: '', class: '' };
 
-  constructor(private http: HttpClient) {
+  constructor() {
     // define the grid options & columns and then create the grid itself
     this.defineGrid();
   }
