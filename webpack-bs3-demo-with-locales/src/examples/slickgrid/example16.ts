@@ -97,8 +97,8 @@ export class Example16 {
         disableRowSelection: true,
         cancelEditOnDrag: true,
         width: 30,
-        onBeforeMoveRows: (e, args) => this.onBeforeMoveRow(e, args),
-        onMoveRows: (e, args) => this.onMoveRows(e, args),
+        onBeforeMoveRows: this.onBeforeMoveRow,
+        onMoveRows: this.onMoveRows.bind(this),
 
         // you can change the move icon position of any extension (RowMove, RowDetail or RowSelector icon)
         // note that you might have to play with the position when using multiple extension
@@ -140,7 +140,7 @@ export class Example16 {
     return true;
   }
 
-  onMoveRows(e, args) {
+  onMoveRows(_e, args) {
     const extractedRows = [];
     const rows = args.rows;
     const insertBefore = args.insertBefore;
@@ -165,7 +165,7 @@ export class Example16 {
       selectedRows.push(left.length + i);
     }
 
-    this.aureliaGrid.slickGrid.resetActiveCell();
+    args.grid.resetActiveCell();
     this.dataset = tmpDataset;
   }
 
