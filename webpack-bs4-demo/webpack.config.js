@@ -200,11 +200,12 @@ module.exports = ({ production } = {}, { extractCss, analyze, tests, hmr, port, 
       filename: production ? '[name].[contenthash].bundle.css' : '[name].[hash].bundle.css',
       chunkFilename: production ? '[name].[contenthash].chunk.css' : '[name].[hash].chunk.css'
     })),
-    ...when(!tests, new CopyWebpackPlugin([
-      { from: 'favicon.ico', to: 'favicon.ico' },
-      { from: 'assets', to: 'assets' }
-    ])),
-
+    new CopyWebpackPlugin({
+      patterns: [
+        { from: `${srcDir}/favicon.ico`, to: 'favicon.ico' },
+        { from: 'assets', to: 'assets' }
+      ]
+    }),
     ...when(analyze, new BundleAnalyzerPlugin()),
     /**
      * Note that the usage of following plugin cleans the webpack output directory before build.

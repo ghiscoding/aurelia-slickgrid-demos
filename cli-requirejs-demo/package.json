@@ -81,7 +81,7 @@
     "test": "au test"
   },
   "engines": {
-    "node": ">=10.12.0"
+    "node": ">=14.0.0"
   },
   "jest": {
     "moduleNameMapper": {

@@ -7,7 +7,7 @@ const project = require('./aurelia_project/aurelia.json');
 const { AureliaPlugin, ModuleDependenciesPlugin } = require('aurelia-webpack-plugin');
 const { ProvidePlugin } = require('webpack');
 const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
-const CleanWebpackPlugin = require('clean-webpack-plugin');
+const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 
 // config helpers:
 const ensureArray = (config) => config && (Array.isArray(config) ? config : [config]) || [];
@@ -125,11 +125,7 @@ module.exports = ({ production } = {}, { extractCss, analyze, tests, hmr, port, 
       {
         test: /\.css$/i,
         issuer: [{ not: [{ test: /\.html$/i }] }],
-        use: extractCss ? [{
-          loader: MiniCssExtractPlugin.loader
-        },
-          'css-loader'
-        ] : ['style-loader', ...cssRules]
+        use: extractCss ? [{ loader: MiniCssExtractPlugin.loader }, 'css-loader'] : ['style-loader', ...cssRules]
       },
       {
         test: /\.css$/i,
@@ -151,7 +147,14 @@ module.exports = ({ production } = {}, { extractCss, analyze, tests, hmr, port, 
       { test: /\.html$/i, loader: 'html-loader' },
       { test: /\.ts$/, loader: "ts-loader" },
       // use Bluebird as the global Promise implementation:
-      { test: /[\/\\]node_modules[\/\\]bluebird[\/\\].+\.js$/, loader: 'expose-loader?Promise' },
+      {
+        test: /[\/\\]node_modules[\/\\]bluebird[\/\\].+\.js$/, loader: 'expose-loader', options: {
+          exposes: {
+            globalName: 'Promise',
+            override: true
+          },
+        }
+      },
       // exposes jQuery globally as $ and as jQuery:
       // { test: require.resolve('jquery'), loader: 'expose-loader?$!expose-loader?jQuery' },
       // embed small images and fonts as Data Urls and larger ones as files:
@@ -197,12 +200,12 @@ module.exports = ({ production } = {}, { extractCss, analyze, tests, hmr, port, 
       filename: production ? '[name].[contenthash].bundle.css' : '[name].[hash].bundle.css',
       chunkFilename: production ? '[name].[contenthash].chunk.css' : '[name].[hash].chunk.css'
     })),
-    ...when(!tests, new CopyWebpackPlugin([
-      { from: 'static', to: outDir, ignore: ['.*'] }, // ignore dot (hidden) files
-      { from: 'favicon.ico', to: 'favicon.ico' },
-      { from: 'assets', to: 'assets' }
-    ])),
-
+    new CopyWebpackPlugin({
+      patterns: [
+        { from: `${srcDir}/favicon.ico`, to: 'favicon.ico' },
+        { from: 'assets', to: 'assets' }
+      ]
+    }),
     ...when(analyze, new BundleAnalyzerPlugin()),
     /**
      * Note that the usage of following plugin cleans the webpack output directory before build.
