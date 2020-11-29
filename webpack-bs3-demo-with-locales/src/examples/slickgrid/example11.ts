@@ -80,7 +80,7 @@ export class Example11 {
         onCellClick: (e: Event, args: OnEventArgs) => {
           console.log(args);
           if (confirm('Are you sure?')) {
-            this.aureliaGrid.gridService.deleteDataGridItemById(args.dataContext.id);
+            this.aureliaGrid.gridService.deleteItemById(args.dataContext.id);
           }
         }
       },

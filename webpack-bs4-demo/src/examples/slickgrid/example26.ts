@@ -316,7 +316,7 @@ export class Example26 {
       // this.aureliaGrid.gridService.setSelectedRow(args.row);
     } else if (metadata.columnDef.id === 'delete') {
       if (confirm('Are you sure?')) {
-        this.aureliaGrid.gridService.deleteDataGridItemById(metadata.dataContext.id);
+        this.aureliaGrid.gridService.deleteItemById(metadata.dataContext.id);
         this.alertWarning = `Deleted: ${metadata.dataContext.title}`;
       }
     }

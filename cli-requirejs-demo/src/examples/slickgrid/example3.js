@@ -350,7 +350,7 @@ export class Example3 {
 
         if (Array.isArray(collectionEditor) && Array.isArray(collectionFilter)) {
           // add the new row to the grid
-          this.aureliaGrid.gridService.addItemToDatagrid(newRows[0]);
+          this.aureliaGrid.gridService.addItem(newRows[0]);
 
           // then refresh the Editor/Filter "collection", we have 2 ways of doing it
 
@@ -377,7 +377,7 @@ export class Example3 {
         // sort collection in descending order and take out last option from the collection
         const selectCollectionObj = this.sortCollectionDescending(collectionEditor).pop();
         this.sortCollectionDescending(collectionFilter).pop();
-        this.aureliaGrid.gridService.deleteDataGridItemById(selectCollectionObj.value);
+        this.aureliaGrid.gridService.deleteItemById(selectCollectionObj.value);
       }
     }
   }
@@ -429,7 +429,7 @@ export class Example3 {
       // this.aureliaGrid.gridService.setSelectedRow(args.row);
     } else if (metadata.columnDef.id === 'delete') {
       if (confirm('Are you sure?')) {
-        this.aureliaGrid.gridService.deleteDataGridItemById(metadata.dataContext.id);
+        this.aureliaGrid.gridService.deleteItemById(metadata.dataContext.id);
         this.alertWarning = `Deleted: ${metadata.dataContext.title}`;
       }
     }
