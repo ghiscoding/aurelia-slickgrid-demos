@@ -5,6 +5,7 @@ export const localeEnglish = {
   TEXT_CLEAR_ALL_FILTERS: 'Clear all Filters',
   TEXT_CLEAR_ALL_GROUPING: 'Clear all Grouping',
   TEXT_CLEAR_ALL_SORTING: 'Clear all Sorting',
+  TEXT_CLEAR_FROZEN_COLUMNS: 'Clear Frozen Columns',
   TEXT_COLLAPSE_ALL_GROUPS: 'Collapse all Groups',
   TEXT_COLUMNS: 'Columns',
   TEXT_COMMANDS: 'Commands',

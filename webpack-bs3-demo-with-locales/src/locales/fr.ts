@@ -5,6 +5,7 @@ export const localeFrench = {
   TEXT_CLEAR_ALL_FILTERS: 'Supprimer tous les filtres',
   TEXT_CLEAR_ALL_GROUPING: 'Supprimer tous les groupes',
   TEXT_CLEAR_ALL_SORTING: 'Supprimer tous les tris',
+  TEXT_CLEAR_FROZEN_COLUMNS: 'Libérer les colonnes gelées',
   TEXT_COLLAPSE_ALL_GROUPS: 'Réduire tous les groupes',
   TEXT_COLUMNS: 'Colonnes',
   TEXT_COMMANDS: 'Commandes',
