@@ -38,11 +38,11 @@
         Group by Duration then Effort-Driven
       </button>
       <button class="btn btn-outline-secondary btn-xs" data-test="set-dynamic-filter"
-        click.delegate="setFiltersDynamically()">
+              click.delegate="setFiltersDynamically()">
         Set Filters Dynamically
       </button>
       <button class="btn btn-outline-secondary btn-xs" data-test="set-dynamic-sorting"
-        click.delegate="setSortingDynamically()">
+              click.delegate="setSortingDynamically()">
         Set Sorting Dynamically
       </button>
     </div>
@@ -57,7 +57,7 @@
           <label for="field1" class="col-sm-3 mb-2">Group by field(s)</label>
           <div class="form-group col-md-3" repeat.for="groupField of selectedGroupingFields">
             <select class="form-control" change.delegate="groupByFieldName(column.id, $index)"
-              value.bind="selectedGroupingFields[$index]">
+                    value.bind="selectedGroupingFields[$index]">
               <option model.bind="''">...</option>
               <option model.bind="column.id" repeat.for="column of columnDefinitions">${column.name}</option>
             </select>
@@ -71,7 +71,10 @@
     <hr>
   </div>
 
-  <aurelia-slickgrid grid-id="grid1" column-definitions.bind="columnDefinitions" grid-options.bind="gridOptions"
-    dataset.bind="dataset" asg-on-aurelia-grid-created.delegate="aureliaGridReady($event.detail)">
+  <aurelia-slickgrid grid-id="grid1"
+                     column-definitions.bind="columnDefinitions"
+                     grid-options.bind="gridOptions"
+                     dataset.bind="dataset"
+                     on-aurelia-grid-created.delegate="aureliaGridReady($event.detail)">
   </aurelia-slickgrid>
 </template>

@@ -215,6 +215,7 @@ export class Example20 {
       enableCellNavigation: true,
       editable: true,
       autoEdit: true,
+      gridWidth: 875,
       enableExcelCopyBuffer: true,
       frozenColumn: this.frozenColumnCount,
       frozenRow: this.frozenRowCount,
