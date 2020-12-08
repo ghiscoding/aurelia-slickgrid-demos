@@ -1,11 +1,24 @@
-import { inject } from 'aurelia-framework';
+import { autoinject } from 'aurelia-framework';
 import { HttpClient } from 'aurelia-http-client';
-import { FieldType, Filters, GridOdataService } from 'aurelia-slickgrid';
+import {
+  AureliaGridInstance,
+  Column,
+  FieldType,
+  Filters,
+  GridOdataService,
+  GridOption,
+  GridStateChange,
+  Metrics,
+  OdataOption,
+  OdataServiceApi,
+  OperatorType,
+  Pagination,
+} from 'aurelia-slickgrid';
 
 const defaultPageSize = 20;
-const sampleDataRoot = 'src/examples/slickgrid/sample-data';
+const sampleDataRoot = 'assets/data';
 
-@inject(HttpClient)
+@autoinject()
 export class Example5 {
   title = 'Example 5: Grid with Backend OData Service';
   subTitle = `
@@ -14,6 +27,7 @@ export class Example5 {
     <br/>
     <ul class="small">
       <li>Only "Name" field is sortable for the demo (because we use JSON files), however "multiColumnSort: true" is also supported</li>
+      <li>This example also demos the Grid State feature, open the console log to see the changes</li>
       <li>String column also support operator (>, >=, <, <=, <>, !=, =, ==, *)
       <ul>
         <li>The (*) can be used as startsWith (ex.: "abc*" => startsWith "abc") / endsWith (ex.: "*xyz" => endsWith "xyz")</li>
@@ -28,7 +42,10 @@ export class Example5 {
   gridOptions;
   dataset = [];
   metrics;
+  paginationOptions;
 
+  isCountEnabled = true;
+  odataVersion = 2;
   odataQuery = '';
   processing = false;
   status = { text: '', class: '' };
@@ -46,20 +63,21 @@ export class Example5 {
   defineGrid() {
     this.columnDefinitions = [
       {
-        id: 'name', name: 'Name', field: 'name', sortable: true, type: FieldType.string,
+        id: 'name', name: 'Name', field: 'name', sortable: true,
+        type: FieldType.string,
         filterable: true,
         filter: {
           model: Filters.compoundInput
         }
       },
       {
-        id: 'gender', name: 'Gender', field: 'gender', filterable: true, sortable: true,
+        id: 'gender', name: 'Gender', field: 'gender', filterable: true,
         filter: {
           model: Filters.singleSelect,
           collection: [{ value: '', label: '' }, { value: 'male', label: 'male' }, { value: 'female', label: 'female' }]
         }
       },
-      { id: 'company', name: 'Company', field: 'company' }
+      { id: 'company', name: 'Company', field: 'company' },
     ];
 
     this.gridOptions = {
@@ -68,17 +86,38 @@ export class Example5 {
         containerId: 'demo-container',
         sidePadding: 10
       },
+      checkboxSelector: {
+        // you can toggle these 2 properties to show the "select all" checkbox in different location
+        hideInFilterHeaderRow: false,
+        hideInColumnTitleRow: true
+      },
       enableCellNavigation: true,
       enableFiltering: true,
       enableCheckboxSelector: true,
       enableRowSelection: true,
+      enablePagination: true, // you could optionally disable the Pagination
       pagination: {
-        pageSizes: [10, 15, 20, 25, 30, 40, 50, 75, 100],
+        pageSizes: [10, 20, 50, 100, 500],
         pageSize: defaultPageSize,
         totalItems: 0
       },
+      presets: {
+        // you can also type operator as string, e.g.: operator: 'EQ'
+        filters: [
+          { columnId: 'gender', searchTerms: ['male'], operator: OperatorType.equal },
+        ],
+        sorters: [
+          // direction can be written as 'asc' (uppercase or lowercase) and/or use the SortDirection type
+          { columnId: 'name', direction: 'asc' },
+        ],
+        pagination: { pageNumber: 2, pageSize: 20 }
+      },
       backendServiceApi: {
         service: new GridOdataService(),
+        options: {
+          enableCount: this.isCountEnabled, // add the count in the OData query, which will return a property named "odata.count" (v2) or "@odata.count" (v4)
+          version: this.odataVersion        // defaults to 2, the query string is slightly different between OData 2 and 4
+        },
         preProcess: () => this.displaySpinner(true),
         process: (query) => this.getCustomerApiCall(query),
         postProcess: (response) => {
@@ -100,15 +139,18 @@ export class Example5 {
   getCustomerCallback(data) {
     // totalItems property needs to be filled for pagination to work correctly
     // however we need to force Aurelia to do a dirty check, doing a clone object will do just that
-    this.gridOptions.pagination.totalItems = data.totalRecordCount;
-    this.gridOptions = { ...{}, ...this.gridOptions };
+    let countPropName = 'totalRecordCount'; // you can use "totalRecordCount" or any name or "odata.count" when "enableCount" is set
+    if (this.isCountEnabled) {
+      countPropName = (this.odataVersion === 4) ? '@odata.count' : 'odata.count';
+    }
+    this.paginationOptions = { ...this.gridOptions.pagination, totalItems: data[countPropName] };
     if (this.metrics) {
-      this.metrics.totalItemCount = data.totalRecordCount;
+      this.metrics.totalItemCount = data[countPropName];
     }
 
     // once pagination totalItems is filled, we can update the dataset
-    this.dataset = data.items;
-    this.odataQuery = data.query;
+    this.dataset = data['items'];
+    this.odataQuery = data['query'];
   }
 
   getCustomerApiCall(query) {
@@ -132,55 +174,50 @@ export class Example5 {
       const columnFilters = {};
 
       for (const param of queryParams) {
-        if (param.indexOf('$top=') > -1) {
+        if (param.includes('$top=')) {
           top = +(param.substring('$top='.length));
         }
-        if (param.indexOf('$skip=') > -1) {
+        if (param.includes('$skip=')) {
           skip = +(param.substring('$skip='.length));
         }
-        if (param.indexOf('$orderby=') > -1) {
+        if (param.includes('$orderby=')) {
           orderBy = param.substring('$orderby='.length);
         }
-        if (param.indexOf('$filter=') > -1) {
+        if (param.includes('$filter=')) {
           const filterBy = param.substring('$filter='.length).replace('%20', ' ');
-          if (filterBy.indexOf('substringof') > -1) {
+          if (filterBy.includes('contains')) {
+            const filterMatch = filterBy.match(/contains\(([a-zA-Z\/]+),\s?'(.*?)'/);
+            const fieldName = filterMatch[1].trim();
+            columnFilters[fieldName] = { type: 'substring', term: filterMatch[2].trim() };
+          }
+          if (filterBy.includes('substringof')) {
             const filterMatch = filterBy.match(/substringof\('(.*?)',([a-zA-Z ]*)/);
             const fieldName = filterMatch[2].trim();
-            columnFilters[fieldName] = {
-              type: 'substring',
-              term: filterMatch[1].trim()
-            };
+            columnFilters[fieldName] = { type: 'substring', term: filterMatch[1].trim() };
           }
-          if (filterBy.indexOf('eq') > -1) {
+          if (filterBy.includes('eq')) {
             const filterMatch = filterBy.match(/([a-zA-Z ]*) eq '(.*?)'/);
-            const fieldName = filterMatch[1].trim();
-            columnFilters[fieldName] = {
-              type: 'equal',
-              term: filterMatch[2].trim()
-            };
+            if (Array.isArray(filterMatch)) {
+              const fieldName = filterMatch[1].trim();
+              columnFilters[fieldName] = { type: 'equal', term: filterMatch[2].trim() };
+            }
           }
-          if (filterBy.indexOf('startswith') > -1) {
+          if (filterBy.includes('startswith')) {
             const filterMatch = filterBy.match(/startswith\(([a-zA-Z ]*),\s?'(.*?)'/);
             const fieldName = filterMatch[1].trim();
-            columnFilters[fieldName] = {
-              type: 'starts',
-              term: filterMatch[2].trim()
-            };
+            columnFilters[fieldName] = { type: 'starts', term: filterMatch[2].trim() };
           }
-          if (filterBy.indexOf('endswith') > -1) {
+          if (filterBy.includes('endswith')) {
             const filterMatch = filterBy.match(/endswith\(([a-zA-Z ]*),\s?'(.*?)'/);
             const fieldName = filterMatch[1].trim();
-            columnFilters[fieldName] = {
-              type: 'ends',
-              term: filterMatch[2].trim()
-            };
+            columnFilters[fieldName] = { type: 'ends', term: filterMatch[2].trim() };
           }
         }
       }
 
-      const sort = (orderBy.indexOf('asc') > -1)
+      const sort = orderBy.includes('asc')
         ? 'ASC'
-        : (orderBy.indexOf('desc') > -1)
+        : orderBy.includes('desc')
           ? 'DESC'
           : '';
 
@@ -223,7 +260,7 @@ export class Example5 {
                       case 'equal': return filterTerm.toLowerCase() === searchTerm;
                       case 'ends': return filterTerm.toLowerCase().endsWith(searchTerm);
                       case 'starts': return filterTerm.toLowerCase().startsWith(searchTerm);
-                      case 'substring': return (filterTerm.toLowerCase().indexOf(searchTerm) > -1);
+                      case 'substring': return filterTerm.toLowerCase().includes(searchTerm);
                     }
                   }
                 });
@@ -234,9 +271,64 @@ export class Example5 {
           const updatedData = filteredData.slice(firstRow, firstRow + top);
 
           setTimeout(() => {
-            resolve({ items: updatedData, totalRecordCount: countTotalItems, query });
-          }, 500);
+            let countPropName = 'totalRecordCount';
+            if (this.isCountEnabled) {
+              countPropName = (this.odataVersion === 4) ? '@odata.count' : 'odata.count';
+            }
+            const backendResult = { items: updatedData, [countPropName]: countTotalItems, query };
+            // console.log('Backend Result', backendResult);
+            resolve(backendResult);
+          }, 150);
         });
     });
+  }
+
+  goToFirstPage() {
+    this.aureliaGrid.paginationService.goToFirstPage();
+  }
+
+  goToLastPage() {
+    this.aureliaGrid.paginationService.goToLastPage();
+  }
+
+  /** Dispatched event of a Grid State Changed event */
+  gridStateChanged(gridStateChanges) {
+    // console.log('Client sample, Grid State changed:: ', gridStateChanges);
+    console.log('Client sample, Grid State changed:: ', gridStateChanges.change);
+  }
+
+  setFiltersDynamically() {
+    // we can Set Filters Dynamically (or different filters) afterward through the FilterService
+    this.aureliaGrid.filterService.updateFilters([
+      // { columnId: 'gender', searchTerms: ['male'], operator: OperatorType.equal },
+      { columnId: 'name', searchTerms: ['A'], operator: 'a*' },
+    ]);
+  }
+
+  setSortingDynamically() {
+    this.aureliaGrid.sortService.updateSorting([
+      { columnId: 'name', direction: 'DESC' },
+    ]);
+  }
+
+  // THE FOLLOWING METHODS ARE ONLY FOR DEMO PURPOSES DO NOT USE THIS CODE
+  // ---
+
+  changeCountEnableFlag() {
+    this.isCountEnabled = !this.isCountEnabled;
+    const odataService = this.gridOptions.backendServiceApi.service;
+    odataService.updateOptions({ enableCount: this.isCountEnabled });
+    odataService.clearFilters();
+    this.aureliaGrid.filterService.clearFilters();
+    return true;
+  }
+
+  setOdataVersion(version) {
+    this.odataVersion = version;
+    const odataService = this.gridOptions.backendServiceApi.service;
+    odataService.updateOptions({ version: this.odataVersion });
+    odataService.clearFilters();
+    this.aureliaGrid.filterService.clearFilters();
+    return true;
   }
 }
