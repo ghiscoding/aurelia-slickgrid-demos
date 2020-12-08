@@ -58,6 +58,8 @@ export class Example14 {
       showPreHeaderPanel: true,
       preHeaderPanelHeight: 28,
       explicitInitialization: true,
+      gridHeight: 275,
+      gridWidth: 800,
       colspanCallback: this.renderDifferentColspan
     };
   }
