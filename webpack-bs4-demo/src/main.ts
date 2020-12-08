@@ -8,8 +8,8 @@ import 'font-awesome/css/font-awesome.css';
 import 'flatpickr/dist/flatpickr.min.css';
 import './styles/styles.scss';
 import './styles/slickgrid-styles.scss';
-import 'aurelia-slickgrid/dist/lib/multiple-select/multiple-select.css';
-import 'aurelia-slickgrid/dist/lib/multiple-select/multiple-select.js';
+import 'multiple-select-modified/src/multiple-select.css';
+import 'multiple-select-modified/src/multiple-select.js';
 // import environment from './environment';
 import * as environment from '../config/environment.json';
 import * as Bluebird from 'bluebird';
@@ -24,7 +24,7 @@ Bluebird.config({
 });
 
 // if you use CSS instead of SASS
-import 'aurelia-slickgrid/dist/styles/css/slickgrid-theme-bootstrap.css';
+import '@slickgrid-universal/common/dist/styles/css/slickgrid-theme-bootstrap.css';
 
 export function configure(aurelia: Aurelia) {
   aurelia.use

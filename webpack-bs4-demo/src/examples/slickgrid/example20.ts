@@ -209,8 +209,8 @@ export class Example20 {
 
     this.gridOptions = {
       autoResize: {
-        containerId: 'demo-container',
-        sidePadding: 10
+        container: '#demo-container',
+        rightPadding: 10
       },
       enableCellNavigation: true,
       editable: true,

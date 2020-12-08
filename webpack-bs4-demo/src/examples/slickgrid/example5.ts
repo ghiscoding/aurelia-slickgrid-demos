@@ -1,3 +1,4 @@
+import { GridOdataService, OdataServiceApi, OdataOption } from '@slickgrid-universal/odata';
 import { autoinject } from 'aurelia-framework';
 import { HttpClient } from 'aurelia-http-client';
 import {
@@ -5,13 +6,11 @@ import {
   Column,
   FieldType,
   Filters,
-  GridOdataService,
   GridOption,
   GridStateChange,
   Metrics,
-  OdataOption,
-  OdataServiceApi,
   OperatorType,
+  Pagination,
 } from 'aurelia-slickgrid';
 
 const defaultPageSize = 20;
@@ -41,6 +40,7 @@ export class Example5 {
   gridOptions: GridOption;
   dataset = [];
   metrics: Metrics;
+  paginationOptions: Pagination;
 
   isCountEnabled = true;
   odataVersion = 2;
@@ -80,8 +80,8 @@ export class Example5 {
     this.gridOptions = {
       enableAutoResize: true,
       autoResize: {
-        containerId: 'demo-container',
-        sidePadding: 10
+        container: '#demo-container',
+        rightPadding: 10
       },
       checkboxSelector: {
         // you can toggle these 2 properties to show the "select all" checkbox in different location
@@ -140,8 +140,7 @@ export class Example5 {
     if (this.isCountEnabled) {
       countPropName = (this.odataVersion === 4) ? '@odata.count' : 'odata.count';
     }
-    this.gridOptions.pagination.totalItems = data[countPropName];
-    this.gridOptions = { ...{}, ...this.gridOptions };
+    this.paginationOptions = { ...this.gridOptions.pagination, totalItems: data[countPropName] };
     if (this.metrics) {
       this.metrics.totalItemCount = data[countPropName];
     }
