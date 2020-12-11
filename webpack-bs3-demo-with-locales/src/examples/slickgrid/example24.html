@@ -6,11 +6,11 @@
     <span class="context-menu">
       <strong>Context Menu:</strong>
       <button class="btn btn-default btn-xs" click.delegate="showContextCommandsAndOptions(false)"
-        data-test="context-menu-priority-only-button">
+              data-test="context-menu-priority-only-button">
         Show Priority Options Only
       </button>
       <button class="btn btn-default btn-xs" click.delegate="showContextCommandsAndOptions(true)"
-        data-test="context-menu-commands-and-priority-button">
+              data-test="context-menu-commands-and-priority-button">
         Show Commands & Priority Options
       </button>
     </span>
@@ -18,20 +18,20 @@
     <span class="cell-menu">
       <strong>Cell Menu:</strong>
       <button class="btn btn-default btn-xs" click.delegate="showCellMenuCommandsAndOptions(false)"
-        data-test="cell-menu-commands-and-options-false-button">
+              data-test="cell-menu-commands-and-options-false-button">
         Show Action Commands Only
       </button>
       <button class="btn btn-default btn-xs" click.delegate="showCellMenuCommandsAndOptions(true)"
-        data-test="cell-menu-commands-and-options-true-button">
+              data-test="cell-menu-commands-and-options-true-button">
         Show Actions Commands & Completed Options
       </button>
     </span>
   </div>
 
   <aurelia-slickgrid grid-id="grid24"
-    column-definitions.bind="columnDefinitions"
-    grid-options.bind="gridOptions"
-    dataset.bind="dataset"
-    instances.bind="aureliaGrid">
+                     column-definitions.bind="columnDefinitions"
+                     grid-options.bind="gridOptions"
+                     dataset.bind="dataset"
+                     instances.bind="aureliaGrid">
   </aurelia-slickgrid>
 </template>
