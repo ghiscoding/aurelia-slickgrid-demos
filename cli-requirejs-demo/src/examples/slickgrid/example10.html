@@ -12,13 +12,13 @@
   </div>
 
   <aurelia-slickgrid
-    grid-id="grid1"
-    column-definitions.bind="columnDefinitions1"
-    grid-options.bind="gridOptions1"
-    dataset.bind="dataset1"
-    grid-height="200"
-    grid-width="800"
-    sg-on-selected-rows-changed.delegate="onGrid1SelectedRowsChanged($event.detail.eventData, $event.detail.args)">
+                     grid-id="grid1"
+                     column-definitions.bind="columnDefinitions1"
+                     grid-options.bind="gridOptions1"
+                     dataset.bind="dataset1"
+                     grid-height="200"
+                     grid-width="800"
+                     on-selected-rows-changed.delegate="onGrid1SelectedRowsChanged($event.detail.eventData, $event.detail.args)">
   </aurelia-slickgrid>
 
   <hr>
@@ -33,12 +33,12 @@
   </div>
 
   <aurelia-slickgrid
-    grid-id="grid2"
-    column-definitions.bind="columnDefinitions2"
-    grid-options.bind="gridOptions2"
-    dataset.bind="dataset2"
-    grid-height="200"
-    grid-width="800"
-    sg-on-selected-rows-changed.delegate="onGrid2SelectedRowsChanged($event.detail.eventData, $event.detail.args)">
+                     grid-id="grid2"
+                     column-definitions.bind="columnDefinitions2"
+                     grid-options.bind="gridOptions2"
+                     dataset.bind="dataset2"
+                     grid-height="200"
+                     grid-width="800"
+                     on-selected-rows-changed.delegate="onGrid2SelectedRowsChanged($event.detail.eventData, $event.detail.args)">
   </aurelia-slickgrid>
 </template>

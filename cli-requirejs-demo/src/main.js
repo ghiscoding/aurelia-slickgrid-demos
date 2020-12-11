@@ -1,7 +1,7 @@
 import environment from './environment';
-import { I18N, TCustomAttribute } from 'aurelia-i18n';
+import { TCustomAttribute } from 'aurelia-i18n';
 import Backend from 'i18next-xhr-backend';
-import "multiple-select"
+import "multiple-select-modified"
 import 'bootstrap';
 
 
@@ -15,6 +15,10 @@ export function configure(aurelia) {
 
   // aurelia i18n to handle multiple locales
   aurelia.use.plugin('aurelia-i18n', (instance) => {
+    const aliases = ['t', 'i18n'];
+    // add aliases for 't' attribute
+    TCustomAttribute.configureAliases(aliases);
+
     // register backend plugin
     instance.i18next.use(Backend);
 

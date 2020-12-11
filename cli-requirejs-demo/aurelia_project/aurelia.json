@@ -88,8 +88,8 @@
           },
           "text",
           {
-            "name": "multiple-select",
-            "path": "../node_modules/aurelia-slickgrid/dist/lib/multiple-select",
+            "name": "multiple-select-modified",
+            "path": "../node_modules/multiple-select-modified/src",
             "main": "multiple-select",
             "resources": [
               "multiple-select.css"
