@@ -10,10 +10,12 @@
           <i class="fa fa-refresh fa-spin fa-lg fa-fw"></i>
         </span>
       </div>
-      <button class="btn btn-default btn-sm" data-test="set-dynamic-filter" click.delegate="setFiltersDynamically()">
+      <button class="btn btn-default btn-sm" data-test="set-dynamic-filter"
+              click.delegate="setFiltersDynamically()">
         Set Filters Dynamically
       </button>
-      <button class="btn btn-default btn-sm" data-test="set-dynamic-sorting" click.delegate="setSortingDynamically()">
+      <button class="btn btn-default btn-sm" data-test="set-dynamic-sorting"
+              click.delegate="setSortingDynamically()">
         Set Sorting Dynamically
       </button>
       <br>
@@ -60,7 +62,7 @@
                      grid-options.bind="gridOptions"
                      pagination-options.bind="paginationOptions"
                      dataset.bind="dataset"
-                     asg-on-aurelia-grid-created.delegate="aureliaGridReady($event.detail)"
-                     asg-on-grid-state-changed.delegate="gridStateChanged($event.detail)">
+                     on-aurelia-grid-created.delegate="aureliaGridReady($event.detail)"
+                     on-grid-state-changed.delegate="gridStateChanged($event.detail)">
   </aurelia-slickgrid>
 </template>

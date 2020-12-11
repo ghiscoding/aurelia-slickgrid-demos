@@ -36,7 +36,9 @@ export class Example1 {
     ];
     this.gridOptions1 = {
       enableAutoResize: false,
-      enableSorting: true
+      enableSorting: true,
+      gridHeight: 225,
+      gridWidth: 800
     };
 
     // copy the same Grid Options and Column Definitions to 2nd grid

@@ -104,6 +104,8 @@ export class Example2 {
       enableRowSelection: true,
       enableCheckboxSelector: true,
       enableFiltering: true,
+      gridHeight: 225,
+      gridWidth: 800,
       checkboxSelector: {
         // remove the unnecessary "Select All" checkbox in header when in single selection mode
         hideSelectAllCheckbox: true,
@@ -138,6 +140,8 @@ export class Example2 {
       enableAutoResize: false,
       enableCellNavigation: true,
       enableFiltering: true,
+      gridHeight: 255,
+      gridWidth: 800,
       checkboxSelector: {
         // you can toggle these 2 properties to show the "select all" checkbox in different location
         hideInFilterHeaderRow: false,

@@ -5,7 +5,6 @@ import {
   Formatter,
   Formatters,
   GridOption,
-  SelectedRange,
 } from 'aurelia-slickgrid';
 
 // create my custom Formatter with the Formatter type
@@ -75,8 +74,8 @@ export class Example2 {
 
     this.gridOptions = {
       autoResize: {
-        containerId: 'demo-container',
-        sidePadding: 10
+        container: '#demo-container',
+        rightPadding: 10
       },
       enableCellNavigation: true,
       showCustomFooter: true, // display some metrics in the bottom custom footer
@@ -103,9 +102,9 @@ export class Example2 {
       // when using the ExcelCopyBuffer, you can see what the selection range is
       enableExcelCopyBuffer: true,
       excelCopyBufferOptions: {
-        onCopyCells: (e, args: { ranges: SelectedRange[] }) => console.log('onCopyCells', args.ranges),
-        onPasteCells: (e, args: { ranges: SelectedRange[] }) => console.log('onPasteCells', args.ranges),
-        onCopyCancelled: (e, args: { ranges: SelectedRange[] }) => console.log('onCopyCancelled', args.ranges),
+        onCopyCells: (e, args) => console.log('onCopyCells', args.ranges),
+        onPasteCells: (e, args) => console.log('onPasteCells', args.ranges),
+        onCopyCancelled: (e, args) => console.log('onCopyCancelled', args.ranges),
       }
     };
   }

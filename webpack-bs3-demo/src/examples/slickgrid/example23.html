@@ -18,10 +18,12 @@
             click.delegate="aureliaGrid.sortService.clearSorting()">
       Clear Sorting
     </button>
-    <button class="btn btn-default btn-sm" data-test="set-dynamic-filter" click.delegate="setFiltersDynamically()">
+    <button class="btn btn-default btn-sm" data-test="set-dynamic-filter"
+            click.delegate="setFiltersDynamically()">
       Set Filters Dynamically
     </button>
-    <button class="btn btn-default btn-sm" data-test="set-dynamic-sorting" click.delegate="setSortingDynamically()">
+    <button class="btn btn-default btn-sm" data-test="set-dynamic-sorting"
+            click.delegate="setSortingDynamically()">
       Set Sorting Dynamically
     </button>
 
@@ -45,7 +47,7 @@
                      grid-options.bind="gridOptions"
                      dataset.bind="dataset"
                      instances.bind="aureliaGrid"
-                     asg-on-grid-state-changed.delegate="gridStateChanged($event.detail)"
-                     sg-on-row-count-changed.delegate="refreshMetrics($event.detail.eventData, $event.detail.args)">
+                     on-grid-state-changed.delegate="gridStateChanged($event.detail)"
+                     on-row-count-changed.delegate="refreshMetrics($event.detail.eventData, $event.detail.args)">
   </aurelia-slickgrid>
 </template>
