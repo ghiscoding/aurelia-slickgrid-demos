@@ -96,6 +96,31 @@
             ]
           },
           {
+            "name": "@slickgrid-universal/excel-export",
+            "path": "../node_modules/@slickgrid-universal/excel-export/dist/commonjs",
+            "main": "index"
+          },
+          {
+            "name": "@slickgrid-universal/graphql",
+            "path": "../node_modules/@slickgrid-universal/graphql/dist/commonjs",
+            "main": "index"
+          },
+          {
+            "name": "@slickgrid-universal/odata",
+            "path": "../node_modules/@slickgrid-universal/odata/dist/commonjs",
+            "main": "index"
+          },
+          {
+            "name": "@slickgrid-universal/text-export",
+            "path": "../node_modules/@slickgrid-universal/text-export/dist/commonjs",
+            "main": "index"
+          },
+          {
+            "name": "@slickgrid-universal/common",
+            "path": "../node_modules/@slickgrid-universal/common/dist/commonjs",
+            "main": "index"
+          },
+          {
             "name": "jquery-ui-dist",
             "path": "../node_modules/jquery-ui-dist",
             "main": "jquery-ui"
