@@ -183,7 +183,7 @@ export class Example12 {
         sanitizeDataExport: true
       },
       excelExportOptions: { exportWithFormatter: true, sanitizeDataExport: true },
-      registerExternalServices: [this.excelExportService, this.textExportService],
+      registerExternalResources: [this.excelExportService, this.textExportService],
     };
   }
 

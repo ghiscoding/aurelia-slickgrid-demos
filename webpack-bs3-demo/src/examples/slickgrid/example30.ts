@@ -5,14 +5,14 @@ import { HttpClient as FetchClient } from 'aurelia-fetch-client';
 import {
   AureliaGridInstance,
   AutocompleteOption,
+  CompositeEditorModalType,
   Column,
   Editors,
-  Formatters,
-  CompositeEditorModalType,
-  Filters,
   FieldType,
-  Formatter,
+  Filters,
+  Formatters,
   formatNumber,
+  Formatter,
   GridOption,
   GridStateChange,
   LongTextEditorOption,
@@ -94,6 +94,7 @@ export class Example30 {
   isMassSelectionDisabled = true;
 
   constructor(private httpFetch: FetchClient) {
+    this.compositeEditorInstance = new SlickCompositeEditorComponent();
     // define the grid options & columns and then create the grid itself
     this.defineGrids();
   }
@@ -334,7 +335,7 @@ export class Example30 {
       excelExportOptions: {
         exportWithFormatter: false
       },
-      registerExternalServices: [new ExcelExportService()],
+      registerExternalResources: [new ExcelExportService(), this.compositeEditorInstance],
       enableFiltering: true,
       rowSelectionOptions: {
         // True (Single Selection), False (Multiple Selections)
@@ -540,10 +541,6 @@ export class Example30 {
     }
   }
 
-  handleOnCompositeEditorCreated(compositeEditor: SlickCompositeEditorComponent) {
-    this.compositeEditorInstance = compositeEditor;
-  }
-
   openCompositeModal(modalType: CompositeEditorModalType) {
     // open the editor modal and we can also provide a header title with optional parsing pulled from the dataContext, via template {{ }}
     // for example {{title}} => display the item title, or even complex object works {{product.itemName}} => display item product name
@@ -603,7 +600,7 @@ export class Example30 {
 
   removeUnsavedStylingFromCell(_item: any, column: Column, row: number) {
     // remove unsaved css class from that cell
-    this.aureliaGrid.slickGrid.removeCellCssStyles(`unsaved_highlight_${[column.field]}${row}`);
+    this.aureliaGrid.slickGrid.removeCellCssStyles(`unsaved_highlight_${[column.id]}${row}`);
   }
 
   removeAllUnsavedStylingFromCell() {
