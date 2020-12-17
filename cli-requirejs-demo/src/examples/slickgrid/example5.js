@@ -1,18 +1,10 @@
+import { GridOdataService } from '@slickgrid-universal/odata';
 import { autoinject } from 'aurelia-framework';
 import { HttpClient } from 'aurelia-http-client';
 import {
-  AureliaGridInstance,
-  Column,
   FieldType,
   Filters,
-  GridOdataService,
-  GridOption,
-  GridStateChange,
-  Metrics,
-  OdataOption,
-  OdataServiceApi,
   OperatorType,
-  Pagination,
 } from 'aurelia-slickgrid';
 
 const defaultPageSize = 20;

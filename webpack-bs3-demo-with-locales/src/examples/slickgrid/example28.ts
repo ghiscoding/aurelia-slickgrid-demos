@@ -56,14 +56,14 @@ export class Example28 {
         id: 'size', name: 'Size', field: 'size', minWidth: 90,
         type: FieldType.number, exportWithFormatter: true,
         filterable: true, filter: { model: Filters.compoundInputNumber },
-        formatter: (row, cell, value) => isNaN(value) ? '' : `${value} MB`,
+        formatter: (row, cell, value) => isNaN(value) ? '' : `${value || 0} MB`,
       },
     ];
 
     this.gridOptions = {
       autoResize: {
-        containerId: 'demo-container',
-        sidePadding: 10
+        container: '#demo-container',
+        rightPadding: 10
       },
       enableAutoSizeColumns: true,
       enableAutoResize: true,

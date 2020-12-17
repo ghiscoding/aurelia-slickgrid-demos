@@ -56,7 +56,7 @@ export class Example27 {
       {
         id: 'percentComplete', name: '% Complete', field: 'percentComplete', minWidth: 120, maxWidth: 200,
         sortable: true, filterable: true, filter: { model: Filters.compoundSlider, operator: '>=' },
-        formatter: Formatters.percentCompleteBar, type: FieldType.number,
+        formatter: Formatters.percentCompleteBar, type: FieldType.number, exportWithFormatter: false,
       },
       {
         id: 'start', name: 'Start', field: 'start', minWidth: 60,
@@ -72,7 +72,7 @@ export class Example27 {
       },
       {
         id: 'effortDriven', name: 'Effort Driven', width: 80, minWidth: 20, maxWidth: 80, cssClass: 'cell-effort-driven', field: 'effortDriven',
-        formatter: Formatters.checkmark, cannotTriggerInsert: true,
+        formatter: Formatters.checkmark, cannotTriggerInsert: true, exportWithFormatter: false,
         filterable: true,
         filter: {
           collection: [{ value: '', label: '' }, { value: true, label: 'True' }, { value: false, label: 'False' }],
@@ -83,8 +83,8 @@ export class Example27 {
 
     this.gridOptions = {
       autoResize: {
-        containerId: 'demo-container',
-        sidePadding: 10
+        container: '#demo-container',
+        rightPadding: 10
       },
       enableAutoSizeColumns: true,
       enableAutoResize: true,

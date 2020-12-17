@@ -1,3 +1,5 @@
+import { ExcelExportService } from '@slickgrid-universal/excel-export';
+import { TextExportService } from '@slickgrid-universal/text-export';
 import { inject } from 'aurelia-framework';
 import { I18N } from 'aurelia-i18n';
 import {
@@ -45,6 +47,8 @@ export class Example12 {
   dataset = [];
   selectedLanguage;
   duplicateTitleHeaderCount = 1;
+  excelExportService = new ExcelExportService();
+  textExportService = new TextExportService();
 
   constructor(i18n) {
     this.i18n = i18n;
@@ -127,7 +131,15 @@ export class Example12 {
       },
       params: {
         flapickrLocale: French
-      }
+      },
+      enableExcelExport: true,
+      enableTextExport: true,
+      textExportOptions: {
+        // set at the grid option level, meaning all column will evaluate the Formatter (when it has a Formatter defined)
+        exportWithFormatter: true,
+        sanitizeDataExport: true
+      },
+      registerExternalResources: [this.excelExportService, this.textExportService],
     };
   }
 

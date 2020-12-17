@@ -24,7 +24,7 @@ export class Example19 {
   `;
 
   aureliaGrid: AureliaGridInstance;
-  extensions: ExtensionList;
+  extensions: ExtensionList<any, any>;
   gridOptions: GridOption;
   columnDefinitions: Column[];
   dataset: any[];
@@ -74,8 +74,8 @@ export class Example19 {
 
     this.gridOptions = {
       autoResize: {
-        containerId: 'demo-container',
-        sidePadding: 10
+        container: '#demo-container',
+        rightPadding: 10
       },
       enableFiltering: true,
       enableRowDetailView: true,

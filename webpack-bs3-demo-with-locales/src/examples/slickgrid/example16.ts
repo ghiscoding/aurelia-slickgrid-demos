@@ -72,8 +72,8 @@ export class Example16 {
     this.gridOptions = {
       enableAutoResize: true,
       autoResize: {
-        containerId: 'demo-container',
-        sidePadding: 10
+        container: '#demo-container',
+        rightPadding: 10
       },
       enableFiltering: true,
       enableCheckboxSelector: true,
@@ -108,7 +108,6 @@ export class Example16 {
         // you can also override the usability of the rows, for example make every 2nd row the only moveable rows,
         // usabilityOverride: (row, dataContext, grid) => dataContext.id % 2 === 1
       },
-      enableTranslate: true,
     };
   }
 

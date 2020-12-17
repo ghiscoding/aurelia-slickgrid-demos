@@ -37,10 +37,12 @@
       <button class="btn btn-default btn-xs" click.delegate="groupByDurationEffortDriven()">
         Group by Duration then Effort-Driven
       </button>
-      <button class="btn btn-default btn-xs" data-test="set-dynamic-filter" click.delegate="setFiltersDynamically()">
+      <button class="btn btn-default btn-xs" data-test="set-dynamic-filter"
+              click.delegate="setFiltersDynamically()">
         Set Filters Dynamically
       </button>
-      <button class="btn btn-default btn-xs" data-test="set-dynamic-sorting" click.delegate="setSortingDynamically()">
+      <button class="btn btn-default btn-xs" data-test="set-dynamic-sorting"
+              click.delegate="setSortingDynamically()">
         Set Sorting Dynamically
       </button>
     </div>
@@ -60,13 +62,17 @@
           </select>
         </div>
       </div>
+    </div>
   </form>
 
   <div class="col-sm-12">
     <hr>
   </div>
 
-  <aurelia-slickgrid grid-id="grid1" column-definitions.bind="columnDefinitions" grid-options.bind="gridOptions"
-                     dataset.bind="dataset" asg-on-aurelia-grid-created.delegate="aureliaGridReady($event.detail)">
+  <aurelia-slickgrid grid-id="grid1"
+                     column-definitions.bind="columnDefinitions"
+                     grid-options.bind="gridOptions"
+                     dataset.bind="dataset"
+                     on-aurelia-grid-created.delegate="aureliaGridReady($event.detail)">
   </aurelia-slickgrid>
 </template>

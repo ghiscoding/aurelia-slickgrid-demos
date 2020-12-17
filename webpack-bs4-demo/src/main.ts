@@ -1,16 +1,15 @@
 import { Aurelia } from 'aurelia-framework'
 import { PLATFORM } from 'aurelia-pal';
 import { TCustomAttribute } from 'aurelia-i18n';
-import * as Backend from 'i18next-xhr-backend';
+import Backend from 'i18next-xhr-backend';
 
 import 'bootstrap/dist/css/bootstrap.css';
 import 'font-awesome/css/font-awesome.css';
 import 'flatpickr/dist/flatpickr.min.css';
 import './styles/styles.scss';
 import './styles/slickgrid-styles.scss';
-import 'aurelia-slickgrid/dist/lib/multiple-select/multiple-select.css';
-import 'aurelia-slickgrid/dist/lib/multiple-select/multiple-select.js';
-// import environment from './environment';
+import 'multiple-select-modified/src/multiple-select.css';
+import 'multiple-select-modified/src/multiple-select.js';
 import * as environment from '../config/environment.json';
 import * as Bluebird from 'bluebird';
 import 'bootstrap';
@@ -24,7 +23,7 @@ Bluebird.config({
 });
 
 // if you use CSS instead of SASS
-import 'aurelia-slickgrid/dist/styles/css/slickgrid-theme-bootstrap.css';
+import '@slickgrid-universal/common/dist/styles/css/slickgrid-theme-bootstrap.css';
 
 export function configure(aurelia: Aurelia) {
   aurelia.use
@@ -36,22 +35,22 @@ export function configure(aurelia: Aurelia) {
     config.options.gridMenu.iconCssClass = 'fa fa-bars';
   });
 
+  // aurelia i18n to handle multiple locales
   aurelia.use.plugin(PLATFORM.moduleName('aurelia-i18n'), instance => {
-    let aliases = ['t', 'i18n'];
+    const aliases = ['t', 'i18n'];
     // add aliases for 't' attribute
     TCustomAttribute.configureAliases(aliases);
 
     // register backend plugin
     instance.i18next.use(Backend);
 
-    // adapt options to your needs (see http://i18next.com/docs/options/)
-    // make sure to return the promise of the setup method, in order to guarantee proper loading
     return instance.setup({
-      backend: {                                  // <-- configure backend settings
-        loadPath: 'assets/locales/{{lng}}/{{ns}}.json', // <-- XHR settings for where to get the files from
+      backend: {
+        loadPath: 'assets/locales/{{lng}}/{{ns}}.json',
       },
-      attributes: aliases,
       lng: 'en',
+      defaultNS: 'translation',
+      attributes: aliases,
       fallbackLng: 'en',
       debug: false
     });

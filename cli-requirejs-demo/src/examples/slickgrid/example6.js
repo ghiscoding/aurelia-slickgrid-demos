@@ -1,3 +1,4 @@
+import { GraphqlService } from '@slickgrid-universal/graphql';
 import { inject } from 'aurelia-framework';
 import { I18N } from 'aurelia-i18n';
 import { HttpClient } from 'aurelia-http-client';
@@ -5,7 +6,6 @@ import {
   FieldType,
   Filters,
   Formatters,
-  GraphqlService,
   OperatorType,
   SortDirection
 } from 'aurelia-slickgrid';

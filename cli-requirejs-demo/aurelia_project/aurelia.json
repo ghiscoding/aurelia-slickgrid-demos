@@ -88,12 +88,37 @@
           },
           "text",
           {
-            "name": "multiple-select",
-            "path": "../node_modules/aurelia-slickgrid/dist/lib/multiple-select",
+            "name": "multiple-select-modified",
+            "path": "../node_modules/multiple-select-modified/src",
             "main": "multiple-select",
             "resources": [
               "multiple-select.css"
             ]
+          },
+          {
+            "name": "@slickgrid-universal/excel-export",
+            "path": "../node_modules/@slickgrid-universal/excel-export/dist/commonjs",
+            "main": "index"
+          },
+          {
+            "name": "@slickgrid-universal/graphql",
+            "path": "../node_modules/@slickgrid-universal/graphql/dist/commonjs",
+            "main": "index"
+          },
+          {
+            "name": "@slickgrid-universal/odata",
+            "path": "../node_modules/@slickgrid-universal/odata/dist/commonjs",
+            "main": "index"
+          },
+          {
+            "name": "@slickgrid-universal/text-export",
+            "path": "../node_modules/@slickgrid-universal/text-export/dist/commonjs",
+            "main": "index"
+          },
+          {
+            "name": "@slickgrid-universal/common",
+            "path": "../node_modules/@slickgrid-universal/common/dist/commonjs",
+            "main": "index"
           },
           {
             "name": "jquery-ui-dist",

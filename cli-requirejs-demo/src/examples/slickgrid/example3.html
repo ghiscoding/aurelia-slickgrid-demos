@@ -58,10 +58,10 @@
   <div id="grid-container" class="col-sm-12">
     <aurelia-slickgrid grid-id="grid1" column-definitions.bind="columnDefinitions" grid-options.bind="gridOptions"
                        dataset.bind="dataset"
-                       sg-on-cell-change.delegate="onCellChanged($event.detail.eventData, $event.detail.args)"
-                       sg-on-click.delegate="onCellClicked($event.detail.eventData, $event.detail.args)"
-                       sg-on-validation-error.delegate="onCellValidationError($event.detail.eventData, $event.detail.args)"
-                       asg-on-aurelia-grid-created.delegate="aureliaGridReady($event.detail)">
+                       on-cell-change.delegate="onCellChanged($event.detail.eventData, $event.detail.args)"
+                       on-click.delegate="onCellClicked($event.detail.eventData, $event.detail.args)"
+                       on-validation-error.delegate="onCellValidationError($event.detail.eventData, $event.detail.args)"
+                       on-aurelia-grid-created.delegate="aureliaGridReady($event.detail)">
     </aurelia-slickgrid>
   </div>
 </template>

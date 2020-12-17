@@ -1,3 +1,4 @@
+import { GraphqlService, GraphqlPaginatedResult, GraphqlServiceApi, } from '@slickgrid-universal/graphql';
 import { autoinject } from 'aurelia-framework';
 import * as moment from 'moment-mini';
 import {
@@ -6,9 +7,6 @@ import {
   FieldType,
   Filters,
   Formatters,
-  GraphqlPaginatedResult,
-  GraphqlService,
-  GraphqlServiceApi,
   GridOption,
   GridStateChange,
   Metrics,
@@ -43,6 +41,7 @@ export class Example6 {
   gridOptions: GridOption;
   dataset = [];
   metrics: Metrics;
+  graphqlService = new GraphqlService();
 
   isWithCursor = false;
   graphqlQuery = '';
@@ -65,7 +64,7 @@ export class Example6 {
   defineGrid() {
     this.columnDefinitions = [
       {
-        id: 'name', field: 'name', name: 'Name', width: 60, columnGroup: 'Customer Information',
+        id: 'name', field: 'name', nameKey: 'NAME', width: 60, columnGroupKey: 'CUSTOMER_INFORMATION',
         type: FieldType.string,
         sortable: true,
         filterable: true,
@@ -74,14 +73,14 @@ export class Example6 {
         }
       },
       {
-        id: 'gender', field: 'gender', name: 'Gender', filterable: true, sortable: true, width: 60, columnGroup: 'Customer Information',
+        id: 'gender', field: 'gender', nameKey: 'GENDER', filterable: true, sortable: true, width: 60, columnGroupKey: 'CUSTOMER_INFORMATION',
         filter: {
           model: Filters.singleSelect,
-          collection: [{ value: '', label: '' }, { value: 'male', label: 'Male' }, { value: 'female', label: 'Female' }]
+          collection: [{ value: '', label: '' }, { value: 'male', label: 'male', labelKey: 'MALE' }, { value: 'female', label: 'female', labelKey: 'FEMALE' }]
         }
       },
       {
-        id: 'company', field: 'company', name: 'Company', width: 60, columnGroup: 'Customer Information',
+        id: 'company', field: 'company', nameKey: 'COMPANY', width: 60, columnGroupKey: 'CUSTOMER_INFORMATION',
         sortable: true,
         filterable: true,
         filter: {
@@ -93,22 +92,22 @@ export class Example6 {
         }
       },
       {
-        id: 'billingAddressStreet', field: 'billing.address.street', name: 'Billing Address Street',
-        width: 60, filterable: true, sortable: true, columnGroup: 'Billing Information',
+        id: 'billingAddressStreet', field: 'billing.address.street', nameKey: 'BILLING.ADDRESS.STREET',
+        width: 60, filterable: true, sortable: true, columnGroupKey: 'BILLING.INFORMATION',
       },
       {
-        id: 'billingAddressZip', field: 'billing.address.zip', name: 'Billing Address Zip', width: 60,
+        id: 'billingAddressZip', field: 'billing.address.zip', nameKey: 'BILLING.ADDRESS.ZIP', width: 60,
         type: FieldType.number,
-        columnGroup: 'Billing Information',
+        columnGroupKey: 'BILLING.INFORMATION',
         filterable: true, sortable: true,
         filter: {
           model: Filters.compoundInput
         },
-        formatter: Formatters.complexObject
+        formatter: Formatters.multiple, params: { formatters: [Formatters.complexObject, Formatters.translate] }
       },
       {
         id: 'finish', field: 'finish', name: 'Date', formatter: Formatters.dateIso, sortable: true, minWidth: 90, width: 120, exportWithFormatter: true,
-        columnGroup: 'Billing Information',
+        columnGroupKey: 'BILLING.INFORMATION',
         type: FieldType.date,
         filterable: true,
         filter: {
@@ -161,7 +160,7 @@ export class Example6 {
         pagination: { pageNumber: 2, pageSize: 20 }
       },
       backendServiceApi: {
-        service: new GraphqlService(),
+        service: this.graphqlService,
         options: {
           datasetName: GRAPHQL_QUERY_DATASET_NAME, // the only REQUIRED property
           addLocaleIntoQuery: true,   // optionally add current locale into the query
@@ -219,7 +218,7 @@ export class Example6 {
 
     return new Promise((resolve, reject) => {
       setTimeout(() => {
-        this.graphqlQuery = this.aureliaGrid.backendService.buildQuery();
+        this.graphqlQuery = this.graphqlService.buildQuery();
         resolve(mockedResult);
       }, 150);
     });

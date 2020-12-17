@@ -1,7 +1,7 @@
 import { HttpClient } from 'aurelia-http-client';
 import { inject } from 'aurelia-framework';
 import { CustomInputFilter } from './custom-inputFilter';
-import { AureliaGridInstance, Column, FieldType, Filters, Formatters, GridOption, OperatorType, Metrics } from 'aurelia-slickgrid';
+import { FieldType, Filters, Formatters, OperatorType } from 'aurelia-slickgrid';
 
 function randomBetween(min, max) {
   return Math.floor(Math.random() * (max - min + 1) + min);

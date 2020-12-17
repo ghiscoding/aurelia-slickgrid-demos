@@ -7,7 +7,6 @@ import {
   AutocompleteOption,
   Column,
   Editors,
-  EditorArgs,
   EditorValidator,
   FieldType,
   Filters,
@@ -16,14 +15,15 @@ import {
   GridOption,
   OnEventArgs,
   OperatorType,
-  Sorters,
+  SlickNamespace,
+  SortComparers,
 } from 'aurelia-slickgrid';
 import { CustomInputEditor } from './custom-inputEditor';
 import { CustomInputFilter } from './custom-inputFilter';
 import * as $ from 'jquery';
 
 // using external non-typed js libraries
-declare var Slick: any;
+declare const Slick: SlickNamespace;
 
 const NB_ITEMS = 100;
 const URL_SAMPLE_COLLECTION_DATA = 'assets/data/collection_100_numbers.json';
@@ -31,17 +31,17 @@ const URL_COUNTRIES_COLLECTION = 'assets/data/countries.json';
 const URL_COUNTRY_NAMES = 'assets/data/country_names.json';
 
 // you can create custom validator to pass to an inline editor
-const myCustomTitleValidator: EditorValidator = (value: any, args: EditorArgs) => {
+const myCustomTitleValidator: EditorValidator = (value: any) => {
   // you can get the Editor Args which can be helpful, e.g. we can get the Translate Service from it
-  const grid = args && args.grid;
-  const gridOptions = (grid && grid.getOptions) ? grid.getOptions() : {};
-  const i18n = gridOptions.i18n;
+  // const grid = args && args.grid;
+  // const gridOptions = (grid && grid.getOptions) ? grid.getOptions() : {};
+  // const i18n = gridOptions.i18n;
 
   // to get the editor object, you'll need to use "internalColumnEditor"
   // don't use "editor" property since that one is what SlickGrid uses internally by it's editor factory
-  const columnEditor = args && args.column && args.column.internalColumnEditor;
+  // const columnEditor = args && args.column && args.column.internalColumnEditor;
 
-  if (value == null || value === undefined || !value.length) {
+  if (value === null || value === undefined || !value.length) {
     return { valid: false, msg: 'This is a required field' };
   } else if (!/^Task\s\d+$/.test(value)) {
     return { valid: false, msg: 'Your title is invalid, it must start with "Task" followed by a number' };
@@ -52,7 +52,7 @@ const myCustomTitleValidator: EditorValidator = (value: any, args: EditorArgs) =
 };
 
 // create a custom Formatter to show the Task + value
-const taskFormatter = (row, cell, value, columnDef, dataContext) => {
+const taskFormatter = (_row, _cell, value) => {
   if (value && Array.isArray(value)) {
     const taskValues = value.map((val) => `Task ${val}`);
     const values = taskValues.join(', ');
@@ -72,7 +72,7 @@ export class Example3 {
     <li>Inline Editors requires "enableCellNavigation: true" (not sure why though)</li>
     <li>
         Support Excel Copy Buffer (SlickGrid Copy Manager Plugin), you can use it by simply enabling "enableExcelCopyBuffer" flag.
-        Note that it will only evaluate Formatter when the "exportWithFormatter" flag is enabled (through "ExportOptions" or the column definition)
+        Note that it will only evaluate Formatter when the "exportWithFormatter" flag is enabled (through "ExcelExportOptions" or "TextExportOptions" or the column definition)
     </li>
     <li>Support of "collectionAsync" is possible, click on "Clear Filters/Sorting" then add/delete item(s) and look at "Prerequisites" Select Filter</li>
   </ul>
@@ -83,7 +83,7 @@ export class Example3 {
   columnDefinitions: Column[];
   dataset: any[];
   updatedObject: any;
-  isAutoEdit: boolean = true;
+  isAutoEdit = true;
   alertWarning: any;
   selectedLanguage: string;
   duplicateTitleHeaderCount = 1;
@@ -112,7 +112,7 @@ export class Example3 {
         minWidth: 30,
         maxWidth: 30,
         // use onCellClick OR grid.onClick.subscribe which you can see down below
-        onCellClick: (e: Event, args: OnEventArgs) => {
+        onCellClick: (_e: Event, args: OnEventArgs) => {
           console.log(args);
           this.alertWarning = `Editing: ${args.dataContext.title}`;
           this.aureliaGrid.gridService.highlightRow(args.row, 1500);
@@ -148,7 +148,7 @@ export class Example3 {
           validator: myCustomTitleValidator, // use a custom validator
         },
         minWidth: 100,
-        onCellChange: (e: Event, args: OnEventArgs) => {
+        onCellChange: (_e: Event, args: OnEventArgs) => {
           console.log(args);
           this.alertWarning = `Updated Title: ${args.dataContext.title}`;
         }
@@ -222,6 +222,12 @@ export class Example3 {
             operator: OperatorType.notEqual
           },
           model: Editors.singleSelect,
+          // validator: (value, args) => {
+          //   if (value < 50) {
+          //     return { valid: false, msg: 'Please use at least 50%' };
+          //   }
+          //   return { valid: true, msg: '' };
+          // }
         },
         minWidth: 100,
         params: {
@@ -249,7 +255,9 @@ export class Example3 {
         formatter: Formatters.dateIso,
         sortable: true,
         minWidth: 100,
-        type: FieldType.date,
+        type: FieldType.date,              // dataset cell input format
+        // outputType: FieldType.dateUs,   // date picker format
+        saveOutputType: FieldType.dateUtc, // save output date format
         editor: {
           model: Editors.date,
           // override any of the Flatpickr options through "filterOptions"
@@ -323,7 +331,7 @@ export class Example3 {
         dataKey: 'code',
         labelKey: 'name',
         type: FieldType.object,
-        sorter: Sorters.objectString,
+        sortComparer: SortComparers.objectString,
         filterable: true,
         sortable: true,
         minWidth: 100,
@@ -437,14 +445,14 @@ export class Example3 {
       autoEdit: this.isAutoEdit,
       autoCommitEdit: false,
       autoResize: {
-        containerId: 'demo-container',
-        sidePadding: 10
+        container: '#demo-container',
+        rightPadding: 10
       },
       editable: true,
       enableCellNavigation: true,
       enableExcelCopyBuffer: true,
       enableFiltering: true,
-      editCommandHandler: (item, column, editCommand) => {
+      editCommandHandler: (_item, _column, editCommand) => {
         this._commandQueue.push(editCommand);
         editCommand.execute();
       },
@@ -532,12 +540,12 @@ export class Example3 {
     return tempDataset;
   }
 
-  onCellChanged(e, args) {
+  onCellChanged(_e, args) {
     console.log('onCellChange', args);
     this.updatedObject = { ...args.item };
   }
 
-  onCellClicked(e, args) {
+  onCellClicked(_e, args) {
     const metadata = this.aureliaGrid.gridService.getColumnFromEventArguments(args);
     console.log(metadata);
 
@@ -557,8 +565,10 @@ export class Example3 {
     }
   }
 
-  onCellValidationError(e, args) {
-    alert(args.validationResults.msg);
+  onCellValidationError(_e, args) {
+    if (args.validationResults) {
+      alert(args.validationResults.msg);
+    }
   }
 
   changeAutoCommit() {

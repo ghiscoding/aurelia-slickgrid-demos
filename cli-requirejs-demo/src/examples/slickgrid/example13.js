@@ -1,3 +1,5 @@
+import { ExcelExportService } from '@slickgrid-universal/excel-export';
+import { TextExportService } from '@slickgrid-universal/text-export';
 import { Aggregators, FieldType, Formatters, GroupTotalFormatters, SortDirectionNumber, Sorters } from 'aurelia-slickgrid';
 
 export class Example13 {
@@ -16,6 +18,8 @@ export class Example13 {
   dataset = [];
   dataviewObj;
   processing = false;
+  excelExportService = new ExcelExportService();
+  textExportService = new TextExportService();
 
   constructor() {
     // define the grid options & columns and then create the grid itself
@@ -28,7 +32,7 @@ export class Example13 {
   }
 
   detached() {
-    
+
   }
 
   /* Define grid Options and Columns */
@@ -104,9 +108,11 @@ export class Example13 {
         sidePadding: 10
       },
       enableGrouping: true,
-      exportOptions: {
-        sanitizeDataExport: true
-      }
+      enableExcelExport: true,
+      enableTextExport: true,
+      excelExportOptions: { sanitizeDataExport: true },
+      textExportOptions: { sanitizeDataExport: true },
+      registerExternalResources: [this.excelExportService, this.textExportService],
     };
   }
 

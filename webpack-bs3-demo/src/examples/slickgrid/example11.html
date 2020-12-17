@@ -14,7 +14,9 @@
         </button>
       </div>
       <button class="btn btn-sm btn-default" click.delegate="addNewItem()">Add New Mocked Item (top)</button>
-      <button class="btn btn-sm btn-default" click.delegate="addNewItem('bottom')">Add New Mocked Item (bottom)</button>
+      <button class="btn btn-sm btn-default" click.delegate="addNewItem('bottom')">
+        Add New Mocked Item (bottom)
+      </button>
       <button class="btn btn-sm btn-default" click.delegate="updateSecondItem()">
         Update 2nd Row Item with Random Duration
       </button>
@@ -26,7 +28,10 @@
     <hr />
   </div>
 
-  <aurelia-slickgrid grid-id="grid1" column-definitions.bind="columnDefinitions" grid-options.bind="gridOptions"
-    dataset.bind="dataset" asg-on-aurelia-grid-created.delegate="aureliaGridReady($event.detail)">
+  <aurelia-slickgrid grid-id="grid1"
+                     column-definitions.bind="columnDefinitions"
+                     grid-options.bind="gridOptions"
+                     dataset.bind="dataset"
+                     on-aurelia-grid-created.delegate="aureliaGridReady($event.detail)">
   </aurelia-slickgrid>
 </template>

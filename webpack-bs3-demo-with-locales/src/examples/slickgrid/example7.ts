@@ -1,5 +1,5 @@
 import { autoinject } from 'aurelia-framework';
-import { AureliaGridInstance, Column, GridOption, FieldType, Formatters } from 'aurelia-slickgrid';
+import { AureliaGridInstance, Column, GridOption } from 'aurelia-slickgrid';
 
 let columnsWithHighlightingById = {};
 
@@ -62,8 +62,8 @@ export class Example7 {
       enableHeaderButton: true,
       enableHeaderMenu: false,
       autoResize: {
-        containerId: 'demo-container',
-        sidePadding: 10
+        container: '#demo-container',
+        rightPadding: 10
       },
       enableFiltering: false,
       enableCellNavigation: true,

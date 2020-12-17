@@ -79,7 +79,6 @@ export class Example24 {
   gridOptions: GridOption;
   columnDefinitions: Column[];
   dataset: any[];
-  selectedLanguage: string;
 
   constructor() {
     // define the grid options & columns and then create the grid itself
@@ -227,8 +226,8 @@ export class Example24 {
 
     this.gridOptions = {
       autoResize: {
-        containerId: 'demo-container',
-        sidePadding: 10
+        container: '#demo-container',
+        rightPadding: 10
       },
       enableCellNavigation: true,
       enableFiltering: true,

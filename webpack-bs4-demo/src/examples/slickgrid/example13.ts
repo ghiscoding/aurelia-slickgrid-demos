@@ -1,3 +1,5 @@
+import { ExcelExportService } from '@slickgrid-universal/excel-export';
+import { TextExportService } from '@slickgrid-universal/text-export';
 import { autoinject } from 'aurelia-framework';
 import {
   Aggregators,
@@ -12,7 +14,9 @@ import {
   Grouping,
   GroupTotalFormatters,
   SortDirectionNumber,
-  Sorters,
+  SortComparers,
+  SlickDataView,
+  SlickGrid,
 } from 'aurelia-slickgrid';
 
 @autoinject()
@@ -31,9 +35,11 @@ export class Example13 {
   columnDefinitions: Column[];
   gridOptions: GridOption;
   dataset: any[];
-  dataviewObj: any;
-  gridObj: any;
+  dataviewObj: SlickDataView;
+  gridObj: SlickGrid;
   processing = false;
+  excelExportService = new ExcelExportService();
+  textExportService = new TextExportService();
 
   constructor() {
     // define the grid options & columns and then create the grid itself
@@ -126,7 +132,7 @@ export class Example13 {
         exportWithFormatter: true,
         formatter: Formatters.dollar,
         groupTotalsFormatter: GroupTotalFormatters.sumTotalsDollar,
-        params: { groupFormatterPrefix: '<b>Total</b>: ' /*, groupFormatterSuffix: ' USD'*/ }
+        params: { groupFormatterPrefix: '<b>Total</b>: ' /* , groupFormatterSuffix: ' USD' */ }
       },
       {
         id: 'effortDriven', name: 'Effort Driven',
@@ -145,18 +151,16 @@ export class Example13 {
 
     this.gridOptions = {
       autoResize: {
-        containerId: 'demo-container',
-        sidePadding: 10
+        container: '#demo-container',
+        rightPadding: 10
       },
-      enableExcelExport: true,
       enableFiltering: true,
       enableGrouping: true,
-      excelExportOptions: {
-        sanitizeDataExport: true
-      },
-      exportOptions: {
-        sanitizeDataExport: true
-      }
+      enableExcelExport: true,
+      enableTextExport: true,
+      excelExportOptions: { sanitizeDataExport: true },
+      textExportOptions: { sanitizeDataExport: true },
+      registerExternalResources: [this.excelExportService, this.textExportService],
     };
   }
 
@@ -197,14 +201,14 @@ export class Example13 {
   }
 
   exportToExcel() {
-    this.aureliaGrid.excelExportService.exportToExcel({
+    this.excelExportService.exportToExcel({
       filename: 'Export',
       format: FileType.xlsx
     });
   }
 
   exportToCsv(type = 'csv') {
-    this.aureliaGrid.exportService.exportToFile({
+    this.textExportService.exportToFile({
       delimiter: (type === 'csv') ? DelimiterType.comma : DelimiterType.tab,
       filename: 'myExport',
       format: (type === 'csv') ? FileType.csv : FileType.txt
@@ -214,9 +218,9 @@ export class Example13 {
   groupByDuration() {
     this.dataviewObj.setGrouping({
       getter: 'duration',
-      formatter: (g) => `Duration:  ${g.value} <span style="color:green">(${g.count} items)</span>`,
+      formatter: (g) => `Duration: ${g.value} <span style="color:green">(${g.count} items)</span>`,
       comparer: (a, b) => {
-        return Sorters.numeric(a.value, b.value, SortDirectionNumber.asc);
+        return SortComparers.numeric(a.value, b.value, SortDirectionNumber.asc);
       },
       aggregators: [
         new Aggregators.Avg('percentComplete'),
@@ -235,7 +239,7 @@ export class Example13 {
     this.aureliaGrid.filterService.setSortColumnIcons([]);
     this.dataviewObj.setGrouping({
       getter: 'duration',
-      formatter: (g) => `Duration:  ${g.value} <span style="color:green">(${g.count} items)</span>`,
+      formatter: (g) => `Duration: ${g.value} <span style="color:green">(${g.count} items)</span>`,
       comparer: (a, b) => {
         return a.count - b.count;
       },
@@ -254,7 +258,7 @@ export class Example13 {
     this.dataviewObj.setGrouping([
       {
         getter: 'duration',
-        formatter: (g) => `Duration:  ${g.value}  <span style="color:green">(${g.count} items)</span>`,
+        formatter: (g) => `Duration: ${g.value}  <span style="color:green">(${g.count} items)</span>`,
         aggregators: [
           new Aggregators.Sum('duration'),
           new Aggregators.Sum('cost')
@@ -264,7 +268,7 @@ export class Example13 {
       },
       {
         getter: 'effortDriven',
-        formatter: (g) => `Effort-Driven:  ${(g.value ? 'True' : 'False')} <span style="color:green">(${g.count} items)</span>`,
+        formatter: (g) => `Effort-Driven: ${(g.value ? 'True' : 'False')} <span style="color:green">(${g.count} items)</span>`,
         aggregators: [
           new Aggregators.Avg('percentComplete'),
           new Aggregators.Sum('cost')
@@ -285,7 +289,7 @@ export class Example13 {
     this.dataviewObj.setGrouping([
       {
         getter: 'duration',
-        formatter: (g) => `Duration:  ${g.value}  <span style="color:green">(${g.count} items)</span>`,
+        formatter: (g) => `Duration: ${g.value}  <span style="color:green">(${g.count} items)</span>`,
         aggregators: [
           new Aggregators.Sum('duration'),
           new Aggregators.Sum('cost')
@@ -295,7 +299,7 @@ export class Example13 {
       },
       {
         getter: 'effortDriven',
-        formatter: (g) => `Effort-Driven:  ${(g.value ? 'True' : 'False')}  <span style="color:green">(${g.count} items)</span>`,
+        formatter: (g) => `Effort-Driven: ${(g.value ? 'True' : 'False')}  <span style="color:green">(${g.count} items)</span>`,
         aggregators: [
           new Aggregators.Sum('duration'),
           new Aggregators.Sum('cost')
@@ -304,7 +308,7 @@ export class Example13 {
       },
       {
         getter: 'percentComplete',
-        formatter: (g) => `% Complete:  ${g.value}  <span style="color:green">(${g.count} items)</span>`,
+        formatter: (g) => `% Complete: ${g.value}  <span style="color:green">(${g.count} items)</span>`,
         aggregators: [
           new Aggregators.Avg('percentComplete')
         ],

@@ -90,8 +90,8 @@ export class Example21 {
 
       autoHeight: true,
       autoResize: {
-        containerId: 'demo-container',
-        sidePadding: 10
+        container: '#demo-container',
+        rightPadding: 10
       },
 
       // enable the filtering but hide the user filter row since we use our own single filter
@@ -167,12 +167,10 @@ export class Example21 {
       filter[fieldName] = filterArg;
     }
 
-    if (this.aureliaGrid && this.aureliaGrid.dataView) {
-      this.aureliaGrid.dataView.setFilterArgs({
-        columnFilters: filter,
-        grid: this.aureliaGrid.slickGrid
-      });
-      this.aureliaGrid.dataView.refresh();
-    }
+    this.aureliaGrid.dataView.setFilterArgs({
+      columnFilters: filter,
+      grid: this.aureliaGrid.slickGrid
+    });
+    this.aureliaGrid.dataView.refresh();
   }
 }

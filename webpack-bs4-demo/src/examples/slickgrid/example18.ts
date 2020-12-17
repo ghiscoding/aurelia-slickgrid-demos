@@ -1,3 +1,5 @@
+import { ExcelExportService } from '@slickgrid-universal/excel-export';
+import { TextExportService } from '@slickgrid-universal/text-export';
 import { autoinject } from 'aurelia-framework';
 import {
   Aggregators,
@@ -11,9 +13,11 @@ import {
   GridOption,
   GroupingGetterFunction,
   GroupTotalFormatters,
-  Sorters,
+  SortComparers,
   SortDirectionNumber,
   Grouping,
+  SlickDataView,
+  SlickGrid,
 } from 'aurelia-slickgrid';
 
 @autoinject()
@@ -37,13 +41,15 @@ export class Example18 {
   aureliaGrid: AureliaGridInstance;
   columnDefinitions: Column[];
   dataset: any[];
-  dataviewObj: any;
+  dataviewObj: SlickDataView;
   draggableGroupingPlugin: any;
   durationOrderByCount = false;
-  gridObj: any;
+  gridObj: SlickGrid;
   gridOptions: GridOption;
   processing = false;
   selectedGroupingFields: Array<string | GroupingGetterFunction> = ['', '', ''];
+  excelExportService = new ExcelExportService();
+  textExportService = new TextExportService();
 
   constructor() {
     // define the grid options & columns and then create the grid itself
@@ -68,7 +74,7 @@ export class Example18 {
         sortable: true,
         grouping: {
           getter: 'title',
-          formatter: (g) => `Title:  ${g.value}  <span style="color:green">(${g.count} items)</span>`,
+          formatter: (g) => `Title: ${g.value}  <span style="color:green">(${g.count} items)</span>`,
           aggregators: [
             new Aggregators.Sum('cost')
           ],
@@ -86,9 +92,9 @@ export class Example18 {
         groupTotalsFormatter: GroupTotalFormatters.sumTotals,
         grouping: {
           getter: 'duration',
-          formatter: (g) => `Duration:  ${g.value}  <span style="color:green">(${g.count} items)</span>`,
+          formatter: (g) => `Duration: ${g.value}  <span style="color:green">(${g.count} items)</span>`,
           comparer: (a, b) => {
-            return this.durationOrderByCount ? (a.count - b.count) : Sorters.numeric(a.value, b.value, SortDirectionNumber.asc);
+            return this.durationOrderByCount ? (a.count - b.count) : SortComparers.numeric(a.value, b.value, SortDirectionNumber.asc);
           },
           aggregators: [
             new Aggregators.Sum('cost')
@@ -108,7 +114,7 @@ export class Example18 {
         groupTotalsFormatter: GroupTotalFormatters.avgTotalsPercentage,
         grouping: {
           getter: 'percentComplete',
-          formatter: (g) => `% Complete:  ${g.value}  <span style="color:green">(${g.count} items)</span>`,
+          formatter: (g) => `% Complete: ${g.value}  <span style="color:green">(${g.count} items)</span>`,
           aggregators: [
             new Aggregators.Sum('cost')
           ],
@@ -199,8 +205,8 @@ export class Example18 {
 
     this.gridOptions = {
       autoResize: {
-        containerId: 'demo-container',
-        sidePadding: 10
+        container: '#demo-container',
+        rightPadding: 10
       },
       enableDraggableGrouping: true,
       createPreHeaderPanel: true,
@@ -209,11 +215,8 @@ export class Example18 {
       enableFiltering: true,
       enableSorting: true,
       enableColumnReorder: true,
-      exportOptions: {
-        sanitizeDataExport: true
-      },
       gridMenu: {
-        onCommand: (e, args) => {
+        onCommand: (_e, args) => {
           if (args.command === 'toggle-preheader') {
             // in addition to the grid menu pre-header toggling (internally), we will also clear grouping
             this.clearGrouping();
@@ -224,9 +227,14 @@ export class Example18 {
         dropPlaceHolderText: 'Drop a column header here to group by the column',
         // groupIconCssClass: 'fa fa-outdent',
         deleteIconCssClass: 'fa fa-times',
-        onGroupChanged: (e, args) => this.onGroupChanged(args),
+        onGroupChanged: (_e, args) => this.onGroupChanged(args),
         onExtensionRegistered: (extension) => this.draggableGroupingPlugin = extension,
-      }
+      },
+      enableTextExport: true,
+      enableExcelExport: true,
+      excelExportOptions: { sanitizeDataExport: true },
+      textExportOptions: { sanitizeDataExport: true },
+      registerExternalResources: [this.excelExportService, this.textExportService],
     };
   }
 
@@ -260,7 +268,7 @@ export class Example18 {
   }
 
   clearGroupingSelects() {
-    this.selectedGroupingFields.forEach((g, i) => this.selectedGroupingFields[i] = '');
+    this.selectedGroupingFields.forEach((_g, i) => this.selectedGroupingFields[i] = '');
     this.selectedGroupingFields = [...this.selectedGroupingFields]; // force dirty checking
   }
 
@@ -280,14 +288,14 @@ export class Example18 {
   }
 
   exportToExcel() {
-    this.aureliaGrid.excelExportService.exportToExcel({
+    this.excelExportService.exportToExcel({
       filename: 'Export',
       format: FileType.xlsx
     });
   }
 
   exportToCsv(type = 'csv') {
-    this.aureliaGrid.exportService.exportToFile({
+    this.textExportService.exportToFile({
       delimiter: (type === 'csv') ? DelimiterType.comma : DelimiterType.tab,
       filename: 'myExport',
       format: (type === 'csv') ? FileType.csv : FileType.txt
@@ -327,7 +335,7 @@ export class Example18 {
     }
   }
 
-  groupByFieldName(fieldName, index) {
+  groupByFieldName() {
     this.clearGrouping();
     if (this.draggableGroupingPlugin && this.draggableGroupingPlugin.setDroppedGroups) {
       this.showPreHeader();
@@ -349,7 +357,7 @@ export class Example18 {
 
     if (Array.isArray(this.selectedGroupingFields) && Array.isArray(groups) && groups.length > 0) {
       // update all Group By select dropdown
-      this.selectedGroupingFields.forEach((g, i) => this.selectedGroupingFields[i] = groups[i] && groups[i].getter || '');
+      this.selectedGroupingFields.forEach((_g, i) => this.selectedGroupingFields[i] = groups[i] && groups[i].getter || '');
       this.selectedGroupingFields = [...this.selectedGroupingFields]; // force dirty checking
     } else if (groups.length === 0 && caller === 'remove-group') {
       this.clearGroupingSelects();
