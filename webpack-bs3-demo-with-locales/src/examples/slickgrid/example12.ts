@@ -127,16 +127,12 @@ export class Example12 {
       },
       enableExcelExport: true,
       enableTextExport: true,
-      excelExportOptions: {
-        // set at the grid option level, meaning all column will evaluate the Formatter (when it has a Formatter defined)
-        exportWithFormatter: true,
-        sanitizeDataExport: true
-      },
       textExportOptions: {
         // set at the grid option level, meaning all column will evaluate the Formatter (when it has a Formatter defined)
         exportWithFormatter: true,
         sanitizeDataExport: true
       },
+      excelExportOptions: { exportWithFormatter: true, sanitizeDataExport: true },
       registerExternalServices: [this.excelExportService, this.textExportService],
     };
   }
