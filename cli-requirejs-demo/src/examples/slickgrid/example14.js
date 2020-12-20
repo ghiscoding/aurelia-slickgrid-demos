@@ -42,6 +42,8 @@ export class Example14 {
 
     this.gridOptions = {
       enableAutoResize: false,
+      gridHeight: 500,
+      gridWidth: 800,
       enableCellNavigation: true,
       enableColumnReorder: false,
       enableSorting: true,

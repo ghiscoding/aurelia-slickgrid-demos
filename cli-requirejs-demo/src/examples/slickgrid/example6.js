@@ -93,6 +93,8 @@ export class Example6 {
 
     this.gridOptions = {
       enableAutoResize: false,
+      gridHeight: 200,
+      gridWidth: 800,
       enableFiltering: true,
       enableCellNavigation: true,
       enableCheckboxSelector: true,

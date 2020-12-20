@@ -51,6 +51,8 @@ export class Example2 {
     ];
     this.gridOptions1 = {
       enableAutoResize: false,
+      gridHeight: 200,
+      gridWidth: 800,
       enableCellNavigation: true,
       enableCheckboxSelector: true,
       checkboxSelector: {
@@ -63,8 +65,11 @@ export class Example2 {
       },
       enableRowSelection: true
     };
+
     this.gridOptions2 = {
       enableAutoResize: false,
+      gridHeight: 200,
+      gridWidth: 800,
       enableCellNavigation: true,
       rowSelectionOptions: {
         // True (Single Selection), False (Multiple Selections)

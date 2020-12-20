@@ -78,8 +78,8 @@ export class Example8 {
       enableAutoResize: true,
       enableHeaderMenu: true,
       autoResize: {
-        containerId: 'demo-container',
-        sidePadding: 10
+        container: '#demo-container',
+        rightPadding: 10
       },
       enableFiltering: false,
       enableCellNavigation: true,
