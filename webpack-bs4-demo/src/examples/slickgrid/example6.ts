@@ -134,6 +134,8 @@ export class Example6 {
       showPreHeaderPanel: true,
       preHeaderPanelHeight: 28,
       i18n: this.i18n,
+      gridHeight: 200,
+      gridWidth: 900,
       gridMenu: {
         resizeOnShowHeaderRow: true,
       },
