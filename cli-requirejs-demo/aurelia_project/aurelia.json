@@ -96,11 +96,6 @@
             ]
           },
           {
-            "name": "@slickgrid-universal/common",
-            "path": "../node_modules/@slickgrid-universal/common/dist/commonjs",
-            "main": "index"
-          },
-          {
             "name": "jquery-ui-dist",
             "path": "../node_modules/jquery-ui-dist",
             "main": "jquery-ui"
