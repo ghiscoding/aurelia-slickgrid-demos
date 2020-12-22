@@ -1,5 +1,5 @@
 import { GridOdataService } from '@slickgrid-universal/odata';
-import { autoinject } from 'aurelia-framework';
+import { inject } from 'aurelia-framework';
 import { HttpClient } from 'aurelia-http-client';
 import {
   FieldType,
@@ -10,7 +10,7 @@ import {
 const defaultPageSize = 20;
 const sampleDataRoot = 'assets/data';
 
-@autoinject()
+@inject(HttpClient)
 export class Example5 {
   title = 'Example 5: Grid with Backend OData Service';
   subTitle = `
@@ -30,7 +30,7 @@ export class Example5 {
     </ul>
   `;
   aureliaGrid;
-  columnDefinitions;
+  columnDefinitions = [];
   gridOptions;
   dataset = [];
   metrics;
@@ -75,8 +75,8 @@ export class Example5 {
     this.gridOptions = {
       enableAutoResize: true,
       autoResize: {
-        containerId: 'demo-container',
-        sidePadding: 10
+        container: '#demo-container',
+        rightPadding: 10
       },
       checkboxSelector: {
         // you can toggle these 2 properties to show the "select all" checkbox in different location

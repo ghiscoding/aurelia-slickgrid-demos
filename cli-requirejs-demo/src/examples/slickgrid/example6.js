@@ -79,9 +79,9 @@ export class Example6 {
           collection: [{ value: 'acme', label: 'Acme' }, { value: 'abc', label: 'Company ABC' }, { value: 'xyz', label: 'Company XYZ' }]
         }
       },
-      { id: 'billing.address.street', field: 'billing.address.street', nameKey: 'BILLING.ADDRESS.STREET', width: 60, filterable: true, sortable: true },
+      { id: 'billingAddressStreet', field: 'billing.address.street', nameKey: 'BILLING.ADDRESS.STREET', width: 60, filterable: true, sortable: true },
       {
-        id: 'billing.address.zip', field: 'billing.address.zip', nameKey: 'BILLING.ADDRESS.ZIP', width: 60,
+        id: 'billingAddressZip', field: 'billing.address.zip', nameKey: 'BILLING.ADDRESS.ZIP', width: 60,
         type: FieldType.number,
         filterable: true, sortable: true,
         filter: {
@@ -93,6 +93,8 @@ export class Example6 {
 
     this.gridOptions = {
       enableAutoResize: false,
+      gridHeight: 200,
+      gridWidth: 800,
       enableFiltering: true,
       enableCellNavigation: true,
       enableCheckboxSelector: true,
