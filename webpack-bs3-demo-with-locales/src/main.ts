@@ -1,5 +1,6 @@
 import { Aurelia } from 'aurelia-framework'
 import { PLATFORM } from 'aurelia-pal';
+import { GridOption } from 'aurelia-slickgrid';
 
 import 'bootstrap/dist/css/bootstrap.css';
 import 'font-awesome/css/font-awesome.css';
@@ -23,7 +24,6 @@ Bluebird.config({
 
 // if you use CSS instead of SASS
 import '@slickgrid-universal/common/dist/styles/css/slickgrid-theme-bootstrap.css';
-import { GridOption } from 'aurelia-slickgrid';
 
 export function configure(aurelia: Aurelia) {
   aurelia.use
@@ -31,6 +31,9 @@ export function configure(aurelia: Aurelia) {
     .feature(PLATFORM.moduleName('resources/index'));
 
   aurelia.use.plugin(PLATFORM.moduleName('aurelia-slickgrid'), (config: { options: GridOption }) => {
+    // load necessary Flatpickr Locale(s), but make sure it's imported AFTER loading Aurelia-Slickgrid plugin
+    import('flatpickr/dist/l10n/fr');
+
     // change any of the default global options
     config.options.gridMenu.iconCssClass = 'fa fa-bars';
     config.options.enableTranslate = false;

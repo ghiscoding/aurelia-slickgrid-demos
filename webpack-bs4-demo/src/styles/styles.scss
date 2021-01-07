@@ -63,7 +63,7 @@ outline: 0 none;
 /** Sidebar (left) and Content (right) */
 @media (min-width: 1200px) {
   .panel-wm-content .container {
-      width: calc(1170px - $side-menu-width);
+      width: calc(1170px - #{$side-menu-width});
   }
 }
 
@@ -84,7 +84,7 @@ outline: 0 none;
   }
 
   .panel-wm-content {
-    padding-left: ($side-menu-width + 5px);
+    padding-left: calc(#{$side-menu-width} + 5px);
     padding-right: 15px;
   }
 
@@ -92,7 +92,7 @@ outline: 0 none;
     position: fixed;
     z-index: 400;
     transition: left 0.15s;
-    top: calc(#{$navbar-height});
+    top: $navbar-height;
     bottom: 0;
     left: 0;
     background-color: #f5f5f5;

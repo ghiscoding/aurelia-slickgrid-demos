@@ -2,6 +2,7 @@ import { Aurelia } from 'aurelia-framework'
 import { PLATFORM } from 'aurelia-pal';
 import { TCustomAttribute } from 'aurelia-i18n';
 import Backend from 'i18next-xhr-backend';
+import { GridOption } from 'aurelia-slickgrid';
 
 import 'bootstrap/dist/css/bootstrap.css';
 import 'font-awesome/css/font-awesome.css';
@@ -30,7 +31,10 @@ export function configure(aurelia: Aurelia) {
     .standardConfiguration()
     .feature(PLATFORM.moduleName('resources/index'));
 
-  aurelia.use.plugin(PLATFORM.moduleName('aurelia-slickgrid'), config => {
+  aurelia.use.plugin(PLATFORM.moduleName('aurelia-slickgrid'), (config: { options: GridOption }) => {
+    // load necessary Flatpickr Locale(s), but make sure it's imported AFTER loading Aurelia-Slickgrid plugin
+    import('flatpickr/dist/l10n/fr');
+
     // change any of the default global options
     config.options.gridMenu.iconCssClass = 'fa fa-bars';
   });
