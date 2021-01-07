@@ -1,4 +1,4 @@
-import { Aurelia } from 'aurelia-framework'
+import { Aurelia } from 'aurelia-framework';
 import { PLATFORM } from 'aurelia-pal';
 import { TCustomAttribute } from 'aurelia-i18n';
 import Backend from 'i18next-xhr-backend';
