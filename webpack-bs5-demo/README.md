@@ -1,4 +1,4 @@
-# Aurelia-Slickgrid-Bootstrap4-Demo
+# Aurelia-Slickgrid - Bootstrap 5 Demo
 
 ## Important Note
 Please note that some of the npm packages installed in these demos are **optional** and are installed **only** for demo purposes. If you don't need the feature then don't install it and you'll get a smaller production build. So just to recap, the following dependencies are totally **optional**
@@ -16,7 +16,7 @@ Please note that some of the npm packages installed in these demos are **optiona
 ### Install and Start Demo
 ```bash
 git clone https://github.com/ghiscoding/aurelia-slickgrid-demos
-cd webpack-bs4-demo
+cd webpack-bs5-demo
 npm install # OR yarn install
 npm start # OR yarn start
 ```

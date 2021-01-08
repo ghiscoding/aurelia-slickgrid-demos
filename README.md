@@ -82,3 +82,22 @@ http://localhost:8080
 ```bash
 run build # OR yarn run build
 ```
+
+## Webpack and Bootstrap 5 (with TypeScript)
+### Install and Start Demo
+```bash
+git clone https://github.com/ghiscoding/aurelia-slickgrid-demos
+cd webpack-bs5-demo
+npm install # OR yarn install
+npm start # OR yarn start
+```
+
+Then open your browser to
+```html
+http://localhost:8080
+```
+
+### Build Demo
+```bash
+run build # OR yarn run build
+```

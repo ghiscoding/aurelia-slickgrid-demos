@@ -1,4 +1,4 @@
-# Aurelia-Slickgrid-Client-CLI-RequireJS-Demo
+# Aurelia-Slickgrid - RequireJS Demo
 
 ## Important Note
 Please note that some of the npm packages installed in these demos are **optional** and are installed **only** for demo purposes. If you don't need the feature then don't install it and you'll get a smaller production build. So just to recap, the following dependencies are totally **optional**
