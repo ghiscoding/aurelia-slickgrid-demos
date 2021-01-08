@@ -1,0 +1,47 @@
+<template>
+  <h2>${title}</h2>
+  <div class="subtitle"
+       innerhtml.bind="subTitle"></div>
+
+  <form class="row row-cols-lg-auto g-3 align-items-center">
+    <div class="col-12">
+      <label class="my-1 mr-2" for="columnSelect">Single Search:</label>
+    </div>
+
+    <div class="col-12">
+      <select value.bind="selectedColumn" id="columnSelect"
+              class="form-select mb-2 mr-sm-2">
+        <option repeat.for="column of columnDefinitions"
+                model.bind="column">
+          ${column.name}
+        </option>
+      </select>
+    </div>
+
+    <div class="col-12">
+      <select value.bind="selectedOperator"
+              class="form-select mb-2 mr-sm-2">
+        <option repeat.for="operator of operatorList"
+                model.bind="operator">
+          ${operator}
+        </option>
+      </select>
+    </div>
+
+    <div class="col-12">
+      <input type="text"
+             class="form-control mb-2 mr-sm-2"
+             placeholder="search value"
+             value.bind="searchValue" />
+    </div>
+  </form>
+
+  <hr />
+
+  <aurelia-slickgrid grid-id="grid21"
+                     column-definitions.bind="columnDefinitions"
+                     grid-options.bind="gridOptions"
+                     dataset.bind="dataset"
+                     instances.bind="aureliaGrid">
+  </aurelia-slickgrid>
+</template>

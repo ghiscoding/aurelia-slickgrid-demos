@@ -3,10 +3,10 @@
   <div class="subtitle" innerhtml.bind="subTitle"></div>
 
   <div class="row">
-    <div class="col-md-12">
-      <button click.delegate="addNewRow()" class="btn btn-outline-info btn-sm">
+    <div class="col-md-7">
+      <button click.delegate="addNewFile()" class="btn btn-sm btn-outline-info">
         <span class="mdi mdi-plus"></span>
-        <span>Add New Item (in 1st group)</span>
+        <span>Add New Pop Song</span>
       </button>
       <button click.delegate="collapseAll()" class="btn btn-outline-secondary btn-sm">
         <span class="mdi mdi-arrow-collapse"></span>
@@ -23,15 +23,25 @@
         <span>Log Expanded Structure</span>
       </button>
     </div>
+
+    <div class="col-md-5">
+      <div class="input-group input-group-sm">
+        <input type="text" class="form-control search-string" data-test="search-string" value.bind="searchString">
+        <button class="btn btn-sm btn-outline-secondary d-flex align-items-center" data-test="clear-search-string"
+                click.delegate="clearSearch()">
+          <span class="icon mdi mdi-close-thick"></span>
+        </button>
+      </div>
+    </div>
   </div>
 
   <br />
 
   <div id="grid-container" class="col-sm-12">
-    <aurelia-slickgrid grid-id="grid27"
+    <aurelia-slickgrid grid-id="grid28"
                        column-definitions.bind="columnDefinitions"
                        grid-options.bind="gridOptions"
-                       dataset.bind="dataset"
+                       dataset-hierarchical.bind="datasetHierarchical"
                        instances.bind="aureliaGrid">
     </aurelia-slickgrid>
   </div>

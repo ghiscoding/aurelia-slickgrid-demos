@@ -81,6 +81,15 @@
         "cwd": "${workspaceFolder}/webpack-bs4-demo",
       },
       "problemMatcher": []
+    },
+    {
+      "label": "Start Webpack Bootstrap 5 Demo Page",
+      "type": "shell",
+      "command": "yarn start",
+      "options": {
+        "cwd": "${workspaceFolder}/webpack-bs5-demo",
+      },
+      "problemMatcher": []
     }
   ]
 }
