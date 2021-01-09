@@ -30,6 +30,7 @@ node_modules
 # Compiled files
 scripts
 dist
+docs
 
 # lock files
 yarn.lock
