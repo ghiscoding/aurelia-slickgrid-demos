@@ -48,7 +48,9 @@ jobs:
           yarn install
 
       - name: Website Prod Build (GitHub demo site)
-        run: yarn build
+        run: |
+          cd webpack-bs4-demo
+          yarn build
 
       - name: Deploy to gh-pages
         # if: github.ref == 'refs/heads/master'
