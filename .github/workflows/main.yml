@@ -47,13 +47,13 @@ jobs:
           cd webpack-bs4-demo
           yarn install
 
-      - name: Website Prod Build (GitHub demo site)
+      - name: Bootstrap 4 Prod Build for GitHub demo website
         run: |
           cd webpack-bs4-demo
           yarn build
 
       - name: Deploy to gh-pages
-        # if: github.ref == 'refs/heads/master'
+        if: github.ref == 'refs/heads/master'
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
