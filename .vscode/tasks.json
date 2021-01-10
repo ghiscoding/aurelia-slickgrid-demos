@@ -2,29 +2,11 @@
   "version": "2.0.0",
   "tasks": [
     {
-      "label": "Start Client-CLI with RequireJS",
-      "type": "shell",
-      "command": "au run --watch",
-      "options": {
-        "cwd": "${workspaceFolder}/cli-requirejs-demo",
-      },
-      "problemMatcher": []
-    },
-    {
       "label": "Build Webpack Bootstrap 3 Demo Page",
       "type": "shell",
       "command": "npm run build",
       "options": {
         "cwd": "${workspaceFolder}/webpack-bs3-demo",
-      },
-      "problemMatcher": []
-    },
-    {
-      "label": "Build Webpack Bootstrap 3 Demo Page - with Custom Locales",
-      "type": "shell",
-      "command": "npm run build",
-      "options": {
-        "cwd": "${workspaceFolder}/webpack-bs3-demo-with-locales",
       },
       "problemMatcher": []
     },
@@ -38,20 +20,11 @@
       "problemMatcher": []
     },
     {
-      "label": "Start Webpack Bootstrap 3 Demo Page",
+      "label": "Build Webpack Bootstrap 4 Demo Page - with Custom Locales",
       "type": "shell",
-      "command": "npm start",
+      "command": "npm run build",
       "options": {
-        "cwd": "${workspaceFolder}/webpack-bs3-demo",
-      },
-      "problemMatcher": []
-    },
-    {
-      "label": "Start Webpack Bootstrap 3 Demo Page - with Custom Locales",
-      "type": "shell",
-      "command": "npm start",
-      "options": {
-        "cwd": "${workspaceFolder}/webpack-bs3-demo-with-locales",
+        "cwd": "${workspaceFolder}/webpack-bs4-demo-with-locales",
       },
       "problemMatcher": []
     },
@@ -65,11 +38,38 @@
       "problemMatcher": []
     },
     {
-      "label": "Build Webpack Bootstrap 4 Demo Page & Copy Files to GhPages Folder",
+      "label": "Build Webpack Bootstrap 5 Demo Page",
       "type": "shell",
-      "command": "yarn run build-demo",
+      "command": "npm run build",
       "options": {
-        "cwd": "${workspaceFolder}/webpack-bs4-demo",
+        "cwd": "${workspaceFolder}/webpack-bs5-demo",
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "Start Client-CLI with RequireJS",
+      "type": "shell",
+      "command": "au run --watch",
+      "options": {
+        "cwd": "${workspaceFolder}/cli-requirejs-demo",
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "Start Webpack Bootstrap 3 Demo Page",
+      "type": "shell",
+      "command": "npm start",
+      "options": {
+        "cwd": "${workspaceFolder}/webpack-bs3-demo",
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "Start Webpack Bootstrap 4 Demo Page - with Custom Locales",
+      "type": "shell",
+      "command": "npm start",
+      "options": {
+        "cwd": "${workspaceFolder}/webpack-bs4-demo-with-locales",
       },
       "problemMatcher": []
     },

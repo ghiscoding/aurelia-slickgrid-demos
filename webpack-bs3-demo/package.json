@@ -24,7 +24,7 @@
     "test": "au test"
   },
   "dependencies": {
-    "@slickgrid-universal/composite-editor-component": "^0.8.0",
+    "@slickgrid-universal/composite-editor-component": "^0.9.0",
     "@slickgrid-universal/excel-export": "^0.9.0",
     "@slickgrid-universal/graphql": "^0.9.0",
     "@slickgrid-universal/odata": "^0.9.0",
