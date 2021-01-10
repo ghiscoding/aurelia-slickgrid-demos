@@ -49,7 +49,7 @@ http://localhost:8080
 ### Install and Start Demo
 ```bash
 git clone https://github.com/ghiscoding/aurelia-slickgrid-demos
-cd webpack-bs3-demo-with-locales
+cd webpack-bs4-demo-with-locales
 npm install # OR yarn install
 npm start # OR yarn start
 ```
