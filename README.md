@@ -11,7 +11,7 @@ Again the following dependencies are totally **optional**
 
 | Package Name | Description |
 | ------------ | ----------- |
-| [@slickgrid-universal/composite-editor-component](https://github.com/ghiscoding/slickgrid-universal/tree/master/packages/composite-editor-component) | Composite Editor Component |
+| [@slickgrid-universal/composite-editor-component](https://github.com/ghiscoding/slickgrid-universal/tree/master/packages/composite-editor-component) | Composite Editor Modal Component |
 | [@slickgrid-universal/excel-export](https://github.com/ghiscoding/slickgrid-universal/tree/master/packages/excel-export) | Excel Export Service (xls/xlsx) |
 | [@slickgrid-universal/text-export](https://github.com/ghiscoding/slickgrid-universal/tree/master/packages/text-export) | Text File Export Service (csv/txt) |
 | [@slickgrid-universal/graphql](https://github.com/ghiscoding/slickgrid-universal/tree/master/packages/graphql) | GraphQL Backend Service |
