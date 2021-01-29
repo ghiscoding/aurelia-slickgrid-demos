@@ -38,8 +38,13 @@ export const localeFrench = {
   TEXT_SORT_DESCENDING: 'Trier par ordre décroissant',
   TEXT_STARTS_WITH: 'Commence par',
   TEXT_X_OF_Y_SELECTED: '# de % sélectionné',
+  TEXT_X_OF_Y_MASS_SELECTED: '{{x}} de {{y}} sélectionnés',
 
   // optional locale texts (depending on which features of the grid you use, you might (or not) need them or not)
+  TEXT_ALL_X_RECORDS_SELECTED: 'Sur tous les {{x}} éléments',
+  TEXT_APPLY_MASS_UPDATE: 'Mettre à jour en masse',
+  TEXT_APPLY_TO_SELECTION: 'Mettre à jour la sélection',
+  TEXT_CLONE: 'Cloner',
   TEXT_ITEMS: 'éléments',
   TEXT_ITEMS_PER_PAGE: 'éléments par page',
   TEXT_LAST_UPDATE: 'Dernière mise à jour',

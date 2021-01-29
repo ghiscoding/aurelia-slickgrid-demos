@@ -31,19 +31,23 @@
     <div class="btn-group btn-group-sm" role="group" aria-label="Basic example">
       <button type="button" class="btn btn-default" data-test="open-modal-create-btn"
               click.delegate="openCompositeModal('create')" disabled.bind="isCompositeDisabled">
-        <i class="fa fa-plus"></i> Open Item Create Modal
+        <i class="fa fa-plus"></i> Item Create
+      </button>
+      <button type="button" class="btn btn-default" data-test="open-modal-clone-btn"
+              click.delegate="openCompositeModal('clone')" disabled.bind="isCompositeDisabled">
+        <i class="fa fa-clone"></i> Item Clone
       </button>
       <button type="button" class="btn btn-default" data-test="open-modal-edit-btn"
               click.delegate="openCompositeModal('edit')" disabled.bind="isCompositeDisabled">
-        <i class="fa fa-pencil"></i> Open Item Edit Modal
+        <i class="fa fa-pencil"></i> Item Edit
       </button>
       <button type="button" class="btn btn-default" data-test="open-modal-mass-update-btn"
               click.delegate="openCompositeModal('mass-update')" disabled.bind="isCompositeDisabled">
-        <i class="fa fa-pencil-square-o"></i> Open Mass Update Modal
+        <i class="fa fa-pencil-square-o"></i> Mass Update
       </button>
       <button type="button" class="btn btn-default" data-test="open-modal-mass-selection-btn"
               click.delegate="openCompositeModal('mass-selection')" disabled.bind="isMassSelectionDisabled">
-        <i class="fa fa-check-square-o"></i> Open Mass Selection Change
+        <i class="fa fa-check-square-o"></i> Update Selected
       </button>
     </div>
   </div>
@@ -53,15 +57,14 @@
                      grid-options.bind="gridOptions"
                      dataset.bind="dataset"
                      on-aurelia-grid-created.delegate="aureliaGridReady($event.detail)"
-                     on-composite-editor-created.delegate="handleOnCompositeEditorCreated($event.detail)"
-                     on-validation-error.delegate="handleValidationError($event.detail.eventData, $event.detail.args)"
-                     on-item-deleted.delegate="handleItemDeleted($event.detail.eventData, $event.detail.args)"
                      on-before-edit-cell.delegate="handleOnBeforeEditCell($event.detail.eventData, $event.detail.args)"
                      on-cell-change.delegate="handleOnCellChange($event.detail.eventData, $event.detail.args)"
                      on-click.delegate="handleOnCellClicked($event.detail.eventData, $event.detail.args)"
-                     on-grid-state-changed.delegate="handleOnGridStateChanged($event.detail)"
-                     on-dbl-click.delegate="openCompositeModal($event.detail.eventData, $event.detail.args)"
                      on-composite-editor-change.delegate="handleOnCompositeEditorChange($event.detail.eventData, $event.detail.args)"
-                     on-pagination-changed.delegate="handlePaginationChanged($event.detail.eventData, $event.detail.args)">
+                     on-dbl-click.delegate="openCompositeModal($event.detail.eventData, $event.detail.args)"
+                     on-item-deleted.delegate="handleItemDeleted($event.detail.eventData, $event.detail.args)"
+                     on-grid-state-changed.delegate="handleOnGridStateChanged($event.detail)"
+                     on-pagination-changed.delegate="handlePaginationChanged($event.detail.eventData, $event.detail.args)"
+                     on-validation-error.delegate="handleValidationError($event.detail.eventData, $event.detail.args)">
   </aurelia-slickgrid>
 </template>

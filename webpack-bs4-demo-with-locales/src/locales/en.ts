@@ -40,6 +40,10 @@ export const localeEnglish = {
   TEXT_X_OF_Y_SELECTED: '# of % selected',
 
   // optional locale texts (depending on which features of the grid you use, you might (or not) need them or not)
+  TEXT_ALL_X_RECORDS_SELECTED: 'All {{x}} records selected',
+  TEXT_APPLY_MASS_UPDATE: 'Apply Mass Update',
+  TEXT_APPLY_TO_SELECTION: 'Update Selection',
+  TEXT_CLONE: 'Clone',
   TEXT_ITEMS: 'items',
   TEXT_ITEMS_PER_PAGE: 'items per page',
   TEXT_LAST_UPDATE: 'Last Update',
