@@ -3,24 +3,23 @@
   <div class="subtitle"
        innerhtml.bind="subTitle"></div>
 
-  <form class="row row-cols-lg-auto g-3 align-items-center">
+  <div class="row row-cols-lg-auto g-3 align-items-center">
     <div class="col-12">
-      <label class="my-1 mr-2" for="columnSelect">Single Search:</label>
+      <label for="columnSelect">Single Search:</label>
     </div>
-
     <div class="col-12">
-      <select value.bind="selectedColumn" id="columnSelect"
-              class="form-select mb-2 mr-sm-2">
+      <select class="form-select" class="form-select" data-test="search-column-list" name="selectedColumn"
+              value.bind="selectedColumn" id="columnSelect">
         <option repeat.for="column of columnDefinitions"
                 model.bind="column">
           ${column.name}
         </option>
       </select>
     </div>
-
     <div class="col-12">
       <select value.bind="selectedOperator"
-              class="form-select mb-2 mr-sm-2">
+              class="form-select"
+              data-test="search-operator-list">
         <option repeat.for="operator of operatorList"
                 model.bind="operator">
           ${operator}
@@ -29,12 +28,19 @@
     </div>
 
     <div class="col-12">
-      <input type="text"
-             class="form-control mb-2 mr-sm-2"
-             placeholder="search value"
-             value.bind="searchValue" />
+      <div class="input-group">
+        <input type="text"
+               class="form-control"
+               placeholder="search value"
+               data-test="search-value-input"
+               value.bind="searchValue" />
+        <button class="btn btn-outline-secondary d-flex align-items-center pl-2 pr-2" data-test="clear-search-value"
+                click.delegate="cleargridSearchInput()">
+          <span class="fa fa-times"></span>
+        </button>
+      </div>
     </div>
-  </form>
+  </div>
 
   <hr />
 

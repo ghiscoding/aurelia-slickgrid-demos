@@ -99,6 +99,11 @@
             "name": "jquery-ui-dist",
             "path": "../node_modules/jquery-ui-dist",
             "main": "jquery-ui"
+          },
+          {
+            "name": "dequal",
+            "path": "../node_modules/dequal/dist",
+            "main": "index.min"
           }
         ]
       }

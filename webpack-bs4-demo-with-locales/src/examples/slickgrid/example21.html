@@ -3,31 +3,41 @@
   <div class="subtitle"
        innerhtml.bind="subTitle"></div>
 
-  <form class="form-inline">
-    <div class="form-group">
-      <label>
-        Single Search:<br>
-      </label>
-      <select value.bind="selectedColumn"
-              class="form-control">
-        <option repeat.for="column of columnDefinitions"
-                model.bind="column">
-          ${column.name}
-        </option>
-      </select>
-    </div>
+  <div class="form-inline">
+    <label class="my-1 mr-2" for="columnSelect">Single Search:</label>
+    <select value.bind="selectedColumn" id="columnSelect"
+            data-test="search-column-list"
+            class="form-control mb-2 mr-sm-2">
+      <option repeat.for="column of columnDefinitions"
+              model.bind="column">
+        ${column.name}
+      </option>
+    </select>
+
     <select value.bind="selectedOperator"
-            class="form-control">
+            class="form-control mb-2 mr-sm-2"
+            data-test="search-operator-list">
       <option repeat.for="operator of operatorList"
               model.bind="operator">
         ${operator}
       </option>
     </select>
-    <input type="text"
-           class="form-control"
-           placeholder="search value"
-           value.bind="searchValue">
-  </form>
+
+    <div class="input-group mb-2 mr-sm-2">
+      <input type="text"
+             class="form-control"
+             placeholder="search value"
+             data-test="search-value-input"
+             value.bind="searchValue" />
+      <div class="input-group-append">
+        <button class="btn btn-outline-secondary d-flex align-items-center pl-2 pr-2" data-test="clear-search-value"
+                click.delegate="cleargridSearchInput()">
+          <span class="fa fa-times"></span>
+        </button>
+      </div>
+    </div>
+  </div>
+
   <hr />
 
   <aurelia-slickgrid grid-id="grid21"

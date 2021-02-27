@@ -212,10 +212,10 @@ export class Example20 {
         container: '#demo-container',
         rightPadding: 10
       },
+      gridWidth: 920,
       enableCellNavigation: true,
       editable: true,
       autoEdit: true,
-      gridWidth: 875,
       enableExcelCopyBuffer: true,
       frozenColumn: this.frozenColumnCount,
       frozenRow: this.frozenRowCount,
