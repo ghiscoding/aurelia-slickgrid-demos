@@ -77,8 +77,18 @@ export class Example12 {
         filterable: true,
         filter: { model: Filters.slider, /* operator: '>=',*/ params: { hideSliderNumber: true } }
       },
-      { id: 'start', name: 'Start', field: 'start', nameKey: 'START', formatter: Formatters.dateIso, outputType: FieldType.dateIso, type: FieldType.date, minWidth: 100, filterable: true, filter: { model: Filters.compoundDate } },
-      { id: 'finish', name: 'Finish', field: 'finish', nameKey: 'FINISH', formatter: Formatters.dateIso, outputType: FieldType.dateIso, type: FieldType.date, minWidth: 100, filterable: true, filter: { model: Filters.compoundDate } },
+      {
+        id: 'start', name: 'Start', field: 'start', nameKey: 'START',
+        formatter: Formatters.dateIso, exportWithFormatter: true,
+        outputType: FieldType.dateIso, type: FieldType.date, minWidth: 100,
+        filterable: true, filter: { model: Filters.compoundDate }
+      },
+      {
+        id: 'finish', name: 'Finish', field: 'finish', nameKey: 'FINISH',
+        formatter: Formatters.dateIso, exportWithFormatter: true,
+        outputType: FieldType.dateIso, type: FieldType.date, minWidth: 100,
+        filterable: true, filter: { model: Filters.compoundDate }
+      },
       {
         id: 'completedBool', name: 'Completed', field: 'completedBool', nameKey: 'COMPLETED', minWidth: 100,
         sortable: true,
