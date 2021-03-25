@@ -29,6 +29,7 @@
     "@slickgrid-universal/excel-export": "^0.12.0",
     "@slickgrid-universal/graphql": "^0.12.0",
     "@slickgrid-universal/odata": "^0.12.0",
+    "@slickgrid-universal/rxjs-observable": "^0.12.0",
     "@slickgrid-universal/text-export": "^0.12.0",
     "aurelia-animator-css": "^1.0.4",
     "aurelia-bootstrapper": "^2.3.3",
@@ -42,7 +43,8 @@
     "font-awesome": "^4.7.0",
     "i18next-xhr-backend": "^3.2.2",
     "jquery": "^3.5.1",
-    "moment": "^2.29.1"
+    "moment": "^2.29.1",
+    "rxjs": "next"
   },
   "devDependencies": {
     "@types/bluebird": "^3.5.33",

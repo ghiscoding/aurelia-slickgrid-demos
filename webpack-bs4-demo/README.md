@@ -12,6 +12,7 @@ Again the following dependencies are totally **optional**
 | [@slickgrid-universal/text-export](https://github.com/ghiscoding/slickgrid-universal/tree/master/packages/text-export) | Text File Export Service (csv/txt) |
 | [@slickgrid-universal/graphql](https://github.com/ghiscoding/slickgrid-universal/tree/master/packages/graphql) | GraphQL Backend Service |
 | [@slickgrid-universal/odata](https://github.com/ghiscoding/slickgrid-universal/tree/master/packages/odata) | OData Backend Service |
+| [@slickgrid-universal/rxjs-observable](https://github.com/ghiscoding/slickgrid-universal/tree/master/packages/rxjs-observable) | RxJS Observable Service Wrapper |
 
 ---
 
