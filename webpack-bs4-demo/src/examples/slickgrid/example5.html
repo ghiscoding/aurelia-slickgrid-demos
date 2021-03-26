@@ -1,5 +1,14 @@
 <template>
-  <h2>${title}</h2>
+  <h2>
+    ${title}
+    <span class="float-right">
+      <a style="font-size: 18px"
+         target="_blank"
+         href="https://github.com/ghiscoding/aurelia-slickgrid/blob/master/src/examples/slickgrid/example5.ts">
+        <span class="fa fa-link"></span> code
+      </a>
+    </span>
+  </h2>
   <div class="subtitle" innerhtml.bind="subTitle"></div>
 
   <div class="row">
@@ -60,8 +69,8 @@
   <aurelia-slickgrid grid-id="grid5"
                      column-definitions.bind="columnDefinitions"
                      grid-options.bind="gridOptions"
-                     pagination-options.bind="paginationOptions"
                      dataset.bind="dataset"
+                     pagination-options.bind="paginationOptions"
                      on-aurelia-grid-created.delegate="aureliaGridReady($event.detail)"
                      on-grid-state-changed.delegate="gridStateChanged($event.detail)">
   </aurelia-slickgrid>
