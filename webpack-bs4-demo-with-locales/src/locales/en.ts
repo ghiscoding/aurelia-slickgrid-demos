@@ -46,6 +46,7 @@ export const localeEnglish = {
   TEXT_CLONE: 'Clone',
   TEXT_ITEMS: 'items',
   TEXT_ITEMS_PER_PAGE: 'items per page',
+  TEXT_ITEMS_SELECTED: 'items selected',
   TEXT_LAST_UPDATE: 'Last Update',
   TEXT_OF: 'of',
   TEXT_PAGE: 'Page',

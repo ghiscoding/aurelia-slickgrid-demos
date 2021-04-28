@@ -47,6 +47,7 @@ export const localeFrench = {
   TEXT_CLONE: 'Cloner',
   TEXT_ITEMS: 'éléments',
   TEXT_ITEMS_PER_PAGE: 'éléments par page',
+  TEXT_ITEMS_SELECTED: 'éléments sélectionnés',
   TEXT_LAST_UPDATE: 'Dernière mise à jour',
   TEXT_OF: 'de',
   TEXT_PAGE: 'Page',
