@@ -1,4 +1,5 @@
-import { AureliaGridInstance, Column, FieldType, GridOption } from 'aurelia-slickgrid';
+import { ExcelExportService } from '@slickgrid-universal/excel-export';
+import { AureliaGridInstance, Column, FieldType, GridOption, ItemMetadata } from 'aurelia-slickgrid';
 import './example14.scss'; // provide custom CSS/SASS styling
 
 export class Example14 {
@@ -14,14 +15,14 @@ export class Example14 {
   </ul>
   `;
 
-  angularGrid2: AureliaGridInstance;
+  angularGrid2!: AureliaGridInstance;
   gridObj2: any;
-  columnDefinitions1: Column[];
-  columnDefinitions2: Column[];
-  gridOptions1: GridOption;
-  gridOptions2: GridOption;
-  dataset1 = [];
-  dataset2 = [];
+  columnDefinitions1: Column[] = [];
+  columnDefinitions2: Column[] = [];
+  gridOptions1!: GridOption;
+  gridOptions2!: GridOption;
+  dataset1: any[] = [];
+  dataset2: any[] = [];
 
   constructor() {
     this.definedGrid1();
@@ -57,9 +58,14 @@ export class Example14 {
       createPreHeaderPanel: true,
       showPreHeaderPanel: true,
       preHeaderPanelHeight: 28,
-      explicitInitialization: true,
       gridHeight: 275,
       gridWidth: 800,
+      enableExcelExport: true,
+      excelExportOptions: {
+        exportWithFormatter: false
+      },
+      registerExternalResources: [new ExcelExportService()],
+      explicitInitialization: true,
       colspanCallback: this.renderDifferentColspan
     };
   }
@@ -82,9 +88,14 @@ export class Example14 {
       showPreHeaderPanel: true,
       preHeaderPanelHeight: 25,
       explicitInitialization: true,
-      frozenColumn: 2,
       gridHeight: 275,
       gridWidth: 800,
+      frozenColumn: 2,
+      enableExcelExport: true,
+      excelExportOptions: {
+        exportWithFormatter: false
+      },
+      registerExternalResources: [new ExcelExportService()],
       gridMenu: { hideClearFrozenColumnsCommand: false },
       headerMenu: { hideFreezeColumnsCommand: false }
     };
@@ -118,7 +129,7 @@ export class Example14 {
    * Your callback will always have the "item" argument which you can use to decide on the colspan
    * Your return must always be in the form of:: return { columns: {}}
    */
-  renderDifferentColspan(item: any) {
+  renderDifferentColspan(item: any): ItemMetadata {
     if (item.id % 2 === 1) {
       return {
         columns: {
@@ -127,14 +138,13 @@ export class Example14 {
           }
         }
       };
-    } else {
-      return {
-        columns: {
-          0: {
-            colspan: '*' // starting at column index 0, we will span accross all column (*)
-          }
-        }
-      };
     }
+    return {
+      columns: {
+        0: {
+          colspan: '*' // starting at column index 0, we will span accross all column (*)
+        }
+      }
+    };
   }
 }

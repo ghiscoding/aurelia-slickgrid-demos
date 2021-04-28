@@ -101,7 +101,7 @@
             "main": "jquery-ui"
           },
           {
-            "name": "dequal",
+            "name": "dequal-lite",
             "path": "../node_modules/dequal/dist",
             "main": "index.min"
           }
