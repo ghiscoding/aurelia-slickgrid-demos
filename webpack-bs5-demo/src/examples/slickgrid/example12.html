@@ -15,11 +15,14 @@
 
   <div class="row">
     <div class="col-sm-12">
-      <button class="btn btn-outline-secondary btn-sm" click.delegate="switchLanguage()">
+      <button class="btn btn-outline-secondary btn-sm" data-test="language-button" click.delegate="switchLanguage()">
         <i class="fa fa-language"></i>
         Switch Language
       </button>
-      <label>Locale</label>: ${selectedLanguage + '.json'}
+      <label>Locale:</label>
+      <span style="font-style: italic; width: 70px;" data-test="selected-locale">
+        ${selectedLanguage + '.json'}
+      </span>
 
       <span style="margin-left: 20px">
         <button class="btn btn-outline-secondary btn-sm" click.delegate="exportToFile('csv')">
@@ -47,7 +50,7 @@
                      column-definitions.bind="columnDefinitions"
                      grid-options.bind="gridOptions"
                      dataset.bind="dataset"
-                     on-grid-state-changed.delegate="grid1StateChanged($event.detail)"
+                     on-grid-state-changed.delegate="gridStateChanged($event.detail)"
                      on-aurelia-grid-created.delegate="aureliaGridReady($event.detail)">
   </aurelia-slickgrid>
 </template>

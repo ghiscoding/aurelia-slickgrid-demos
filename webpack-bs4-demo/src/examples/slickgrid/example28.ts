@@ -1,3 +1,4 @@
+import { ExcelExportService } from '@slickgrid-universal/excel-export';
 import { autoinject, bindable } from 'aurelia-framework';
 import {
   AureliaGridInstance,
@@ -6,7 +7,7 @@ import {
   Filters,
   Formatters,
   GridOption,
-  findItemInHierarchicalStructure,
+  findItemInTreeStructure,
   Formatter,
 } from 'aurelia-slickgrid';
 import './example28.scss'; // provide custom CSS/SASS styling
@@ -18,14 +19,14 @@ export class Example28 {
     <li><b>NOTE:</b> The grid will automatically sort Ascending with the column that has the Tree Data, you could add a "sortByFieldId" in your column "treeData" option if you wish to sort on a different column</li>
     <li><b>Styling - Salesforce Theme</b></li>
     <ul>
-      <li>The Salesforce Theme was created with SASS and compiled in CSS (<a href="https://github.com/ghiscoding/aurelia-slickgrid/blob/master/src/aurelia-slickgrid/styles/slickgrid-theme-salesforce.scss" target="_blank">slickgrid-theme-salesforce.scss</a>), you can override any of its SASS variables</li>
+      <li>The Salesforce Theme was created with SASS and compiled in CSS (<a href="https://github.com/ghiscoding/slickgrid-universal/blob/master/packages/common/src/styles/slickgrid-theme-salesforce.scss" target="_blank">slickgrid-theme-salesforce.scss</a>), you can override any of its SASS variables</li>
       <li>We use a small subset of <a href="https://materialdesignicons.com/" target="_blank">Material Design Icons</a></li>
       <li>you might need to refresh the page to clear the browser cache and see the correct theme</li>
     </ul>
   `;
-  aureliaGrid: AureliaGridInstance;
-  gridOptions: GridOption;
-  columnDefinitions: Column[];
+  aureliaGrid!: AureliaGridInstance;
+  gridOptions!: GridOption;
+  columnDefinitions: Column[] = [];
   datasetHierarchical: any[] = [];
   @bindable() searchString = '';
 
@@ -56,7 +57,7 @@ export class Example28 {
         id: 'size', name: 'Size', field: 'size', minWidth: 90,
         type: FieldType.number, exportWithFormatter: true,
         filterable: true, filter: { model: Filters.compoundInputNumber },
-        formatter: (row, cell, value) => isNaN(value) ? '' : `${value || 0} MB`,
+        formatter: (_row, _cell, value) => isNaN(value) ? '' : `${value || 0} MB`,
       },
     ];
 
@@ -67,7 +68,6 @@ export class Example28 {
       },
       enableAutoSizeColumns: true,
       enableAutoResize: true,
-      enableExport: true,
       enableFiltering: true,
       enableTreeData: true, // you must enable this flag for the filtering & sorting to work as expected
       multiColumnSort: false,
@@ -83,6 +83,8 @@ export class Example28 {
       // change header/cell row height for salesforce theme
       headerRowHeight: 35,
       rowHeight: 33,
+      enableExcelExport: true,
+      registerExternalResources: [new ExcelExportService()],
 
       // use Material Design SVG icons
       contextMenu: {
@@ -127,7 +129,7 @@ export class Example28 {
     this.aureliaGrid.filterService.updateFilters([{ columnId: 'file', searchTerms: [this.searchString] }], true, false, true);
   }
 
-  treeFormatter: Formatter = (row, cell, value, columnDef, dataContext, grid) => {
+  treeFormatter: Formatter = (_row, _cell, value, _columnDef, dataContext, grid) => {
     const gridOptions = grid.getOptions() as GridOption;
     const treeLevelPropName = gridOptions.treeDataOptions && gridOptions.treeDataOptions.levelPropName || '__treeLevel';
     if (value === null || value === undefined || dataContext === undefined) {
@@ -136,7 +138,7 @@ export class Example28 {
     const dataView = grid.getData();
     const data = dataView.getItems();
     const identifierPropName = dataView.getIdPropertyName() || 'id';
-    const idx = dataView.getIdxById(dataContext[identifierPropName]);
+    const idx = dataView.getIdxById(dataContext[identifierPropName]) as number;
     const prefix = this.getFileIcon(value);
 
     value = value.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
@@ -177,12 +179,12 @@ export class Example28 {
 
     // find first parent object and add the new item as a child
     const tmpDatasetHierarchical = [...this.datasetHierarchical];
-    const popItem = findItemInHierarchicalStructure(tmpDatasetHierarchical, x => x.file === 'pop', 'files');
+    const popItem = findItemInTreeStructure(tmpDatasetHierarchical, x => x.file === 'pop', 'files');
 
     if (popItem && Array.isArray(popItem.files)) {
       popItem.files.push({
         id: newId,
-        file: `pop${Math.round(Math.random() * 1000)}.mp3`,
+        file: `pop-${newId}.mp3`,
         dateModified: new Date(),
         size: Math.round(Math.random() * 100),
       });
@@ -192,9 +194,9 @@ export class Example28 {
 
       // scroll into the position, after insertion cycle, where the item was added
       setTimeout(() => {
-        const rowIndex = this.aureliaGrid.dataView.getRowById(popItem.id);
+        const rowIndex = this.aureliaGrid.dataView.getRowById(popItem.id) as number;
         this.aureliaGrid.slickGrid.scrollRowIntoView(rowIndex + 3);
-      }, 0);
+      }, 10);
     }
   }
 
@@ -206,7 +208,7 @@ export class Example28 {
     this.aureliaGrid.treeDataService.toggleTreeDataCollapse(false);
   }
 
-  logExpandedStructure() {
+  logHierarchicalStructure() {
     console.log('exploded array', this.aureliaGrid.treeDataService.datasetHierarchical /* , JSON.stringify(explodedArray, null, 2) */);
   }
 
