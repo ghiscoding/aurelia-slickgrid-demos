@@ -35,20 +35,6 @@ Then open your browser to
 http://localhost:9000
 ```
 
-## Webpack and Bootstrap 3 (with TypeScript)
-### Install and Start Demo
-```bash
-git clone https://github.com/ghiscoding/aurelia-slickgrid-demos
-cd webpack-bs3-demo
-npm install # OR yarn install
-npm start # OR yarn start
-```
-
-Then open your browser to
-```html
-http://localhost:8080
-```
-
 ## Webpack and Bootstrap 4 with single Locale & without I18N (TypeScript)
 ### Install and Start Demo
 ```bash
