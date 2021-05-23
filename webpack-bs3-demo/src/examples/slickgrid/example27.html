@@ -11,6 +11,23 @@
   </h2>
   <div class="subtitle" innerhtml.bind="subTitle"></div>
 
+  <div class="row" style="margin-bottom: 4px;">
+    <div class="col-md-12">
+      <button class="btn btn-outline-secondary btn-sm" data-test="add-500-rows-btn" click.delegate="loadData(500)">
+        500 rows
+      </button>
+      <button class="btn btn-outline-secondary btn-sm" data-test="add-50k-rows-btn" click.delegate="loadData(25000)">
+        25k rows
+      </button>
+      <button click.delegate="dynamicallyChangeFilter()" class="btn btn-outline-secondary btn-sm"
+              data-test="change-filter-dynamically">
+        <span class="mdi mdi-filter-outline"></span>
+        <span>Dynamically Change Filter (% complete &lt; 40)</span>
+      </button>
+      <div class.bind="loadingClass"></div>
+    </div>
+  </div>
+
   <div class="row">
     <div class="col-md-12">
       <button click.delegate="addNewRow()" class="btn btn-info btn-sm">
@@ -26,10 +43,10 @@
         <span>Expand All</span>
       </button>
       <button click.delegate="logFlatStructure()" class="btn btn-default btn-sm">
-        <span>Log Flag Structure</span>
+        <span>Log Flat Structure</span>
       </button>
-      <button click.delegate="logExpandedStructure()" class="btn btn-default btn-sm">
-        <span>Log Expanded Structure</span>
+      <button click.delegate="logHierarchicalStructure()" class="btn btn-default btn-sm">
+        <span>Log Hierarchical Structure</span>
       </button>
     </div>
   </div>
