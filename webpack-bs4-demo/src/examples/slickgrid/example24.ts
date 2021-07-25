@@ -39,7 +39,7 @@ const priorityExportFormatter: Formatter = (row, cell, value, columnDef, dataCon
   if (!value) {
     return '';
   }
-  const gridOptions = (grid && typeof grid.getOptions === 'function') ? grid.getOptions() : {};
+  const gridOptions: GridOption = (grid && typeof grid.getOptions === 'function') ? grid.getOptions() : {};
   const i18n = gridOptions.i18n;
   const count = +(value >= 3 ? 3 : value);
   const key = count === 3 ? 'HIGH' : (count === 2 ? 'MEDIUM' : 'LOW');
