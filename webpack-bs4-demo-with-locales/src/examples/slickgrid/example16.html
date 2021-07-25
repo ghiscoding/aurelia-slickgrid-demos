@@ -1,27 +1,40 @@
 <template>
-  <h2>${title}</h2>
+  <h2>
+    ${title}
+    <span class="float-right">
+      <a style="font-size: 18px"
+         target="_blank"
+         href="https://github.com/ghiscoding/aurelia-slickgrid/blob/master/src/examples/slickgrid/example16.ts">
+        <span class="fa fa-link"></span> code
+      </a>
+    </span>
+  </h2>
   <div class="subtitle"
        innerhtml.bind="subTitle"></div>
 
-  <div class="row">
-    <button class="btn btn-outline-secondary btn-sm" data-test="hide-duration-btn"
+  <div class="row mb-2">
+    <button class="btn btn-outline-secondary btn-sm mr-1" data-test="hide-duration-btn"
             click.delegate="hideDurationColumnDynamically()">
       <i class="fa fa-eye-slash"></i>
       Dynamically Hide "Duration"
     </button>
-    <button class="btn btn-outline-secondary btn-sm" data-test="disable-filters-btn" click.delegate="disableFilters()">
+    <button class="btn btn-outline-secondary btn-sm mr-1" data-test="disable-filters-btn"
+            click.delegate="disableFilters()">
       <i class="fa fa-times"></i>
       Disable Filters
     </button>
-    <button class="btn btn-outline-secondary btn-sm" data-test="disable-sorting-btn" click.delegate="disableSorting()">
+    <button class="btn btn-outline-secondary btn-sm mr-1" data-test="disable-sorting-btn"
+            click.delegate="disableSorting()">
       <i class="fa fa-times"></i>
       Disable Sorting
     </button>
-    <button class="btn btn-outline-secondary btn-sm" data-test="toggle-filtering-btn" click.delegate="toggleFilter()">
+    <button class="btn btn-outline-secondary btn-sm mr-1" data-test="toggle-filtering-btn"
+            click.delegate="toggleFilter()">
       <i class="fa fa-random"></i>
       Toggle Filtering
     </button>
-    <button class="btn btn-outline-secondary btn-sm" data-test="toggle-sorting-btn" click.delegate="toggleSorting()">
+    <button class="btn btn-outline-secondary btn-sm mr-1" data-test="toggle-sorting-btn"
+            click.delegate="toggleSorting()">
       <i class="fa fa-random"></i>
       Toggle Sorting
     </button>
