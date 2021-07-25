@@ -2,7 +2,7 @@ import { Aurelia } from 'aurelia-framework'
 import { PLATFORM } from 'aurelia-pal';
 import { GridOption } from 'aurelia-slickgrid';
 
-import 'bootstrap/dist/css/bootstrap.css';
+import 'bootstrap/dist/css/bootstrap.min.css';
 import 'font-awesome/css/font-awesome.css';
 import 'flatpickr/dist/flatpickr.min.css';
 import './styles/styles.scss';
@@ -10,22 +10,13 @@ import './styles/slickgrid-styles.scss';
 import 'multiple-select-modified/src/multiple-select.css';
 import 'multiple-select-modified/src/multiple-select.js';
 import * as environment from '../config/environment.json';
-import * as Bluebird from 'bluebird';
 import 'bootstrap';
 import { localeFrench } from 'locales/fr';
-
-/** Disable long stack traces for IE11 */
-Bluebird.config({
-  warnings: {
-    wForgottenReturn: false
-  },
-  longStackTraces: false
-});
 
 // if you use CSS instead of SASS
 import '@slickgrid-universal/common/dist/styles/css/slickgrid-theme-bootstrap.css';
 
-export function configure(aurelia: Aurelia) {
+export async function configure(aurelia: Aurelia) {
   aurelia.use
     .standardConfiguration()
     .feature(PLATFORM.moduleName('resources/index'));
@@ -48,5 +39,6 @@ export function configure(aurelia: Aurelia) {
     aurelia.use.plugin(PLATFORM.moduleName('aurelia-testing'));
   }
 
-  aurelia.start().then(() => aurelia.setRoot(PLATFORM.moduleName('app')));
+  await aurelia.start();
+  await aurelia.setRoot(PLATFORM.moduleName('app'));
 }
