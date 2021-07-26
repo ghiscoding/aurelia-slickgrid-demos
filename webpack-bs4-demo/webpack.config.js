@@ -17,7 +17,7 @@ const when = (condition, config, negativeConfig) =>
 // primary config:
 const title = 'Aurelia Navigation Skeleton';
 const outDevDir = path.resolve(__dirname, 'dist');
-const outProdDir = path.resolve(__dirname, 'docs');
+const outProdDir = path.resolve(__dirname, 'dist');
 const srcDir = path.resolve(__dirname, 'src');
 const nodeModulesDir = path.resolve(__dirname, 'node_modules');
 const baseUrl = '';
