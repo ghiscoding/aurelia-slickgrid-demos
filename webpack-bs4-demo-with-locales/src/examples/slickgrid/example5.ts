@@ -33,19 +33,26 @@ export class Example5 {
       </ul>
       <li>OData Service could be replaced by other Service type in the future (GraphQL or whichever you provide)</li>
       <li>You can also preload a grid with certain "presets" like Filters / Sorters / Pagination <a href="https://github.com/ghiscoding/aurelia-slickgrid/wiki/Grid-State-&-Preset" target="_blank">Wiki - Grid Preset</a>
+      <li><span class="text-danger">NOTE:</span> For demo purposes, the last column (filter & sort) will always throw an
+        error and its only purpose is to demo what would happen when you encounter a backend server error
+        (the UI should rollback to previous state before you did the action).
+        Also changing Page Size to 50,000 will also throw which again is for demo purposes.
+        </li>
     </ul>
   `;
-  aureliaGrid: AureliaGridInstance;
-  columnDefinitions: Column[];
-  gridOptions: GridOption;
-  dataset = [];
-  metrics: Metrics;
-  paginationOptions: Pagination;
+  aureliaGrid!: AureliaGridInstance;
+  columnDefinitions: Column[] = [];
+  gridOptions!: GridOption;
+  dataset = [] = [];
+  metrics!: Metrics;
+  paginationOptions!: Pagination;
 
   isCountEnabled = true;
   odataVersion = 2;
   odataQuery = '';
   processing = false;
+  errorStatus = '';
+  isPageErrorTest = false;
   status = { text: '', class: '' };
 
   constructor(private http: HttpClient) {
@@ -74,7 +81,7 @@ export class Example5 {
           collection: [{ value: '', label: '' }, { value: 'male', label: 'male' }, { value: 'female', label: 'female' }]
         }
       },
-      { id: 'company', name: 'Company', field: 'company' },
+      { id: 'company', name: 'Company', field: 'company', filterable: true, sortable: true },
     ];
 
     this.gridOptions = {
@@ -94,7 +101,7 @@ export class Example5 {
       enableRowSelection: true,
       enablePagination: true, // you could optionally disable the Pagination
       pagination: {
-        pageSizes: [10, 20, 50, 100, 500],
+        pageSizes: [10, 20, 50, 100, 500, 50000],
         pageSize: defaultPageSize,
         totalItems: 0
       },
@@ -115,7 +122,14 @@ export class Example5 {
           enableCount: this.isCountEnabled, // add the count in the OData query, which will return a property named "odata.count" (v2) or "@odata.count" (v4)
           version: this.odataVersion        // defaults to 2, the query string is slightly different between OData 2 and 4
         },
-        preProcess: () => this.displaySpinner(true),
+        onError: (error: Error) => {
+          this.errorStatus = error.message;
+          this.displaySpinner(false, true);
+        },
+        preProcess: () => {
+          this.errorStatus = '';
+          this.displaySpinner(true);
+        },
         process: (query) => this.getCustomerApiCall(query),
         postProcess: (response) => {
           this.metrics = response.metrics;
@@ -126,21 +140,25 @@ export class Example5 {
     };
   }
 
-  displaySpinner(isProcessing) {
+  displaySpinner(isProcessing: boolean, isError?: boolean) {
     this.processing = isProcessing;
-    this.status = (isProcessing)
-      ? { text: 'processing...', class: 'alert alert-danger' }
-      : { text: 'done', class: 'alert alert-success' };
+    if (isError) {
+      this.status = { text: 'ERROR!!!', class: 'alert alert-danger' };
+    } else {
+      this.status = (isProcessing)
+        ? { text: 'loading...', class: 'alert alert-warning' }
+        : { text: 'finished', class: 'alert alert-success' };
+    }
   }
 
-  getCustomerCallback(data) {
+  getCustomerCallback(data: any) {
     // totalItems property needs to be filled for pagination to work correctly
     // however we need to force Aurelia to do a dirty check, doing a clone object will do just that
     let countPropName = 'totalRecordCount'; // you can use "totalRecordCount" or any name or "odata.count" when "enableCount" is set
     if (this.isCountEnabled) {
       countPropName = (this.odataVersion === 4) ? '@odata.count' : 'odata.count';
     }
-    this.paginationOptions = { ...this.gridOptions.pagination, totalItems: data[countPropName] };
+    this.paginationOptions = { ...this.gridOptions.pagination, totalItems: data[countPropName] } as Pagination;
     if (this.metrics) {
       this.metrics.totalItemCount = data[countPropName];
     }
@@ -150,7 +168,7 @@ export class Example5 {
     this.odataQuery = data['query'];
   }
 
-  getCustomerApiCall(query) {
+  getCustomerApiCall(query: string) {
     // in your case, you will call your WebAPI function (wich needs to return a Promise)
     // for the demo purpose, we will call a mock WebAPI function
     return this.getCustomerDataApiMock(query);
@@ -160,9 +178,9 @@ export class Example5 {
    * This function is only here to mock a WebAPI call (since we are using a JSON file for the demo)
    *  in your case the getCustomer() should be a WebAPI function returning a Promise
    */
-  getCustomerDataApiMock(query) {
+  getCustomerDataApiMock(query: string): Promise<any> {
     // the mock is returning a Promise, just like a WebAPI typically does
-    return new Promise((resolve, reject) => {
+    return new Promise(resolve => {
       const queryParams = query.toLowerCase().split('&');
       let top: number;
       let skip = 0;
@@ -170,9 +188,17 @@ export class Example5 {
       let countTotalItems = 100;
       const columnFilters = {};
 
+      if (this.isPageErrorTest) {
+        this.isPageErrorTest = false;
+        throw new Error('Server timed out trying to retrieve data for the last page');
+      }
+
       for (const param of queryParams) {
         if (param.includes('$top=')) {
           top = +(param.substring('$top='.length));
+          if (top === 50000) {
+            throw new Error('Server timed out retrieving 50,000 rows');
+          }
         }
         if (param.includes('$skip=')) {
           skip = +(param.substring('$skip='.length));
@@ -184,32 +210,42 @@ export class Example5 {
           const filterBy = param.substring('$filter='.length).replace('%20', ' ');
           if (filterBy.includes('contains')) {
             const filterMatch = filterBy.match(/contains\(([a-zA-Z\/]+),\s?'(.*?)'/);
-            const fieldName = filterMatch[1].trim();
-            columnFilters[fieldName] = { type: 'substring', term: filterMatch[2].trim() };
+            const fieldName = filterMatch![1].trim();
+            (columnFilters as any)[fieldName] = { type: 'substring', term: filterMatch![2].trim() };
           }
           if (filterBy.includes('substringof')) {
             const filterMatch = filterBy.match(/substringof\('(.*?)',([a-zA-Z ]*)/);
-            const fieldName = filterMatch[2].trim();
-            columnFilters[fieldName] = { type: 'substring', term: filterMatch[1].trim() };
+            const fieldName = filterMatch![2].trim();
+            (columnFilters as any)[fieldName] = { type: 'substring', term: filterMatch![1].trim() };
           }
           if (filterBy.includes('eq')) {
             const filterMatch = filterBy.match(/([a-zA-Z ]*) eq '(.*?)'/);
             if (Array.isArray(filterMatch)) {
-              const fieldName = filterMatch[1].trim();
-              columnFilters[fieldName] = { type: 'equal', term: filterMatch[2].trim() };
+              const fieldName = filterMatch![1].trim();
+              (columnFilters as any)[fieldName] = { type: 'equal', term: filterMatch![2].trim() };
             }
           }
           if (filterBy.includes('startswith')) {
             const filterMatch = filterBy.match(/startswith\(([a-zA-Z ]*),\s?'(.*?)'/);
-            const fieldName = filterMatch[1].trim();
-            columnFilters[fieldName] = { type: 'starts', term: filterMatch[2].trim() };
+            const fieldName = filterMatch![1].trim();
+            (columnFilters as any)[fieldName] = { type: 'starts', term: filterMatch![2].trim() };
           }
           if (filterBy.includes('endswith')) {
             const filterMatch = filterBy.match(/endswith\(([a-zA-Z ]*),\s?'(.*?)'/);
-            const fieldName = filterMatch[1].trim();
-            columnFilters[fieldName] = { type: 'ends', term: filterMatch[2].trim() };
+            const fieldName = filterMatch![1].trim();
+            (columnFilters as any)[fieldName] = { type: 'ends', term: filterMatch![2].trim() };
+          }
+
+          // simular a backend error when trying to sort on the "Company" field
+          if (filterBy.includes('company')) {
+            throw new Error('Server could not filter using the field "Company"');
           }
         }
+      }
+
+      // simular a backend error when trying to sort on the "Company" field
+      if (orderBy.includes('company')) {
+        throw new Error('Server could not sort using the field "Company"');
       }
 
       const sort = orderBy.includes('asc')
@@ -244,8 +280,8 @@ export class Example5 {
             for (const columnId in columnFilters) {
               if (columnFilters.hasOwnProperty(columnId)) {
                 filteredData = filteredData.filter(column => {
-                  const filterType = columnFilters[columnId].type;
-                  const searchTerm = columnFilters[columnId].term;
+                  const filterType = (columnFilters as any)[columnId].type;
+                  const searchTerm = (columnFilters as any)[columnId].term;
                   let colId = columnId;
                   if (columnId && columnId.indexOf(' ') !== -1) {
                     const splitIds = columnId.split(' ');
@@ -281,11 +317,11 @@ export class Example5 {
   }
 
   goToFirstPage() {
-    this.aureliaGrid.paginationService.goToFirstPage();
+    this.aureliaGrid.paginationService!.goToFirstPage();
   }
 
   goToLastPage() {
-    this.aureliaGrid.paginationService.goToLastPage();
+    this.aureliaGrid.paginationService!.goToLastPage();
   }
 
   /** Dispatched event of a Grid State Changed event */
@@ -308,12 +344,37 @@ export class Example5 {
     ]);
   }
 
+  throwPageChangeError() {
+    this.isPageErrorTest = true;
+    this.aureliaGrid?.paginationService?.goToLastPage();
+  }
+
+  // YOU CAN CHOOSE TO PREVENT EVENT FROM BUBBLING IN THE FOLLOWING 3x EVENTS
+  // note however that internally the cancelling the search is more of a rollback
+  handleOnBeforeSort(e: Event) {
+    // e.preventDefault();
+    // return false;
+    return true;
+  }
+
+  handleOnBeforeSearchChange(e: Event) {
+    // e.preventDefault();
+    // return false;
+    return true;
+  }
+
+  handleOnBeforePaginationChange(e: Event) {
+    // e.preventDefault();
+    // return false;
+    return true;
+  }
+
   // THE FOLLOWING METHODS ARE ONLY FOR DEMO PURPOSES DO NOT USE THIS CODE
   // ---
 
   changeCountEnableFlag() {
     this.isCountEnabled = !this.isCountEnabled;
-    const odataService = this.gridOptions.backendServiceApi.service;
+    const odataService = this.gridOptions.backendServiceApi!.service as GridOdataService;
     odataService.updateOptions({ enableCount: this.isCountEnabled } as OdataOption);
     odataService.clearFilters();
     this.aureliaGrid.filterService.clearFilters();
@@ -322,7 +383,7 @@ export class Example5 {
 
   setOdataVersion(version: number) {
     this.odataVersion = version;
-    const odataService = this.gridOptions.backendServiceApi.service;
+    const odataService = this.gridOptions.backendServiceApi!.service as GridOdataService;
     odataService.updateOptions({ version: this.odataVersion } as OdataOption);
     odataService.clearFilters();
     this.aureliaGrid.filterService.clearFilters();
