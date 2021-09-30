@@ -59,7 +59,9 @@ module.exports = ({ production } = {}, { analyze, server, tests } = {}) => ({
   target: 'web',
   performance: { hints: false },
   devServer: {
-    contentBase: production ? outProdDir : outDevDir,
+    static: {
+      directory: production ? outProdDir : outDevDir,
+    },
     // serve index.html for all 404 (required for push-state)
     historyApiFallback: true,
     compress: true,
