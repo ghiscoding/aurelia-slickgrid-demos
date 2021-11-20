@@ -33,12 +33,6 @@ export async function configure(aurelia: Aurelia) {
     // config.options.locales = localeFrench;
   });
 
-  aurelia.use.developmentLogging(environment.debug ? 'debug' : 'warn');
-
-  if (environment.testing) {
-    aurelia.use.plugin(PLATFORM.moduleName('aurelia-testing'));
-  }
-
   await aurelia.start();
   await aurelia.setRoot(PLATFORM.moduleName('app'));
 }
