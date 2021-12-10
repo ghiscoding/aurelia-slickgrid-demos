@@ -79,7 +79,7 @@ export class Example9 {
         hideForceFitButton: true,
         hideSyncResizeButton: true,
         onColumnsChanged: (e, args) => {
-          console.log('Column selection changed from Column Picker, visible columns: ', args.columns);
+          console.log('Column selection changed from Column Picker, visible columns: ', args.visibleColumns);
         }
       },
       enableAutoResize: true,
@@ -94,20 +94,14 @@ export class Example9 {
         // we could disable the menu entirely by returning false depending on some code logic
         menuUsabilityOverride: (args) => true,
 
-        // use the click event position to reposition the grid menu (defaults to false)
-        // basically which offset do we want to use for reposition the grid menu,
-        // option1 is where we clicked (true) or option2 is where the icon button is located (false and is the defaults)
-        // you probably want to set this to True if you use an external grid menu button BUT set to False when using default grid menu
-        useClickToRepositionMenu: true,
-
-        customTitle: 'Custom Commands',
+        commandTitle: 'Custom Commands',
         iconCssClass: 'fa fa-ellipsis-v', // defaults to "fa-bars"
         hideForceFitButton: true,
         hideSyncResizeButton: true,
         hideToggleFilterCommand: false, // show/hide internal custom commands
         menuWidth: 17,
         resizeOnShowHeaderRow: true,
-        customItems: [
+        commandItems: [
           // add Custom Items Commands which will be appended to the existing internal custom items
           // you cannot override an internal items but you can hide them and create your own
           // also note that the internal custom commands are in the positionOrder range of 50-60,
@@ -170,7 +164,7 @@ export class Example9 {
           }
         },
         onColumnsChanged: (e, args) => {
-          console.log('Column selection changed from Grid Menu, visible columns: ', args.columns);
+          console.log('Column selection changed from Grid Menu, visible columns: ', args.visibleColumns);
         }
       },
     };
@@ -202,10 +196,12 @@ export class Example9 {
     return phone;
   }
 
-  toggleGridMenu(e) {
-    if (this.aureliaGrid && this.aureliaGrid.extensionService) {
-      const gridMenuInstance = this.aureliaGrid.extensionService.getSlickgridAddonInstance(ExtensionName.gridMenu);
-      gridMenuInstance.showGridMenu(e);
+  toggleGridMenu(e: MouseEvent) {
+    if (this.aureliaGrid?.extensionService) {
+      const gridMenuInstance = this.aureliaGrid.extensionService.getExtensionInstanceByName(ExtensionName.gridMenu);
+      // open the external button Grid Menu, you can also optionally pass Grid Menu options as 2nd argument
+      // for example we want to align our external button on the right without affecting the menu within the grid which will stay aligned on the left
+      gridMenuInstance.showGridMenu(e, { dropSide: 'right' });
     }
   }
 

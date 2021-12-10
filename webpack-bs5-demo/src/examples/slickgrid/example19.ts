@@ -4,6 +4,7 @@ import {
   AureliaGridInstance,
   Column,
   ExtensionList,
+  ExtensionName,
   FieldType,
   Filters,
   Formatters,
@@ -24,7 +25,7 @@ export class Example19 {
   `;
 
   aureliaGrid: AureliaGridInstance;
-  extensions: ExtensionList<any, any>;
+  // extensions: ExtensionList<any>;
   gridOptions: GridOption;
   columnDefinitions: Column[];
   dataset: any[];
@@ -37,14 +38,14 @@ export class Example19 {
     this.defineGrid();
   }
 
-  get rowDetailInstance(): any {
+  get rowDetailInstance() {
     // you can get the SlickGrid RowDetail plugin (addon) instance via 2 ways
 
     // option 1
-    return this.extensions.rowDetailView.instance || {};
+    // return this.extensions.rowDetailView.instance || {};
 
-    // OR options 2
-    // return this.aureliaGrid && this.aureliaGrid.extensionService.getSlickgridAddonInstance(ExtensionName.rowDetailView) || {};
+    // OR option 2
+    return this.aureliaGrid?.extensionService.getExtensionInstanceByName(ExtensionName.rowDetailView);
   }
 
   attached() {
@@ -106,7 +107,7 @@ export class Example19 {
 
         // you can override the logic for showing (or not) the expand icon
         // for example, display the expand icon only on every 2nd row
-        // expandableOverride: (row: number, dataContext: any, grid: any) => (dataContext.id % 2 === 1),
+        // expandableOverride: (row: number, dataContext: any) => (dataContext.rowId % 2 === 1),
 
         // Preload View Template
         preloadView: PLATFORM.moduleName('examples/slickgrid/example19-preload.html'),
