@@ -85,12 +85,12 @@ export class Example24 {
     this.defineGrid();
   }
 
-  get cellMenuInstance(): any {
-    return this.aureliaGrid && this.aureliaGrid.extensionService.getSlickgridAddonInstance(ExtensionName.cellMenu) || {};
+  get cellMenuInstance() {
+    return this.aureliaGrid?.extensionService.getExtensionInstanceByName(ExtensionName.cellMenu);
   }
 
-  get contextMenuInstance(): any {
-    return this.aureliaGrid && this.aureliaGrid.extensionService.getSlickgridAddonInstance(ExtensionName.contextMenu) || {};
+  get contextMenuInstance() {
+    return this.aureliaGrid?.extensionService.getExtensionInstanceByName(ExtensionName.contextMenu);
   }
 
   attached() {
@@ -153,7 +153,6 @@ export class Example24 {
         formatter: actionFormatter,
         cellMenu: {
           hideCloseButton: false,
-          width: 200,
           // you can override the logic of when the menu is usable
           // for example say that we want to show a menu only when then Priority is set to 'High'.
           // Note that this ONLY overrides the usability itself NOT the text displayed in the cell,
@@ -315,7 +314,6 @@ export class Example24 {
   getContextMenuOptions(): ContextMenu {
     return {
       hideCloseButton: false,
-      width: 200,
       // optionally and conditionally define when the the menu is usable,
       // this should be used with a custom formatter to show/hide/disable the menu
       menuUsabilityOverride: (args) => {
@@ -397,7 +395,7 @@ export class Example24 {
       onOptionSelected: ((e, args) => {
         // change Priority
         const dataContext = args && args.dataContext;
-        if (dataContext && dataContext.hasOwnProperty('priority')) {
+        if (dataContext?.hasOwnProperty('priority')) {
           dataContext.priority = args.item.option;
           this.aureliaGrid.gridService.updateItem(dataContext);
         }
@@ -409,7 +407,7 @@ export class Example24 {
     // when showing both Commands/Options, we can just pass an empty array to show over all columns
     // else show on all columns except Priority
     const showOverColumnIds = showBothList ? [] : ['id', 'title', 'complete', 'start', 'finish', 'completed', 'action'];
-    this.contextMenuInstance.setOptions({
+    this.contextMenuInstance?.setOptions({
       commandShownOverColumnIds: showOverColumnIds,
       // hideCommandSection: !showBothList
     });
@@ -417,7 +415,7 @@ export class Example24 {
 
   showCellMenuCommandsAndOptions(showBothList) {
     // change via the plugin setOptions
-    this.cellMenuInstance.setOptions({
+    this.cellMenuInstance?.setOptions({
       hideOptionSection: !showBothList
     });
 
