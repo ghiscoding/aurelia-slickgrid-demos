@@ -9,9 +9,10 @@ $sparkline-color: #00b78d;
   left: 0;
   right: 0;
   bottom: 0;
-  padding: 10px 15px 0 10px;
+  padding: 10px 12px 0 10px;
   background-color: white;
-  z-index: 99999;
+  z-index: 8000;
+  position: fixed;
 }
 .changed-gain {
   background-color: #eafae8 !important;
@@ -22,7 +23,7 @@ $sparkline-color: #00b78d;
 .simulation-form {
   input[type=number] {
     height: 32px;
-    width: 90px;
+    width: 50px;
     border: 1px solid #c0c0c0;
     border-radius: 3px;
   }
@@ -33,13 +34,12 @@ $sparkline-color: #00b78d;
       margin: 0;
     }
     input.form-range {
-      width: 180px;
+      width: 120px;
     }
   }
   .refresh-rate input {
     height: 30px;
-    width: 55px;
-    // margin-top: 5px;
+    width: 46px;
   }
 }
 .sparkline {
