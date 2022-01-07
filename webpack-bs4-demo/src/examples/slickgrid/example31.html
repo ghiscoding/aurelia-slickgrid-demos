@@ -78,4 +78,20 @@
   <div class="row" style="margin-top: 5px">
     <div class="col-md-10">
       <div class="alert alert-info" data-test="alert-odata-query">
-        <strong>OData Query:</strong> <
+        <strong>OData Query:</strong> <span data-test="odata-query-result">${odataQuery}</span>
+      </div>
+    </div>
+    <div class.bind="status.class" role="alert" data-test="status">
+      <strong>Status: </strong> ${status.text}
+    </div>
+  </div>
+
+  <aurelia-slickgrid grid-id="grid31"
+                     column-definitions.bind="columnDefinitions"
+                     grid-options.bind="gridOptions"
+                     dataset.bind="dataset"
+                     pagination-options.bind="paginationOptions"
+                     on-aurelia-grid-created.delegate="aureliaGridReady($event.detail)"
+                     on-grid-state-changed.delegate="gridStateChanged($event.detail)">
+  </aurelia-slickgrid>
+</template>
