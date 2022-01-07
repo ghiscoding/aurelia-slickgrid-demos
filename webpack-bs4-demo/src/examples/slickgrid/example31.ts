@@ -360,4 +360,84 @@ export class Example31 {
   }
 
   goToFirstPage() {
-    this.aureliaGrid?.paginationSer
+    this.aureliaGrid?.paginationService?.goToFirstPage();
+  }
+
+  goToLastPage() {
+    this.aureliaGrid?.paginationService?.goToLastPage();
+  }
+
+  /** Dispatched event of a Grid State Changed event */
+  gridStateChanged(gridStateChanges: GridStateChange) {
+    // console.log('Client sample, Grid State changed:: ', gridStateChanges);
+    console.log('Client sample, Grid State changed:: ', gridStateChanges.change);
+  }
+
+  setFiltersDynamically() {
+    // we can Set Filters Dynamically (or different filters) afterward through the FilterService
+    this.aureliaGrid?.filterService.updateFilters([
+      // { columnId: 'gender', searchTerms: ['male'], operator: OperatorType.equal },
+      { columnId: 'name', searchTerms: ['A'], operator: 'a*' },
+    ]);
+  }
+
+  setSortingDynamically() {
+    this.aureliaGrid?.sortService.updateSorting([
+      { columnId: 'name', direction: 'DESC' },
+    ]);
+  }
+
+  // YOU CAN CHOOSE TO PREVENT EVENT FROM BUBBLING IN THE FOLLOWING 3x EVENTS
+  // note however that internally the cancelling the search is more of a rollback
+  handleOnBeforeSort(e: Event) {
+    // e.preventDefault();
+    // return false;
+    return true;
+  }
+
+  handleOnBeforeSearchChange(e: Event) {
+    // e.preventDefault();
+    // return false;
+    return true;
+  }
+
+  handleOnBeforePaginationChange(e: Event) {
+    // e.preventDefault();
+    // return false;
+    return true;
+  }
+
+  // THE FOLLOWING METHODS ARE ONLY FOR DEMO PURPOSES DO NOT USE THIS CODE
+  // ---
+
+  changeCountEnableFlag() {
+    this.isCountEnabled = !this.isCountEnabled;
+    this.resetOptions({ enableCount: this.isCountEnabled });
+    return true;
+  }
+
+  changeEnableSelectFlag() {
+    this.isSelectEnabled = !this.isSelectEnabled;
+    this.resetOptions({ enableSelect: this.isSelectEnabled });
+    return true;
+  }
+
+  changeEnableExpandFlag() {
+    this.isExpandEnabled = !this.isExpandEnabled;
+    this.resetOptions({ enableExpand: this.isExpandEnabled });
+    return true;
+  }
+
+  setOdataVersion(version: number) {
+    this.odataVersion = version;
+    this.resetOptions({ version: this.odataVersion });
+    return true;
+  }
+
+  private resetOptions(options: Partial<OdataOption>) {
+    const odataService = this.gridOptions.backendServiceApi!.service as GridOdataService;
+    odataService.updateOptions(options);
+    odataService.clearFilters();
+    this.aureliaGrid?.filterService.clearFilters();
+  }
+}
