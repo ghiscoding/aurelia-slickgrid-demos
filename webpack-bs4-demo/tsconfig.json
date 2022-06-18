@@ -6,6 +6,7 @@
     "typeRoots": [
       "./node_modules/@types"
     ],
+    "types": [ "i18next", "i18next-xhr-backend" ],
     "removeComments": true,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,

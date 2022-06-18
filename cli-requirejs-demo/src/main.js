@@ -31,7 +31,8 @@ export function configure(aurelia) {
       defaultNS: 'aurelia-slickgrid',
       attributes: ['t', 'i18n'],
       fallbackLng: 'en',
-      debug: false
+      debug: false,
+      interpolation: { skipOnVariables: false }
     });
   });
 
