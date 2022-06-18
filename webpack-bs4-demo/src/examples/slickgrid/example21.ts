@@ -8,9 +8,8 @@ import {
   OperatorString,
 } from 'aurelia-slickgrid';
 
-
 export class Example21 {
-  @bindable() selectedColumn: Column;
+  @bindable() selectedColumn: any;
   @bindable() selectedOperator: string;
   @bindable() searchValue: string;
   title = 'Example 21: Grid AutoHeight';
@@ -159,7 +158,7 @@ export class Example21 {
 
   updateFilter() {
     this.aureliaGrid?.filterService.updateSingleFilter({
-      columnId: `${this.selectedColumn.id || ''}`,
+      columnId: `${(this.selectedColumn as Column).id || ''}`,
       operator: this.selectedOperator as OperatorString,
       searchTerms: [this.searchValue || '']
     });
