@@ -42,7 +42,6 @@
     "@babel/core": "^7.18.5",
     "@babel/register": "^7.17.7",
     "@types/bluebird": "^3.5.36",
-    "@types/jest": "^28.1.2",
     "@types/jquery": "^3.5.14",
     "@types/lodash": "^4.14.182",
     "@types/node": "^18.0.0",
@@ -51,7 +50,6 @@
     "aurelia-loader-nodejs": "^1.1.0",
     "aurelia-pal-nodejs": "^2.0.0",
     "aurelia-testing": "^1.1.0",
-    "babel-jest": "^28.1.1",
     "babel-eslint": "^10.1.0",
     "connect": "^3.7.0",
     "connect-history-api-fallback": "^1.6.0",
@@ -68,9 +66,6 @@
     "gulp-plumber": "^1.2.1",
     "gulp-rename": "^2.0.0",
     "gulp-watch": "^5.0.1",
-    "jest": "^28.1.1",
-    "jest-cli": "^28.1.1",
-    "jest-transform-stub": "^2.0.0",
     "minimatch": "^5.1.0",
     "open": "^8.4.0",
     "promise-polyfill": "^8.2.3",
@@ -91,41 +86,5 @@
   },
   "engines": {
     "node": ">=14.0.0"
-  },
-  "jest": {
-    "moduleNameMapper": {
-      "^aurelia-binding$": "<rootDir>/node_modules/aurelia-binding"
-    },
-    "modulePaths": [
-      "<rootDir>/src",
-      "<rootDir>/node_modules"
-    ],
-    "moduleFileExtensions": [
-      "js",
-      "json"
-    ],
-    "transform": {
-      "^.+\\.(css|less|sass|scss|styl|jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "jest-transform-stub",
-      "^.+\\.js$": "babel-jest"
-    },
-    "testRegex": "\\.spec\\.js$",
-    "setupFiles": [
-      "<rootDir>/test/jest-pretest.js"
-    ],
-    "testEnvironment": "node",
-    "collectCoverage": true,
-    "collectCoverageFrom": [
-      "src/**/*.js",
-      "!**/*.spec.js",
-      "!**/node_modules/**",
-      "!**/test/**"
-    ],
-    "coverageDirectory": "<rootDir>/test/coverage-jest",
-    "coverageReporters": [
-      "json",
-      "lcov",
-      "text",
-      "html"
-    ]
   }
 }

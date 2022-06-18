@@ -6,7 +6,6 @@ const { AureliaPlugin, ModuleDependenciesPlugin } = require('aurelia-webpack-plu
 const { ProvidePlugin } = require('webpack');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
-const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 
 // config helpers:
 const ensureArray = (config) => config && (Array.isArray(config) ? config : [config]) || [];
@@ -128,6 +127,5 @@ module.exports = ({ production } = {}, { analyze, server, tests } = {}) => ({
 
     // Note that the usage of following plugin cleans the webpack output directory before build.
     new CleanWebpackPlugin(),
-    new ForkTsCheckerWebpackPlugin()
   ]
 });

@@ -37,7 +37,6 @@
     "aurelia-slickgrid": "^4.2.0",
     "bootstrap": "^4.6.1",
     "font-awesome": "^4.7.0",
-    "fork-ts-checker-webpack-plugin": "^7.2.11",
     "i18next-xhr-backend": "^3.2.2",
     "jquery": "^3.6.0",
     "moment-mini": "^2.24.0",
@@ -49,7 +48,6 @@
     "@fnando/sparkline": "^0.3.10",
     "@types/bluebird": "^3.5.36",
     "@types/fnando__sparkline": "^0.3.4",
-    "@types/jest": "^28.1.2",
     "@types/jquery": "^3.5.14",
     "@types/lodash": "^4.14.182",
     "@types/node": "^18.0.0",
@@ -70,10 +68,6 @@
     "gulp": "^4.0.2",
     "html-loader": "^3.1.2",
     "html-webpack-plugin": "^5.5.0",
-    "istanbul-instrumenter-loader": "^3.0.1",
-    "jest": "^28.1.1",
-    "jest-cli": "^28.1.1",
-    "jest-transform-stub": "^2.0.0",
     "mini-css-extract-plugin": "^2.6.1",
     "minimatch": "^5.1.0",
     "npm-run-all": "^4.1.5",
@@ -82,7 +76,6 @@
     "style-loader": "^3.3.1",
     "through2": "^4.0.2",
     "tree-kill": "^1.2.2",
-    "ts-jest": "^28.0.5",
     "ts-loader": "^9.3.0",
     "ts-node": "^10.8.1",
     "typescript": "^4.7.4",
@@ -94,42 +87,5 @@
   },
   "engines": {
     "node": ">=14.0.0"
-  },
-  "jest": {
-    "moduleNameMapper": {
-      "^aurelia-binding$": "<rootDir>/node_modules/aurelia-binding"
-    },
-    "modulePaths": [
-      "<rootDir>/src",
-      "<rootDir>/node_modules"
-    ],
-    "moduleFileExtensions": [
-      "ts",
-      "js",
-      "json"
-    ],
-    "transform": {
-      "^.+\\.(css|less|sass|scss|styl|jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "jest-transform-stub",
-      "^.+\\.ts$": "ts-jest"
-    },
-    "testRegex": "\\.spec\\.(ts|js)$",
-    "setupFiles": [
-      "<rootDir>/test/jest-pretest.ts"
-    ],
-    "testEnvironment": "node",
-    "collectCoverage": true,
-    "collectCoverageFrom": [
-      "src/**/*.{js,ts}",
-      "!**/*.spec.{js,ts}",
-      "!**/node_modules/**",
-      "!**/test/**"
-    ],
-    "coverageDirectory": "<rootDir>/test/coverage-jest",
-    "coverageReporters": [
-      "json",
-      "lcov",
-      "text",
-      "html"
-    ]
   }
 }
