@@ -96,9 +96,11 @@
             ]
           },
           {
-            "name": "jquery-ui-dist",
-            "path": "../node_modules/jquery-ui-dist",
-            "main": "jquery-ui"
+            "name": "jquery-ui",
+            "path": "../node_modules/jquery-ui",
+            "main": "dist/jquery-ui",
+            "deps": ["jquery"],
+            "exports": "$"
           },
           {
             "name": "dequal-lite",
