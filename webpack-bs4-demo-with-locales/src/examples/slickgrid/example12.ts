@@ -160,7 +160,7 @@ export class Example12 {
   dynamicallyAddTitleHeader() {
     // you can dynamically add your column to your column definitions
     // and then use the spread operator [...cols] OR slice to force Aurelia to review the changes
-    const newCol = { id: `title${this.duplicateTitleHeaderCount++}`, field: 'id', nameKey: 'TITLE', formatter: taskFormatter, sortable: true, minWidth: 100, filterable: true, params: { useFormatterOuputToFilter: true } };
+    const newCol = { id: `title${this.duplicateTitleHeaderCount++}`, field: 'id', name: 'Titre', formatter: taskFormatter, sortable: true, minWidth: 100, filterable: true, params: { useFormatterOuputToFilter: true } };
     this.columnDefinitions.push(newCol);
     this.columnDefinitions = this.columnDefinitions.slice(); // or use spread operator [...cols]
 
