@@ -1,3 +1,4 @@
+import { EditCommand, SlickGrid } from '@slickgrid-universal/common';
 import { SlickCompositeEditorComponent } from '@slickgrid-universal/composite-editor-component';
 import { ExcelExportService } from '@slickgrid-universal/excel-export';
 import { HttpClient as FetchClient } from 'aurelia-fetch-client';
@@ -36,11 +37,11 @@ declare const Slick: SlickNamespace;
  * @param {*} grid - slickgrid grid object
  * @returns {boolean} isEditable
  */
-function checkItemIsEditable(dataContext, columnDef, grid) {
+function checkItemIsEditable(dataContext: any, columnDef: Column, grid: SlickGrid) {
   const gridOptions = grid && grid.getOptions && grid.getOptions();
   const hasEditor = columnDef.editor;
   const isGridEditable = gridOptions.editable;
-  let isEditable = (isGridEditable && hasEditor);
+  let isEditable = !!(isGridEditable && hasEditor);
 
   if (dataContext && columnDef && gridOptions && gridOptions.editable) {
     switch (columnDef.id) {
@@ -69,7 +70,7 @@ const customEditableInputFormatter: Formatter = (_row, _cell, value, columnDef, 
 };
 
 // you can create custom validator to pass to an inline editor
-const myCustomTitleValidator = (value, args) => {
+const myCustomTitleValidator = (value: any, args: any) => {
   if ((value === null || value === undefined || !value.length) && (args.compositeEditorOptions && args.compositeEditorOptions.modalType === 'create' || args.compositeEditorOptions.modalType === 'edit')) {
     // we will only check if the field is supplied when it's an inline editing OR a composite editor of type create/edit
     return { valid: false, msg: 'This is a required field.' };
@@ -85,16 +86,17 @@ export class Example30 {
   subTitle = `Composite Editor allows you to Create, Clone, Edit, Mass Update & Mass Selection Changes inside a nice Modal Window.
   <br>The modal is simply populated by looping through your column definition list and also uses a lot of the same logic as inline editing (see <a href="https://github.com/ghiscoding/aurelia-slickgrid/wiki/Composite-Editor-Modal" target="_blank">Composite Editor - Wiki</a>.)`;
 
-  aureliaGrid: AureliaGridInstance;
+  aureliaGrid!: AureliaGridInstance;
   compositeEditorInstance: SlickCompositeEditorComponent;
-  gridOptions: GridOption;
-  columnDefinitions: Column[];
-  dataset: any[];
-  editQueue = [];
-  editedItems = {};
+  gridOptions!: GridOption;
+  columnDefinitions: Column[] = [];
+  dataset: any[] = [];
+  editQueue: any[] = [];
+  editedItems: any = {};
   isGridEditable = true;
   isCompositeDisabled = false;
   isMassSelectionDisabled = true;
+  cellCssStyleQueue: string[] = [];
   complexityLevelList = [
     { value: 0, label: 'Very Simple' },
     { value: 1, label: 'Simple' },
@@ -339,7 +341,8 @@ export class Example30 {
               },
               action: (_event, args) => {
                 const dataContext = args.dataContext;
-                if (confirm(`Do you really want to delete row (${args.row + 1}) with "${dataContext.title}"`)) {
+                const row = args?.row ?? 0;
+                if (confirm(`Do you really want to delete row (${row + 1}) with "${dataContext.title}"`)) {
                   this.aureliaGrid.gridService.deleteItemById(dataContext.id);
                 }
               }
@@ -396,7 +399,7 @@ export class Example30 {
         const serializedValues = Array.isArray(editCommand.serializedValue) ? editCommand.serializedValue : [editCommand.serializedValue];
         const editorColumns = this.columnDefinitions.filter((col) => col.editor !== undefined);
 
-        const modifiedColumns = [];
+        const modifiedColumns: Column[] = [];
         prevSerializedValues.forEach((_val, index) => {
           const prevSerializedValue = prevSerializedValues[index];
           const serializedValue = serializedValues[index];
@@ -424,7 +427,7 @@ export class Example30 {
 
   loadData(count: number) {
     // mock data
-    const tmpArray = [];
+    const tmpArray: any[] = [];
     for (let i = 0; i < count; i++) {
       const randomItemId = Math.floor(Math.random() * this.mockProducts().length);
       const randomYear = 2000 + Math.floor(Math.random() * 10);
@@ -470,7 +473,7 @@ export class Example30 {
     this.aureliaGrid = aureliaGrid;
   }
 
-  handleValidationError(_event, args) {
+  handleValidationError(_e: Event, args: any) {
     if (args.validationResults) {
       let errorMsg = args.validationResults.msg || '';
       if (args.editor && (args.editor instanceof Slick.CompositeEditor)) {
@@ -489,23 +492,23 @@ export class Example30 {
     return false;
   }
 
-  handleItemDeleted(_event, args) {
+  handleItemDeleted(_e: Event, args: any) {
     console.log('item deleted with id:', args.itemId);
   }
 
-  handleOnBeforeEditCell(event, args) {
+  handleOnBeforeEditCell(e: Event, args: any) {
     const { column, item, grid } = args;
 
     if (column && item) {
       if (!checkItemIsEditable(item, column, grid)) {
-        // event.preventDefault();
-        event.stopImmediatePropagation();
+        e.stopImmediatePropagation();
+        return false;
       }
     }
-    return false;
+    return true;
   }
 
-  handleOnCellChange(_event, args) {
+  handleOnCellChange(_e: Event, args: any) {
     const dataContext = args?.item;
 
     // when the field "completed" changes to false, we also need to blank out the "finish" date
@@ -515,8 +518,8 @@ export class Example30 {
     }
   }
 
-  handleOnCellClicked(event, args) {
-    console.log(event, args);
+  handleOnCellClicked(e: Event, args: any) {
+    console.log(e, args);
     // if (eventData.target.classList.contains('fa-question-circle-o')) {
     //   alert('please HELP!!!');
     // } else if (eventData.target.classList.contains('fa-chevron-down')) {
@@ -524,7 +527,7 @@ export class Example30 {
     // }
   }
 
-  handleOnCompositeEditorChange(_event, args: OnCompositeEditorChangeEventArgs) {
+  handleOnCompositeEditorChange(_e: Event, args: OnCompositeEditorChangeEventArgs) {
     const columnDef = args.column;
     const formValues = args.formValues;
 
@@ -556,14 +559,14 @@ export class Example30 {
     */
   }
 
-  handlePaginationChanged() {
+  handleReRenderUnsavedStyling() {
     this.removeAllUnsavedStylingFromCell();
     this.renderUnsavedStylingOnAllVisibleCells();
   }
 
   handleOnGridStateChanged(gridStateChanges: GridStateChange) {
-    if (Array.isArray(gridStateChanges.gridState?.rowSelection.dataContextIds)) {
-      this.isMassSelectionDisabled = gridStateChanges.gridState.rowSelection.dataContextIds.length === 0;
+    if (Array.isArray(gridStateChanges.gridState?.rowSelection?.dataContextIds)) {
+      this.isMassSelectionDisabled = gridStateChanges.gridState?.rowSelection?.dataContextIds.length === 0;
     }
   }
 
@@ -599,6 +602,7 @@ export class Example30 {
       // viewColumnLayout: 2, // responsive layout, choose from 'auto', 1, 2, or 3 (defaults to 'auto')
       showFormResetButton: true,
       // showResetButtonOnEachEditor: true,
+      resetFormButtonIconCssClass: 'fa fa-undo',
       onClose: () => Promise.resolve(confirm('You have unsaved changes, are you sure you want to close this window?')),
       onError: (error) => alert(error.message),
       onSave: (formValues, _selection, dataContext) => {
@@ -643,19 +647,19 @@ export class Example30 {
 
   removeUnsavedStylingFromCell(_item: any, column: Column, row: number) {
     // remove unsaved css class from that cell
-    this.aureliaGrid.slickGrid.removeCellCssStyles(`unsaved_highlight_${[column.id]}${row}`);
+    const cssStyleKey = `unsaved_highlight_${[column.id]}${row}`;
+    this.aureliaGrid.slickGrid.removeCellCssStyles(cssStyleKey);
+    const foundIdx = this.cellCssStyleQueue.findIndex(styleKey => styleKey === cssStyleKey);
+    if (foundIdx >= 0) {
+      this.cellCssStyleQueue.splice(foundIdx, 1);
+    }
   }
 
   removeAllUnsavedStylingFromCell() {
-    for (const lastEdit of this.editQueue) {
-      const lastEditCommand = lastEdit?.editCommand;
-      if (lastEditCommand) {
-        // remove unsaved css class from that cell
-        for (const lastEditColumn of lastEdit.columns) {
-          this.removeUnsavedStylingFromCell(lastEdit.item, lastEditColumn, lastEditCommand.row);
-        }
-      }
+    for (const cssStyleKey of this.cellCssStyleQueue) {
+      this.aureliaGrid.slickGrid.removeCellCssStyles(cssStyleKey);
     }
+    this.cellCssStyleQueue = [];
   }
 
   renderUnsavedStylingOnAllVisibleCells() {
@@ -671,12 +675,14 @@ export class Example30 {
     }
   }
 
-  renderUnsavedCellStyling(item, column, editCommand) {
+  renderUnsavedCellStyling(item: any, column: Column, editCommand: EditCommand) {
     if (editCommand && item && column) {
-      const row = this.aureliaGrid.dataView.getRowByItem(item);
+      const row = this.aureliaGrid.dataView.getRowByItem(item) as number;
       if (row >= 0) {
         const hash = { [row]: { [column.id]: 'unsaved-editable-field' } };
+        const cssStyleKey = `unsaved_highlight_${[column.id]}${row}`;
         this.aureliaGrid.slickGrid.setCellCssStyles(`unsaved_highlight_${[column.id]}${row}`, hash);
+        this.cellCssStyleQueue.push(cssStyleKey);
       }
     }
   }

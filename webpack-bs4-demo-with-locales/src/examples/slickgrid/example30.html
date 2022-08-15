@@ -1,9 +1,18 @@
 <template>
-  <h2>${title}</h2>
+  <h2>
+    ${title}
+    <span class="float-right">
+      <a style="font-size: 18px"
+         target="_blank"
+         href="https://github.com/ghiscoding/aurelia-slickgrid/blob/master/src/examples/slickgrid/example30.ts">
+        <span class="fa fa-link"></span> code
+      </a>
+    </span>
+  </h2>
   <div class="subtitle" innerhtml.bind="subTitle"></div>
 
   <div class="mb-2">
-    <div class="btn-group btn-group-sm" role="group" aria-label="Basic example">
+    <div class="btn-group btn-group-sm" role="group" aria-label="Basic Editing Commands">
       <button type="button" class="btn btn-outline-secondary" data-test="toggle-readonly-btn"
               click.delegate="toggleGridEditReadonly()">
         <i class="fa fa-table"></i> Toggle Edit/Readonly Grid
@@ -61,10 +70,10 @@
                      on-cell-change.delegate="handleOnCellChange($event.detail.eventData, $event.detail.args)"
                      on-click.delegate="handleOnCellClicked($event.detail.eventData, $event.detail.args)"
                      on-composite-editor-change.delegate="handleOnCompositeEditorChange($event.detail.eventData, $event.detail.args)"
-                     on-dbl-click.delegate="openCompositeModal($event.detail.eventData, $event.detail.args)"
                      on-item-deleted.delegate="handleItemDeleted($event.detail.eventData, $event.detail.args)"
                      on-grid-state-changed.delegate="handleOnGridStateChanged($event.detail)"
-                     on-pagination-changed.delegate="handlePaginationChanged($event.detail.eventData, $event.detail.args)"
+                     on-filter-changed.delegate="handleReRenderUnsavedStyling()"
+                     on-pagination-changed.delegate="handleReRenderUnsavedStyling()"
                      on-validation-error.delegate="handleValidationError($event.detail.eventData, $event.detail.args)">
   </aurelia-slickgrid>
 </template>
