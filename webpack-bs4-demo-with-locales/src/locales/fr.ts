@@ -30,6 +30,7 @@ export const localeFrench = {
   TEXT_INVALID_FLOAT: 'Le nombre doit être valide et avoir un maximum de {{maxDecimal}} décimales.',
   TEXT_LESS_THAN: 'Plus petit que',
   TEXT_LESS_THAN_OR_EQUAL_TO: 'Plus petit ou égal à',
+  TEXT_NO_ELEMENTS_FOUND: 'Aucun élément trouvé',
   TEXT_NOT_CONTAINS: 'Ne contient pas',
   TEXT_NOT_EQUAL_TO: 'Non égal à',
   TEXT_OK: 'Terminé',

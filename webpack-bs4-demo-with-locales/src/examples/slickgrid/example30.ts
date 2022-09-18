@@ -6,7 +6,7 @@ import { autoinject } from 'aurelia-framework';
 
 import {
   AureliaGridInstance,
-  AutocompleteOption,
+  AutocompleterOption,
   Column,
   CompositeEditorModalType,
   Editors,
@@ -258,14 +258,14 @@ export class Example30 {
         type: FieldType.object,
         sortComparer: SortComparers.objectString,
         editor: {
-          model: Editors.autoComplete,
+          model: Editors.autocompleter,
           alwaysSaveOnEnterKey: true,
           massUpdate: true,
 
           // example with a Remote API call
           editorOptions: {
             minLength: 1,
-            source: (request, response) => {
+            fetch: (searchText: string, updateCallback: (items: false | any[]) => void) => {
               // const items = require('c://TEMP/items.json');
               const products = this.mockProducts();
               response(products.filter(product => product.itemName.toLowerCase().includes(request.term.toLowerCase())));
@@ -277,11 +277,11 @@ export class Example30 {
               layout: 'fourCorners',
               templateCallback: (item: any) => this.renderItemCallbackWith4Corners(item),
             },
-          } as AutocompleteOption,
+          } as AutocompleterOption,
         },
         filter: {
           model: Filters.inputText,
-          // placeholder: '🔎︎ search city',
+          // placeholder: '🔎︎ search product',
           type: FieldType.string,
           queryField: 'product.itemName',
         }
@@ -298,7 +298,7 @@ export class Example30 {
         sortable: true,
         minWidth: 100,
         editor: {
-          model: Editors.autoComplete,
+          model: Editors.autocompleter,
           massUpdate: true,
           customStructure: { label: 'name', value: 'code' },
           collectionAsync: this.httpFetch.fetch(URL_COUNTRIES_COLLECTION),
@@ -404,7 +404,7 @@ export class Example30 {
           const prevSerializedValue = prevSerializedValues[index];
           const serializedValue = serializedValues[index];
 
-          if (prevSerializedValue !== serializedValue) {
+          if (prevSerializedValue !== serializedValue || serializedValue === '') {
             const finalColumn = Array.isArray(editCommand.prevSerializedValue) ? editorColumns[index] : column;
             this.editedItems[this.gridOptions.datasetIdPropertyName || 'id'] = item; // keep items by their row indexes, if the row got edited twice then we'll keep only the last change
             this.aureliaGrid.slickGrid.invalidate();
@@ -917,7 +917,7 @@ export class Example30 {
       </div>
       <div>
         <span class="autocomplete-top-left">
-          <span class="mdfai ${item.itemTypeName === 'I' ? 'fa-info-circle' : 'fa-copy'}"></span>
+          <span class="fa ${item.itemTypeName === 'I' ? 'fa-info-circle' : 'fa-copy'}"></span>
           ${item.itemName}
         </span>
       <div>

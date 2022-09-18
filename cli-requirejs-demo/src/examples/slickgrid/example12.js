@@ -130,7 +130,7 @@ export class Example12 {
       enableFiltering: true,
       enableTranslate: true,
       i18n: this.i18n,
-      exportOptions: {
+      textExportOptions: {
         // set at the grid option level, meaning all column will evaluate the Formatter (when it has a Formatter defined)
         exportWithFormatter: true,
         sanitizeDataExport: true
