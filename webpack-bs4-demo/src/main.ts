@@ -1,6 +1,5 @@
-import { Aurelia } from 'aurelia-framework'
-import { PLATFORM } from 'aurelia-pal';
-import { TCustomAttribute } from 'aurelia-i18n';
+import { Aurelia, PLATFORM } from 'aurelia-framework';
+import { I18N, TCustomAttribute } from 'aurelia-i18n';
 import Backend from 'i18next-xhr-backend';
 import { GridOption } from 'aurelia-slickgrid';
 
@@ -11,7 +10,6 @@ import './styles/styles.scss';
 import './styles/slickgrid-styles.scss';
 import 'multiple-select-modified/src/multiple-select.css';
 import 'multiple-select-modified/src/multiple-select.js';
-import * as environment from '../config/environment.json';
 import 'bootstrap';
 
 // if you use CSS instead of SASS
@@ -31,7 +29,7 @@ export async function configure(aurelia: Aurelia) {
   });
 
   // aurelia i18n to handle multiple locales
-  aurelia.use.plugin(PLATFORM.moduleName('aurelia-i18n'), instance => {
+  aurelia.use.plugin(PLATFORM.moduleName('aurelia-i18n'), (instance: I18N) => {
     const aliases = ['t', 'i18n'];
     // add aliases for 't' attribute
     TCustomAttribute.configureAliases(aliases);
@@ -41,13 +39,15 @@ export async function configure(aurelia: Aurelia) {
 
     return instance.setup({
       backend: {
-        loadPath: 'assets/locales/{{lng}}/{{ns}}.json',
+        loadPath: 'assets/i18n/{{lng}}/{{ns}}.json',
       },
       lng: 'en',
-      defaultNS: 'translation',
+      ns: ['aurelia-slickgrid'],
+      defaultNS: 'aurelia-slickgrid',
       attributes: aliases,
       fallbackLng: 'en',
-      debug: false
+      debug: false,
+      interpolation: { skipOnVariables: false }
     });
   });
 

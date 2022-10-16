@@ -242,7 +242,7 @@ export class Example32 {
             fetch: (searchText: string, updateCallback: (items: false | any[]) => void) => {
               // const items = require('c://TEMP/items.json');
               const products = this.mockProducts();
-              response(products.filter(product => product.itemName.toLowerCase().includes(request.term.toLowerCase())));
+              updateCallback(products.filter(product => product.itemName.toLowerCase().includes(searchText.toLowerCase())));
             },
             renderItem: {
               // layout: 'twoRows',

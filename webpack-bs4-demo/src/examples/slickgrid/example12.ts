@@ -2,6 +2,7 @@ import { ExcelExportService } from '@slickgrid-universal/excel-export';
 import { TextExportService } from '@slickgrid-universal/text-export';
 import { autoinject } from 'aurelia-framework';
 import { I18N } from 'aurelia-i18n';
+import { TOptions as I18NOptions } from 'i18next';
 
 import {
   AureliaGridInstance,
@@ -24,7 +25,7 @@ const taskTranslateFormatter: Formatter = (row, cell, value, columnDef, dataCont
   const gridOptions: GridOption = (grid && typeof grid.getOptions === 'function') ? grid.getOptions() : {};
   const i18n = gridOptions.i18n;
 
-  return i18n && i18n.tr && i18n.tr('TASK_X', { x: value });
+  return i18n?.tr('TASK_X', { x: value } as I18NOptions) ?? '';
 };
 
 @autoinject()

@@ -8,7 +8,6 @@ import {
   Formatter,
   Formatters,
   GridOption,
-  JQueryUiSliderOption,
   Metrics,
   MultipleSelectOption,
   OperatorType,
