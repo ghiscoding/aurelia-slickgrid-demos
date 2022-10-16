@@ -1,6 +1,6 @@
 import { ExcelExportService } from '@slickgrid-universal/excel-export';
 import { TextExportService } from '@slickgrid-universal/text-export';
-import { Aggregators, FieldType, Formatters, GroupTotalFormatters, SortDirectionNumber, Sorters } from 'aurelia-slickgrid';
+import { Aggregators, FieldType, Formatters, GroupTotalFormatters, SortDirectionNumber, SortComparers } from 'aurelia-slickgrid';
 
 export class Example13 {
   title = 'Example 13: Grouping & Aggregators';
@@ -163,7 +163,7 @@ export class Example13 {
         return `Duration:  ${g.value} <span style="color:green">(${g.count} items)</span>`;
       },
       comparer: (a, b) => {
-        return Sorters.numeric(a.value, b.value, SortDirectionNumber.asc);
+        return SortComparers.numeric(a.value, b.value, SortDirectionNumber.asc);
       },
       aggregators: [
         new Aggregators.Avg('percentComplete'),
