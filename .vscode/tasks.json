@@ -31,7 +31,7 @@
     {
       "label": "Start Client-CLI with RequireJS",
       "type": "shell",
-      "command": "au run --watch",
+      "command": "npm run start",
       "options": {
         "cwd": "${workspaceFolder}/cli-requirejs-demo",
       },
