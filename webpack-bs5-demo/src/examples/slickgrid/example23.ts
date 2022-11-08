@@ -1,20 +1,27 @@
 import { autoinject } from 'aurelia-framework';
 import { I18N } from 'aurelia-i18n';
 import { TOptions as I18NOptions } from 'i18next';
-import { CustomInputFilter } from './custom-inputFilter';
+import * as moment from 'moment-mini';
+import { SlickCustomTooltip } from '@slickgrid-universal/custom-tooltip-plugin';
+import { ExcelExportService } from '@slickgrid-universal/excel-export';
 import {
   AureliaGridInstance,
   Column,
+  CurrentFilter,
   FieldType,
   Filters,
   Formatter,
   Formatters,
   GridOption,
+  GridStateChange,
   Metrics,
   MultipleSelectOption,
   OperatorType,
+  SlickGrid,
+  SliderRangeOption,
 } from 'aurelia-slickgrid';
-import * as moment from 'moment-mini';
+
+import { CustomInputFilter } from './custom-inputFilter';
 
 const NB_ITEMS = 1500;
 
@@ -23,8 +30,8 @@ function randomBetween(min: number, max: number): number {
 }
 
 // create a custom translate Formatter (typically you would move that a separate file, for separation of concerns)
-const taskTranslateFormatter: Formatter = (row, cell, value, columnDef, dataContext, grid) => {
-  const gridOptions: GridOption = (grid && typeof grid.getOptions === 'function') ? grid.getOptions() : {};
+const taskTranslateFormatter: Formatter = (_row, _cell, value, _columnDef, _dataContext, grid: SlickGrid) => {
+  const gridOptions = (grid && typeof grid.getOptions === 'function') ? grid.getOptions() : {};
   const i18n = gridOptions.i18n;
 
   return i18n?.tr('TASK_X', { x: value } as I18NOptions) ?? '';
@@ -52,18 +59,18 @@ export class Example23 {
     </ul>
   `;
 
-  aureliaGrid: AureliaGridInstance;
-  columnDefinitions: Column[];
-  gridOptions: GridOption;
-  dataset: any[];
+  aureliaGrid!: AureliaGridInstance;
+  columnDefinitions: Column[] = [];
+  gridOptions!: GridOption;
+  dataset: any[] = [];
   selectedLanguage: string;
-  metrics: Metrics;
+  metrics!: Metrics;
   filterList = [
     { value: '', label: '' },
     { value: 'currentYearTasks', label: 'Current Year Completed Tasks' },
     { value: 'nextYearTasks', label: 'Next Year Active Tasks' }
   ];
-  selectedPredefinedFilter: string;
+  selectedPredefinedFilter = '';
 
   constructor(private i18n: I18N) {
     // define the grid options & columns and then create the grid itself
@@ -105,15 +112,18 @@ export class Example23 {
       {
         id: 'percentComplete', name: '% Complete', field: 'percentComplete', nameKey: 'PERCENT_COMPLETE', minWidth: 120,
         sortable: true,
+        customTooltip: { position: 'center' },
         formatter: Formatters.progressBar,
         type: FieldType.number,
         filterable: true,
         filter: {
-          model: Filters.slider,
+          model: Filters.sliderRange,
           maxValue: 100, // or you can use the filterOptions as well
-          operator: OperatorType.rangeInclusive, // defaults to exclusive
-          params: { hideSliderNumbers: false }, // you can hide/show the slider numbers on both side
-          filterOptions: { min: 0, step: 5 }
+          operator: OperatorType.rangeInclusive, // defaults to inclusive
+          filterOptions: {
+            hideSliderNumbers: false, // you can hide/show the slider numbers on both side
+            min: 0, step: 5
+          } as SliderRangeOption
         }
       },
       {
@@ -181,11 +191,12 @@ export class Example23 {
           { columnId: 'percentComplete', direction: 'DESC' },
           { columnId: 'duration', direction: 'ASC' },
         ],
-      }
+      },
+      registerExternalResources: [new SlickCustomTooltip(), new ExcelExportService()],
     };
   }
 
-  mockData(itemCount, startingIndex = 0): any[] {
+  mockData(itemCount: number, startingIndex = 0): any[] {
     // mock a dataset
     const tempDataset = [];
     for (let i = startingIndex; i < (startingIndex + itemCount); i++) {
@@ -217,7 +228,7 @@ export class Example23 {
   }
 
   /** Dispatched event of a Grid State Changed event */
-  gridStateChanged(gridState) {
+  gridStateChanged(gridState: GridStateChange) {
     console.log('Client sample, Grid State changed:: ', gridState);
   }
 
@@ -226,7 +237,7 @@ export class Example23 {
     console.log('Client sample, current Grid State:: ', this.aureliaGrid.gridStateService.getCurrentGridState());
   }
 
-  refreshMetrics(e, args) {
+  refreshMetrics(_e: Event, args: any) {
     if (args && args.current >= 0) {
       setTimeout(() => {
         this.metrics = {
@@ -258,13 +269,14 @@ export class Example23 {
     ]);
   }
 
-  switchLanguage() {
-    const nextLocale = (this.selectedLanguage === 'en') ? 'fr' : 'en';
-    this.i18n.setLocale(nextLocale).then(() => this.selectedLanguage = nextLocale);
+  async switchLanguage() {
+    const nextLanguage = (this.selectedLanguage === 'en') ? 'fr' : 'en';
+    await this.i18n.setLocale(nextLanguage);
+    this.selectedLanguage = nextLanguage;
   }
 
-  predefinedFilterChanged(newPredefinedFilter) {
-    let filters = [];
+  predefinedFilterChanged(newPredefinedFilter: string) {
+    let filters: CurrentFilter[] = [];
     const currentYear = moment().year();
 
     switch (newPredefinedFilter) {

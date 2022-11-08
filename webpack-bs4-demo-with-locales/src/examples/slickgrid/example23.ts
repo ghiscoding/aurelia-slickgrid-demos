@@ -1,18 +1,21 @@
 import { autoinject } from 'aurelia-framework';
-import { CustomInputFilter } from './custom-inputFilter';
+import { SlickCustomTooltip } from '@slickgrid-universal/custom-tooltip-plugin';
+import { ExcelExportService } from '@slickgrid-universal/excel-export';
 import {
   AureliaGridInstance,
   Column,
   FieldType,
   Filters,
-  Formatter,
   Formatters,
   GridOption,
   Metrics,
   MultipleSelectOption,
   OperatorType,
+  SliderRangeOption,
 } from 'aurelia-slickgrid';
 import * as moment from 'moment-mini';
+
+import { CustomInputFilter } from './custom-inputFilter';
 
 const NB_ITEMS = 1500;
 
@@ -86,17 +89,20 @@ export class Example23 {
         }
       },
       {
-        id: 'percentComplete', name: '% Complete', field: 'percentComplete', minWidth: 120,
+        id: 'percentComplete', name: '% Complete', field: 'percentComplete', nameKey: 'PERCENT_COMPLETE', minWidth: 120,
         sortable: true,
+        customTooltip: { position: 'center' },
         formatter: Formatters.progressBar,
         type: FieldType.number,
         filterable: true,
         filter: {
-          model: Filters.slider,
+          model: Filters.sliderRange,
           maxValue: 100, // or you can use the filterOptions as well
-          operator: OperatorType.rangeInclusive, // defaults to exclusive
-          params: { hideSliderNumbers: false }, // you can hide/show the slider numbers on both side
-          filterOptions: { min: 0, step: 5 }
+          operator: OperatorType.rangeInclusive, // defaults to inclusive
+          filterOptions: {
+            hideSliderNumbers: false, // you can hide/show the slider numbers on both side
+            min: 0, step: 5
+          } as SliderRangeOption
         }
       },
       {
@@ -162,7 +168,8 @@ export class Example23 {
           { columnId: 'percentComplete', direction: 'DESC' },
           { columnId: 'duration', direction: 'ASC' },
         ],
-      }
+      },
+      registerExternalResources: [new SlickCustomTooltip(), new ExcelExportService()],
     };
   }
 
