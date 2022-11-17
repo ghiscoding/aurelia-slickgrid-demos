@@ -39,11 +39,10 @@ export async function configure(aurelia: Aurelia) {
 
     return instance.setup({
       backend: {
-        loadPath: 'assets/i18n/{{lng}}/{{ns}}.json',
+        loadPath: 'assets/locales/{{lng}}/{{ns}}.json',
       },
       lng: 'en',
-      ns: ['aurelia-slickgrid'],
-      defaultNS: 'aurelia-slickgrid',
+      defaultNS: 'translation',
       attributes: aliases,
       fallbackLng: 'en',
       debug: false,
