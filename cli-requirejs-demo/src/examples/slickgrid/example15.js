@@ -55,7 +55,7 @@ export class Example15 {
 
   /** Clear the Grid State from Local Storage and reset the grid to it's original state */
   clearGridStateFromLocalStorage() {
-    localStorage[LOCAL_STORAGE_KEY] = null;
+    localStorage.removeItem(LOCAL_STORAGE_KEY);
     this.aureliaGrid.gridService.resetGrid(this.columnDefinitions);
   }
 
