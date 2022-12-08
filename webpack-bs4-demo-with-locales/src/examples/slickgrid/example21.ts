@@ -7,11 +7,12 @@ import {
   GridOption,
   OperatorString,
 } from 'aurelia-slickgrid';
+import './example21.scss';
 
 export class Example21 {
-  @bindable() selectedColumn: any;
-  @bindable() selectedOperator: string;
-  @bindable() searchValue: string;
+  @bindable() selectedColumn!: Column;
+  @bindable() selectedOperator!: string;
+  @bindable() searchValue = '';
   title = 'Example 21: Grid AutoHeight';
   subTitle = `
   The SlickGrid option "autoHeight" can be used if you wish to keep the full height of the grid without any scrolling
@@ -22,10 +23,10 @@ export class Example21 {
   </ul>
   `;
 
-  aureliaGrid: AureliaGridInstance;
-  columnDefinitions: Column[];
-  gridOptions: GridOption;
-  dataset: any[];
+  aureliaGrid!: AureliaGridInstance;
+  columnDefinitions: Column[] = [];
+  gridOptions!: GridOption;
+  dataset: any[] = [];
   operatorList: OperatorString[] = ['=', '<', '<=', '>', '>=', '<>', 'StartsWith', 'EndsWith'];
 
   constructor() {
@@ -43,38 +44,36 @@ export class Example21 {
     this.columnDefinitions = [
       {
         id: 'title', name: 'Title', field: 'title',
-        width: 100,
-        sortable: true,
+        width: 100, sortable: true,
         type: FieldType.string
       },
       {
         id: 'duration', name: 'Duration (days)', field: 'duration',
-        width: 100,
-        sortable: true,
+        width: 100, sortable: true,
         type: FieldType.number
       },
       {
         id: 'complete', name: '% Complete', field: 'percentComplete',
-        width: 100,
+        width: 100, sortable: true,
         formatter: Formatters.percentCompleteBar,
         type: FieldType.number
       },
       {
         id: 'start', name: 'Start', field: 'start',
-        width: 100,
+        width: 100, sortable: true,
         formatter: Formatters.dateIso,
-        sortable: true,
+
         type: FieldType.date
       },
       {
         id: 'finish', name: 'Finish', field: 'finish',
-        width: 100,
-        formatter: Formatters.dateIso, sortable: true,
+        width: 100, sortable: true,
+        formatter: Formatters.dateIso,
         type: FieldType.date
       },
       {
         id: 'effort-driven', name: 'Effort Driven', field: 'effortDriven',
-        width: 100,
+        width: 100, sortable: true,
         formatter: Formatters.checkmark,
         type: FieldType.number
       }
@@ -96,7 +95,6 @@ export class Example21 {
       enableFiltering: true,
       showHeaderRow: false, // hide the filter row (header row)
 
-      enableGridMenu: false, // disable grid menu & remove vertical scroll
       alwaysShowVerticalScroll: false,
       enableColumnPicker: true,
       enableCellNavigation: true,
@@ -139,7 +137,7 @@ export class Example21 {
   // -- if any of the Search form input changes, we'll call the updateFilter() method
   //
 
-  cleargridSearchInput() {
+  clearGridSearchInput() {
     this.searchValue = '';
     this.updateFilter();
   }
@@ -158,7 +156,7 @@ export class Example21 {
 
   updateFilter() {
     this.aureliaGrid?.filterService.updateSingleFilter({
-      columnId: `${(this.selectedColumn as Column).id || ''}`,
+      columnId: `${this.selectedColumn.id || ''}`,
       operator: this.selectedOperator as OperatorString,
       searchTerms: [this.searchValue || '']
     });
