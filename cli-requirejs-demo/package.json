@@ -8,13 +8,13 @@
     "plugin",
     "slickgrid"
   ],
-  "homepage": "https://github.com/slickclub/aurelia-slickgrid",
+  "homepage": "https://github.com/slickgrid-stellar/aurelia-slickgrid",
   "bugs": {
-    "url": "https://github.com/slickclub/aurelia-slickgrid/issues"
+    "url": "https://github.com/slickgrid-stellar/aurelia-slickgrid/issues"
   },
   "repository": {
     "type": "git",
-    "url": "http://github.com/slickclub/aurelia-slickgrid"
+    "url": "http://github.com/slickgrid-stellar/aurelia-slickgrid"
   },
   "scripts": {
     "build": "au build --env prod",

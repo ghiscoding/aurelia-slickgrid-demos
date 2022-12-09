@@ -3,7 +3,7 @@ import { FieldType, Formatters } from 'aurelia-slickgrid';
 export class Example2 {
   title = 'Example 10: Grid with Row Selection';
   subTitle = `
-    Row selection, single or multi-select (<a href="https://github.com/slickclub/aurelia-slickgrid/wiki/Row-Selection" target="_blank">Wiki docs</a>).
+    Row selection, single or multi-select (<a href="https://github.com/slickgrid-stellar/aurelia-slickgrid/wiki/Row-Selection" target="_blank">Wiki docs</a>).
     <ul>
       <li>Single Select, you can click on any cell to make the row active</li>
       <li>Multiple Selections, you need to specifically click on the checkbox to make 1 or more selections</li>

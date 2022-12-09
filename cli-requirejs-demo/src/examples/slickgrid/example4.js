@@ -13,7 +13,7 @@ const URL_SAMPLE_COLLECTION_DATA = 'assets/data/collection_500_numbers.json';
 export class Example4 {
   title = 'Example 4: Client Side Sort/Filter';
   subTitle = `
-  Sort/Filter on client side only using SlickGrid DataView (<a href="https://github.com/slickclub/aurelia-slickgrid/wiki/Sorting" target="_blank">Wiki docs</a>)
+  Sort/Filter on client side only using SlickGrid DataView (<a href="https://github.com/slickgrid-stellar/aurelia-slickgrid/wiki/Sorting" target="_blank">Wiki docs</a>)
   <br/>
   <ul class="small">
     <li>Support multi-sort (by default), hold "Shift" key and click on the next column to sort.</li>
@@ -27,7 +27,7 @@ export class Example4 {
       <li>FieldType of dateUtc/date (from dataset) can use an extra option of "filterSearchType" to let user filter more easily. For example, in the "UTC Date" field below, you can type "&gt;02/28/2017", also when dealing with UTC you have to take the time difference in consideration.</li>
     </ul>
     <li>On String filters, (*) can be used as startsWith (Hello* => matches "Hello Word") ... endsWith (*Doe => matches: "John Doe")</li>
-    <li>Custom Filter are now possible, "Description" column below, is a customized InputFilter with different placeholder. See <a href="https://github.com/slickclub/aurelia-slickgrid/wiki/Custom-Filter" target="_blank">Wiki - Custom Filter</a></li>
+    <li>Custom Filter are now possible, "Description" column below, is a customized InputFilter with different placeholder. See <a href="https://github.com/slickgrid-stellar/aurelia-slickgrid/wiki/Custom-Filter" target="_blank">Wiki - Custom Filter</a></li>
   </ul>
 `;
 

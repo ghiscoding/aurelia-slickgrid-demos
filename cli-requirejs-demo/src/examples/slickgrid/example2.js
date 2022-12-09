@@ -7,7 +7,7 @@ const myCustomCheckmarkFormatter = (row, cell, value, columnDef, dataContext) =>
 export class Example2 {
   title = 'Example 2: Formatters';
   subTitle = `
-    Grid with Custom and/or included Slickgrid Formatters (<a href="https://github.com/slickclub/aurelia-slickgrid/wiki/Formatters" target="_blank">Wiki docs</a>).
+    Grid with Custom and/or included Slickgrid Formatters (<a href="https://github.com/slickgrid-stellar/aurelia-slickgrid/wiki/Formatters" target="_blank">Wiki docs</a>).
     <ul>
       <li>Last column is a Custom Formatter</li>
       <li>
