@@ -31,9 +31,9 @@ export class Example12 {
   title = 'Example 12: Localization with Single Custom Locales';
   subTitle = `This Examples uses French Locales but you could use your own custom locales
     <ul>
-      <li>Defining your own Custom Locales must include all necessary text, see the default (<a href="https://github.com/slickgrid-stellar/aurelia-slickgrid-demos/blob/master/webpack-bs4-demo-with-locales/src/locales/en.ts" target="_blank">English Custom Locales</a>)</li>
-      <li>Support Custom Locales (through the "locales" grid option), following these steps (<a href="https://github.com/slickgrid-stellar/aurelia-slickgrid/wiki/Localization-with-Custom-Locales" target="_blank">Wiki docs</a>)</li>
-      <li>For more info about "Download to File", read the <a href=https://github.com/slickgrid-stellar/aurelia-slickgrid/wiki/Export-to-File" target="_blank">Wiki page</a></li>
+      <li>Defining your own Custom Locales must include all necessary text, see the default (<a href="https://github.com/ghiscoding/aurelia-slickgrid-demos/blob/master/webpack-bs4-demo-with-locales/src/locales/en.ts" target="_blank">English Custom Locales</a>)</li>
+      <li>Support Custom Locales (through the "locales" grid option), following these steps (<a href="https://github.com/ghiscoding/aurelia-slickgrid/wiki/Localization-with-Custom-Locales" target="_blank">Wiki docs</a>)</li>
+      <li>For more info about "Download to File", read the <a href=https://github.com/ghiscoding/aurelia-slickgrid/wiki/Export-to-File" target="_blank">Wiki page</a></li>
     </ul>`;
 
   aureliaGrid: AureliaGridInstance;
