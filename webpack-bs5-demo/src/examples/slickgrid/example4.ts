@@ -1,3 +1,4 @@
+import { ExcelExportService } from '@slickgrid-universal/excel-export';
 import { HttpClient as FetchClient } from 'aurelia-fetch-client';
 import { HttpClient } from 'aurelia-http-client';
 import { autoinject } from 'aurelia-framework';
@@ -220,7 +221,8 @@ export class Example4 {
           { columnId: 'duration', direction: 'DESC' },
           { columnId: 'complete', direction: 'ASC' }
         ],
-      }
+      },
+      registerExternalResources: [new ExcelExportService()],
     };
   }
 
