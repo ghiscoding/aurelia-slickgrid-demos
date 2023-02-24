@@ -1229,10 +1229,10 @@
   dependencies:
     dompurify "^3.0.0"
 
-"@slickgrid-universal/common@~2.6.0":
-  version "2.6.0"
-  resolved "https://registry.yarnpkg.com/@slickgrid-universal/common/-/common-2.6.0.tgz#ff783c6d13260d4bb8929dad584bcafdf6fcea61"
-  integrity sha512-m4cWlwAxhSEzRg5wkhbuN+IJQ0f/fjp5eK/OR47OoswmOdJB17uoWD4i/InOa63x5bRKNRzHtuTeF7N/L6ixWQ==
+"@slickgrid-universal/common@~2.6.1":
+  version "2.6.1"
+  resolved "https://registry.yarnpkg.com/@slickgrid-universal/common/-/common-2.6.1.tgz#35f8e2c8b6f1639612e1229bfc081925691c1c49"
+  integrity sha512-yhDUzSjB404TZykhf8gZ/rEnFwPqNvTM5nkvwvudfuiY9lMk3ROFJ2RLXr9uxyA9KMmq9tMrrXw5Qk5BwCBkRw==
   dependencies:
     "@slickgrid-universal/event-pub-sub" "~2.6.0"
     "@slickgrid-universal/utils" "~2.6.0"
@@ -1247,21 +1247,21 @@
     sortablejs "^1.15.0"
     un-flatten-tree "^2.0.12"
 
-"@slickgrid-universal/custom-footer-component@~2.6.0":
-  version "2.6.0"
-  resolved "https://registry.yarnpkg.com/@slickgrid-universal/custom-footer-component/-/custom-footer-component-2.6.0.tgz#3a1b744a5b34bcf14388e7577f3a532e1e5b7ee3"
-  integrity sha512-Pz53Zc10B1DIekHF8Yro2Q4JuWDzvLENqofPe0XEkhXbGp/dyW4AIlda8sJS8HSMZAPNMXyT3sv0A5hg7x/BkQ==
+"@slickgrid-universal/custom-footer-component@~2.6.1":
+  version "2.6.1"
+  resolved "https://registry.yarnpkg.com/@slickgrid-universal/custom-footer-component/-/custom-footer-component-2.6.1.tgz#04d980d6e4ed067a17fac751a54c1e4444cfba42"
+  integrity sha512-CKSDVlgSVrpA39hRVexxFjtRM3uUnt5uUs/iuNVMDReEu9r+atmBTG3Wbd+PTXmZh/Uohl4VCYNEY+8AQZpBBA==
   dependencies:
     "@slickgrid-universal/binding" "~2.6.0"
-    "@slickgrid-universal/common" "~2.6.0"
+    "@slickgrid-universal/common" "~2.6.1"
     moment-mini "^2.29.4"
 
-"@slickgrid-universal/empty-warning-component@~2.6.0":
-  version "2.6.0"
-  resolved "https://registry.yarnpkg.com/@slickgrid-universal/empty-warning-component/-/empty-warning-component-2.6.0.tgz#c168eccee62337a29dfb12a0aaac0a7fe9752b65"
-  integrity sha512-I5C81tP0ji+QLNXK5mgjDVUVql52b19Ruen6WW4VyO1DCTKBRjRf8P8EiRwKOQkipent6LvbTnHoLfmyqHpgAA==
+"@slickgrid-universal/empty-warning-component@~2.6.1":
+  version "2.6.1"
+  resolved "https://registry.yarnpkg.com/@slickgrid-universal/empty-warning-component/-/empty-warning-component-2.6.1.tgz#e33fe552a1b726d85442ee70a364f8b2ca405ae2"
+  integrity sha512-mcYCyCeal15IS/vZn6FYLajdkxn5Ahmk5o+ETecuTcSC19vWsumhrBTk2EB2X7LXrKbOAjgZ/e+l6Jz0gQromw==
   dependencies:
-    "@slickgrid-universal/common" "~2.6.0"
+    "@slickgrid-universal/common" "~2.6.1"
 
 "@slickgrid-universal/event-pub-sub@~2.6.0":
   version "2.6.0"
@@ -1270,53 +1270,53 @@
   dependencies:
     "@slickgrid-universal/utils" "~2.6.0"
 
-"@slickgrid-universal/excel-export@^2.6.0":
-  version "2.6.0"
-  resolved "https://registry.yarnpkg.com/@slickgrid-universal/excel-export/-/excel-export-2.6.0.tgz#bfe95435083d559c154f9c69c5156908080c0f00"
-  integrity sha512-RS+qeDyFtWHelrQpWfgIyjxHDb9rq9n1BgQkMDwxrJ69U+5TYB7bJgdyJ3ysam/JNe75PyicL6SobNu+vnBLAQ==
+"@slickgrid-universal/excel-export@^2.6.1":
+  version "2.6.1"
+  resolved "https://registry.yarnpkg.com/@slickgrid-universal/excel-export/-/excel-export-2.6.1.tgz#5d796117c2eea02d8b955da19731ab72c1c9b3bc"
+  integrity sha512-08iChTH3UFI7vzL7HF3yNnyXK0xOLjpT8Sj4uusrJ0F3kxV1h1JaZB6MQjKdLLEj8r9ieA9MsHu2QdTiabQv7A==
   dependencies:
-    "@slickgrid-universal/common" "~2.6.0"
+    "@slickgrid-universal/common" "~2.6.1"
     "@slickgrid-universal/utils" "~2.6.0"
     excel-builder-webpacker "^2.1.8"
     moment-mini "^2.29.4"
 
-"@slickgrid-universal/graphql@^2.6.0":
-  version "2.6.0"
-  resolved "https://registry.yarnpkg.com/@slickgrid-universal/graphql/-/graphql-2.6.0.tgz#2d51cce7314db59900bfef5a61df25d674ffed91"
-  integrity sha512-fiTGppkw4k+P9TJ1/a/p4q4pUQUSPdKabuD2QzoxggAUtaUFcTvWYamFmlRMSIc9u9wcQvVitRwpuep6iAp5bw==
+"@slickgrid-universal/graphql@^2.6.1":
+  version "2.6.1"
+  resolved "https://registry.yarnpkg.com/@slickgrid-universal/graphql/-/graphql-2.6.1.tgz#1cfff07a2740156fbf669bfd5387bcd3a479750e"
+  integrity sha512-7IsYf8hqafO7g7cUuDMiIK2rqUnJtANiSui8iJSwQmOTfuHen+2XA6XdRQVFSoULpNdzafXM/zXTzClm0oHGFQ==
   dependencies:
-    "@slickgrid-universal/common" "~2.6.0"
+    "@slickgrid-universal/common" "~2.6.1"
 
-"@slickgrid-universal/odata@^2.6.0":
-  version "2.6.0"
-  resolved "https://registry.yarnpkg.com/@slickgrid-universal/odata/-/odata-2.6.0.tgz#d8afe06ab9e7c642747eeb57632251d00bbc0cff"
-  integrity sha512-U9HPfjJzRuYpuwRJEILrIphSBFiww1DmNyut9gRp0HMLZf96+xBVEStmWYckH3QkPhmP0QevdxpBUeZGNUeQfg==
+"@slickgrid-universal/odata@^2.6.1":
+  version "2.6.1"
+  resolved "https://registry.yarnpkg.com/@slickgrid-universal/odata/-/odata-2.6.1.tgz#b0bf0ec41242ff0fbd86c11c3df79ee8c8a56383"
+  integrity sha512-ERXck89qP64qcNdE2EG+5mX8PbHpt5I1AmXNS/d9mK3hdbHgQRcdYQxmwQUsIYatwQjqXVNaEjjSvr69LFPKdw==
   dependencies:
-    "@slickgrid-universal/common" "~2.6.0"
+    "@slickgrid-universal/common" "~2.6.1"
     "@slickgrid-universal/utils" "~2.6.0"
 
-"@slickgrid-universal/pagination-component@~2.6.0":
-  version "2.6.0"
-  resolved "https://registry.yarnpkg.com/@slickgrid-universal/pagination-component/-/pagination-component-2.6.0.tgz#cd5bd1195828a390cdf88e027712b0352759e0f1"
-  integrity sha512-iC63hhSU95ywqMCLW0/APoANlO4HrlkCizbBQh1Zn+q6bptBRXQON8QnHl8e05LcEbnHztHjzl35vynCQidNRA==
+"@slickgrid-universal/pagination-component@~2.6.1":
+  version "2.6.1"
+  resolved "https://registry.yarnpkg.com/@slickgrid-universal/pagination-component/-/pagination-component-2.6.1.tgz#2953bae4b0bb63e9cb07f188cb2a321e85d0d572"
+  integrity sha512-6DVbpjL9KDEevWGPtLuUch7hRP0lQgYKiyrFUd1qaSdc4Wkz+Zmh2vzcV8C60XA3r8cK+u880f6dFjrSjB0hOA==
   dependencies:
     "@slickgrid-universal/binding" "~2.6.0"
-    "@slickgrid-universal/common" "~2.6.0"
+    "@slickgrid-universal/common" "~2.6.1"
 
-"@slickgrid-universal/row-detail-view-plugin@~2.6.0":
-  version "2.6.0"
-  resolved "https://registry.yarnpkg.com/@slickgrid-universal/row-detail-view-plugin/-/row-detail-view-plugin-2.6.0.tgz#f62c8b1b09b12121e06f733db38fe6bbef5260cb"
-  integrity sha512-sPsAmr00krTGPE4OuaSO9ViyI+ErljOMbHqet7KC4D3LDI929nna+1ytyoxbCQahSRwhBR88gzU0BHl985Uuzw==
+"@slickgrid-universal/row-detail-view-plugin@~2.6.1":
+  version "2.6.1"
+  resolved "https://registry.yarnpkg.com/@slickgrid-universal/row-detail-view-plugin/-/row-detail-view-plugin-2.6.1.tgz#ef01dc612e7ccd3a94c782762e3dfc5727ea52b0"
+  integrity sha512-7Duj42OZRm1JsCXIH0tlv0YSg5Cpy954BhIvhFJlbALE3kCTlzAkpc5wzZsoybX8tf56S9DzuQxT18iZysDq8Q==
   dependencies:
-    "@slickgrid-universal/common" "~2.6.0"
+    "@slickgrid-universal/common" "~2.6.1"
     "@slickgrid-universal/utils" "~2.6.0"
 
-"@slickgrid-universal/text-export@^2.6.0":
-  version "2.6.0"
-  resolved "https://registry.yarnpkg.com/@slickgrid-universal/text-export/-/text-export-2.6.0.tgz#51a8b8ce6fbed2b78edd0f434175924eeb5313a3"
-  integrity sha512-mADoqT7u+DDHLf9quxDaaWg+UvuxW0zR3dn1slbDMixEfksccWnENKB84GVaXNBQg+v/uYTWUGuEEyD2geTcJg==
+"@slickgrid-universal/text-export@^2.6.1":
+  version "2.6.1"
+  resolved "https://registry.yarnpkg.com/@slickgrid-universal/text-export/-/text-export-2.6.1.tgz#23b7ecf29da5bfb1397e6188fd79dc4d43002053"
+  integrity sha512-wMR29KbBghIpp+nN+f4cZEpOafKNYaXEFau2vYYupw5HC9kYlfPwWMvYnACzqCLLQTStwtX7msmxlxaQXGp1gA==
   dependencies:
-    "@slickgrid-universal/common" "~2.6.0"
+    "@slickgrid-universal/common" "~2.6.1"
     "@slickgrid-universal/utils" "~2.6.0"
     text-encoding-utf-8 "^1.0.2"
 
@@ -2000,17 +2000,17 @@ aurelia-router@^1.7.1:
     aurelia-path "^1.0.0"
     aurelia-route-recognizer "^1.3.2"
 
-aurelia-slickgrid@^5.6.0:
-  version "5.6.0"
-  resolved "https://registry.yarnpkg.com/aurelia-slickgrid/-/aurelia-slickgrid-5.6.0.tgz#72a20d0bc0cd37c2688d0707d2bcb8c8a5d9a5f3"
-  integrity sha512-G5g6aa5YgvOPQufOx5eWmXVFJxMfGvrvB9n+yuP49uiVf1FOt4HuZ2RRSJGTUGDPgSyue3RZjp2sxS1TgSi37Q==
+aurelia-slickgrid@^5.6.1:
+  version "5.6.1"
+  resolved "https://registry.yarnpkg.com/aurelia-slickgrid/-/aurelia-slickgrid-5.6.1.tgz#333f6559ebcfcfea59783968fef31b671dee0cdd"
+  integrity sha512-zQuQOgqZond0C4PG78G9U23922ZVezkooDf8QttXidW+ip0lGLQprjgjW9P8kNe3OMUblot2ZrloKfAFccrNiA==
   dependencies:
-    "@slickgrid-universal/common" "~2.6.0"
-    "@slickgrid-universal/custom-footer-component" "~2.6.0"
-    "@slickgrid-universal/empty-warning-component" "~2.6.0"
+    "@slickgrid-universal/common" "~2.6.1"
+    "@slickgrid-universal/custom-footer-component" "~2.6.1"
+    "@slickgrid-universal/empty-warning-component" "~2.6.1"
     "@slickgrid-universal/event-pub-sub" "~2.6.0"
-    "@slickgrid-universal/pagination-component" "~2.6.0"
-    "@slickgrid-universal/row-detail-view-plugin" "~2.6.0"
+    "@slickgrid-universal/pagination-component" "~2.6.1"
+    "@slickgrid-universal/row-detail-view-plugin" "~2.6.1"
     aurelia-event-aggregator "^1.0.3"
     aurelia-framework "^1.4.1"
     aurelia-i18n "^4.0.3"
