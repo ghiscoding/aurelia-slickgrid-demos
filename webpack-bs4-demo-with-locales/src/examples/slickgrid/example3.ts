@@ -279,8 +279,8 @@ export class Example3 {
             fetch: (searchText: string, updateCallback: (items: false | any[]) => void) => {
               /** with FETCH, note this demo won't work because of CORS */
               // this.httpFetch.fetch(`http://gd.geobytes.com/AutoCompleteCity?q=${searchText}`)
-              //   .then(response => response.json())
-              //   .then(data => updateCallback(data))
+              //   .then(response => updateCallback())
+              //   .then(data => response(data))
               //   .catch(error => console.log('fetch error:', error));
 
               /** with jQuery AJAX will work locally but not on the GitHub demo because of CORS */
