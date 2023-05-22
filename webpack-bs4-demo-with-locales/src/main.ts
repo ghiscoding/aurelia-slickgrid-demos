@@ -7,8 +7,6 @@ import 'font-awesome/css/font-awesome.css';
 import 'flatpickr/dist/flatpickr.min.css';
 import './styles/styles.scss';
 import './styles/slickgrid-styles.scss';
-import 'multiple-select-modified/src/multiple-select.css';
-import 'multiple-select-modified/src/multiple-select.js';
 import * as environment from '../config/environment.json';
 import 'bootstrap';
 import { localeFrench } from 'locales/fr';

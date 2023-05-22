@@ -75,7 +75,7 @@ export class Example12 {
         id: 'duration', name: 'Duration (days)', field: 'duration', nameKey: 'DURATION', sortable: true,
         formatter: Formatters.percentCompleteBar, minWidth: 100,
         filterable: true,
-        filter: { model: Filters.slider, /* operator: '>=',*/ params: { hideSliderNumber: true } }
+        filter: { model: Filters.slider, /* operator: '>=',*/ filterOptions: { hideSliderNumber: true } }
       },
       {
         id: 'start', name: 'Start', field: 'start', nameKey: 'START',

@@ -3,7 +3,6 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const { AureliaPlugin, ModuleDependenciesPlugin } = require('aurelia-webpack-plugin');
-const { ProvidePlugin } = require('webpack');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
 
@@ -28,7 +27,6 @@ module.exports = ({ production } = {}, { analyze, server, tests } = {}) => ({
     // out-of-date dependencies on 3rd party aurelia plugins
     alias: {
       'aurelia-binding': path.resolve(__dirname, 'node_modules/aurelia-binding'),
-      'jquery': path.join(__dirname, 'node_modules/jquery/dist/jquery'),
       moment$: 'moment/moment.js'
     },
     fallback: {
@@ -41,7 +39,6 @@ module.exports = ({ production } = {}, { analyze, server, tests } = {}) => ({
   },
   entry: {
     app: ['aurelia-bootstrapper'],
-    vendor: ['jquery']
   },
   mode: production ? 'production' : 'development',
   output: {
@@ -94,12 +91,6 @@ module.exports = ({ production } = {}, { analyze, server, tests } = {}) => ({
       // aureliaApp: 'main',
       // aureliaConfig: ['basic'],
       // includeAll: 'src'
-    }),
-    new ProvidePlugin({
-      '$': 'jquery',
-      'jQuery': 'jquery',
-      'window.jQuery': 'jquery',
-      'window.$': 'jquery'
     }),
     new ModuleDependenciesPlugin({
       'aurelia-testing': ['./compile-spy', './view-spy']

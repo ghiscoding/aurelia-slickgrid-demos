@@ -88,14 +88,6 @@
           },
           "text",
           {
-            "name": "multiple-select-modified",
-            "path": "../node_modules/multiple-select-modified/src",
-            "main": "multiple-select",
-            "resources": [
-              "multiple-select.css"
-            ]
-          },
-          {
             "name": "dequal-lite",
             "path": "../node_modules/dequal/dist",
             "main": "index.min"

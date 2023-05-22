@@ -1,14 +1,24 @@
-import { OperatorType } from 'aurelia-slickgrid';
+import { emptyElement, OperatorType, SlickGrid, } from 'aurelia-slickgrid';
 
 export class CustomInputFilter {
   _clearFilterTriggered = false;
   _shouldTriggerQuery = true;
-  $filterElm;
+  filterElm;
   grid;
-  searchTerms;
+  searchTerms = [];
   columnDef;
   callback;
   operator = OperatorType.equal;
+
+  /** Getter for the Filter Operator */
+  get columnFilter() {
+    return this.columnDef?.filter ?? {};
+  }
+
+  /** Getter for the Grid Options pulled through the Grid Object */
+  get gridOptions() {
+    return this.grid?.getOptions() ?? {};
+  }
 
   /**
    * Initialize the Filter
@@ -17,43 +27,49 @@ export class CustomInputFilter {
     this.grid = args.grid;
     this.callback = args.callback;
     this.columnDef = args.columnDef;
-    this.searchTerms = args.searchTerms || [];
+    this.searchTerms = (args.hasOwnProperty('searchTerms') ? args.searchTerms : []) || [];
 
     // filter input can only have 1 search term, so we will use the 1st array index if it exist
-    const searchTerm = (Array.isArray(this.searchTerms) && this.searchTerms[0]) || '';
+    const searchTerm = (Array.isArray(this.searchTerms) && this.searchTerms.length > 0) ? this.searchTerms[0] : '';
 
     // step 1, create HTML string template
-    const filterTemplate = this.buildTemplateHtmlString();
 
     // step 2, create the DOM Element of the filter & initialize it if searchTerm is filled
-    this.$filterElm = this.createDomElement(filterTemplate, searchTerm);
+    this.filterElm = this.createDomElement(searchTerm);
 
     // step 3, subscribe to the keyup event and run the callback when that happens
     // also add/remove "filled" class for styling purposes
-    this.$filterElm.keyup((e) => {
-      const value = e && e.target && e.target.value || '';
-      if (this._clearFilterTriggered) {
-        this.callback(e, { columnDef: this.columnDef, clearFilterTriggered: this._clearFilterTriggered, shouldTriggerQuery: this._shouldTriggerQuery });
-        this.$filterElm.removeClass('filled');
-      } else {
-        this.$filterElm.addClass('filled');
-        this.callback(e, { columnDef: this.columnDef, searchTerms: [value], shouldTriggerQuery: this._shouldTriggerQuery });
-      }
-      // reset both flags for next use
-      this._clearFilterTriggered = false;
-      this._shouldTriggerQuery = true;
-    });
+    this.filterElm.addEventListener('keyup', this.handleKeyup.bind(this));
+  }
+
+  handleKeyup(event) {
+    let value = event.target?.value ?? '';
+    const enableWhiteSpaceTrim = this.gridOptions.enableFilterTrimWhiteSpace || this.columnFilter.enableTrimWhiteSpace;
+    if (typeof value === 'string' && enableWhiteSpaceTrim) {
+      value = value.trim();
+    }
+
+    if (this._clearFilterTriggered) {
+      this.callback(event, { columnDef: this.columnDef, clearFilterTriggered: this._clearFilterTriggered, shouldTriggerQuery: this._shouldTriggerQuery });
+      this.filterElm.classList.remove('filled');
+    } else {
+      value === '' ? this.filterElm.classList.remove('filled') : this.filterElm.classList.add('filled');
+      this.callback(event, { columnDef: this.columnDef, searchTerms: [value], shouldTriggerQuery: this._shouldTriggerQuery });
+    }
+    // reset both flags for next use
+    this._clearFilterTriggered = false;
+    this._shouldTriggerQuery = true;
   }
 
   /**
    * Clear the filter value
    */
   clear(shouldTriggerQuery = true) {
-    if (this.$filterElm) {
+    if (this.filterElm) {
       this._clearFilterTriggered = true;
       this._shouldTriggerQuery = shouldTriggerQuery;
-      this.$filterElm.val('');
-      this.$filterElm.trigger('keyup');
+      this.filterElm.value = '';
+      this.filterElm.dispatchEvent(new Event('keyup'));
     }
   }
 
@@ -61,17 +77,16 @@ export class CustomInputFilter {
    * destroy the filter
    */
   destroy() {
-    if (this.$filterElm) {
-      this.$filterElm.off('keyup').remove();
+    if (this.filterElm) {
+      this.filterElm.removeEventListener('keyup', this.handleKeyup);
+      this.filterElm.remove();
     }
   }
 
-  /**
-   * Set value(s) on the DOM element
-   */
+  /** Set value(s) on the DOM element */
   setValues(values) {
     if (values) {
-      this.$filterElm.val(values);
+      this.filterElm.value = values;
     }
   }
 
@@ -80,33 +95,33 @@ export class CustomInputFilter {
   // ------------------
 
   /**
-   * Create the HTML template as a string
-   */
-  buildTemplateHtmlString() {
-    return '<input type="text" class="form-control search-filter" placeholder="Custom Filter">';
-  }
-
-  /**
    * From the html template string, create a DOM element
    * @param filterTemplate
    */
-  createDomElement(filterTemplate, searchTerm) {
-    const $headerElm = this.grid.getHeaderRowColumn(this.columnDef.id);
-    $($headerElm).empty();
+  private createDomElement(searchTerm) {
+    const headerElm = this.grid.getHeaderRowColumn(this.columnDef.id);
+    emptyElement(headerElm);
 
-    // create the DOM element & add an ID and filter class
-    const $filterElm = $(filterTemplate);
-    const searchTermInput = searchTerm;
-
-    $filterElm.val(searchTermInput);
-    $filterElm.attr('id', `filter-${this.columnDef.id}`);
-    $filterElm.data('columnId', this.columnDef.id);
-
-    // append the new DOM element to the header row
-    if ($filterElm && typeof $filterElm.appendTo === 'function') {
-      $filterElm.appendTo($headerElm);
+    let placeholder = this.gridOptions?.defaultFilterPlaceholder ?? '';
+    if (this.columnFilter?.placeholder) {
+      placeholder = this.columnFilter.placeholder;
     }
 
-    return $filterElm;
+    // create the DOM element & add an ID and filter class
+    const filterElm = document.createElement('input');
+    filterElm.className = 'form-control search-filter';
+    filterElm.placeholder = placeholder;
+
+    const searchTermInput = searchTerm;
+
+    filterElm.value = searchTermInput;
+    filterElm.dataset.columnid = `${this.columnDef.id}`;
+
+    // append the new DOM element to the header row
+    if (headerElm) {
+      headerElm.appendChild(filterElm);
+    }
+
+    return filterElm;
   }
 }
