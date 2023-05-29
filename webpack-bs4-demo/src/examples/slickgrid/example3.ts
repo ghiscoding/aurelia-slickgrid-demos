@@ -2,10 +2,13 @@ import { autoinject } from 'aurelia-framework';
 import { HttpClient as FetchClient } from 'aurelia-fetch-client';
 import { HttpClient } from 'aurelia-http-client';
 import { I18N } from 'aurelia-i18n';
+import fetchJsonp from 'fetch-jsonp';
+
 import {
   AureliaGridInstance,
   AutocompleterOption,
   Column,
+  EditCommand,
   Editors,
   EditorValidator,
   FieldType,
@@ -20,7 +23,6 @@ import {
 } from 'aurelia-slickgrid';
 import { CustomInputEditor } from './custom-inputEditor';
 import { CustomInputFilter } from './custom-inputFilter';
-import * as $ from 'jquery';
 
 // using external non-typed js libraries
 declare const Slick: SlickNamespace;
@@ -52,7 +54,7 @@ const myCustomTitleValidator: EditorValidator = (value: any) => {
 };
 
 // create a custom Formatter to show the Task + value
-const taskFormatter = (_row, _cell, value) => {
+const taskFormatter = (_row: number, _cell: number, value: any) => {
   if (value && Array.isArray(value)) {
     const taskValues = value.map((val) => `Task ${val}`);
     const values = taskValues.join(', ');
@@ -77,21 +79,19 @@ export class Example3 {
     <li>Support of "collectionAsync" is possible, click on "Clear Filters/Sorting" then add/delete item(s) and look at "Prerequisites" Select Filter</li>
   </ul>
   `;
-  private _commandQueue = [];
-  aureliaGrid: AureliaGridInstance;
-  gridOptions: GridOption;
-  columnDefinitions: Column[];
-  dataset: any[];
+  private _commandQueue: EditCommand[] = [];
+  aureliaGrid!: AureliaGridInstance;
+  gridOptions!: GridOption;
+  columnDefinitions: Column[] = [];
+  dataset: any[] = [];
   updatedObject: any;
   isAutoEdit = true;
   alertWarning: any;
-  selectedLanguage: string;
   duplicateTitleHeaderCount = 1;
 
   constructor(private http: HttpClient, private httpFetch: FetchClient, private i18n: I18N) {
     // define the grid options & columns and then create the grid itself
     this.defineGrid();
-    this.selectedLanguage = this.i18n.getLocale();
   }
 
   attached() {
@@ -177,12 +177,12 @@ export class Example3 {
         minWidth: 100,
         sortable: true,
         type: FieldType.number,
-        filter: { model: Filters.slider, params: { hideSliderNumber: false } },
+        filter: { model: Filters.slider, filterOptions: { hideSliderNumber: false } },
         editor: {
           model: Editors.slider,
           minValue: 0,
           maxValue: 100,
-          // params: { hideSliderNumber: true },
+          // editorOptions: { hideSliderNumber: true },
         },
         /*
         editor: {
@@ -274,31 +274,21 @@ export class Example3 {
           placeholder: '🔎︎ search city',
 
           // We can use the autocomplete through 3 ways "collection", "collectionAsync" or with your own autocomplete options
-          // use your own autocomplete options, instead of $.ajax, use Aurelia HttpClient or FetchClient
-          // here we use $.ajax just because I'm not sure how to configure Aurelia HttpClient with JSONP and CORS
+          // use your own autocomplete options, instead of fetch-jsonp, use Aurelia HttpClient or FetchClient
+          // here we use fetch-jsonp just because I'm not sure how to configure Aurelia HttpClient with JSONP and CORS
           editorOptions: {
             minLength: 3,
             forceUserInput: true,
             fetch: (searchText: string, updateCallback: (items: false | any[]) => void) => {
-              /** with FETCH, note this demo won't work because of CORS */
-              // this.httpFetch.fetch(`http://gd.geobytes.com/AutoCompleteCity?q=${searchText}`)
-              //   .then(response => updateCallback())
-              //   .then(data => response(data))
-              //   .catch(error => console.log('fetch error:', error));
+              /** with Angular Http, note this demo won't work because of CORS */
+              // this.http.get(`http://gd.geobytes.com/AutoCompleteCity?q=${searchText}`).subscribe(data => updateCallback(data));
 
-              /** with jQuery AJAX will work locally but not on the GitHub demo because of CORS */
-              $.ajax({
-                url: 'http://gd.geobytes.com/AutoCompleteCity',
-                dataType: 'jsonp',
-                data: {
-                  q: searchText
-                },
-                success: (data) => {
-                  const finalData = (data.length === 1 && data[0] === '') ? [] : data; // invalid result should be [] instead of [''] to show empty msg
-                  updateCallback(finalData);
-                }
-              });
-            }
+              /** with JSONP AJAX will work locally but not on the GitHub demo because of CORS */
+              fetchJsonp(`http://gd.geobytes.com/AutoCompleteCity?q=${searchText}`)
+                .then((response: { json: () => Promise<any[]>}) => response.json())
+                .then((json: any[]) => updateCallback(json))
+                .catch((ex) => console.log('invalid JSONP response', ex));
+            },
           } as AutocompleterOption,
         },
         filter: {
@@ -308,23 +298,16 @@ export class Example3 {
           // We can use the autocomplete through 3 ways "collection", "collectionAsync" or with your own autocomplete options
           // collectionAsync: this.httpFetch.fetch(URL_COUNTRIES_COLLECTION),
 
-          // OR use your own autocomplete options, instead of $.ajax, use Aurelia HttpClient or FetchClient
-          // here we use $.ajax just because I'm not sure how to configure Aurelia HttpClient with JSONP and CORS
+          // OR use the autocomplete through 3 ways "collection", "collectionAsync" or with your own autocomplete options
+          // use your own autocomplete options, instead of fetch-jsonp, use HttpClient or FetchClient
           filterOptions: {
             minLength: 3,
             fetch: (searchText: string, updateCallback: (items: false | any[]) => void) => {
-              $.ajax({
-                url: 'http://gd.geobytes.com/AutoCompleteCity',
-                dataType: 'jsonp',
-                data: {
-                  q: searchText
-                },
-                success: (data) => {
-                  const finalData = (data.length === 1 && data[0] === '') ? [] : data; // invalid result should be [] instead of [''] to show empty msg
-                  updateCallback(finalData);
-                }
-              });
-            }
+              fetchJsonp(`http://gd.geobytes.com/AutoCompleteCity?q=${searchText}`)
+                .then((response: { json: () => Promise<any[]>}) => response.json())
+                .then((json: any[]) => updateCallback(json))
+                .catch((ex: any) => console.log('invalid JSONP response', ex));
+            },
           } as AutocompleterOption,
         }
       }, {
@@ -422,6 +405,12 @@ export class Example3 {
         },
         filter: {
           collectionAsync: this.httpFetch.fetch(URL_SAMPLE_COLLECTION_DATA),
+          // collectionAsync: new Promise((resolve) => {
+          //   setTimeout(() => {
+          //     resolve(Array.from(Array(this.dataset.length).keys()).map(k => ({ value: k, label: `Task ${k}` })));
+          //   });
+          // }),
+
           // OR a regular collection load
           // collection: Array.from(Array(NB_ITEMS).keys()).map(k => ({ value: k, label: k, prefix: 'Task', suffix: 'days' })),
           collectionSortBy: {
@@ -435,7 +424,7 @@ export class Example3 {
             labelPrefix: 'prefix',
           },
           collectionOptions: {
-            separatorBetweenTextLabels: ''
+            separatorBetweenTextLabels: ' '
           },
           model: Filters.multipleSelect,
           operator: OperatorType.inContains,
@@ -472,12 +461,12 @@ export class Example3 {
       // at any time, we can poke the "collection" property and modify it
       const requisiteColumnDef = this.columnDefinitions.find((column: Column) => column.id === 'prerequisites');
       if (requisiteColumnDef) {
-        const collectionEditor = requisiteColumnDef.editor.collection;
-        const collectionFilter = requisiteColumnDef.filter.collection;
+        const collectionEditor = requisiteColumnDef.editor!.collection;
+        const collectionFilter = requisiteColumnDef.filter!.collection;
 
         if (Array.isArray(collectionEditor) && Array.isArray(collectionFilter)) {
           // add the new row to the grid
-          this.aureliaGrid.gridService.addItem(newRows[0]);
+          this.aureliaGrid.gridService.addItem(newRows[0], { highlightRow: false });
 
           // then refresh the Editor/Filter "collection", we have 2 ways of doing it
 
@@ -497,8 +486,8 @@ export class Example3 {
   deleteItem() {
     const requisiteColumnDef = this.columnDefinitions.find((column: Column) => column.id === 'prerequisites');
     if (requisiteColumnDef) {
-      const collectionEditor = requisiteColumnDef.editor.collection;
-      const collectionFilter = requisiteColumnDef.filter.collection;
+      const collectionEditor = requisiteColumnDef.editor!.collection;
+      const collectionFilter = requisiteColumnDef.filter!.collection;
 
       if (Array.isArray(collectionEditor) && Array.isArray(collectionFilter)) {
         // sort collection in descending order and take out last option from the collection
@@ -509,11 +498,11 @@ export class Example3 {
     }
   }
 
-  sortCollectionDescending(collection) {
+  sortCollectionDescending(collection: any[]) {
     return collection.sort((item1, item2) => item1.value - item2.value);
   }
 
-  mockData(itemCount, startingIndex = 0) {
+  mockData(itemCount: number, startingIndex = 0) {
     // mock a dataset
     const tempDataset = [];
     for (let i = startingIndex; i < (startingIndex + itemCount); i++) {
@@ -542,12 +531,12 @@ export class Example3 {
     return tempDataset;
   }
 
-  onCellChanged(_e, args) {
+  onCellChanged(_e: Event, args: any) {
     console.log('onCellChange', args);
     this.updatedObject = { ...args.item };
   }
 
-  onCellClicked(_e, args) {
+  onCellClicked(_e: Event, args: any) {
     const metadata = this.aureliaGrid.gridService.getColumnFromEventArguments(args);
     console.log(metadata);
 
@@ -567,7 +556,7 @@ export class Example3 {
     }
   }
 
-  onCellValidationError(_e, args) {
+  onCellValidationError(_e: Event, args: any) {
     if (args.validationResults) {
       alert(args.validationResults.msg);
     }
@@ -591,7 +580,7 @@ export class Example3 {
         required: true,
         validator: myCustomTitleValidator, // use a custom validator
       },
-      sortable: true, minWidth: 100, filterable: true, params: { useFormatterOuputToFilter: true }
+      sortable: true, minWidth: 100, filterable: true,
     };
 
     // you can dynamically add your column to your column definitions
@@ -629,18 +618,12 @@ export class Example3 {
     */
   }
 
-  setAutoEdit(isAutoEdit) {
+  setAutoEdit(isAutoEdit: boolean) {
     this.isAutoEdit = isAutoEdit;
     this.aureliaGrid.slickGrid.setOptions({
       autoEdit: isAutoEdit
     });
     return true;
-  }
-
-  async switchLanguage() {
-    const nextLanguage = (this.selectedLanguage === 'en') ? 'fr' : 'en';
-    await this.i18n.setLocale(nextLanguage);
-    this.selectedLanguage = nextLanguage;
   }
 
   undo() {

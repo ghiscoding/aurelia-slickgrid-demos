@@ -6,6 +6,7 @@
     "typeRoots": [
       "./node_modules/@types"
     ],
+    "allowSyntheticDefaultImports": true,
     "removeComments": true,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,

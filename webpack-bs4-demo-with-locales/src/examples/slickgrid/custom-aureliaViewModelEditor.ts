@@ -1,3 +1,5 @@
+import { View, ViewSlot } from 'aurelia-framework';
+
 import {
   AureliaUtilService,
   Column,
@@ -5,8 +7,8 @@ import {
   EditorValidator,
   EditorValidationResult,
   GridOption,
+  SlickGrid,
 } from 'aurelia-slickgrid';
-import { View, ViewSlot } from 'aurelia-framework';
 
 /*
  * An example of a 'detached' editor.
@@ -19,7 +21,7 @@ export class CustomAureliaViewModelEditor implements Editor {
   aureliaCustomElementInstance: any;
 
   /** default item Id */
-  defaultId: string;
+  defaultId?: string;
 
   /** default item object */
   defaultItem: any;
@@ -27,7 +29,7 @@ export class CustomAureliaViewModelEditor implements Editor {
   selectedItem: any;
 
   /** SlickGrid grid object */
-  grid: any;
+  grid: SlickGrid;
 
   constructor(private args: any) {
     this.grid = args && args.grid;
@@ -45,22 +47,22 @@ export class CustomAureliaViewModelEditor implements Editor {
 
   /** Get the Collection */
   get collection(): any[] {
-    return this.columnDef && this.columnDef && this.columnDef.internalColumnEditor.collection || [];
+    return this.columnDef?.internalColumnEditor?.collection ?? [];
   }
 
   /** Get Column Definition object */
   get columnDef(): Column {
-    return this.args && this.args.column || {};
+    return this.args?.column ?? {};
   }
 
   /** Get Column Editor object */
   get columnEditor(): any {
-    return this.columnDef && this.columnDef.internalColumnEditor || {};
+    return this.columnDef?.internalColumnEditor ?? {};
   }
 
   /** Getter for the Grid Options pulled through the Grid Object */
   get gridOptions(): GridOption {
-    return (this.grid && this.grid.getOptions) ? this.grid.getOptions() : {};
+    return this.grid?.getOptions() ?? {} as GridOption;
   }
 
   get hasAutoCommitEdit() {
@@ -131,14 +133,14 @@ export class CustomAureliaViewModelEditor implements Editor {
 
   /** optional, implement a show method on your Aurelia ViewModel */
   show() {
-    if (this.aureliaViewModel && this.aureliaViewModel.bindings.viewModelRef.currentViewModel && typeof this.aureliaViewModel.bindings.viewModelRef.currentViewModel.show === 'function') {
+    if (typeof this.aureliaViewModel?.bindings.viewModelRef.currentViewModel?.show === 'function') {
       this.aureliaViewModel.bindings.viewModelRef.currentViewModel.show();
     }
   }
 
   /** optional, implement a focus method on your Aurelia ViewModel */
   focus() {
-    if (this.aureliaViewModel && this.aureliaViewModel.bindings.viewModelRef.currentViewModel && typeof this.aureliaViewModel.bindings.viewModelRef.currentViewModel.focus === 'function') {
+    if (typeof this.aureliaViewModel?.bindings.viewModelRef.currentViewModel?.focus === 'function') {
       this.aureliaViewModel.bindings.viewModelRef.currentViewModel.focus();
     }
   }
@@ -157,7 +159,7 @@ export class CustomAureliaViewModelEditor implements Editor {
     setTimeout(() => {
       this.aureliaCustomElementInstance = this.aureliaViewModel.bindings.viewModelRef.currentViewModel;
       this.aureliaCustomElementInstance.selectedItem = itemObject;
-      this.aureliaCustomElementInstance.selectedItemChanged = ((newItem) => {
+      this.aureliaCustomElementInstance.selectedItemChanged = ((newItem: any) => {
         this.selectedItem = newItem;
         if (newItem !== itemObject) {
           this.save();
@@ -171,7 +173,7 @@ export class CustomAureliaViewModelEditor implements Editor {
   }
 
   isValueChanged() {
-    return (!(this.selectedItem.id === '' && this.defaultId == null)) && (this.selectedItem.id !== this.defaultId);
+    return (!(this.selectedItem.id === '' && (this.defaultId === null || this.defaultId === undefined))) && (this.selectedItem.id !== this.defaultId);
   }
 
   validate(): EditorValidationResult {

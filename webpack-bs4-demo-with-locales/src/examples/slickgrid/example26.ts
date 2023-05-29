@@ -1,12 +1,9 @@
-import { EventAggregator } from 'aurelia-event-aggregator';
 import { autoinject, PLATFORM } from 'aurelia-framework';
-import { HttpClient as FetchClient } from 'aurelia-fetch-client';
-import { HttpClient } from 'aurelia-http-client';
-import { I18N } from 'aurelia-i18n';
 import {
   AureliaGridInstance,
   AureliaUtilService,
   Column,
+  EditCommand,
   Editors,
   FieldType,
   Filters,
@@ -19,7 +16,7 @@ import { CustomAureliaViewModelEditor } from './custom-aureliaViewModelEditor';
 import { CustomAureliaViewModelFilter } from './custom-aureliaViewModelFilter';
 
 // using external non-typed js libraries
-declare var Slick: any;
+declare const Slick: any;
 
 const NB_ITEMS = 100;
 
@@ -46,15 +43,14 @@ export class Example26 {
     </ul>
   </ul>
   `;
-  private _commandQueue = [];
-  aureliaGrid: AureliaGridInstance;
-  gridOptions: GridOption;
-  columnDefinitions: Column[];
-  dataset: any[];
+  private _commandQueue: EditCommand[] = [];
+  aureliaGrid!: AureliaGridInstance;
+  gridOptions!: GridOption;
+  columnDefinitions: Column[] = [];
+  dataset: any[] = [];
   updatedObject: any;
-  isAutoEdit: boolean = true;
+  isAutoEdit = true;
   alertWarning: any;
-  selectedLanguage: string;
   assignees = [
     { id: '', name: '' },
     { id: '1', name: 'John' },
@@ -62,12 +58,11 @@ export class Example26 {
     { id: '3', name: 'Paul' },
   ];
   selectedItem: any;
-  selectedId: string;
+  selectedId = '';
 
-  constructor(private aureliaUtilService: AureliaUtilService, private ea: EventAggregator, private http: HttpClient, private httpFetch: FetchClient, private i18n: I18N) {
+  constructor(private aureliaUtilService: AureliaUtilService) {
     // define the grid options & columns and then create the grid itself
     this.defineGrid();
-    this.selectedLanguage = this.i18n.getLocale();
   }
 
   attached() {
@@ -91,7 +86,7 @@ export class Example26 {
           maxLength: 255,
         },
         minWidth: 100,
-        onCellChange: (e: Event, args: OnEventArgs) => {
+        onCellChange: (_e: Event, args: OnEventArgs) => {
           console.log(args);
           this.alertWarning = `Updated Title: ${args.dataContext.title}`;
         }
@@ -125,7 +120,7 @@ export class Example26 {
             templateUrl: PLATFORM.moduleName('examples/slickgrid/editor-select') // EditorSelect,
           }
         },
-        onCellChange: (e: Event, args: OnEventArgs) => {
+        onCellChange: (_e: Event, args: OnEventArgs) => {
           console.log(args);
           this.alertWarning = `Updated Title: ${args.dataContext.title}`;
         }
@@ -133,7 +128,7 @@ export class Example26 {
         id: 'assignee2',
         name: 'Assignee with Aurelia Component',
         field: 'assignee',
-        minWidth: 100,
+        minWidth: 125,
         filterable: true,
         sortable: true,
         filter: {
@@ -152,7 +147,7 @@ export class Example26 {
 
         // to load an Aurelia Custom Element, you cannot use a Formatter since Aurelia needs at least 1 cycle to render everything
         // you can use a PostRenderer but you will visually see the data appearing,
-        // which is why it's still better to use regular Formatter (with jQuery if need be) instead of Aurelia Custom Element
+        // which is why it's still better to use regular Formatter instead of Aurelia Custom Element
         asyncPostRender: this.renderAureliaComponent.bind(this),
         params: {
           templateUrl: PLATFORM.moduleName('examples/slickgrid/custom-title-formatter'), // CustomTitleFormatterCustomElement,
@@ -167,12 +162,12 @@ export class Example26 {
         minWidth: 100,
         sortable: true,
         type: FieldType.number,
-        filter: { model: Filters.slider, params: { hideSliderNumber: false } },
+        filter: { model: Filters.slider, filterOptions: { hideSliderNumber: false } },
         editor: {
           model: Editors.slider,
           minValue: 0,
           maxValue: 100,
-          // params: { hideSliderNumber: true },
+          // editorOptions: { hideSliderNumber: true },
         },
         /*
         editor: {
@@ -262,18 +257,17 @@ export class Example26 {
       enableFiltering: true,
       enableAsyncPostRender: true, // for the Aurelia PostRenderer, don't forget to enable it
       asyncPostRenderDelay: 0,    // also make sure to remove any delay to render it
-      editCommandHandler: (item, column, editCommand) => {
+      editCommandHandler: (_item, _column, editCommand) => {
         this._commandQueue.push(editCommand);
         editCommand.execute();
       },
-      i18n: this.i18n,
       params: {
         aureliaUtilService: this.aureliaUtilService // provide the service to all at once (Editor, Filter, AsyncPostRender)
       }
     };
   }
 
-  mockData(itemCount, startingIndex = 0) {
+  mockData(itemCount: number, startingIndex = 0) {
     // mock a dataset
     const tempDataset = [];
     for (let i = startingIndex; i < (startingIndex + itemCount); i++) {
@@ -297,12 +291,12 @@ export class Example26 {
     return tempDataset;
   }
 
-  onCellChanged(e, args) {
+  onCellChanged(_e: Event, args: any) {
     console.log('onCellChange', args);
     this.updatedObject = { ...args.item };
   }
 
-  onCellClicked(e, args) {
+  onCellClicked(_e: Event, args: any) {
     const metadata = this.aureliaGrid.gridService.getColumnFromEventArguments(args);
     console.log(metadata);
 
@@ -322,7 +316,7 @@ export class Example26 {
     }
   }
 
-  onCellValidationError(e, args) {
+  onCellValidation(_e: Event, args: any) {
     alert(args.validationResults.msg);
   }
 
@@ -334,23 +328,18 @@ export class Example26 {
     return true;
   }
 
-  renderAureliaComponent(cellNode: JQuery<HTMLElement>, row: number, dataContext: any, colDef: Column) {
-    if (colDef.params.templateUrl && cellNode.length) {
-      this.aureliaUtilService.createAureliaViewModelAddToSlot(colDef.params.templateUrl, { model: dataContext }, cellNode[0], true);
+  renderAureliaComponent(cellNode: HTMLElement, _row: number, dataContext: any, colDef: Column) {
+    if (colDef.params.templateUrl && cellNode) {
+      this.aureliaUtilService.createAureliaViewModelAddToSlot(colDef.params.templateUrl, { model: dataContext }, cellNode, true);
     }
   }
 
-  setAutoEdit(isAutoEdit) {
+  setAutoEdit(isAutoEdit: boolean) {
     this.isAutoEdit = isAutoEdit;
     this.aureliaGrid.slickGrid.setOptions({
       autoEdit: isAutoEdit
     });
     return true;
-  }
-
-  switchLanguage() {
-    this.selectedLanguage = (this.selectedLanguage === 'en') ? 'fr' : 'en';
-    this.i18n.setLocale(this.selectedLanguage);
   }
 
   undo() {

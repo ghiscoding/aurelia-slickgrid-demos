@@ -130,9 +130,6 @@ export class Example24 {
         filter: {
           collection: [{ value: '', label: '' }, { value: 1, label: 'Low' }, { value: 2, label: 'Medium' }, { value: 3, label: 'High' }],
           model: Filters.singleSelect,
-          filterOptions: {
-            autoDropWidth: true
-          }
         }
       },
       {
@@ -142,9 +139,6 @@ export class Example24 {
         filter: {
           collection: [{ value: '', label: '' }, { value: true, label: 'True' }, { value: false, label: 'False' }],
           model: Filters.singleSelect,
-          filterOptions: {
-            autoDropWidth: true
-          }
         }
       },
       {

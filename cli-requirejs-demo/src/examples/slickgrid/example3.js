@@ -156,12 +156,12 @@ export class Example3 {
       filterable: true,
       sortable: true,
       type: FieldType.number,
-      filter: { model: Filters.slider, params: { hideSliderNumber: false } },
+      filter: { model: Filters.slider, filterOptions: { hideSliderNumber: false } },
       editor: {
         model: Editors.slider,
         minValue: 0,
         maxValue: 100
-        // params: { hideSliderNumber: true },
+        // editorOptions: { hideSliderNumber: true },
       },
       /*
       editor: {

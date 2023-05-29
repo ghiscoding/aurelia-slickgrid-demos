@@ -2,6 +2,7 @@ import {
   AureliaUtilService,
   Column,
   ColumnFilter,
+  emptyElement,
   Filter,
   FilterArguments,
   FilterCallback,
@@ -9,20 +10,18 @@ import {
   OperatorType,
   OperatorString,
   SearchTerm,
+  SlickGrid,
 } from 'aurelia-slickgrid';
-import * as $ from 'jquery';
 
 import { View, ViewSlot } from 'aurelia-framework';
 
 export class CustomAureliaViewModelFilter implements Filter {
-  private _clearFilterTriggered = false;
   private _shouldTriggerQuery = true;
-  private $filterElm: any;
-  container;
-  grid: any;
-  searchTerms: SearchTerm[];
-  columnDef: Column;
-  callback: FilterCallback;
+  container!: any;
+  grid!: SlickGrid;
+  searchTerms: SearchTerm[] = [];
+  columnDef!: Column;
+  callback!: FilterCallback;
   operator: OperatorType | OperatorString = OperatorType.equal;
 
   /** Aurelia ViewModel Reference */
@@ -33,26 +32,26 @@ export class CustomAureliaViewModelFilter implements Filter {
 
   /** Aurelia Util Service (could be inside the Grid Options Params or the Filter Params ) */
   get aureliaUtilService(): AureliaUtilService {
-    let aureliaUtilService = this.gridOptions && this.gridOptions.params && this.gridOptions.params.aureliaUtilService;
+    let aureliaUtilService = this.gridOptions?.params?.aureliaUtilService;
     if (!aureliaUtilService || !(aureliaUtilService instanceof AureliaUtilService)) {
-      aureliaUtilService = this.columnFilter && this.columnFilter.params && this.columnFilter.params.aureliaUtilService;
+      aureliaUtilService = this.columnFilter?.params?.aureliaUtilService;
     }
     return aureliaUtilService;
   }
 
   /** Get the Collection */
   get collection(): any[] {
-    return this.columnFilter && this.columnFilter.collection || [];
+    return this.columnFilter?.collection ?? [];
   }
 
   /** Getter for the Column Filter */
   get columnFilter(): ColumnFilter {
-    return this.columnDef && this.columnDef.filter || {};
+    return this.columnDef?.filter ?? {};
   }
 
   /** Getter for the Grid Options pulled through the Grid Object */
   get gridOptions(): GridOption {
-    return (this.grid && this.grid.getOptions) ? this.grid.getOptions() : {};
+    return this.grid?.getOptions() ?? {} as GridOption;
   }
 
   /**
@@ -74,7 +73,7 @@ export class CustomAureliaViewModelFilter implements Filter {
       // else we get the infamous error "ExpressionChangedAfterItHasBeenCheckedError"
       setTimeout(() => {
         this.container = this.grid.getHeaderRowColumn(this.columnDef.id);
-        $(this.container).empty();
+        emptyElement(this.container);
 
         // here we override the collection object of the Aurelia Custom Element
         // but technically you can pass any values you wish as bindings
@@ -82,7 +81,7 @@ export class CustomAureliaViewModelFilter implements Filter {
 
         setTimeout(() => {
           this.aureliaCustomElementInstance = this.aureliaViewModel.bindings.viewModelRef.currentViewModel;
-          this.aureliaCustomElementInstance.selectedItemChanged = ((item) => {
+          this.aureliaCustomElementInstance.selectedItemChanged = ((item: any) => {
             this.callback(undefined, { columnDef: this.columnDef, operator: this.operator, searchTerms: [item.id], shouldTriggerQuery: this._shouldTriggerQuery });
             // reset flag for next use
             this._shouldTriggerQuery = true;
@@ -111,7 +110,7 @@ export class CustomAureliaViewModelFilter implements Filter {
   }
 
   /** Set value(s) on the DOM element */
-  setValues(values) {
+  setValues(values: any) {
     if (this.aureliaCustomElementInstance && this.aureliaCustomElementInstance.hasOwnProperty('selectedId')) {
       this.aureliaCustomElementInstance.selectedId = values;
     }
@@ -119,7 +118,7 @@ export class CustomAureliaViewModelFilter implements Filter {
 
   disposeViewSlot(createdView: { view?: View; viewSlot?: ViewSlot; }) {
     if (createdView && createdView.view && createdView.viewSlot && createdView.view.unbind && createdView.viewSlot.remove) {
-      if (this.container && this.container.length > 0) {
+      if (this.container?.length > 0) {
         createdView.viewSlot.remove(createdView.view);
         createdView.view.unbind();
         this.container[0].innerHTML = '';

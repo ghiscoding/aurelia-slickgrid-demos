@@ -83,9 +83,6 @@ export class Example12 {
         filter: {
           collection: [{ value: true, label: 'Vrai' }, { value: false, label: 'Faux' }],
           model: Filters.multipleSelect,
-          filterOptions: {
-            autoDropWidth: true
-          }
         }
       }
     ];

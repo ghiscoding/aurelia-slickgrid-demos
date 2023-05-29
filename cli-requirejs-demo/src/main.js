@@ -1,7 +1,6 @@
 import environment from './environment';
 import { TCustomAttribute } from 'aurelia-i18n';
 import Backend from 'i18next-xhr-backend';
-import "multiple-select-modified"
 import 'bootstrap';
 
 
