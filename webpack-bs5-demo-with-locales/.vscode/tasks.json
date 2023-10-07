@@ -1,0 +1,23 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Build Github Demo Page",
+      "type": "shell",
+      "command": "yarn start build",
+      "problemMatcher": []
+    },
+    {
+      "label": "Build Github Demo Page & Copy Files to GhPages Folder",
+      "type": "shell",
+      "command": "yarn run build-demo",
+      "problemMatcher": []
+    },
+    {
+      "label": "Start Github Demo Page",
+      "type": "shell",
+      "command": "yarn start",
+      "problemMatcher": []
+    }
+  ]
+}

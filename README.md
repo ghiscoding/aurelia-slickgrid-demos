@@ -39,25 +39,6 @@ Then open your browser to
 http://localhost:9000
 ```
 
-## Webpack and Bootstrap 4 with single Locale & without I18N (TypeScript)
-### Install and Start Demo
-```bash
-git clone https://github.com/ghiscoding/aurelia-slickgrid-demos
-cd webpack-bs4-demo-with-locales
-npm install # OR yarn install
-npm start # OR yarn start
-```
-
-Then open your browser to
-```html
-http://localhost:8080
-```
-
-### Build Demo
-```bash
-run build # OR yarn run build
-```
-
 ## Webpack and Bootstrap 4 (with TypeScript)
 ### Install and Start Demo
 ```bash
@@ -82,6 +63,25 @@ run build # OR yarn run build
 ```bash
 git clone https://github.com/ghiscoding/aurelia-slickgrid-demos
 cd webpack-bs5-demo
+npm install # OR yarn install
+npm start # OR yarn start
+```
+
+Then open your browser to
+```html
+http://localhost:8080
+```
+
+### Build Demo
+```bash
+run build # OR yarn run build
+```
+
+## Webpack and Bootstrap 5 with single Locale & without I18N (TypeScript)
+### Install and Start Demo
+```bash
+git clone https://github.com/ghiscoding/aurelia-slickgrid-demos
+cd webpack-bs5-demo-with-locales
 npm install # OR yarn install
 npm start # OR yarn start
 ```

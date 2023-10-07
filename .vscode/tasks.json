@@ -2,15 +2,6 @@
   "version": "2.0.0",
   "tasks": [
     {
-      "label": "Build Webpack Bootstrap 4 Demo Page - with Custom Locales",
-      "type": "shell",
-      "command": "npm run build",
-      "options": {
-        "cwd": "${workspaceFolder}/webpack-bs4-demo-with-locales",
-      },
-      "problemMatcher": []
-    },
-    {
       "label": "Build Webpack Bootstrap 4 Demo Page",
       "type": "shell",
       "command": "npm run build",
@@ -29,20 +20,20 @@
       "problemMatcher": []
     },
     {
+      "label": "Build Webpack Bootstrap 5 Demo Page - with Custom Locales",
+      "type": "shell",
+      "command": "npm run build",
+      "options": {
+        "cwd": "${workspaceFolder}/webpack-bs5-demo-with-locales",
+      },
+      "problemMatcher": []
+    },
+    {
       "label": "Start Client-CLI with RequireJS",
       "type": "shell",
       "command": "npm run start",
       "options": {
         "cwd": "${workspaceFolder}/cli-requirejs-demo",
-      },
-      "problemMatcher": []
-    },
-    {
-      "label": "Start Webpack Bootstrap 4 Demo Page - with Custom Locales",
-      "type": "shell",
-      "command": "npm start",
-      "options": {
-        "cwd": "${workspaceFolder}/webpack-bs4-demo-with-locales",
       },
       "problemMatcher": []
     },
@@ -61,6 +52,15 @@
       "command": "yarn start",
       "options": {
         "cwd": "${workspaceFolder}/webpack-bs5-demo",
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "Start Webpack Bootstrap 5 Demo Page - with Custom Locales",
+      "type": "shell",
+      "command": "npm start",
+      "options": {
+        "cwd": "${workspaceFolder}/webpack-bs5-demo-with-locales",
       },
       "problemMatcher": []
     }
