@@ -1,28 +1,10 @@
 <template>
-  <h2>
-    ${title}
-    <span class="float-right">
-      <a style="font-size: 18px"
-         target="_blank"
-         href="https://github.com/ghiscoding/aurelia-slickgrid/blob/master/src/examples/slickgrid/example12.ts">
-        <span class="fa fa-link"></span> code
-      </a>
-    </span>
-  </h2>
+  <h2>${title}</h2>
   <div class="subtitle" innerhtml.bind="subTitle"></div>
 
   <hr />
 
-  <div class="row align-items-center">
-    <button class="btn btn-outline-secondary btn-sm" data-test="language-button" click.delegate="switchLanguage()">
-      <i class="fa fa-language"></i>
-      Switch Language
-    </button>
-    <label style="margin: 0 5px">Locale:</label>
-    <span style="font-style: italic; width: 70px;" data-test="selected-locale">
-      ${selectedLanguage + '.json'}
-    </span>
-
+  <div class="row">
     <span style="margin-left: 20px">
       <button class="btn btn-outline-secondary btn-sm" click.delegate="exportToFile('csv')">
         <i class="fa fa-download"></i>
