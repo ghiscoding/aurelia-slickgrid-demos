@@ -7,6 +7,8 @@ import {
   Filters,
   Formatters,
   GridOption,
+  SlickDataView,
+  SlickGrid,
 } from 'aurelia-slickgrid';
 import './example9.scss'; // provide custom CSS/SASS styling
 
@@ -26,12 +28,12 @@ export class Example9 {
     </ul>
   `;
 
-  aureliaGrid: AureliaGridInstance;
-  columnDefinitions: Column[];
-  gridOptions: GridOption;
-  dataset = [];
-  dataView: any;
-  gridObj: any;
+  aureliaGrid!: AureliaGridInstance;
+  columnDefinitions: Column[] = [];
+  gridOptions!: GridOption;
+  dataset: any[] = [];
+  dataView!: SlickDataView;
+  gridObj!: SlickGrid;
 
   constructor() {
     // define the grid options & columns and then create the grid itself
@@ -78,7 +80,7 @@ export class Example9 {
       columnPicker: {
         hideForceFitButton: true,
         hideSyncResizeButton: true,
-        onColumnsChanged: (e, args) => {
+        onColumnsChanged: (_e, args) => {
           console.log('Column selection changed from Column Picker, visible columns: ', args.visibleColumns);
         }
       },
@@ -92,7 +94,7 @@ export class Example9 {
       enableCellNavigation: true,
       gridMenu: {
         // we could disable the menu entirely by returning false depending on some code logic
-        menuUsabilityOverride: (args) => true,
+        menuUsabilityOverride: () => true,
 
         commandTitle: 'Custom Commands',
         iconCssClass: 'fa fa-ellipsis-v', // defaults to "fa-bars"
@@ -101,6 +103,7 @@ export class Example9 {
         hideToggleFilterCommand: false, // show/hide internal custom commands
         menuWidth: 17,
         resizeOnShowHeaderRow: true,
+        subItemChevronClass: 'fa fa-chevron-right',
         commandItems: [
           // add Custom Items Commands which will be appended to the existing internal custom items
           // you cannot override an internal items but you can hide them and create your own
@@ -126,7 +129,7 @@ export class Example9 {
             cssClass: 'orange',
             iconCssClass: 'fa fa-warning',
             // you can use the "action" callback and/or use "onCallback" callback from the grid options, they both have the same arguments
-            action: (e, args) => alert(args.command),
+            action: (_e, args) => alert(args.command),
             itemUsabilityOverride: (args) => {
               // for example disable the command if there's any hidden column(s)
               if (args && Array.isArray(args.columns)) {
@@ -141,8 +144,8 @@ export class Example9 {
             positionOrder: 92,
             cssClass: 'red',        // container css class
             textCssClass: 'italic', // just the text css class
-            action: (e, args) => alert(args.command),
-            itemVisibilityOverride: (args) => {
+            action: (_e, args) => alert(args.command),
+            itemVisibilityOverride: () => {
               // for example hide this command from the menu if there's any filter entered
               if (this.aureliaGrid) {
                 return this.isObjectEmpty(this.aureliaGrid.filterService.getColumnFilters());
@@ -155,15 +158,51 @@ export class Example9 {
             disabled: true,
             command: 'disabled-command',
             positionOrder: 98
+          },
+          { command: '', divider: true, positionOrder: 98 },
+          {
+            // we can also have multiple nested sub-menus
+            command: 'export', title: 'Exports', positionOrder: 99,
+            commandItems: [
+              { command: 'exports-txt', title: 'Text (tab delimited)' },
+              {
+                command: 'sub-menu', title: 'Excel', cssClass: 'green', subMenuTitle: 'available formats', subMenuTitleCssClass: 'text-italic orange',
+                commandItems: [
+                  { command: 'exports-csv', title: 'Excel (csv)' },
+                  { command: 'exports-xlsx', title: 'Excel (xlsx)' },
+                ]
+              }
+            ]
+          },
+          {
+            command: 'feedback', title: 'Feedback', positionOrder: 100,
+            commandItems: [
+              { command: 'request-update', title: 'Request update from supplier', iconCssClass: 'mdi mdi-star', tooltip: 'this will automatically send an alert to the shipping team to contact the user for an update' },
+              'divider',
+              {
+                command: 'sub-menu', title: 'Contact Us', iconCssClass: 'mdi mdi-account', subMenuTitle: 'contact us...', subMenuTitleCssClass: 'italic',
+                commandItems: [
+                  { command: 'contact-email', title: 'Email us', iconCssClass: 'mdi mdi-pencil-outline' },
+                  { command: 'contact-chat', title: 'Chat with us', iconCssClass: 'mdi mdi-message-text-outline' },
+                  { command: 'contact-meeting', title: 'Book an appointment', iconCssClass: 'mdi mdi-coffee' },
+                ]
+              }
+            ]
           }
         ],
         // you can use the "action" callback and/or use "onCallback" callback from the grid options, they both have the same arguments
-        onCommand: (e, args) => {
-          if (args.command === 'help') {
+        onCommand: (_e: Event, args: any) => {
+          // e.preventDefault(); // preventing default event would keep the menu open after the execution
+          const command = args.item?.command;
+          if (command.includes('exports-')) {
+            alert('Exporting as ' + args?.item.title);
+          } else if (command.includes('contact-') || command === 'help') {
             alert('Command: ' + args.command);
+          } else {
+            console.log('onGridMenuCommand', args.command);
           }
         },
-        onColumnsChanged: (e, args) => {
+        onColumnsChanged: (_e, args) => {
           console.log('Column selection changed from Grid Menu, visible columns: ', args.visibleColumns);
         }
       },
@@ -205,7 +244,7 @@ export class Example9 {
     }
   }
 
-  private isObjectEmpty(obj) {
+  private isObjectEmpty(obj: any) {
     for (const key in obj) {
       if (obj.hasOwnProperty(key) && obj[key] !== '') {
         return false;

@@ -1,5 +1,5 @@
 import { autoinject } from 'aurelia-framework';
-import { AureliaGridInstance, Column, Formatters, GridOption } from 'aurelia-slickgrid';
+import { AureliaGridInstance, Column, Formatters, GridOption, SlickDataView, SlickGrid } from 'aurelia-slickgrid';
 import './example8.scss'; // provide custom CSS/SASS styling
 
 @autoinject()
@@ -25,13 +25,13 @@ export class Example8 {
     </ul>
   `;
 
-  aureliaGrid: AureliaGridInstance;
-  columnDefinitions: Column[];
-  gridOptions: GridOption;
-  dataset = [];
-  dataView: any;
-  gridObj: any;
-  visibleColumns;
+  aureliaGrid!: AureliaGridInstance;
+  columnDefinitions: Column[] = [];
+  gridOptions!: GridOption;
+  dataset: any[] = [];
+  dataView!: SlickDataView;
+  gridObj!: SlickGrid;
+  visibleColumns: Column[] = [];
 
   constructor() {
     // define the grid options & columns and then create the grid itself
@@ -45,8 +45,8 @@ export class Example8 {
 
   aureliaGridReady(aureliaGrid: AureliaGridInstance) {
     this.aureliaGrid = aureliaGrid;
-    this.gridObj = aureliaGrid && aureliaGrid.slickGrid;
-    this.dataView = aureliaGrid && aureliaGrid.dataView;
+    this.gridObj = aureliaGrid?.slickGrid;
+    this.dataView = aureliaGrid?.dataView;
   }
 
   defineGrid() {
@@ -62,7 +62,7 @@ export class Example8 {
     this.columnDefinitions.forEach((columnDef) => {
       columnDef.header = {
         menu: {
-          items: [
+          commandItems: [
             // add Custom Header Menu Item Commands which will be appended to the existing internal custom items
             // you cannot override an internal command but you can hide them and create your own
             // also note that the internal custom commands are in the positionOrder range of 50-60,
@@ -88,7 +88,7 @@ export class Example8 {
                 // for example don't show Help on column "% Complete"
                 return (args.column.id !== 'percentComplete');
               },
-              action: (e, args) => {
+              action: (_e, args) => {
                 // you can use the "action" callback and/or subscribe to the "onCallback" event, they both have the same arguments
                 console.log('execute an action on Help', args);
               }
@@ -99,6 +99,38 @@ export class Example8 {
             // you can use "divider" as a string too, but if you do then make sure it's the correct position in the list
             // (since there's no positionOrder when using 'divider')
             // 'divider',
+            {
+              // we can also have multiple nested sub-menus
+              command: 'custom-actions', title: 'Hello', positionOrder: 99,
+              commandItems: [
+                { command: 'hello-world', title: 'Hello World' },
+                { command: 'hello-slickgrid', title: 'Hello SlickGrid' },
+                {
+                  command: 'sub-menu', title: `Let's play`, cssClass: 'green', subMenuTitle: 'choose your game', subMenuTitleCssClass: 'text-italic salmon',
+                  commandItems: [
+                    { command: 'sport-badminton', title: 'Badminton' },
+                    { command: 'sport-tennis', title: 'Tennis' },
+                    { command: 'sport-racquetball', title: 'Racquetball' },
+                    { command: 'sport-squash', title: 'Squash' },
+                  ]
+                }
+              ]
+            },
+            {
+              command: 'feedback', title: 'Feedback', positionOrder: 100,
+              commandItems: [
+                { command: 'request-update', title: 'Request update from supplier', iconCssClass: 'mdi mdi-star', tooltip: 'this will automatically send an alert to the shipping team to contact the user for an update' },
+                'divider',
+                {
+                  command: 'sub-menu', title: 'Contact Us', iconCssClass: 'mdi mdi-account', subMenuTitle: 'contact us...', subMenuTitleCssClass: 'italic',
+                  commandItems: [
+                    { command: 'contact-email', title: 'Email us', iconCssClass: 'mdi mdi-pencil-outline' },
+                    { command: 'contact-chat', title: 'Chat with us', iconCssClass: 'mdi mdi-message-text-outline' },
+                    { command: 'contact-meeting', title: 'Book an appointment', iconCssClass: 'mdi mdi-coffee' },
+                  ]
+                }
+              ]
+            }
           ]
         }
       };
@@ -116,12 +148,21 @@ export class Example8 {
       headerMenu: {
         hideSortCommands: false,
         hideColumnHideCommand: false,
+        subItemChevronClass: 'fa fa-chevron-right',
         // you can use the "onCommand" (in Grid Options) and/or the "action" callback (in Column Definition)
-        onCommand: (e, args) => {
-          if (args.command === 'help') {
+        onCommand: (_e, args) => {
+          // e.preventDefault(); // preventing default event would keep the menu open after the execution
+          const command = args.item?.command;
+          if (command.includes('hello-')) {
+            alert(args?.item.title);
+          } else if (command.includes('sport-')) {
+            alert('Just do it, play ' + args?.item?.title);
+          } else if (command.includes('contact-')) {
+            alert('Command: ' + args?.item?.command);
+          } else if (args.command === 'help') {
             alert('Please help!!!');
           }
-        }
+        },
       },
     };
   }
