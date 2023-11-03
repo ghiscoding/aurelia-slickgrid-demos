@@ -1,4 +1,6 @@
+import { ExcelExportService } from '@slickgrid-universal/excel-export';
 import { autoinject } from 'aurelia-framework';
+
 import {
   AureliaGridInstance,
   Column,
@@ -9,17 +11,18 @@ import {
   Formatter,
   Formatters,
   GridOption,
+  SlickGrid,
 } from 'aurelia-slickgrid';
 import './example24.scss'; // provide custom CSS/SASS styling
 
-const actionFormatter: Formatter = (row, cell, value, columnDef, dataContext) => {
+const actionFormatter: Formatter = (_row, _cell, _value, _columnDef, dataContext) => {
   if (dataContext.priority === 3) { // option 3 is High
     return `<div class="fake-hyperlink">Action <i class="fa fa-caret-down"></i></div>`;
   }
   return `<div class="disabled">Action <i class="fa fa-caret-down"></i></div>`;
 };
 
-const priorityFormatter: Formatter = (row, cell, value, columnDef, dataContext) => {
+const priorityFormatter: Formatter = (_row, _cell, value) => {
   if (!value) {
     return '';
   }
@@ -75,10 +78,10 @@ export class Example24 {
       </ol>
     </ul>`;
 
-  aureliaGrid: AureliaGridInstance;
-  gridOptions: GridOption;
-  columnDefinitions: Column[];
-  dataset: any[];
+  aureliaGrid!: AureliaGridInstance;
+  gridOptions!: GridOption;
+  columnDefinitions: Column[] = [];
+  dataset: any[] = [];
 
   constructor() {
     // define the grid options & columns and then create the grid itself
@@ -147,6 +150,7 @@ export class Example24 {
         formatter: actionFormatter,
         cellMenu: {
           hideCloseButton: false,
+          width: 200,
           // you can override the logic of when the menu is usable
           // for example say that we want to show a menu only when then Priority is set to 'High'.
           // Note that this ONLY overrides the usability itself NOT the text displayed in the cell,
@@ -162,7 +166,7 @@ export class Example24 {
             {
               command: 'command2', title: 'Command 2', positionOrder: 62,
               // you can use the "action" callback and/or use "onCallback" callback from the grid options, they both have the same arguments
-              action: (e, args) => {
+              action: (_e, args) => {
                 console.log(args.dataContext, args.column);
                 // action callback.. do something
               },
@@ -191,7 +195,37 @@ export class Example24 {
               iconCssClass: 'fa fa-question-circle',
               positionOrder: 66,
             },
-            { command: 'something', title: 'Disabled Command', disabled: true, positionOrder: 67, }
+            { command: 'something', title: 'Disabled Command', disabled: true, positionOrder: 67, },
+            { command: '', divider: true, positionOrder: 98 },
+            {
+              // we can also have multiple nested sub-menus
+              command: 'export', title: 'Exports', positionOrder: 99,
+              commandItems: [
+                { command: 'exports-txt', title: 'Text (tab delimited)' },
+                {
+                  command: 'sub-menu', title: 'Excel', cssClass: 'green', subMenuTitle: 'available formats', subMenuTitleCssClass: 'text-italic orange',
+                  commandItems: [
+                    { command: 'exports-csv', title: 'Excel (csv)' },
+                    { command: 'exports-xlsx', title: 'Excel (xlsx)' },
+                  ]
+                }
+              ]
+            },
+            {
+              command: 'feedback', title: 'Feedback', positionOrder: 100,
+              commandItems: [
+                { command: 'request-update', title: 'Request update from supplier', iconCssClass: 'mdi mdi-star', tooltip: 'this will automatically send an alert to the shipping team to contact the user for an update' },
+                'divider',
+                {
+                  command: 'sub-menu', title: 'Contact Us', iconCssClass: 'mdi mdi-account', subMenuTitle: 'contact us...', subMenuTitleCssClass: 'italic',
+                  commandItems: [
+                    { command: 'contact-email', title: 'Email us', iconCssClass: 'mdi mdi-pencil-outline' },
+                    { command: 'contact-chat', title: 'Chat with us', iconCssClass: 'mdi mdi-message-text-outline' },
+                    { command: 'contact-meeting', title: 'Book an appointment', iconCssClass: 'mdi mdi-coffee' },
+                  ]
+                }
+              ]
+            }
           ],
           optionTitle: 'Change Completed Flag',
           optionItems: [
@@ -200,7 +234,7 @@ export class Example24 {
             {
               option: null, title: 'null', cssClass: 'italic',
               // you can use the "action" callback and/or use "onCallback" callback from the grid options, they both have the same arguments
-              action: (e, args) => {
+              action: () => {
                 // action callback.. do something
               },
               // only enable Action menu when the Priority is set to High
@@ -225,6 +259,7 @@ export class Example24 {
       enableCellNavigation: true,
       enableFiltering: true,
       enableSorting: true,
+      enableExcelExport: true,
       excelExportOptions: {
         exportWithFormatter: true,
         customColumnWidth: 15,
@@ -232,6 +267,8 @@ export class Example24 {
         // you can customize how the header titles will be styled (defaults to Bold)
         columnHeaderStyle: { font: { bold: true, italic: true } }
       },
+      registerExternalResources: [new ExcelExportService()],
+
       enableContextMenu: true,
       enableCellMenu: true,
 
@@ -239,8 +276,8 @@ export class Example24 {
       cellMenu: {
         // all the Cell Menu callback methods (except the action callback)
         // are available under the grid options as shown below
-        onCommand: (e, args) => this.executeCommand(e, args),
-        onOptionSelected: (e, args) => {
+        onCommand: (_e, args) => this.executeCommand(_e, args),
+        onOptionSelected: (_e, args) => {
           // change "Completed" property with new option selected from the Cell Menu
           const dataContext = args && args.dataContext;
           if (dataContext && dataContext.hasOwnProperty('completed')) {
@@ -248,12 +285,12 @@ export class Example24 {
             this.aureliaGrid.gridService.updateItem(dataContext);
           }
         },
-        onBeforeMenuShow: ((e, args) => {
+        onBeforeMenuShow: ((_e, args) => {
           // for example, you could select the row that the click originated
           // this.aureliaGrid.gridService.setSelectedRows([args.row]);
           console.log('Before the Cell Menu is shown', args);
         }),
-        onBeforeMenuClose: ((e, args) => console.log('Cell Menu is closing', args)),
+        onBeforeMenuClose: ((_e, args) => console.log('Cell Menu is closing', args)),
       },
 
       // load Context Menu structure
@@ -261,12 +298,21 @@ export class Example24 {
     };
   }
 
-  executeCommand(e, args) {
-    const columnDef = args.columnDef;
+  executeCommand(_e: Event, args: any) {
     const command = args.command;
     const dataContext = args.dataContext;
 
     switch (command) {
+      case 'contact-email':
+      case 'contact-chat':
+      case 'contact-meeting':
+        alert('Command: ' + args?.command);
+        break;
+      case 'exports-csv':
+      case 'exports-txt':
+      case 'exports-xlsx':
+        alert(`Exporting as ${args.item.title}`);
+        break;
       case 'command1':
         alert('Command 1');
         break;
@@ -337,6 +383,36 @@ export class Example24 {
           }
         },
         { command: 'something', title: 'Disabled Command', disabled: true, positionOrder: 65 },
+        { command: '', divider: true, positionOrder: 98 },
+        {
+          // we can also have multiple nested sub-menus
+          command: 'export', title: 'Exports', positionOrder: 99,
+          commandItems: [
+            { command: 'exports-txt', title: 'Text (tab delimited)' },
+            {
+              command: 'sub-menu', title: 'Excel', cssClass: 'green', subMenuTitle: 'available formats', subMenuTitleCssClass: 'text-italic orange',
+              commandItems: [
+                { command: 'exports-csv', title: 'Excel (csv)' },
+                { command: 'exports-xlsx', title: 'Excel (xlsx)' },
+              ]
+            }
+          ]
+        },
+        {
+          command: 'feedback', title: 'Feedback', positionOrder: 100,
+          commandItems: [
+            { command: 'request-update', title: 'Request update from supplier', iconCssClass: 'mdi mdi-star', tooltip: 'this will automatically send an alert to the shipping team to contact the user for an update' },
+            'divider',
+            {
+              command: 'sub-menu', title: 'Contact Us', iconCssClass: 'mdi mdi-account', subMenuTitle: 'contact us...', subMenuTitleCssClass: 'italic',
+              commandItems: [
+                { command: 'contact-email', title: 'Email us', iconCssClass: 'mdi mdi-pencil-outline' },
+                { command: 'contact-chat', title: 'Chat with us', iconCssClass: 'mdi mdi-message-text-outline' },
+                { command: 'contact-meeting', title: 'Book an appointment', iconCssClass: 'mdi mdi-coffee' },
+              ]
+            }
+          ]
+        }
       ],
 
       // Options allows you to edit a column from an option chose a list
@@ -353,7 +429,7 @@ export class Example24 {
             return (!dataContext.completed);
           },
           // you can use the 'action' callback and/or subscribe to the 'onCallback' event, they both have the same arguments
-          action: (e, args) => {
+          action: () => {
             // action callback.. do something
           },
         },
@@ -372,21 +448,29 @@ export class Example24 {
             return (!dataContext.completed);
           }
         },
+        {
+          // we can also have multiple nested sub-menus
+          option: null, title: 'Sub-Options (demo)', subMenuTitle: 'Change Priority', optionItems: [
+            { option: 1, iconCssClass: 'fa fa-star-o yellow', title: 'Low' },
+            { option: 2, iconCssClass: 'fa fa-star-half-o orange', title: 'Medium' },
+            { option: 3, iconCssClass: 'fa fa-star red', title: 'High' },
+          ]
+        }
       ],
       // subscribe to Context Menu
-      onBeforeMenuShow: ((e, args) => {
+      onBeforeMenuShow: ((_e, args) => {
         // for example, you could select the row it was clicked with
         // grid.setSelectedRows([args.row]); // select the entire row
         this.aureliaGrid.slickGrid.setActiveCell(args.row, args.cell, false); // select the cell that the click originated
         console.log('Before the global Context Menu is shown', args);
       }),
-      onBeforeMenuClose: ((e, args) => console.log('Global Context Menu is closing', args)),
+      onBeforeMenuClose: ((_e, args) => console.log('Global Context Menu is closing', args)),
 
       // subscribe to Context Menu onCommand event (or use the action callback on each command)
-      onCommand: ((e, args) => this.executeCommand(e, args)),
+      onCommand: ((_e, args) => this.executeCommand(_e, args)),
 
       // subscribe to Context Menu onOptionSelected event (or use the action callback on each option)
-      onOptionSelected: ((e, args) => {
+      onOptionSelected: ((_e, args) => {
         // change Priority
         const dataContext = args && args.dataContext;
         if (dataContext?.hasOwnProperty('priority')) {
@@ -407,7 +491,7 @@ export class Example24 {
     });
   }
 
-  showCellMenuCommandsAndOptions(showBothList) {
+  showCellMenuCommandsAndOptions(showBothList: boolean) {
     // change via the plugin setOptions
     this.cellMenuInstance?.setOptions({
       hideOptionSection: !showBothList

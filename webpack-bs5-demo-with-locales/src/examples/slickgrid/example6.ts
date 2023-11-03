@@ -1,9 +1,10 @@
-import { GraphqlService, GraphqlPaginatedResult, GraphqlServiceApi, } from '@slickgrid-universal/graphql';
+import { GraphqlService, GraphqlPaginatedResult, GraphqlServiceApi, GraphqlServiceOption, } from '@slickgrid-universal/graphql';
 import { autoinject } from 'aurelia-framework';
 import * as moment from 'moment-mini';
 import {
   AureliaGridInstance,
   Column,
+  CursorPageInfo,
   FieldType,
   Filters,
   Formatters,
@@ -35,15 +36,14 @@ export class Example6 {
       <li>You can also preload a grid with certain "presets" like Filters / Sorters / Pagination <a href="https://github.com/ghiscoding/aurelia-slickgrid/wiki/Grid-State-&-Preset" target="_blank">Wiki - Grid Preset</a>
     </ul>
   `;
-
-  aureliaGrid: AureliaGridInstance;
-  columnDefinitions: Column[];
-  gridOptions: GridOption;
-  dataset = [];
-  metrics: Metrics;
+  isWithCursor = false;
+  aureliaGrid!: AureliaGridInstance;
+  columnDefinitions: Column[] = [];
+  gridOptions!: GridOption;
+  dataset = [] = [];
+  metrics!: Metrics;
   graphqlService = new GraphqlService();
 
-  isWithCursor = false;
   graphqlQuery = '';
   processing = false;
   status = { text: '', class: '' };
@@ -159,7 +159,7 @@ export class Example6 {
           { columnId: 'name', direction: 'asc' },
           { columnId: 'company', direction: SortDirection.DESC }
         ],
-        pagination: { pageNumber: 2, pageSize: 20 }
+        pagination: { pageNumber: this.isWithCursor ? 1 : 2, pageSize: 20 } // if cursor based, start at page 1
       },
       backendServiceApi: {
         service: this.graphqlService,
@@ -170,6 +170,7 @@ export class Example6 {
             field: 'userId',
             value: 123
           }],
+          isWithCursor: this.isWithCursor, // sets pagination strategy, if true requires a call to setPageInfo() when graphql call returns
           // when dealing with complex objects, we want to keep our field name with double quotes
           // example with gender: query { users (orderBy:[{field:"gender",direction:ASC}]) {}
           keepArgumentFieldDoubleQuotes: true
@@ -179,7 +180,7 @@ export class Example6 {
         preProcess: () => this.displaySpinner(true),
         process: (query) => this.getCustomerApiCall(query),
         postProcess: (result: GraphqlPaginatedResult) => {
-          this.metrics = result.metrics;
+          this.metrics = result.metrics as Metrics;
           this.displaySpinner(false);
         }
       } as GraphqlServiceApi
@@ -192,7 +193,7 @@ export class Example6 {
     }
   }
 
-  displaySpinner(isProcessing) {
+  displaySpinner(isProcessing: boolean) {
     this.processing = isProcessing;
     this.status = (isProcessing)
       ? { text: 'processing...', class: 'alert alert-danger' }
@@ -204,7 +205,37 @@ export class Example6 {
    * @param query
    * @return Promise<GraphqlPaginatedResult>
    */
-  getCustomerApiCall(query: string): Promise<GraphqlPaginatedResult> {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  getCustomerApiCall(_query: string): Promise<GraphqlPaginatedResult> {
+    let pageInfo: CursorPageInfo;
+    if (this.aureliaGrid?.paginationService) {
+      const { paginationService } = this.aureliaGrid;
+      // there seems to a timing issue where when you click "cursor" it requests the data before the pagination-service is initialized...
+      const pageNumber = (paginationService as any)._initialized ? paginationService.getCurrentPageNumber() : 1;
+      // In the real world, each node item would be A,B,C...AA,AB,AC, etc and so each page would actually be something like A-T, T-AN
+      // but for this mock data it's easier to represent each page as
+      // Page1: A-B
+      // Page2: B-C
+      // Page3: C-D
+      // Page4: D-E
+      // Page5: E-F
+      const startCursor = String.fromCharCode('A'.charCodeAt(0) + pageNumber - 1);
+      const endCursor = String.fromCharCode(startCursor.charCodeAt(0) + 1);
+      pageInfo = {
+        hasPreviousPage: paginationService.dataFrom === 0,
+        hasNextPage: paginationService.dataTo === 100,
+        startCursor,
+        endCursor
+      };
+    } else {
+      pageInfo = {
+        hasPreviousPage: false,
+        hasNextPage: true,
+        startCursor: 'A',
+        endCursor: 'B'
+      };
+    }
+
     // in your case, you will call your WebAPI function (wich needs to return a Promise)
     // for the demo purpose, we will call a mock WebAPI function
     const mockedResult = {
@@ -213,25 +244,33 @@ export class Example6 {
       data: {
         [GRAPHQL_QUERY_DATASET_NAME]: {
           nodes: [],
-          totalCount: 100
+          totalCount: 100,
+          pageInfo
         }
       }
     };
 
-    return new Promise((resolve, reject) => {
+    return new Promise(resolve => {
       setTimeout(() => {
         this.graphqlQuery = this.graphqlService.buildQuery();
+        // this.graphqlQuery = this.gridOptions.backendServiceApi!.service.buildQuery();
+        if (this.isWithCursor) {
+          // When using cursor pagination, the pagination service needs to updated with the PageInfo data from the latest request
+          // This might be done automatically if using a framework specific slickgrid library
+          // Note because of this timeout, this may cause race conditions with rapid clicks!
+          this.aureliaGrid?.paginationService?.setCursorPageInfo(mockedResult.data[GRAPHQL_QUERY_DATASET_NAME].pageInfo);
+        }
         resolve(mockedResult);
       }, 150);
     });
   }
 
   goToFirstPage() {
-    this.aureliaGrid.paginationService.goToFirstPage();
+    this.aureliaGrid.paginationService!.goToFirstPage();
   }
 
   goToLastPage() {
-    this.aureliaGrid.paginationService.goToLastPage();
+    this.aureliaGrid.paginationService!.goToLastPage();
   }
 
   /** Dispatched event of a Grid State Changed event */
@@ -263,5 +302,43 @@ export class Example6 {
       { columnId: 'billingAddressZip', direction: 'DESC' },
       { columnId: 'company', direction: 'ASC' },
     ]);
+  }
+
+  resetToOriginalPresets() {
+    const presetLowestDay = moment().add(-2, 'days').format('YYYY-MM-DD');
+    const presetHighestDay = moment().add(20, 'days').format('YYYY-MM-DD');
+
+    this.aureliaGrid.filterService.updateFilters([
+      // you can use OperatorType or type them as string, e.g.: operator: 'EQ'
+      { columnId: 'gender', searchTerms: ['male'], operator: OperatorType.equal },
+      { columnId: 'name', searchTerms: ['John Doe'], operator: OperatorType.contains },
+      { columnId: 'company', searchTerms: ['xyz'], operator: 'IN' },
+
+      // use a date range with 2 searchTerms values
+      { columnId: 'finish', searchTerms: [presetLowestDay, presetHighestDay], operator: OperatorType.rangeInclusive },
+    ]);
+    this.aureliaGrid.sortService.updateSorting([
+      // direction can written as 'asc' (uppercase or lowercase) and/or use the SortDirection type
+      { columnId: 'name', direction: 'asc' },
+      { columnId: 'company', direction: SortDirection.DESC }
+    ]);
+    setTimeout(() => {
+      this.aureliaGrid.paginationService?.changeItemPerPage(20);
+      this.aureliaGrid.paginationService?.goToPageNumber(2);
+    });
+  }
+
+  setIsWithCursor(isWithCursor: boolean) {
+    this.isWithCursor = isWithCursor;
+    this.resetOptions({ isWithCursor: this.isWithCursor });
+    return true;
+  }
+
+  private resetOptions(options: Partial<GraphqlServiceOption>) {
+    const graphqlService = this.gridOptions.backendServiceApi!.service as GraphqlService;
+    this.aureliaGrid.paginationService!.setCursorBased(options.isWithCursor!);
+    this.aureliaGrid.paginationService?.goToFirstPage();
+    graphqlService.updateOptions(options);
+    this.gridOptions = { ...this.gridOptions };
   }
 }
