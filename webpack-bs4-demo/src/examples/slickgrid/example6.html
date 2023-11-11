@@ -21,30 +21,34 @@
       </div>
 
       <div class="row col-md-12">
-          <button class="btn btn-outline-secondary btn-sm mr-1" data-test="clear-filters-sorting"
-                  click.delegate="clearAllFiltersAndSorts()" title="Clear all Filters & Sorts">
-            <i class="fa fa-filter text-danger"></i>
-            Clear all Filter & Sorts
-          </button>
-          <button class="btn btn-outline-secondary btn-sm mr-1" data-test="set-dynamic-filter"
-                  click.delegate="setFiltersDynamically()">
-            Set Filters Dynamically
-          </button>
-          <button class="btn btn-outline-secondary btn-sm mr-1" data-test="set-dynamic-sorting"
-                  click.delegate="setSortingDynamically()">
-            Set Sorting Dynamically
-          </button>
-          <button class="btn btn-outline-secondary btn-sm mr-1" data-test="reset-presets"
-                  click.delegate="resetToOriginalPresets()">
-            Reset Original Presets
-          </button>
+        <button class="btn btn-outline-secondary btn-sm mr-1" data-test="clear-filters-sorting"
+                click.delegate="clearAllFiltersAndSorts()" title="Clear all Filters & Sorts">
+          <i class="fa fa-filter text-danger"></i>
+          Clear all Filter & Sorts
+        </button>
+        <button class="btn btn-outline-secondary btn-sm mr-1" data-test="set-dynamic-filter"
+                click.delegate="setFiltersDynamically()">
+          Set Filters Dynamically
+        </button>
+        <button class="btn btn-outline-secondary btn-sm mr-1" data-test="set-dynamic-sorting"
+                click.delegate="setSortingDynamically()">
+          Set Sorting Dynamically
+        </button>
+        <button class="btn btn-outline-secondary btn-sm mr-1" data-test="reset-presets"
+                click.delegate="resetToOriginalPresets()">
+          Reset Original Presets
+        </button>
+        <label for="serverdelay" class="ml-4">Server Delay: </label>
+        <input id="serverdelay" type="number" data-test="server-delay" style="width: 55px"
+              value.bind="serverWaitDelay"
+              title="input a fake timer delay to simulate slow server response" />
       </div>
 
       <hr>
 
       <div class="row col-md-12">
-          <button class="btn btn-outline-secondary btn-sm mr-1" click.delegate="switchLanguage()"
-                  data-test="language-button">
+        <button class="btn btn-outline-secondary btn-sm mr-1" click.delegate="switchLanguage()"
+                 data-test="language-button">
             <i class="fa fa-language"></i>
             Switch Language
           </button>
@@ -76,12 +80,12 @@
       </div>
       <div class="row col-md-12" style="margin-bottom: 5px">
         <label>Programmatically go to first/last page:</label>
-        <button class="btn btn-outline-secondary btn-xs px-2" data-test="goto-first-page" click.delegate="goToFirstPage()">
-          <i class="fa fa-caret-left fa-lg"></i>
-        </button>
-        <button class="btn btn-outline-secondary btn-xs px-2" data-test="goto-last-page" click.delegate="goToLastPage()">
-          <i class="fa fa-caret-right fa-lg"></i>
-        </button>
+          <button class="btn btn-outline-secondary btn-xs px-2" data-test="goto-first-page" click.delegate="goToFirstPage()">
+            <i class="fa fa-caret-left fa-lg"></i>
+          </button>
+          <button class="btn btn-outline-secondary btn-xs px-2" data-test="goto-last-page" click.delegate="goToLastPage()">
+            <i class="fa fa-caret-right fa-lg"></i>
+          </button>
       </div>
     </div>
     <div class="col-sm-7">
