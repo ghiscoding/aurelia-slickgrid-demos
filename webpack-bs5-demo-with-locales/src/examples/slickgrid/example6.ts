@@ -1,5 +1,6 @@
 import { GraphqlService, GraphqlPaginatedResult, GraphqlServiceApi, GraphqlServiceOption, } from '@slickgrid-universal/graphql';
 import { autoinject } from 'aurelia-framework';
+import { I18N } from 'aurelia-i18n';
 import * as moment from 'moment-mini';
 import {
   AureliaGridInstance,
@@ -18,6 +19,7 @@ import {
 
 const defaultPageSize = 20;
 const GRAPHQL_QUERY_DATASET_NAME = 'users';
+const FAKE_SERVER_DELAY = 250;
 
 @autoinject()
 export class Example6 {
@@ -46,11 +48,18 @@ export class Example6 {
 
   graphqlQuery = '';
   processing = false;
+  selectedLanguage: string;
   status = { text: '', class: '' };
+  serverWaitDelay = FAKE_SERVER_DELAY; // server simulation with default of 250ms but 50ms for Cypress tests
 
-  constructor() {
+  constructor(private i18n: I18N) {
     // define the grid options & columns and then create the grid itself
     this.defineGrid();
+
+    // always start with English for Cypress E2E tests to be consistent
+    const defaultLang = 'en';
+    this.i18n.setLocale(defaultLang);
+    this.selectedLanguage = defaultLang;
   }
 
   detached() {
@@ -64,7 +73,7 @@ export class Example6 {
   defineGrid() {
     this.columnDefinitions = [
       {
-        id: 'name', field: 'name', name: 'Name', width: 60, columnGroup: 'Customer Information',
+        id: 'name', field: 'name', nameKey: 'NAME', width: 60, columnGroupKey: 'CUSTOMER_INFORMATION',
         type: FieldType.string,
         sortable: true,
         filterable: true,
@@ -73,14 +82,14 @@ export class Example6 {
         }
       },
       {
-        id: 'gender', field: 'gender', name: 'Gender', filterable: true, sortable: true, width: 60, columnGroup: 'Customer Information',
+        id: 'gender', field: 'gender', nameKey: 'GENDER', filterable: true, sortable: true, width: 60, columnGroupKey: 'CUSTOMER_INFORMATION',
         filter: {
           model: Filters.singleSelect,
-          collection: [{ value: '', label: '' }, { value: 'male', label: 'Male' }, { value: 'female', label: 'Female' }]
+          collection: [{ value: '', label: '' }, { value: 'male', label: 'male', labelKey: 'MALE' }, { value: 'female', label: 'female', labelKey: 'FEMALE' }]
         }
       },
       {
-        id: 'company', field: 'company', name: 'COMPANY', width: 60, columnGroup: 'Customer Information',
+        id: 'company', field: 'company', nameKey: 'COMPANY', width: 60, columnGroupKey: 'CUSTOMER_INFORMATION',
         sortable: true,
         filterable: true,
         filter: {
@@ -92,13 +101,13 @@ export class Example6 {
         }
       },
       {
-        id: 'billingAddressStreet', field: 'billing.address.street', name: 'Street',
-        width: 60, filterable: true, sortable: true, columnGroup: 'Billing Information',
+        id: 'billingAddressStreet', field: 'billing.address.street', nameKey: 'BILLING.ADDRESS.STREET',
+        width: 60, filterable: true, sortable: true, columnGroupKey: 'BILLING.INFORMATION',
       },
       {
-        id: 'billingAddressZip', field: 'billing.address.zip', name: 'Zip', width: 60,
+        id: 'billingAddressZip', field: 'billing.address.zip', nameKey: 'BILLING.ADDRESS.ZIP', width: 60,
         type: FieldType.number,
-        columnGroup: 'Billing Information',
+        columnGroupKey: 'BILLING.INFORMATION',
         filterable: true, sortable: true,
         filter: {
           model: Filters.compoundInput
@@ -107,7 +116,7 @@ export class Example6 {
       },
       {
         id: 'finish', field: 'finish', name: 'Date', formatter: Formatters.dateIso, sortable: true, minWidth: 90, width: 120, exportWithFormatter: true,
-        columnGroup: 'Billing Information',
+        columnGroupKey: 'BILLING.INFORMATION',
         type: FieldType.date,
         filterable: true,
         filter: {
@@ -122,9 +131,11 @@ export class Example6 {
     this.gridOptions = {
       enableFiltering: true,
       enableCellNavigation: true,
+      enableTranslate: true,
       createPreHeaderPanel: true,
       showPreHeaderPanel: true,
       preHeaderPanelHeight: 28,
+      i18n: this.i18n,
       gridHeight: 200,
       gridWidth: 900,
       gridMenu: {
@@ -170,7 +181,7 @@ export class Example6 {
             field: 'userId',
             value: 123
           }],
-          isWithCursor: this.isWithCursor, // sets pagination strategy, if true requires a call to setPageInfo() when graphql call returns
+          useCursor: this.isWithCursor, // sets pagination strategy, if true requires a call to setPageInfo() when graphql call returns
           // when dealing with complex objects, we want to keep our field name with double quotes
           // example with gender: query { users (orderBy:[{field:"gender",direction:ASC}]) {}
           keepArgumentFieldDoubleQuotes: true
@@ -261,7 +272,7 @@ export class Example6 {
           this.aureliaGrid?.paginationService?.setCursorPageInfo(mockedResult.data[GRAPHQL_QUERY_DATASET_NAME].pageInfo);
         }
         resolve(mockedResult);
-      }, 150);
+      }, this.serverWaitDelay);
     });
   }
 
@@ -330,15 +341,21 @@ export class Example6 {
 
   setIsWithCursor(isWithCursor: boolean) {
     this.isWithCursor = isWithCursor;
-    this.resetOptions({ isWithCursor: this.isWithCursor });
+    this.resetOptions({ useCursor: this.isWithCursor });
     return true;
+  }
+
+  async switchLanguage() {
+    const nextLanguage = (this.selectedLanguage === 'en') ? 'fr' : 'en';
+    await this.i18n.setLocale(nextLanguage);
+    this.selectedLanguage = nextLanguage;
   }
 
   private resetOptions(options: Partial<GraphqlServiceOption>) {
     const graphqlService = this.gridOptions.backendServiceApi!.service as GraphqlService;
-    this.aureliaGrid.paginationService!.setCursorBased(options.isWithCursor!);
-    this.aureliaGrid.paginationService?.goToFirstPage();
+    this.aureliaGrid.paginationService!.setCursorBased(options.useCursor!);
     graphqlService.updateOptions(options);
     this.gridOptions = { ...this.gridOptions };
+    this.aureliaGrid.paginationService?.goToFirstPage();
   }
 }
