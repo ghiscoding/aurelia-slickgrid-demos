@@ -222,7 +222,7 @@ export class Example4 {
           { columnId: 'complete', direction: 'ASC' }
         ],
       },
-      registerExternalResources: [new ExcelExportService()],
+      externalResources: [new ExcelExportService()],
     };
   }
 

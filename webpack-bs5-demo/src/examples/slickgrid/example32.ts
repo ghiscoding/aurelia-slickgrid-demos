@@ -21,7 +21,7 @@ import { autoinject } from 'aurelia-framework';
 import { AureliaGridInstance } from 'aurelia-slickgrid';
 import './example32.scss'; // provide custom CSS/SASS styling
 
-const NB_ITEMS = 5000;
+const NB_ITEMS = 400;
 const URL_COUNTRIES_COLLECTION = 'assets/data/countries.json';
 
 // using external SlickGrid JS libraries
@@ -121,9 +121,9 @@ export class Example32 {
         resizeCharWidthInPx: 7.6,
         resizeCalcWidthRatio: 1, // default ratio is ~0.9 for string but since our text is all uppercase then a higher ratio is needed
         resizeMaxWidthThreshold: 200,
-        filterable: true, columnGroup: 'Common Factor',
-        filter: { model: Filters.compoundInputText },
-        formatter: Formatters.multiple, params: { formatters: [Formatters.uppercase, Formatters.bold] },
+        columnGroup: 'Common Factor',
+        cssClass: 'text-uppercase text-bold',
+        filterable: true, filter: { model: Filters.compoundInputText },
         editor: {
           model: Editors.longText, required: true, alwaysSaveOnEnterKey: true,
           maxLength: 12,
@@ -186,14 +186,14 @@ export class Example32 {
         exportCustomFormatter: Formatters.dateUs,
         type: FieldType.date, outputType: FieldType.dateUs, saveOutputType: FieldType.dateUtc,
         filterable: true, filter: { model: Filters.compoundDate },
-        editor: { model: Editors.date, editorOptions: { hideClearButton: false } },
+        editor: { model: Editors.date, params: { hideClearButton: false } },
       },
       {
         id: 'completed', name: 'Completed', field: 'completed', width: 80, minWidth: 75, maxWidth: 100,
-        sortable: true, filterable: true, columnGroup: 'Period',
-        formatter: Formatters.multiple,
-        params: { formatters: [Formatters.checkmark, Formatters.center] },
+        cssClass: 'text-center', columnGroup: 'Period',
+        formatter: Formatters.checkmark,
         exportWithFormatter: false,
+        filterable: true, sortable: true,
         filter: {
           collection: [{ value: '', label: '' }, { value: true, label: 'True' }, { value: false, label: 'False' }],
           model: Filters.singleSelect
@@ -239,10 +239,10 @@ export class Example32 {
           // example with a Remote API call
           editorOptions: {
             minLength: 1,
-            fetch: (searchText: string, updateCallback: (items: false | any[]) => void) => {
+            fetch: (searchTerm: string, callback: (items: false | any[]) => void) => {
               // const items = require('c://TEMP/items.json');
               const products = this.mockProducts();
-              updateCallback(products.filter(product => product.itemName.toLowerCase().includes(searchText.toLowerCase())));
+              callback(products.filter(product => product.itemName.toLowerCase().includes(searchTerm.toLowerCase())));
             },
             renderItem: {
               // layout: 'twoRows',
@@ -255,7 +255,7 @@ export class Example32 {
         },
         filter: {
           model: Filters.inputText,
-          // placeholder: '🔎︎ search product',
+          // placeholder: '🔎︎ search city',
           type: FieldType.string,
           queryField: 'product.itemName',
         }
@@ -331,6 +331,11 @@ export class Example32 {
       },
       gridWidth: '100%',
       enableAutoResize: true,
+      enablePagination: true,
+      pagination: {
+        pageSize: 10,
+        pageSizes: [10, 200, 500, 5000]
+      },
 
       // resizing by cell content is opt-in
       // we first need to disable the 2 default flags to autoFit/autosize
@@ -350,7 +355,7 @@ export class Example32 {
       excelExportOptions: {
         exportWithFormatter: false
       },
-      registerExternalResources: [new ExcelExportService()],
+      externalResources: [new ExcelExportService()],
       enableFiltering: true,
       enableRowSelection: true,
       enableCheckboxSelector: true,
@@ -378,7 +383,7 @@ export class Example32 {
           const prevSerializedValue = prevSerializedValues[index];
           const serializedValue = serializedValues[index];
 
-          if (prevSerializedValue !== serializedValue || serializedValue === '') {
+          if (prevSerializedValue !== serializedValue) {
             const finalColumn = Array.isArray(editCommand.prevSerializedValue) ? editorColumns[index] : column;
             this.editedItems[this.gridOptions.datasetIdPropertyName || 'id'] = item; // keep items by their row indexes, if the row got edited twice then we'll keep only the last change
             this.aureliaGrid.slickGrid.invalidate();
@@ -498,6 +503,10 @@ export class Example32 {
     this.isUsingDefaultResize = false;
   }
 
+  handleOnSelectedRowIdsChanged(args: any) {
+    console.log('Selected Ids:', args.selectedRowIds);
+  }
+
   toggleGridEditReadonly() {
     // first need undo all edits
     this.undoAllEdits();
@@ -552,6 +561,18 @@ export class Example32 {
     }
   }
 
+  // change row selection dynamically and apply it to the DataView and the Grid UI
+  setSelectedRowIds() {
+    // change row selection even across multiple pages via DataView
+    this.aureliaGrid.dataView?.setSelectedIds([3, 4, 11]);
+
+    // you can also provide optional options (all defaults to true)
+    // this.sgb.dataView?.setSelectedIds([4, 5, 8, 10], {
+    //   isRowBeingAdded: true,
+    //   shouldTriggerEvent: true,
+    //   applyGridRowSelection: true
+    // });
+  }
 
   saveAll() {
     // Edit Queue (array increases every time a cell is changed, regardless of item object)
@@ -783,7 +804,7 @@ export class Example32 {
       </div>
       <div>
         <span class="autocomplete-top-left">
-          <span class="fa ${item.itemTypeName === 'I' ? 'fa-info-circle' : 'fa-copy'}"></span>
+          <span class="mdfai ${item.itemTypeName === 'I' ? 'fa-info-circle' : 'fa-copy'}"></span>
           ${item.itemName}
         </span>
       <div>

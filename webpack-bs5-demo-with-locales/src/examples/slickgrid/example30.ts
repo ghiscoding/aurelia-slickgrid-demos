@@ -1,4 +1,3 @@
-import { EditCommand, SlickGrid } from '@slickgrid-universal/common';
 import { SlickCompositeEditorComponent } from '@slickgrid-universal/composite-editor-component';
 import { ExcelExportService } from '@slickgrid-universal/excel-export';
 import { HttpClient as FetchClient } from 'aurelia-fetch-client';
@@ -9,6 +8,7 @@ import {
   AutocompleterOption,
   Column,
   CompositeEditorModalType,
+  EditCommand,
   Editors,
   FieldType,
   Filters,
@@ -20,6 +20,7 @@ import {
   GridStateChange,
   LongTextEditorOption,
   OnCompositeEditorChangeEventArgs,
+  SlickGrid,
   SlickNamespace,
   SortComparers,
 } from 'aurelia-slickgrid';
@@ -122,9 +123,8 @@ export class Example30 {
     this.columnDefinitions = [
       {
         id: 'title', name: 'Title', field: 'title', sortable: true, type: FieldType.string, minWidth: 75,
-        filterable: true, columnGroup: 'Common Factor',
-        filter: { model: Filters.compoundInputText },
-        formatter: Formatters.multiple, params: { formatters: [Formatters.uppercase, Formatters.bold] },
+        cssClass: 'text-uppercase text-bold', columnGroup: 'Common Factor',
+        filterable: true, filter: { model: Filters.compoundInputText },
         editor: {
           model: Editors.longText, massUpdate: false, required: true, alwaysSaveOnEnterKey: true,
           maxLength: 12,
@@ -218,8 +218,7 @@ export class Example30 {
       {
         id: 'completed', name: 'Completed', field: 'completed', width: 80, minWidth: 75, maxWidth: 100,
         sortable: true, filterable: true, columnGroup: 'Period',
-        formatter: Formatters.multiple,
-        params: { formatters: [Formatters.checkmark, Formatters.center] },
+        cssClass: 'text-center', formatter: Formatters.checkmark,
         exportWithFormatter: false,
         filter: {
           collection: [{ value: '', label: '' }, { value: true, label: 'True' }, { value: false, label: 'False' }],
@@ -276,10 +275,9 @@ export class Example30 {
           // example with a Remote API call
           editorOptions: {
             minLength: 1,
-            fetch: (searchText: string, updateCallback: (items: false | any[]) => void) => {
-              // const items = require('c://TEMP/items.json');
+            fetch: (searchTerm: string, callback: (items: false | any[]) => void) => {
               const products = this.mockProducts();
-              updateCallback(products.filter(product => product.itemName.toLowerCase().includes(searchText.toLowerCase())));
+              callback(products.filter(product => product.itemName.toLowerCase().includes(searchTerm.toLowerCase())));
             },
             renderItem: {
               // layout: 'twoRows',
@@ -388,7 +386,7 @@ export class Example30 {
       excelExportOptions: {
         exportWithFormatter: false
       },
-      registerExternalResources: [new ExcelExportService(), this.compositeEditorInstance],
+      externalResources: [new ExcelExportService(), this.compositeEditorInstance],
       enableFiltering: true,
       rowSelectionOptions: {
         // True (Single Selection), False (Multiple Selections)
@@ -761,7 +759,7 @@ export class Example30 {
         listPrice: 2100.23,
         itemTypeName: 'I',
         image: 'http://i.stack.imgur.com/pC1Tv.jpg',
-        icon: this.getRandomIcon(0),
+        icon: this.getRandomIcon(0)
       },
       {
         id: 1,
@@ -770,7 +768,7 @@ export class Example30 {
         listPrice: 3200.12,
         itemTypeName: 'I',
         image: 'https://i.imgur.com/Fnm7j6h.jpg',
-        icon: this.getRandomIcon(1),
+        icon: this.getRandomIcon(1)
       },
       {
         id: 2,
@@ -779,7 +777,7 @@ export class Example30 {
         listPrice: 15.00,
         itemTypeName: 'I',
         image: 'https://i.imgur.com/RaVJuLr.jpg',
-        icon: this.getRandomIcon(2),
+        icon: this.getRandomIcon(2)
       },
       {
         id: 3,
@@ -788,7 +786,7 @@ export class Example30 {
         listPrice: 25.76,
         itemTypeName: 'I',
         image: 'http://i.stack.imgur.com/pC1Tv.jpg',
-        icon: this.getRandomIcon(3),
+        icon: this.getRandomIcon(3)
       },
       {
         id: 4,
@@ -797,7 +795,7 @@ export class Example30 {
         listPrice: 13.35,
         itemTypeName: 'I',
         image: 'https://i.imgur.com/Fnm7j6h.jpg',
-        icon: this.getRandomIcon(4),
+        icon: this.getRandomIcon(4)
       },
       {
         id: 5,
@@ -806,7 +804,7 @@ export class Example30 {
         listPrice: 23.33,
         itemTypeName: 'I',
         image: 'https://i.imgur.com/RaVJuLr.jpg',
-        icon: this.getRandomIcon(5),
+        icon: this.getRandomIcon(5)
       },
       {
         id: 6,
@@ -815,7 +813,7 @@ export class Example30 {
         listPrice: 71.21,
         itemTypeName: 'I',
         image: 'http://i.stack.imgur.com/pC1Tv.jpg',
-        icon: this.getRandomIcon(6),
+        icon: this.getRandomIcon(6)
       },
       {
         id: 7,
@@ -824,7 +822,7 @@ export class Example30 {
         listPrice: 2.43,
         itemTypeName: 'I',
         image: 'https://i.imgur.com/Fnm7j6h.jpg',
-        icon: this.getRandomIcon(7),
+        icon: this.getRandomIcon(7)
       },
       {
         id: 8,
@@ -833,7 +831,7 @@ export class Example30 {
         listPrice: 31288.39,
         itemTypeName: 'I',
         image: 'https://i.imgur.com/RaVJuLr.jpg',
-        icon: this.getRandomIcon(8),
+        icon: this.getRandomIcon(8)
       },
     ];
   }
@@ -933,9 +931,9 @@ export class Example30 {
           ${item.itemName}
         </span>
       <div>
-    </div>
+      </div>
     <div>
-      <div class="autocomplete-bottom-left">${item.itemNameTranslated}</div>
+    <div class="autocomplete-bottom-left">${item.itemNameTranslated}</div>
     </div>`;
   }
 
