@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { GridOdataService, OdataServiceApi, OdataOption } from '@slickgrid-universal/odata';
 import { RxJsResource } from '@slickgrid-universal/rxjs-observable';
-import { autoinject } from 'aurelia-framework';
 import { HttpClient } from 'aurelia-http-client';
 import { Observable, of, Subject } from 'rxjs';
 import {
@@ -21,7 +20,6 @@ import './example31.scss'; // provide custom CSS/SASS styling
 const defaultPageSize = 20;
 const sampleDataRoot = 'assets/data';
 
-@autoinject()
 export class Example31 {
   title = 'Example 31: Grid with OData Backend Service using RxJS Observables';
   subTitle = `
@@ -47,7 +45,7 @@ export class Example31 {
   isOtherGenderAdded = false;
   genderCollection = [{ value: 'male', label: 'male' }, { value: 'female', label: 'female' }];
 
-  constructor(private http: HttpClient) {
+  constructor(@newInstanceOf(IHttpClient) readonly http: IHttpClient) {
     this.initializeGrid();
   }
 
@@ -259,12 +257,9 @@ export class Example31 {
 
 
       // read the json and create a fresh copy of the data that we are free to modify
-      this.http.createRequest(`${sampleDataRoot}/customers_100.json`)
-        .asGet()
-        .send()
-        .then(response => {
-          let data = response.content as any[];
-
+      this.http.fetch(`${sampleDataRoot}/customers_100.json`)
+        .then(e => e.json())
+        .then((data: any) => {
           // Sort the data
           if (orderBy?.length > 0) {
             const orderByClauses = orderBy.split(',');

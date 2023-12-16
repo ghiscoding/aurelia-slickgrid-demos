@@ -1,5 +1,4 @@
 import { ExcelExportService } from '@slickgrid-universal/excel-export';
-import { autoinject } from 'aurelia-framework';
 
 import {
   AureliaGridInstance,
@@ -49,17 +48,16 @@ const taskFormatter: Formatter = (row: number, cell: number, value: any, columnD
   return value !== undefined ? `Title ${value}` : '';
 };
 
-@autoinject()
 export class Example24 {
   title = 'Example 24: Cell Menu & Context Menu Plugins';
   subTitle = `Add Cell Menu and Context Menu
     <ul>
       <li>This example demonstrates 2 SlickGrid plugins
       <ol>
-        <li>Using the <b>Slick.Plugins.CellMenu</b> plugin, often used for an Action Menu(s), 1 or more per grid
+        <li>Using the <b>SlickCellMenu</b> plugin, often used for an Action Menu(s), 1 or more per grid
           (<a href="https://github.com/ghiscoding/aurelia-slickgrid/wiki/Cell-Menu" target="_blank">Wiki docs</a>).
         </li>
-        <li>Using the <b>Slick.Plugins.ContextMenu</b> plugin, shown after a mouse right+click, only 1 per grid.
+        <li>Using the <b>SlickContextMenu</b> plugin, shown after a mouse right+click, only 1 per grid.
         (<a href="https://github.com/ghiscoding/aurelia-slickgrid/wiki/Context-Menu" target="_blank">Wiki docs</a>).
         </li>
       </ol>

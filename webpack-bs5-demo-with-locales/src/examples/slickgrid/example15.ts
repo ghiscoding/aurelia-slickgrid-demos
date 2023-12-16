@@ -1,4 +1,3 @@
-import { autoinject } from 'aurelia-framework';
 import {
   AureliaGridInstance,
   Column,
@@ -18,7 +17,6 @@ const DEFAULT_PAGE_SIZE = 25;
 const LOCAL_STORAGE_KEY = 'gridState';
 const NB_ITEMS = 500;
 
-@autoinject()
 export class Example15 {
   title = 'Example 15: Grid State & Presets using Local Storage';
   subTitle = `

@@ -1,10 +1,10 @@
-import { I18N } from 'aurelia-i18n';
+import { I18N } from '@aurelia/i18n';
 import { AureliaGridInstance, Column, ExtensionName, Filters, Formatters, GridOption, OnEventArgs } from 'aurelia-slickgrid';
 
 export class Example16 {
   title = 'Example 16: Row Move & Checkbox Selector';
   subTitle = `
-    This example demonstrates using the <b>Slick.Plugins.RowMoveManager</b> plugin to easily move a row in the grid.<br/>
+    This example demonstrates using the <b>SlickRowMoveManager</b> plugin to easily move a row in the grid.<br/>
     <ul>
       <li>Click to select, Ctrl+Click to toggle selection, Shift+Click to select a range.</li>
       <li>Drag one or more rows by the handle (icon) to reorder</li>
@@ -26,7 +26,7 @@ export class Example16 {
   dataset: any[] = [];
   selectedLanguage: string;
 
-  constructor(private i18n: I18N) {
+  constructor(@I18N private readonly i18n: I18N) {
     this.selectedLanguage = this.i18n.getLocale();
     this.defineGrid();
   }
@@ -239,7 +239,8 @@ export class Example16 {
           excludeFromColumnPicker: true,
           excludeFromGridMenu: true,
           excludeFromHeaderMenu: true,
-          formatter: Formatters.editIcon,
+          formatter: Formatters.icon,
+          params: { iconCssClass: 'fa fa-pencil pointer' },
           minWidth: 30,
           maxWidth: 30,
           onCellClick: (clickEvent: Event, args: OnEventArgs) => {
@@ -251,7 +252,8 @@ export class Example16 {
           excludeFromColumnPicker: true,
           excludeFromGridMenu: true,
           excludeFromHeaderMenu: true,
-          formatter: Formatters.deleteIcon,
+          formatter: Formatters.icon,
+          params: { iconCssClass: 'fa fa-trash pointer' },
           minWidth: 30,
           maxWidth: 30,
           onCellClick: (e: Event, args: OnEventArgs) => {

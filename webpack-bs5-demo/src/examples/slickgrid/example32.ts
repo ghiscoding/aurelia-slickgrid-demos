@@ -1,4 +1,8 @@
+import { IHttpClient } from '@aurelia/fetch-client';
+import { newInstanceOf } from '@aurelia/kernel';
+import { ExcelExportService } from '@slickgrid-universal/excel-export';
 import {
+  AureliaGridInstance,
   AutocompleterOption,
   Column,
   EditCommand,
@@ -10,22 +14,15 @@ import {
   Formatters,
   GridOption,
   LongTextEditorOption,
+  SlickGlobalEditorLock,
   SlickGrid,
-  SlickNamespace,
   SortComparers,
-} from '@slickgrid-universal/common';
-import { ExcelExportService } from '@slickgrid-universal/excel-export';
-import { HttpClient as FetchClient } from 'aurelia-fetch-client';
-import { autoinject } from 'aurelia-framework';
+} from 'aurelia-slickgrid';
 
-import { AureliaGridInstance } from 'aurelia-slickgrid';
 import './example32.scss'; // provide custom CSS/SASS styling
 
 const NB_ITEMS = 400;
 const URL_COUNTRIES_COLLECTION = 'assets/data/countries.json';
-
-// using external SlickGrid JS libraries
-declare const Slick: SlickNamespace;
 
 /**
  * Check if the current item (cell) is editable or not
@@ -76,7 +73,6 @@ const myCustomTitleValidator = (value: any, args: any) => {
   return { valid: true, msg: '' };
 };
 
-@autoinject()
 export class Example32 {
   title = 'Example 32: Columns Resize by Content';
   subTitle = `The grid below uses the optional resize by cell content (with a fixed 950px for demo purposes), you can click on the 2 buttons to see the difference. The "autosizeColumns" is really the default option used by SlickGrid-Universal, the resize by cell content is optional because it requires to read the first thousand rows and do extra width calculation.`;
@@ -99,7 +95,7 @@ export class Example32 {
     { value: 4, label: 'Very Complex' },
   ];
 
-  constructor(private httpFetch: FetchClient) {
+  constructor(@newInstanceOf(IHttpClient) readonly http: IHttpClient) {
     this.initializeGrid();
   }
 
@@ -275,7 +271,7 @@ export class Example32 {
           model: Editors.autocompleter,
           massUpdate: true,
           customStructure: { label: 'name', value: 'code' },
-          collectionAsync: this.httpFetch.fetch(URL_COUNTRIES_COLLECTION),
+          collectionAsync: this.http.fetch(URL_COUNTRIES_COLLECTION),
         },
         filter: {
           model: Filters.inputText,
@@ -447,7 +443,7 @@ export class Example32 {
   handleValidationError(_e: Event, args: any) {
     if (args.validationResults) {
       let errorMsg = args.validationResults.msg || '';
-      if (args.editor && (args.editor instanceof Slick.CompositeEditor)) {
+      if (args.editor) {
         if (args.validationResults.errors) {
           errorMsg += '\n';
           for (const error of args.validationResults.errors) {
@@ -594,7 +590,7 @@ export class Example32 {
   undoLastEdit(showLastEditor = false) {
     const lastEdit = this.editQueue.pop();
     const lastEditCommand = lastEdit?.editCommand;
-    if (lastEdit && lastEditCommand && Slick.GlobalEditorLock.cancelCurrentEdit()) {
+    if (lastEdit && lastEditCommand && SlickGlobalEditorLock.cancelCurrentEdit()) {
       lastEditCommand.undo();
 
       // remove unsaved css class from that cell
@@ -614,7 +610,7 @@ export class Example32 {
   undoAllEdits() {
     for (const lastEdit of this.editQueue) {
       const lastEditCommand = lastEdit?.editCommand;
-      if (lastEditCommand && Slick.GlobalEditorLock.cancelCurrentEdit()) {
+      if (lastEditCommand && SlickGlobalEditorLock.cancelCurrentEdit()) {
         lastEditCommand.undo();
 
         // remove unsaved css class from that cell

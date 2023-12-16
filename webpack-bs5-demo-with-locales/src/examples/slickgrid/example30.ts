@@ -1,7 +1,7 @@
-import { SlickCompositeEditorComponent } from '@slickgrid-universal/composite-editor-component';
+import { IHttpClient } from '@aurelia/fetch-client';
+import { newInstanceOf } from '@aurelia/kernel';
+import { SlickCompositeEditor, SlickCompositeEditorComponent } from '@slickgrid-universal/composite-editor-component';
 import { ExcelExportService } from '@slickgrid-universal/excel-export';
-import { HttpClient as FetchClient } from 'aurelia-fetch-client';
-import { autoinject } from 'aurelia-framework';
 
 import {
   AureliaGridInstance,
@@ -20,17 +20,14 @@ import {
   GridStateChange,
   LongTextEditorOption,
   OnCompositeEditorChangeEventArgs,
+  SlickGlobalEditorLock,
   SlickGrid,
-  SlickNamespace,
   SortComparers,
 } from 'aurelia-slickgrid';
 import './example30.scss'; // provide custom CSS/SASS styling
 
 const NB_ITEMS = 500;
 const URL_COUNTRIES_COLLECTION = 'assets/data/countries.json';
-
-// using external SlickGrid JS libraries
-declare const Slick: SlickNamespace;
 
 /**
  * Check if the current item (cell) is editable or not
@@ -82,7 +79,6 @@ const myCustomTitleValidator = (value: any, args: any) => {
   return { valid: true, msg: '' };
 };
 
-@autoinject()
 export class Example30 {
   title = 'Example 30: Composite Editor Modal';
   subTitle = `Composite Editor allows you to Create, Clone, Edit, Mass Update & Mass Selection Changes inside a nice Modal Window.
@@ -107,7 +103,7 @@ export class Example30 {
     { value: 4, label: 'Very Complex' },
   ];
 
-  constructor(private httpFetch: FetchClient) {
+  constructor(@newInstanceOf(IHttpClient) readonly http: IHttpClient) {
     this.compositeEditorInstance = new SlickCompositeEditorComponent();
     // define the grid options & columns and then create the grid itself
     this.defineGrids();
@@ -310,7 +306,7 @@ export class Example30 {
           model: Editors.autocompleter,
           massUpdate: true,
           customStructure: { label: 'name', value: 'code' },
-          collectionAsync: this.httpFetch.fetch(URL_COUNTRIES_COLLECTION),
+          collectionAsync: this.http.fetch(URL_COUNTRIES_COLLECTION),
           editorOptions: { minLength: 0 }
         },
         filter: {
@@ -486,7 +482,7 @@ export class Example30 {
   handleValidationError(_e: Event, args: any) {
     if (args.validationResults) {
       let errorMsg = args.validationResults.msg || '';
-      if (args.editor && (args.editor instanceof Slick.CompositeEditor)) {
+      if (args.editor && (args.editor instanceof SlickCompositeEditor)) {
         if (args.validationResults.errors) {
           errorMsg += '\n';
           for (const error of args.validationResults.errors) {
@@ -717,7 +713,7 @@ export class Example30 {
   undoLastEdit(showLastEditor = false) {
     const lastEdit = this.editQueue.pop();
     const lastEditCommand = lastEdit?.editCommand;
-    if (lastEdit && lastEditCommand && Slick.GlobalEditorLock.cancelCurrentEdit()) {
+    if (lastEdit && lastEditCommand && SlickGlobalEditorLock.cancelCurrentEdit()) {
       lastEditCommand.undo();
 
       // remove unsaved css class from that cell
@@ -737,7 +733,7 @@ export class Example30 {
   undoAllEdits() {
     for (const lastEdit of this.editQueue) {
       const lastEditCommand = lastEdit?.editCommand;
-      if (lastEditCommand && Slick.GlobalEditorLock.cancelCurrentEdit()) {
+      if (lastEditCommand && SlickGlobalEditorLock.cancelCurrentEdit()) {
         lastEditCommand.undo();
 
         // remove unsaved css class from that cell

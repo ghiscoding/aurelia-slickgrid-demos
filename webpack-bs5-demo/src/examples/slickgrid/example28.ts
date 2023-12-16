@@ -1,5 +1,5 @@
 import { ExcelExportService } from '@slickgrid-universal/excel-export';
-import { autoinject, bindable } from 'aurelia-framework';
+import { bindable } from 'aurelia';
 import {
   Aggregators,
   AureliaGridInstance,
@@ -17,7 +17,6 @@ import {
 } from 'aurelia-slickgrid';
 import './example28.scss'; // provide custom CSS/SASS styling
 
-@autoinject()
 export class Example28 {
   title = 'Example 28: Tree Data with Aggregators <small><span class="mdi mdi-file-tree mdi-27px"></span> (from a Hierarchical Dataset - <a href="https://github.com/ghiscoding/aurelia-slickgrid/wiki/Tree-Data-Grid" target="_blank">Wiki</a>)</small>';
   subTitle = `<ul>

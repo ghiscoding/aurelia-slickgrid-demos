@@ -1,8 +1,8 @@
 # Aurelia-Slickgrid - Client Demos
 ## [Aurelia-Slickgrid](https://github.com/ghiscoding/aurelia-slickgrid) library client demos with different bundler types.
 
-
-If you use Visual Studio Code, you can also run each of the demo through the multiple VSCode Tasks.
+### Requires Aurelia 2
+The latest code only works with Aurelia 2, if you still wish to use Aurelia 1 then take a look at the [version6](https://github.com/ghiscoding/aurelia-slickgrid-demos/tree/version6) branch.
 
 ## Important Note
 ### Aurelia-Slickgrid & Slickgrid-Universal compatibility
@@ -24,34 +24,6 @@ Again the following dependencies are totally **OPTIONAL**
 | [@slickgrid-universal/rxjs-observable](https://github.com/ghiscoding/slickgrid-universal/tree/master/packages/rxjs-observable) | [![npm](https://img.shields.io/npm/v/@slickgrid-universal/rxjs-observable.svg?color=forest)](https://www.npmjs.com/package/@slickgrid-universal/rxjs-observable) | RxJS Observable Service Wrapper |
 
 ---
-
-## CLI 2.x with RequireJS (ES6 syntax)
-### Install and Start Demo
-```bash
-git clone https://github.com/ghiscoding/aurelia-slickgrid-demos
-cd cli-requirejs-demo
-npm install # OR yarn install
-npm start # OR yarn start
-```
-
-Then open your browser to
-```html
-http://localhost:9000
-```
-
-## Webpack and Bootstrap 4 (with TypeScript)
-### Install and Start Demo
-```bash
-git clone https://github.com/ghiscoding/aurelia-slickgrid-demos
-cd webpack-bs4-demo
-npm install # OR yarn install
-npm start # OR yarn start
-```
-
-Then open your browser to
-```html
-http://localhost:8080
-```
 
 ### Build Demo
 ```bash

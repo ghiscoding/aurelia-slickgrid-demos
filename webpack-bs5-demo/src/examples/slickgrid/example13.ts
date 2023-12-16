@@ -1,6 +1,5 @@
 import { ExcelExportService } from '@slickgrid-universal/excel-export';
 import { TextExportService } from '@slickgrid-universal/text-export';
-import { autoinject } from 'aurelia-framework';
 import {
   Aggregators,
   AureliaGridInstance,
@@ -19,7 +18,6 @@ import {
   SlickGrid,
 } from 'aurelia-slickgrid';
 
-@autoinject()
 export class Example13 {
   title = 'Example 13: Grouping & Aggregators';
   subTitle = `

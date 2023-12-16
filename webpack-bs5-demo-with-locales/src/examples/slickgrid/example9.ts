@@ -1,4 +1,3 @@
-import { autoinject } from 'aurelia-framework';
 import {
   AureliaGridInstance,
   Column,
@@ -12,11 +11,10 @@ import {
 } from 'aurelia-slickgrid';
 import './example9.scss'; // provide custom CSS/SASS styling
 
-@autoinject()
 export class Example9 {
   title = 'Example 9: Grid Menu Control';
   subTitle = `
-    This example demonstrates using the <b>Slick.Controls.GridMenu</b> plugin to easily add a Grid Menu (aka hamburger menu) on the top right corner of the grid.<br/>
+    This example demonstrates using the <b>SlickGridMenu</b> plugin to easily add a Grid Menu (aka hamburger menu) on the top right corner of the grid.<br/>
     (<a href="https://github.com/ghiscoding/aurelia-slickgrid/wiki/Grid-Menu" target="_blank">Wiki docs</a>)
     <ul>
     <li>You can change the Grid Menu icon, for example "fa-ellipsis-v"&nbsp;&nbsp;<span class="fa fa-ellipsis-v"></span>&nbsp;&nbsp;(which is shown in this example)</li>

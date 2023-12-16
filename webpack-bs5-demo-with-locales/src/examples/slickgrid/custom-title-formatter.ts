@@ -1,10 +1,9 @@
-import { inlineView } from 'aurelia-framework';
+import { bindable, customElement } from 'aurelia';
 
-@inlineView(`<template><span style="font-weight: bold" innerHTML.bind="item.assignee.name"></span></template>`)
+@customElement({
+  name: 'custom-title-formatter',
+  template: '<span style="font-weight: bold" innerhtml.bind="model.assignee.name"></span></template>'
+})
 export class CustomTitleFormatter {
-  item: any;
-
-  bind(bindingContext, overrideContext) {
-    this.item = overrideContext.parentOverrideContext.bindingContext.model;
-  }
+  @bindable() model: any;
 }

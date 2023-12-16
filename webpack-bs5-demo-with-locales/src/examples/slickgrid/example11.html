@@ -1,37 +1,35 @@
-<template>
-  <h2>${title}</h2>
-  <div class="subtitle" innerhtml.bind="subTitle"></div>
+<h2>${title}</h2>
+<div class="subtitle" innerhtml.bind="subTitle"></div>
 
-  <div class="col-sm-12">
-    <span>
-      <label>Scroll: </label>
-      <div class="btn-group" role="group" aria-label="...">
-        <button class="btn btn-sm btn-outline-secondary" click.delegate="scrollGridTop()">
-          <i class="fa fa-arrow-up"></i>
-        </button>
-        <button class="btn btn-sm btn-outline-secondary" click.delegate="scrollGridBottom()">
-          <i class="fa fa-arrow-down"></i>
-        </button>
-      </div>
-      <button class="btn btn-sm btn-outline-secondary" click.delegate="addNewItem()">Add New Mocked Item (top)</button>
-      <button class="btn btn-sm btn-outline-secondary" click.delegate="addNewItem('bottom')">
-        Add New Mocked Item (bottom)
+<div class="col-sm-12">
+  <span>
+    <label>Scroll: </label>
+    <div class="btn-group" role="group" aria-label="...">
+      <button class="btn btn-sm btn-outline-secondary" click.trigger="scrollGridTop()">
+        <i class="fa fa-arrow-up"></i>
       </button>
-      <button class="btn btn-sm btn-outline-secondary" click.delegate="updateSecondItem()">
-        Update 2nd Row Item with Random Duration
+      <button class="btn btn-sm btn-outline-secondary" click.trigger="scrollGridBottom()">
+        <i class="fa fa-arrow-down"></i>
       </button>
-      <button class="btn btn-sm btn-outline-secondary" click.delegate="highlighFifthRow()">Highlight 5th Row</button>
-      <button class="btn btn-sm btn-outline-secondary" click.delegate="changeDurationBackgroundColor()">
-        Highlight Rows with Duration over 50
-      </button>
-    </span>
-    <hr />
-  </div>
+    </div>
+    <button class="btn btn-sm btn-outline-secondary" click.trigger="addNewItem()">Add New Mocked Item (top)</button>
+    <button class="btn btn-sm btn-outline-secondary" click.trigger="addNewItem('bottom')">
+      Add New Mocked Item (bottom)
+    </button>
+    <button class="btn btn-sm btn-outline-secondary" click.trigger="updateSecondItem()">
+      Update 2nd Row Item with Random Duration
+    </button>
+    <button class="btn btn-sm btn-outline-secondary" click.trigger="highlighFifthRow()">Highlight 5th Row</button>
+    <button class="btn btn-sm btn-outline-secondary" click.trigger="changeDurationBackgroundColor()">
+      Highlight Rows with Duration over 50
+    </button>
+  </span>
+  <hr />
+</div>
 
-  <aurelia-slickgrid grid-id="grid1"
-                     column-definitions.bind="columnDefinitions"
-                     grid-options.bind="gridOptions"
-                     dataset.bind="dataset"
-                     on-aurelia-grid-created.delegate="aureliaGridReady($event.detail)">
-  </aurelia-slickgrid>
-</template>
+<aurelia-slickgrid grid-id="grid1"
+                    column-definitions.bind="columnDefinitions"
+                    grid-options.bind="gridOptions"
+                    dataset.bind="dataset"
+                    on-aurelia-grid-created.trigger="aureliaGridReady($event.detail)">
+</aurelia-slickgrid>

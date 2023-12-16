@@ -1,8 +1,7 @@
-import { autoinject, bindable } from 'aurelia-framework';
+import { bindable } from 'aurelia';
 import { AureliaGridInstance, Column, FieldType, Filters, Formatters, GridOption, GridStateChange } from 'aurelia-slickgrid';
 import './example10.scss'; // provide custom CSS/SASS styling
 
-@autoinject()
 export class Example2 {
   title = 'Example 10: Multiple Grids with Row Selection';
   subTitle = `

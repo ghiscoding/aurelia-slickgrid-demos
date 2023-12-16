@@ -1,11 +1,9 @@
-<template>
-  <h2>${title}</h2>
-  <div class="subtitle" innerhtml.bind="subTitle"></div>
+<h2>${title}</h2>
+<div class="subtitle" innerhtml.bind="subTitle"></div>
 
-  <aurelia-slickgrid grid-id="grid8"
-                     column-definitions.bind="columnDefinitions"
-                     grid-options.bind="gridOptions"
-                     dataset.bind="dataset"
-                     on-aurelia-grid-created.delegate="aureliaGridReady($event.detail)">
-  </aurelia-slickgrid>
-</template>
+<aurelia-slickgrid grid-id="grid8"
+                    column-definitions.bind="columnDefinitions"
+                    grid-options.bind="gridOptions"
+                    dataset.bind="dataset"
+                    on-aurelia-grid-created.trigger="aureliaGridReady($event.detail)">
+</aurelia-slickgrid>

@@ -1,5 +1,4 @@
-import { autoinject, bindable, PLATFORM } from 'aurelia-framework';
-import { Subscription } from 'aurelia-event-aggregator';
+import { bindable } from 'aurelia';
 import {
   AureliaGridInstance,
   Column,
@@ -11,9 +10,11 @@ import {
   GridOption,
 } from 'aurelia-slickgrid';
 
+import { Example19Preload } from './example19-preload';
+import { Example19DetailView } from './example19-detail-view';
+
 const NB_ITEMS = 1000;
 
-@autoinject()
 export class Example19 {
   @bindable detailViewRowCount = 9;
   title = 'Example 19: Row Detail View';
@@ -33,7 +34,6 @@ export class Example19 {
   // extensions!: ExtensionList<any>;
   flashAlertType = 'info';
   message = '';
-  subscriptions: Subscription[] = [];
 
   constructor() {
     // define the grid options & columns and then create the grid itself
@@ -118,10 +118,10 @@ export class Example19 {
         // expandableOverride: (row: number, dataContext: any) => (dataContext.rowId % 2 === 1),
 
         // Preload View Template
-        preloadView: PLATFORM.moduleName('examples/slickgrid/example19-preload.html'),
+        preloadViewModel: Example19Preload,
 
         // ViewModel Template to load when row detail data is ready
-        viewModel: PLATFORM.moduleName('examples/slickgrid/example19-detail-view'),
+        viewModel: Example19DetailView,
 
         // Optionally pass your Parent Component reference to your Child Component (row detail component)
         parent: this
