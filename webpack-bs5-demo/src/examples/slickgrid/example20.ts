@@ -1,14 +1,23 @@
-import { autoinject } from 'aurelia-framework';
-import { AureliaGridInstance, ColumnEditorDualInput, Column, Formatters, GridOption, Filters, FieldType, formatNumber, Editors } from 'aurelia-slickgrid';
+
+import {
+  AureliaGridInstance,
+  Column,
+  ColumnEditorDualInput,
+  Editors,
+  FieldType,
+  Filters,
+  formatNumber,
+  Formatters,
+  GridOption,
+  SlickEventHandler,
+  SlickGrid,
+} from 'aurelia-slickgrid';
 import './example20.scss'; // provide custom CSS/SASS styling
 
-declare const Slick: any;
-
-@autoinject()
 export class Example20 {
   title = 'Example 20: Pinned (frozen) Columns/Rows';
   subTitle = `
-    This example demonstrates the use of Pinned (aka frozen) Columns and/or Rows (<a href="https://github.com/ghiscoding/aurelia-slickgrid/wiki/Pinned-(aka-Frozen)-Columns-Rows" target="_blank">Wiki docs</a>)
+    This example demonstrates the use of Pinned (aka frozen) Columns and/or Rows (<a href="https://ghiscoding.gitbook.io/aurelia-slickgrid/grid-functionalities/frozen-columns-rows" target="_blank">Wiki docs</a>)
     <ul>
       <li>Option to pin any number of columns (left only) or rows</li>
       <li>Option to pin the rows at the bottom instead of the top (default)</li>
@@ -17,19 +26,19 @@ export class Example20 {
     </ul>
   `;
 
-  aureliaGrid: AureliaGridInstance;
-  columnDefinitions: Column[];
-  gridObj: any;
-  gridOptions: GridOption;
+  aureliaGrid!: AureliaGridInstance;
+  columnDefinitions: Column[] = [];
+  gridObj!: SlickGrid;
+  gridOptions!: GridOption;
   frozenColumnCount = 2;
   frozenRowCount = 3;
   isFrozenBottom = false;
-  dataset: any[];
+  dataset: any[] = [];
   slickEventHandler: any;
 
   constructor() {
     this.defineGrid();
-    this.slickEventHandler = new Slick.EventHandler();
+    this.slickEventHandler = new SlickEventHandler();
   }
 
   aureliaGridReady(aureliaGrid: AureliaGridInstance) {
@@ -39,8 +48,8 @@ export class Example20 {
     // with frozen (pinned) grid, in order to see the entire row being highlighted when hovering
     // we need to do some extra tricks (that is because frozen grids use 2 separate div containers)
     // the trick is to use row selection to highlight when hovering current row and remove selection once we're not
-    this.slickEventHandler.subscribe(this.gridObj.onMouseEnter, event => this.highlightRow(event, true));
-    this.slickEventHandler.subscribe(this.gridObj.onMouseLeave, event => this.highlightRow(event, false));
+    this.slickEventHandler.subscribe(this.gridObj.onMouseEnter, (event: Event) => this.highlightRow(event, true));
+    this.slickEventHandler.subscribe(this.gridObj.onMouseLeave, (event: Event) => this.highlightRow(event, false));
   }
 
   highlightRow(event: Event, isMouseEnter: boolean) {
@@ -55,7 +64,7 @@ export class Example20 {
     this.getData();
   }
 
-  detached() {
+  detaching() {
     // unsubscribe every SlickGrid subscribed event (or use the Slick.EventHandler)
     this.slickEventHandler.unsubscribeAll();
   }
@@ -229,7 +238,7 @@ export class Example20 {
 
   getData() {
     // Set up some test columns.
-    const mockDataset = [];
+    const mockDataset: any[] = [];
     for (let i = 0; i < 500; i++) {
       mockDataset[i] = {
         id: i,
@@ -267,7 +276,7 @@ export class Example20 {
     }
   }
 
-  costDurationFormatter(row, cell, value, columnDef, dataContext) {
+  costDurationFormatter(_row: number, _cell: number, _value: any, _columnDef: Column, dataContext: any) {
     const costText = this.isNullUndefinedOrEmpty(dataContext.cost) ? 'n/a' : formatNumber(dataContext.cost, 0, 2, false, '$', '', '.', ',');
     let durationText = 'n/a';
     if (!this.isNullUndefinedOrEmpty(dataContext.duration) && dataContext.duration >= 0) {
@@ -280,7 +289,7 @@ export class Example20 {
     return (data === '' || data === null || data === undefined);
   }
 
-  onCellValidationError(e, args) {
+  onCellValidationError(_e: Event, args: any) {
     alert(args.validationResults.msg);
   }
 

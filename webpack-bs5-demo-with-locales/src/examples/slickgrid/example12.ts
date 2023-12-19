@@ -1,6 +1,5 @@
 import { ExcelExportService } from '@slickgrid-universal/excel-export';
 import { TextExportService } from '@slickgrid-universal/text-export';
-import { autoinject } from 'aurelia-framework';
 
 import {
   AureliaGridInstance,
@@ -26,7 +25,6 @@ const exportBooleanFormatter: Formatter = (row: number, cell: number, value: any
   return value ? 'Vrai' : 'Faux';
 };
 
-@autoinject()
 export class Example12 {
   title = 'Example 12: Localization with Single Custom Locales';
   subTitle = `This Examples uses French Locales but you could use your own custom locales

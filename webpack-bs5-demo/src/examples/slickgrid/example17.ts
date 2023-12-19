@@ -1,15 +1,19 @@
-import fetchJsonp from 'fetch-jsonp';
 // import 'slickgrid/slick.remotemodel'; // SlickGrid Remote Plugin
-import { bindable, bindingMode } from 'aurelia-framework';
-import { AureliaGridInstance, Column, Formatter, GridOption } from 'aurelia-slickgrid';
+import { bindable, BindingMode } from 'aurelia';
 
-declare var Slick: any;
+import {
+  AureliaGridInstance,
+  Column,
+  Formatter,
+  GridOption,
+  SlickEventHandler,
+} from 'aurelia-slickgrid';
 
-const brandFormatter: Formatter = (row: number, cell: number, value: any, columnDef: Column, dataContext: any) => {
+const brandFormatter: Formatter = (_row, _cell, _value, _columnDef, dataContext) => {
   return dataContext && dataContext.brand && dataContext.brand.name || '';
 };
 
-const mpnFormatter: Formatter = (row: number, cell: number, value: any, columnDef: Column, dataContext: any) => {
+const mpnFormatter: Formatter = (_row, _cell, _value, _columnDef, dataContext) => {
   let link = '';
   if (dataContext && dataContext.octopart_url && dataContext.mpn) {
     link = `<a href="${dataContext.octopart_url}" target="_blank">${dataContext.mpn}</a>`;
@@ -18,8 +22,8 @@ const mpnFormatter: Formatter = (row: number, cell: number, value: any, columnDe
 };
 
 export class Example17 {
-  @bindable({ defaultBindingMode: bindingMode.twoWay }) search: string;
-  private _eventHandler: any = new Slick.EventHandler();
+  @bindable({ mode: BindingMode.twoWay }) search = '';
+  private _eventHandler: any = new SlickEventHandler();
 
   title = 'Example 17: Octopart Catalog Search - Remote Model Plugin';
   subTitle = `
@@ -41,20 +45,20 @@ export class Example17 {
       </li>
     </ul>
   `;
-  aureliaGrid: AureliaGridInstance;
-  columnDefinitions: Column[];
+  aureliaGrid!: AureliaGridInstance;
+  columnDefinitions: Column[] = [];
   customDataView: any;
   dataset = [];
   gridObj: any;
-  gridOptions: GridOption;
+  gridOptions!: GridOption;
   loaderDataView: any;
   loading = false; // spinner when loading data
 
   constructor() {
     // define the grid options & columns and then create the grid itself
     this.defineGrid();
-    this.loaderDataView = new Slick.Data.RemoteModel();
-    this.customDataView = this.loaderDataView && this.loaderDataView.data;
+    // this.loaderDataView = new Slick.Data.RemoteModel!();
+    // this.customDataView = this.loaderDataView && this.loaderDataView.data;
   }
 
   attached() {
@@ -65,7 +69,7 @@ export class Example17 {
     // this.loaderDataView.setSearch(this.search);
   }
 
-  detached() {
+  detaching() {
     // unsubscribe all SlickGrid events
     this._eventHandler.unsubscribeAll();
   }
@@ -73,11 +77,11 @@ export class Example17 {
   aureliaGridReady(aureliaGrid: AureliaGridInstance) {
     this.aureliaGrid = aureliaGrid;
     this.gridObj = aureliaGrid.slickGrid; // grid object
-    this.loaderDataView.setSort('score', -1);
-    this.gridObj.setSortColumn('score', false);
+    // this.loaderDataView.setSort('score', -1);
+    // this.gridObj.setSortColumn('score', false);
 
-    // notify of a change to preload the first page
-    this.gridObj.onViewportChanged.notify();
+    // simulate a delayed search to preload the first page
+    setTimeout(() => this.searchChanged(this.search), 100);
   }
 
   defineGrid() {
@@ -102,11 +106,8 @@ export class Example17 {
 
   hookAllLoaderEvents() {
     if (this._eventHandler && this._eventHandler.subscribe && this.loaderDataView && this.loaderDataView.onDataLoading && this.loaderDataView.onDataLoaded) {
-      this._eventHandler.subscribe(this.loaderDataView.onDataLoading, (e: Event, args: any) => {
-        this.loading = true;
-      });
-
-      this._eventHandler.subscribe(this.loaderDataView.onDataLoaded, (e: Event, args: any) => {
+      this._eventHandler.subscribe(this.loaderDataView.onDataLoading, () => this.loading = true);
+      this._eventHandler.subscribe(this.loaderDataView.onDataLoaded, (_e: Event, args: any) => {
         if (args && this.gridObj && this.gridObj.invalidateRow && this.gridObj.updateRowCount && this.gridObj.render) {
           for (let i = args.from; i <= args.to; i++) {
             this.gridObj.invalidateRow(i);
@@ -127,7 +128,7 @@ export class Example17 {
     }
   }
 
-  onSort(e, args) {
+  onSort(_e: Event, args: any) {
     if (this.gridObj && this.gridObj.getViewport && this.loaderDataView && this.loaderDataView.ensureData && this.loaderDataView.setSort) {
       const vp = this.gridObj.getViewport();
       if (args && args.sortCol && args.sortCol.field) {
@@ -137,7 +138,7 @@ export class Example17 {
     }
   }
 
-  onViewportChanged(e, args) {
+  onViewportChanged() {
     if (this.gridObj && this.gridObj.getViewport && this.loaderDataView && this.loaderDataView.ensureData) {
       const vp = this.gridObj.getViewport();
       this.loaderDataView.ensureData(vp.top, vp.bottom);

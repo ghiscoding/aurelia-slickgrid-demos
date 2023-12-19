@@ -1,7 +1,6 @@
-import { autoinject } from 'aurelia-framework';
-import { HttpClient as FetchClient } from 'aurelia-fetch-client';
-import { HttpClient } from 'aurelia-http-client';
-import { I18N } from 'aurelia-i18n';
+import { IHttpClient } from '@aurelia/fetch-client';
+import { newInstanceOf } from '@aurelia/kernel';
+import { I18N } from '@aurelia/i18n';
 import fetchJsonp from 'fetch-jsonp';
 
 import {
@@ -18,14 +17,11 @@ import {
   GridOption,
   OnEventArgs,
   OperatorType,
-  SlickNamespace,
+  SlickGlobalEditorLock,
   SortComparers,
 } from 'aurelia-slickgrid';
 import { CustomInputEditor } from './custom-inputEditor';
 import { CustomInputFilter } from './custom-inputFilter';
-
-// using external non-typed js libraries
-declare const Slick: SlickNamespace;
 
 const NB_ITEMS = 100;
 const URL_SAMPLE_COLLECTION_DATA = 'assets/data/collection_100_numbers.json';
@@ -63,11 +59,10 @@ const taskFormatter = (_row: number, _cell: number, value: any) => {
   return '';
 };
 
-@autoinject()
 export class Example3 {
   title = 'Example 3: Editors / Delete';
   subTitle = `
-  Grid with Inline Editors and onCellClick actions (<a href="https://github.com/ghiscoding/aurelia-slickgrid/wiki/Editors" target="_blank">Wiki docs</a>).
+  Grid with Inline Editors and onCellClick actions (<a href="https://ghiscoding.gitbook.io/aurelia-slickgrid/column-functionalities/editors" target="_blank">Wiki docs</a>).
   <ul>
     <li>When using "enableCellNavigation: true", clicking on a cell will automatically make it active &amp; selected.</li>
     <ul><li>If you don't want this behavior, then you should disable "enableCellNavigation"</li></ul>
@@ -89,12 +84,12 @@ export class Example3 {
   alertWarning: any;
   duplicateTitleHeaderCount = 1;
 
-  constructor(private http: HttpClient, private httpFetch: FetchClient, private i18n: I18N) {
+  constructor(@newInstanceOf(IHttpClient) readonly http: IHttpClient, @I18N private readonly i18n: I18N) {
     // define the grid options & columns and then create the grid itself
     this.defineGrid();
   }
 
-  attached() {
+  async attached() {
     // populate the dataset once the grid is ready
     this.dataset = this.mockData(NB_ITEMS);
   }
@@ -108,7 +103,8 @@ export class Example3 {
         excludeFromColumnPicker: true,
         excludeFromGridMenu: true,
         excludeFromHeaderMenu: true,
-        formatter: Formatters.editIcon,
+        formatter: Formatters.icon,
+        params: { iconCssClass: 'fa fa-pencil pointer' },
         minWidth: 30,
         maxWidth: 30,
         // use onCellClick OR grid.onClick.subscribe which you can see down below
@@ -124,7 +120,8 @@ export class Example3 {
         excludeFromColumnPicker: true,
         excludeFromGridMenu: true,
         excludeFromHeaderMenu: true,
-        formatter: Formatters.deleteIcon,
+        formatter: Formatters.icon,
+        params: { iconCssClass: 'fa fa-trash pointer' },
         minWidth: 30,
         maxWidth: 30,
         // use onCellClick OR grid.onClick.subscribe which you can see down below
@@ -280,12 +277,12 @@ export class Example3 {
             minLength: 3,
             forceUserInput: true,
             fetch: (searchText: string, updateCallback: (items: false | any[]) => void) => {
-              /** with Angular Http, note this demo won't work because of CORS */
+              /** with Aurelia Http, note this demo won't work because of CORS */
               // this.http.get(`http://gd.geobytes.com/AutoCompleteCity?q=${searchText}`).subscribe(data => updateCallback(data));
 
               /** with JSONP AJAX will work locally but not on the GitHub demo because of CORS */
               fetchJsonp(`http://gd.geobytes.com/AutoCompleteCity?q=${searchText}`)
-                .then((response: { json: () => Promise<any[]>}) => response.json())
+                .then((response: { json: () => Promise<any[]> }) => response.json())
                 .then((json: any[]) => updateCallback(json))
                 .catch((ex) => console.log('invalid JSONP response', ex));
             },
@@ -296,7 +293,7 @@ export class Example3 {
           // placeholder: '🔎︎ search city',
 
           // We can use the autocomplete through 3 ways "collection", "collectionAsync" or with your own autocomplete options
-          // collectionAsync: this.httpFetch.fetch(URL_COUNTRIES_COLLECTION),
+          // collectionAsync: this.http.fetch(URL_COUNTRIES_COLLECTION),
 
           // OR use the autocomplete through 3 ways "collection", "collectionAsync" or with your own autocomplete options
           // use your own autocomplete options, instead of fetch-jsonp, use HttpClient or FetchClient
@@ -304,7 +301,7 @@ export class Example3 {
             minLength: 3,
             fetch: (searchText: string, updateCallback: (items: false | any[]) => void) => {
               fetchJsonp(`http://gd.geobytes.com/AutoCompleteCity?q=${searchText}`)
-                .then((response: { json: () => Promise<any[]>}) => response.json())
+                .then((response: { json: () => Promise<any[]> }) => response.json())
                 .then((json: any[]) => updateCallback(json))
                 .catch((ex: any) => console.log('invalid JSONP response', ex));
             },
@@ -323,12 +320,12 @@ export class Example3 {
         editor: {
           model: Editors.autocompleter,
           customStructure: { label: 'name', value: 'code' },
-          collectionAsync: this.httpFetch.fetch(URL_COUNTRIES_COLLECTION),
+          collectionAsync: this.http.fetch(URL_COUNTRIES_COLLECTION),
         },
         filter: {
           model: Filters.autocompleter,
           customStructure: { label: 'name', value: 'code' },
-          collectionAsync: this.httpFetch.fetch(URL_COUNTRIES_COLLECTION),
+          collectionAsync: this.http.fetch(URL_COUNTRIES_COLLECTION),
         }
       }, {
         id: 'countryOfOriginName', name: 'Country of Origin Name', field: 'countryOfOriginName',
@@ -337,11 +334,11 @@ export class Example3 {
         minWidth: 100,
         editor: {
           model: Editors.autocompleter,
-          collectionAsync: this.httpFetch.fetch(URL_COUNTRY_NAMES),
+          collectionAsync: this.http.fetch(URL_COUNTRY_NAMES),
         },
         filter: {
           model: Filters.autocompleter,
-          collectionAsync: this.httpFetch.fetch(URL_COUNTRY_NAMES),
+          collectionAsync: this.http.fetch(URL_COUNTRY_NAMES),
         }
       }, {
         id: 'effort-driven',
@@ -377,7 +374,7 @@ export class Example3 {
           // collectionAsync: this.http.createRequest(URL_SAMPLE_COLLECTION_DATA).asGet().send(),
 
           // OR 2- use "aurelia-fetch-client", they are both supported
-          collectionAsync: this.httpFetch.fetch(URL_SAMPLE_COLLECTION_DATA),
+          collectionAsync: this.http.fetch(URL_SAMPLE_COLLECTION_DATA),
 
           // OR 3- use a Promise
           // collectionAsync: new Promise<any>((resolve) => {
@@ -404,7 +401,7 @@ export class Example3 {
           model: Editors.multipleSelect,
         },
         filter: {
-          collectionAsync: this.httpFetch.fetch(URL_SAMPLE_COLLECTION_DATA),
+          collectionAsync: this.http.fetch(URL_SAMPLE_COLLECTION_DATA),
           // collectionAsync: new Promise((resolve) => {
           //   setTimeout(() => {
           //     resolve(Array.from(Array(this.dataset.length).keys()).map(k => ({ value: k, label: `Task ${k}` })));
@@ -504,7 +501,7 @@ export class Example3 {
 
   mockData(itemCount: number, startingIndex = 0) {
     // mock a dataset
-    const tempDataset = [];
+    const tempDataset: any[] = [];
     for (let i = startingIndex; i < (startingIndex + itemCount); i++) {
       const randomYear = 2000 + Math.floor(Math.random() * 10);
       const randomFinishYear = (new Date().getFullYear() - 3) + Math.floor(Math.random() * 10); // use only years not lower than 3 years ago
@@ -586,7 +583,6 @@ export class Example3 {
     // you can dynamically add your column to your column definitions
     // and then use the spread operator [...cols] OR slice to force Aurelia to review the changes
     this.columnDefinitions.push(newCol);
-    this.columnDefinitions = this.columnDefinitions.slice(); // or use spread operator [...cols]
 
     // NOTE if you use an Extensions (Checkbox Selector, Row Detail, ...) that modifies the column definitions in any way
     // you MUST use "getAllColumnDefinitions()" from the GridService, using this will be ALL columns including the 1st column that is created internally
@@ -600,7 +596,6 @@ export class Example3 {
 
   dynamicallyRemoveLastColumn() {
     this.columnDefinitions.pop();
-    this.columnDefinitions = this.columnDefinitions.slice();
 
     // NOTE if you use an Extensions (Checkbox Selector, Row Detail, ...) that modifies the column definitions in any way
     // you MUST use the code below, first you must reassign the Editor facade (from the internalColumnEditor back to the editor)
@@ -614,7 +609,6 @@ export class Example3 {
     // remove your column the full set of columns
     // and use slice or spread [...] to trigger an Aurelia dirty change
     allOriginalColumns.pop();
-    this.columnDefinitions = allOriginalColumns.slice();
     */
   }
 
@@ -628,7 +622,7 @@ export class Example3 {
 
   undo() {
     const command = this._commandQueue.pop();
-    if (command && Slick.GlobalEditorLock.cancelCurrentEdit()) {
+    if (command && SlickGlobalEditorLock.cancelCurrentEdit()) {
       command.undo();
       this.aureliaGrid.slickGrid.gotoCell(command.row, command.cell, false);
     }

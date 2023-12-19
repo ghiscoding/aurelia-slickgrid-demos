@@ -1,4 +1,3 @@
-import { autoinject } from 'aurelia-framework';
 import { SlickCustomTooltip } from '@slickgrid-universal/custom-tooltip-plugin';
 import { ExcelExportService } from '@slickgrid-universal/excel-export';
 import {
@@ -13,7 +12,7 @@ import {
   OperatorType,
   SliderRangeOption,
 } from 'aurelia-slickgrid';
-import * as moment from 'moment-mini';
+import moment from 'moment-mini';
 
 import { CustomInputFilter } from './custom-inputFilter';
 
@@ -23,7 +22,6 @@ function randomBetween(min: number, max: number): number {
   return Math.floor(Math.random() * (max - min + 1) + min);
 }
 
-@autoinject()
 export class Example23 {
   title = 'Example 23: Filtering from Range of Search Values';
   subTitle = `

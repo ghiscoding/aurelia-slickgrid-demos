@@ -39,19 +39,19 @@ jobs:
       - run: node --version
       - run: npm --version
 
-      - name: Install npm/yarn dependencies
+      - name: Install npm dependencies
         run: |
-          cd webpack-bs4-demo
-          yarn install
+          cd webpack-bs5-demo
+          npm install
 
-      - name: Bootstrap 4 Prod Build for GitHub demo website
+      - name: Bootstrap 5 Prod Build for GitHub demo website
         run: |
-          cd webpack-bs4-demo
-          yarn build
+          cd webpack-bs5-demo
+          npm run build
 
       - name: Deploy to gh-pages
         if: github.ref == 'refs/heads/master'
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./webpack-bs4-demo/dist
+          publish_dir: ./webpack-bs5-demo/dist

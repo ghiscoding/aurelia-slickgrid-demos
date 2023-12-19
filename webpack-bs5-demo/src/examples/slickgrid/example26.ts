@@ -1,4 +1,3 @@
-import { autoinject, PLATFORM } from 'aurelia-framework';
 import {
   AureliaGridInstance,
   AureliaUtilService,
@@ -11,16 +10,17 @@ import {
   GridOption,
   OnEventArgs,
   OperatorType,
+  SlickGlobalEditorLock,
+  ViewModelBindableInputData,
 } from 'aurelia-slickgrid';
 import { CustomAureliaViewModelEditor } from './custom-aureliaViewModelEditor';
 import { CustomAureliaViewModelFilter } from './custom-aureliaViewModelFilter';
-
-// using external non-typed js libraries
-declare const Slick: any;
+import { CustomTitleFormatter } from './custom-title-formatter';
+import { EditorSelect } from './editor-select';
+import { FilterSelect } from './filter-select';
 
 const NB_ITEMS = 100;
 
-@autoinject()
 export class Example26 {
   title = 'Example 26: Use of Aurelia Custom Elements';
   subTitle = `
@@ -57,8 +57,6 @@ export class Example26 {
     { id: '2', name: 'Pierre' },
     { id: '3', name: 'Paul' },
   ];
-  selectedItem: any;
-  selectedId = '';
 
   constructor(private aureliaUtilService: AureliaUtilService) {
     // define the grid options & columns and then create the grid itself
@@ -101,8 +99,9 @@ export class Example26 {
           model: new CustomAureliaViewModelFilter(),
           collection: this.assignees,
           params: {
-            aureliaUtilService: this.aureliaUtilService, // pass the aureliaUtilService here OR in the grid option params
-            templateUrl: PLATFORM.moduleName('examples/slickgrid/filter-select') // FilterSelect,
+            viewModel: FilterSelect
+            // aureliaUtilService: this.aureliaUtilService, // pass the aureliaUtilService here OR in the grid option params
+            // templateUrl: PLATFORM.moduleName('examples/slickgrid/filter-select') // FilterSelect,
           }
         },
         queryFieldFilter: 'assignee.id', // for a complex object it's important to tell the Filter which field to query and our CustomAureliaComponentFilter returns the "id" property
@@ -116,8 +115,9 @@ export class Example26 {
           model: CustomAureliaViewModelEditor,
           collection: this.assignees,
           params: {
-            aureliaUtilService: this.aureliaUtilService, // pass the aureliaUtilService here OR in the grid option params
-            templateUrl: PLATFORM.moduleName('examples/slickgrid/editor-select') // EditorSelect,
+            viewModel: EditorSelect,
+            // aureliaUtilService: this.aureliaUtilService, // pass the aureliaUtilService here OR in the grid option params
+            // templateUrl: PLATFORM.moduleName('examples/slickgrid/editor-select') // EditorSelect,
           }
         },
         onCellChange: (_e: Event, args: OnEventArgs) => {
@@ -135,8 +135,9 @@ export class Example26 {
           model: new CustomAureliaViewModelFilter(),
           collection: this.assignees,
           params: {
-            aureliaUtilService: this.aureliaUtilService, // pass the aureliaUtilService here OR in the grid option params
-            templateUrl: PLATFORM.moduleName('examples/slickgrid/filter-select') // FilterSelect,
+            viewModel: FilterSelect
+            // aureliaUtilService: this.aureliaUtilService, // pass the aureliaUtilService here OR in the grid option params
+            // templateUrl: PLATFORM.moduleName('examples/slickgrid/filter-select') // FilterSelect,
           }
         },
         queryFieldFilter: 'assignee.id', // for a complex object it's important to tell the Filter which field to query and our CustomAureliaComponentFilter returns the "id" property
@@ -150,7 +151,8 @@ export class Example26 {
         // which is why it's still better to use regular Formatter instead of Aurelia Custom Element
         asyncPostRender: this.renderAureliaComponent.bind(this),
         params: {
-          templateUrl: PLATFORM.moduleName('examples/slickgrid/custom-title-formatter'), // CustomTitleFormatterCustomElement,
+          viewModel: CustomTitleFormatter,
+          // templateUrl: PLATFORM.moduleName('examples/slickgrid/custom-title-formatter'), // CustomTitleFormatterCustomElement,
           complexFieldLabel: 'assignee.name' // for the exportCustomFormatter
         },
         exportCustomFormatter: Formatters.complexObject,
@@ -269,7 +271,7 @@ export class Example26 {
 
   mockData(itemCount: number, startingIndex = 0) {
     // mock a dataset
-    const tempDataset = [];
+    const tempDataset: any[] = [];
     for (let i = startingIndex; i < (startingIndex + itemCount); i++) {
       const randomYear = 2000 + Math.floor(Math.random() * 10);
       const randomMonth = Math.floor(Math.random() * 11);
@@ -329,8 +331,12 @@ export class Example26 {
   }
 
   renderAureliaComponent(cellNode: HTMLElement, _row: number, dataContext: any, colDef: Column) {
-    if (colDef.params.templateUrl && cellNode) {
-      this.aureliaUtilService.createAureliaViewModelAddToSlot(colDef.params.templateUrl, { model: dataContext }, cellNode, true);
+    if (colDef.params.viewModel && cellNode) {
+      const bindableData = {
+        model: dataContext,
+        grid: this.aureliaGrid.slickGrid,
+      } as ViewModelBindableInputData;
+      this.aureliaUtilService.createAureliaViewModelAddToSlot(colDef.params.viewModel, bindableData, cellNode);
     }
   }
 
@@ -344,7 +350,7 @@ export class Example26 {
 
   undo() {
     const command = this._commandQueue.pop();
-    if (command && Slick.GlobalEditorLock.cancelCurrentEdit()) {
+    if (command && SlickGlobalEditorLock.cancelCurrentEdit()) {
       command.undo();
       this.aureliaGrid.slickGrid.gotoCell(command.row, command.cell, false);
     }

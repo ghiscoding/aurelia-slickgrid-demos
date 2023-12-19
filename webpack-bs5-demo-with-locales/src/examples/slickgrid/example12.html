@@ -1,35 +1,33 @@
-<template>
-  <h2>${title}</h2>
-  <div class="subtitle" innerhtml.bind="subTitle"></div>
+<h2>${title}</h2>
+<div class="subtitle" innerhtml.bind="subTitle"></div>
 
-  <hr />
+<hr />
 
-  <div class="row">
-    <span style="margin-left: 20px">
-      <button class="btn btn-outline-secondary btn-sm" click.delegate="exportToFile('csv')">
-        <i class="fa fa-download"></i>
-        Download to CSV
-      </button>
-      <button class="btn btn-outline-secondary btn-sm" click.delegate="exportToFile('txt')">
-        <i class="fa fa-download"></i>
-        Download to Text
-      </button>
-      <button class="btn btn-outline-secondary btn-sm" click.delegate="exportToExcel()">
-        <i class="fa fa-file-excel-o text-success"></i>
-        Download to Excel
-      </button>
-    </span>
-    <span style="margin-left: 10px">
-      <button class="btn btn-outline-secondary btn-sm" click.delegate="dynamicallyAddTitleHeader()">
-        <i class="fa fa-plus"></i>
-        Dynamically Duplicate Title Column
-      </button>
-    </span>
-  </div>
-  <aurelia-slickgrid grid-id="grid12"
-                     column-definitions.bind="columnDefinitions"
-                     grid-options.bind="gridOptions"
-                     dataset.bind="dataset"
-                     on-aurelia-grid-created.delegate="aureliaGridReady($event.detail)">
-  </aurelia-slickgrid>
-</template>
+<div class="row">
+  <span style="margin-left: 20px">
+    <button class="btn btn-outline-secondary btn-sm" click.trigger="exportToFile('csv')">
+      <i class="fa fa-download"></i>
+      Download to CSV
+    </button>
+    <button class="btn btn-outline-secondary btn-sm" click.trigger="exportToFile('txt')">
+      <i class="fa fa-download"></i>
+      Download to Text
+    </button>
+    <button class="btn btn-outline-secondary btn-sm" click.trigger="exportToExcel()">
+      <i class="fa fa-file-excel-o text-success"></i>
+      Download to Excel
+    </button>
+  </span>
+  <span style="margin-left: 10px">
+    <button class="btn btn-outline-secondary btn-sm" click.trigger="dynamicallyAddTitleHeader()">
+      <i class="fa fa-plus"></i>
+      Dynamically Duplicate Title Column
+    </button>
+  </span>
+</div>
+<aurelia-slickgrid grid-id="grid12"
+                    column-definitions.bind="columnDefinitions"
+                    grid-options.bind="gridOptions"
+                    dataset.bind="dataset"
+                    on-aurelia-grid-created.trigger="aureliaGridReady($event.detail)">
+</aurelia-slickgrid>

@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
+import { IHttpClient } from '@aurelia/fetch-client';
+import { newInstanceOf } from '@aurelia/kernel';
 import { GridOdataService, OdataServiceApi, OdataOption } from '@slickgrid-universal/odata';
-import { autoinject } from 'aurelia-framework';
-import { HttpClient } from 'aurelia-http-client';
 import {
   AureliaGridInstance,
   Column,
@@ -17,7 +17,6 @@ import {
 const defaultPageSize = 20;
 const sampleDataRoot = 'assets/data';
 
-@autoinject()
 export class Example5 {
   title = 'Example 5: Grid with Backend OData Service';
   subTitle = `
@@ -58,7 +57,7 @@ export class Example5 {
   isPageErrorTest = false;
   status = { text: '', class: '' };
 
-  constructor(private http: HttpClient) {
+  constructor(@newInstanceOf(IHttpClient) readonly http: IHttpClient) {
     // define the grid options & columns and then create the grid itself
     this.defineGrid();
   }
@@ -258,12 +257,9 @@ export class Example5 {
       }
 
       // read the json and create a fresh copy of the data that we are free to modify
-      this.http.createRequest(`${sampleDataRoot}/customers_100.json`)
-        .asGet()
-        .send()
-        .then(response => {
-          let data = response.content as any[];
-
+      this.http.fetch(`${sampleDataRoot}/customers_100.json`)
+        .then(e => e.json())
+        .then((data: any) => {
           // Sort the data
           if (orderBy?.length > 0) {
             const orderByClauses = orderBy.split(',');

@@ -1,12 +1,11 @@
-import { autoinject, bindable } from 'aurelia-framework';
+import { bindable } from 'aurelia';
 import { AureliaGridInstance, Column, FieldType, Filters, Formatters, GridOption, GridStateChange } from 'aurelia-slickgrid';
 import './example10.scss'; // provide custom CSS/SASS styling
 
-@autoinject()
-export class Example2 {
+export class Example10 {
   title = 'Example 10: Multiple Grids with Row Selection';
   subTitle = `
-    Row selection, single or multi-select (<a href="https://github.com/ghiscoding/aurelia-slickgrid/wiki/Row-Selection" target="_blank">Wiki docs</a>).
+    Row selection, single or multi-select (<a href="https://ghiscoding.gitbook.io/aurelia-slickgrid/grid-functionalities/row-selection" target="_blank">Wiki docs</a>).
     <ul>
       <li>Single Select, you can click on any cell to make the row active</li>
       <li>Multiple Selections, you need to specifically click on the checkbox to make 1 or more selections</li>
@@ -180,7 +179,7 @@ export class Example2 {
 
   prepareData(count: number) {
     // mock a dataset
-    const mockDataset = [];
+    const mockDataset: any[] = [];
     for (let i = 0; i < count; i++) {
       const randomYear = 2000 + Math.floor(Math.random() * 10);
       const randomMonth = Math.floor(Math.random() * 11);

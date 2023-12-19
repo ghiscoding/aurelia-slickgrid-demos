@@ -1,10 +1,17 @@
-import { autoinject } from 'aurelia-framework';
-import { AureliaGridInstance, ColumnEditorDualInput, Column, Formatters, GridOption, Filters, FieldType, formatNumber, Editors } from 'aurelia-slickgrid';
+import {
+  AureliaGridInstance,
+  ColumnEditorDualInput,
+  Column,
+  Formatters,
+  GridOption,
+  Filters,
+  FieldType,
+  formatNumber,
+  Editors,
+  SlickEventHandler,
+} from 'aurelia-slickgrid';
 import './example20.scss'; // provide custom CSS/SASS styling
 
-declare const Slick: any;
-
-@autoinject()
 export class Example20 {
   title = 'Example 20: Pinned (frozen) Columns/Rows';
   subTitle = `
@@ -29,7 +36,7 @@ export class Example20 {
 
   constructor() {
     this.defineGrid();
-    this.slickEventHandler = new Slick.EventHandler();
+    this.slickEventHandler = new SlickEventHandler();
   }
 
   aureliaGridReady(aureliaGrid: AureliaGridInstance) {
@@ -56,7 +63,7 @@ export class Example20 {
   }
 
   detached() {
-    // unsubscribe every SlickGrid subscribed event (or use the Slick.EventHandler)
+    // unsubscribe every SlickGrid subscribed event (or use the SlickEventHandler)
     this.slickEventHandler.unsubscribeAll();
   }
 

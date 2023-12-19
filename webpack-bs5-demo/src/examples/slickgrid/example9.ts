@@ -1,5 +1,4 @@
-import { I18N } from 'aurelia-i18n';
-import { autoinject } from 'aurelia-framework';
+import { I18N } from '@aurelia/i18n';
 import {
   AureliaGridInstance,
   Column,
@@ -13,12 +12,11 @@ import {
 } from 'aurelia-slickgrid';
 import './example9.scss'; // provide custom CSS/SASS styling
 
-@autoinject()
 export class Example9 {
   title = 'Example 9: Grid Menu Control';
   subTitle = `
     This example demonstrates using the <b>Slick.Controls.GridMenu</b> plugin to easily add a Grid Menu (aka hamburger menu) on the top right corner of the grid.<br/>
-    (<a href="https://github.com/ghiscoding/aurelia-slickgrid/wiki/Grid-Menu" target="_blank">Wiki docs</a>)
+    (<a href="https://ghiscoding.gitbook.io/aurelia-slickgrid/grid-functionalities/grid-menu" target="_blank">Wiki docs</a>)
     <ul>
     <li>You can change the Grid Menu icon, for example "fa-ellipsis-v"&nbsp;&nbsp;<span class="fa fa-ellipsis-v"></span>&nbsp;&nbsp;(which is shown in this example)</li>
     <li>By default the Grid Menu shows all columns which you can show/hide them</li>
@@ -37,7 +35,7 @@ export class Example9 {
   gridObj!: SlickGrid;
   selectedLanguage: string;
 
-  constructor(private i18n: I18N) {
+  constructor(@I18N private readonly i18n: I18N) {
     // define the grid options & columns and then create the grid itself
     this.defineGrid();
 
@@ -222,7 +220,7 @@ export class Example9 {
 
   getData() {
     // Set up some test columns.
-    const mockDataset = [];
+    const mockDataset: any[] = [];
     for (let i = 0; i < 500; i++) {
       mockDataset[i] = {
         id: i,

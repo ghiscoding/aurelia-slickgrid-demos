@@ -1,8 +1,7 @@
 import { ExcelExportService } from '@slickgrid-universal/excel-export';
 import { TextExportService } from '@slickgrid-universal/text-export';
-import { autoinject } from 'aurelia-framework';
-import { I18N } from 'aurelia-i18n';
-import { TOptions as I18NOptions } from 'i18next';
+import { I18N } from '@aurelia/i18n';
+// import { TOptions as I18NOptions } from 'i18next';
 
 import {
   AureliaGridInstance,
@@ -21,18 +20,17 @@ import {
 const NB_ITEMS = 1500;
 
 // create a custom translate Formatter (typically you would move that a separate file, for separation of concerns)
-const taskTranslateFormatter: Formatter = (row, cell, value, columnDef, dataContext, grid) => {
+const taskTranslateFormatter: Formatter = (_row, _cell, value, _columnDef, _dataContext, grid) => {
   const gridOptions: GridOption = (grid && typeof grid.getOptions === 'function') ? grid.getOptions() : {};
   const i18n = gridOptions.i18n;
 
-  return i18n?.tr('TASK_X', { x: value } as I18NOptions) ?? '';
+  return i18n?.tr('TASK_X', { x: value } as any) ?? '';
 };
 
-@autoinject()
 export class Example12 {
   title = 'Example 12: Localization (i18n)';
   subTitle = `Support multiple locales with the i18next plugin, following these steps.
-    Take a look at the (<a href="https://github.com/ghiscoding/aurelia-slickgrid/wiki/Localization" target="_blank">Wiki documentation</a>)
+    Take a look at the (<a href="https://ghiscoding.gitbook.io/aurelia-slickgrid/localization/localization" target="_blank">Wiki documentation</a>)
     <ol class="small">
       <li>You first need to "enableTranslate" in the Grid Options</li>
       <li>In the Column Definitions, you have following options</li>
@@ -52,23 +50,23 @@ export class Example12 {
         <ul>
           <li>What if your select options have totally different value/label pair? In this case, you can use the <b>customStructure: { label: 'customLabel', value: 'customValue'}</b> to change the property name(s) to use.'</li>
           <li>What if you want to use "customStructure" and translation? Simply pass this flag <b>enableTranslateLabel: true</b></li>
-          <li>More info on the Select Filter <a href="https://github.com/ghiscoding/aurelia-slickgrid/wiki/Select-Filter" target="_blank">Wiki page</a>
+          <li>More info on the Select Filter <a href="https://ghiscoding.gitbook.io/aurelia-slickgrid/column-functionalities/filters/select-filter" target="_blank">Wiki page</a>
         </ul>
-        <li>For more info about "Download to File", read the <a href="https://github.com/ghiscoding/aurelia-slickgrid/wiki/Export-to-File" target="_blank">Wiki page</a></li>
+        <li>For more info about "Download to File", read the <a href="https://ghiscoding.gitbook.io/aurelia-slickgrid/grid-functionalities/export-to-excel" target="_blank">Wiki page</a></li>
       </ol>
     `;
 
-  aureliaGrid: AureliaGridInstance;
-  gridOptions: GridOption;
-  columnDefinitions: Column[];
-  dataset: any[];
+  aureliaGrid!: AureliaGridInstance;
+  gridOptions!: GridOption;
+  columnDefinitions: Column[] = [];
+  dataset: any[] = [];
   selectedLanguage: string;
   duplicateTitleHeaderCount = 1;
-  gridObj: SlickGrid;
+  gridObj!: SlickGrid;
   excelExportService = new ExcelExportService();
   textExportService = new TextExportService();
 
-  constructor(private i18n: I18N) {
+  constructor(@I18N private readonly i18n: I18N) {
     // define the grid options & columns and then create the grid itself
     this.defineGrid();
 
@@ -199,7 +197,7 @@ export class Example12 {
 
           // excel cells start with A1 which is upper left corner
           sheet.mergeCells('B1', 'D1');
-          const cols = [];
+          const cols: any[] = [];
           // push empty data on A1
           cols.push({ value: '' });
           // push data in B1 cell with metadata formatter
@@ -215,13 +213,13 @@ export class Example12 {
 
   getData(count: number) {
     // mock a dataset
-    this.dataset = [];
+    const tmpData: any[] = [];
     for (let i = 0; i < count; i++) {
       const randomYear = 2000 + Math.floor(Math.random() * 10);
       const randomMonth = Math.floor(Math.random() * 11);
       const randomDay = Math.floor((Math.random() * 29));
 
-      this.dataset[i] = {
+      tmpData[i] = {
         id: i,
         description: (i % 5) ? 'desc ' + i : '🚀🦄 español', // also add some random to test NULL field
         duration: Math.round(Math.random() * 100) + '',
@@ -231,6 +229,7 @@ export class Example12 {
         completed: (i % 5 === 0) ? 'TRUE' : 'FALSE'
       };
     }
+    this.dataset = tmpData;
   }
 
   dynamicallyAddTitleHeader() {

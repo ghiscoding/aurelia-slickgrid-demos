@@ -1,15 +1,13 @@
-import { I18N } from 'aurelia-i18n';
-import { autoinject } from 'aurelia-framework';
+import { I18N } from '@aurelia/i18n';
 import { AureliaGridInstance, Column, Formatters, GridOption, SlickDataView, SlickGrid } from 'aurelia-slickgrid';
 import './example8.scss'; // provide custom CSS/SASS styling
 
-@autoinject()
 export class Example8 {
   title = 'Example 8: Header Menu Plugin';
   subTitle = `
     This example demonstrates using the <b>Slick.Plugins.HeaderMenu</b> plugin to easily add menus to colum headers.<br/>
     These menus can be specified directly in the column definition, and are very easy to configure and use.
-    (<a href="https://github.com/ghiscoding/aurelia-slickgrid/wiki/Header-Menu-&-Header-Buttons" target="_blank">Wiki docs</a>)
+    (<a href="https://ghiscoding.gitbook.io/aurelia-slickgrid/grid-functionalities/header-menu-header-buttonss" target="_blank">Wiki docs</a>)
     <ul>
       <li>Now enabled by default in the Global Grid Options, it will add the default commands of (hide column, sort asc/desc)</li>
       <li>Hover over any column header to see an arrow showing up on the right</li>
@@ -35,7 +33,7 @@ export class Example8 {
   selectedLanguage: string;
   visibleColumns: Column[] = [];
 
-  constructor(private i18n: I18N) {
+  constructor(@I18N private readonly i18n: I18N) {
     // define the grid options & columns and then create the grid itself
     this.defineGrid();
 
@@ -178,7 +176,7 @@ export class Example8 {
 
   getData() {
     // Set up some test columns.
-    const mockDataset = [];
+    const mockDataset: any[] = [];
     for (let i = 0; i < 1000; i++) {
       mockDataset[i] = {
         id: i,

@@ -1,7 +1,6 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
+import { IHttpClient } from '@aurelia/fetch-client';
+import { newInstanceOf } from '@aurelia/kernel';
 import { GridOdataService, OdataServiceApi, OdataOption } from '@slickgrid-universal/odata';
-import { autoinject } from 'aurelia-framework';
-import { HttpClient } from 'aurelia-http-client';
 import {
   AureliaGridInstance,
   Column,
@@ -17,12 +16,11 @@ import {
 const defaultPageSize = 20;
 const sampleDataRoot = 'assets/data';
 
-@autoinject()
 export class Example5 {
   title = 'Example 5: Grid with Backend OData Service';
   subTitle = `
     Use it when you need to support Pagination with a OData endpoint (for simple JSON, use a regular grid)<br/>
-    Take a look at the (<a href="https://github.com/ghiscoding/aurelia-slickgrid/wiki/OData" target="_blank">Wiki documentation</a>)
+    Take a look at the (<a href="https://ghiscoding.gitbook.io/aurelia-slickgrid/backend-services/odata" target="_blank">Wiki documentation</a>)
     <br/>
     <ul class="small">
       <li>Only "Name" field is sortable for the demo (because we use JSON files), however "multiColumnSort: true" is also supported</li>
@@ -33,7 +31,7 @@ export class Example5 {
         <li>The other operators can be used on column type number for example: ">=100" (greater than or equal to 100)</li>
       </ul>
       <li>OData Service could be replaced by other Service type in the future (GraphQL or whichever you provide)</li>
-      <li>You can also preload a grid with certain "presets" like Filters / Sorters / Pagination <a href="https://github.com/ghiscoding/aurelia-slickgrid/wiki/Grid-State-&-Preset" target="_blank">Wiki - Grid Preset</a>
+      <li>You can also preload a grid with certain "presets" like Filters / Sorters / Pagination <a href="https://ghiscoding.gitbook.io/aurelia-slickgrid/grid-functionalities/grid-state-preset" target="_blank">Wiki - Grid Preset</a>
       <li><span class="text-danger">NOTE:</span> For demo purposes, the last column (filter & sort) will always throw an
         error and its only purpose is to demo what would happen when you encounter a backend server error
         (the UI should rollback to previous state before you did the action).
@@ -58,7 +56,7 @@ export class Example5 {
   isPageErrorTest = false;
   status = { text: '', class: '' };
 
-  constructor(private http: HttpClient) {
+  constructor(@newInstanceOf(IHttpClient) readonly http: IHttpClient) {
     // define the grid options & columns and then create the grid itself
     this.defineGrid();
   }
@@ -129,6 +127,7 @@ export class Example5 {
           version: this.odataVersion        // defaults to 2, the query string is slightly different between OData 2 and 4
         },
         onError: (error: Error) => {
+          console.log('ERROR', error);
           this.errorStatus = error.message;
           this.displaySpinner(false, true);
         },
@@ -258,12 +257,9 @@ export class Example5 {
       }
 
       // read the json and create a fresh copy of the data that we are free to modify
-      this.http.createRequest(`${sampleDataRoot}/customers_100.json`)
-        .asGet()
-        .send()
-        .then(response => {
-          let data = response.content as any[];
-
+      this.http.fetch(`${sampleDataRoot}/customers_100.json`)
+        .then(e => e.json())
+        .then((data: any) => {
           // Sort the data
           if (orderBy?.length > 0) {
             const orderByClauses = orderBy.split(',');
@@ -282,10 +278,10 @@ export class Example5 {
               const sort = orderByParts[1] ?? 'asc';
               switch (sort.toLocaleLowerCase()) {
                 case 'asc':
-                  data = data.sort((a, b) => selector(a).localeCompare(selector(b)));
+                  data = data.sort((a: any, b: any) => selector(a).localeCompare(selector(b)));
                   break;
                 case 'desc':
-                  data = data.sort((a, b) => selector(b).localeCompare(selector(a)));
+                  data = data.sort((a: any, b: any) => selector(b).localeCompare(selector(a)));
                   break;
               }
             }
@@ -297,7 +293,7 @@ export class Example5 {
           if (columnFilters) {
             for (const columnId in columnFilters) {
               if (columnFilters.hasOwnProperty(columnId)) {
-                filteredData = filteredData.filter(column => {
+                filteredData = filteredData.filter((column: Column) => {
                   const filterType = (columnFilters as any)[columnId].type;
                   const searchTerm = (columnFilters as any)[columnId].term;
                   let colId = columnId;
@@ -393,19 +389,19 @@ export class Example5 {
 
   // YOU CAN CHOOSE TO PREVENT EVENT FROM BUBBLING IN THE FOLLOWING 3x EVENTS
   // note however that internally the cancelling the search is more of a rollback
-  handleOnBeforeSort(e: Event) {
+  handleOnBeforeSort(/* e: Event */) {
     // e.preventDefault();
     // return false;
     return true;
   }
 
-  handleOnBeforeSearchChange(e: Event) {
+  handleOnBeforeSearchChange(/* e: Event */) {
     // e.preventDefault();
     // return false;
     return true;
   }
 
-  handleOnBeforePaginationChange(e: Event) {
+  handleOnBeforePaginationChange(/* e: Event */) {
     // e.preventDefault();
     // return false;
     return true;
