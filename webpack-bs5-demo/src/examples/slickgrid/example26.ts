@@ -13,12 +13,12 @@ import {
   SlickGlobalEditorLock,
   ViewModelBindableInputData,
 } from 'aurelia-slickgrid';
-
 import { CustomAureliaViewModelEditor } from './custom-aureliaViewModelEditor';
 import { CustomAureliaViewModelFilter } from './custom-aureliaViewModelFilter';
 import { CustomTitleFormatter } from './custom-title-formatter';
 import { EditorSelect } from './editor-select';
 import { FilterSelect } from './filter-select';
+
 const NB_ITEMS = 100;
 
 export class Example26 {
@@ -57,8 +57,6 @@ export class Example26 {
     { id: '2', name: 'Pierre' },
     { id: '3', name: 'Paul' },
   ];
-  selectedItem: any;
-  selectedId = '';
 
   constructor(private aureliaUtilService: AureliaUtilService) {
     // define the grid options & columns and then create the grid itself
@@ -273,7 +271,7 @@ export class Example26 {
 
   mockData(itemCount: number, startingIndex = 0) {
     // mock a dataset
-    const tempDataset = [];
+    const tempDataset: any[] = [];
     for (let i = startingIndex; i < (startingIndex + itemCount); i++) {
       const randomYear = 2000 + Math.floor(Math.random() * 10);
       const randomMonth = Math.floor(Math.random() * 11);

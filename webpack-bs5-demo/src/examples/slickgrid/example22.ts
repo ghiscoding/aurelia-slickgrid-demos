@@ -1,5 +1,6 @@
 import { IHttpClient } from '@aurelia/fetch-client';
 import { newInstanceOf } from '@aurelia/kernel';
+
 import { AureliaGridInstance, Column, Filters, GridOption } from 'aurelia-slickgrid';
 import './example22.scss';
 
@@ -13,14 +14,13 @@ export class Example22 {
     <li>Load dataset through Fetch-Client. Also note we need to call a "resizeGrid()" after focusing on this tab</li>
   </ol>`;
 
-  aureliaGrid2: AureliaGridInstance;
-  gridOptions1: GridOption;
-  gridOptions2: GridOption;
-  columnDefinitions1: Column[];
-  columnDefinitions2: Column[];
-  dataset1: any[];
-  dataset2: any[];
-  isGrid2Resize = false;
+  aureliaGrid2!: AureliaGridInstance;
+  gridOptions1!: GridOption;
+  gridOptions2!: GridOption;
+  columnDefinitions1: Column[] = [];
+  columnDefinitions2: Column[] = [];
+  dataset1: any[] = [];
+  dataset2: any[] = [];
 
   constructor(@newInstanceOf(IHttpClient) readonly http: IHttpClient) {
     // define the grid options & columns and then create the grid itself
@@ -90,7 +90,7 @@ export class Example22 {
 
   mockData() {
     // mock a dataset
-    const mockDataset = [];
+    const mockDataset: any[] = [];
     for (let i = 0; i < 1000; i++) {
       const randomYear = 2000 + Math.floor(Math.random() * 10);
       const randomMonth = Math.floor(Math.random() * 11);
@@ -117,8 +117,6 @@ export class Example22 {
    * and if it's not (like our use case) we need to resize the grid ourselve and we just need to do that once.
    */
   resizeGrid2() {
-    if (!this.isGrid2Resize) {
-      this.aureliaGrid2.resizerService.resizeGrid(10);
-    }
+    this.aureliaGrid2.resizerService.resizeGrid(10);
   }
 }

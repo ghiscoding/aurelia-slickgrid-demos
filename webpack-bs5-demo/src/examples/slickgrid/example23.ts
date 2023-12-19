@@ -1,8 +1,10 @@
 import { I18N } from '@aurelia/i18n';
-import { TOptions as I18NOptions } from 'i18next';
-import * as moment from 'moment-mini';
+// import { TOptions as I18NOptions } from 'i18next';
+import moment from 'moment-mini';
 import { SlickCustomTooltip } from '@slickgrid-universal/custom-tooltip-plugin';
 import { ExcelExportService } from '@slickgrid-universal/excel-export';
+
+import { CustomInputFilter } from './custom-inputFilter';
 import {
   AureliaGridInstance,
   Column,
@@ -20,8 +22,6 @@ import {
   SliderRangeOption,
 } from 'aurelia-slickgrid';
 
-import { CustomInputFilter } from './custom-inputFilter';
-
 const NB_ITEMS = 1500;
 
 function randomBetween(min: number, max: number): number {
@@ -33,13 +33,13 @@ const taskTranslateFormatter: Formatter = (_row, _cell, value, _columnDef, _data
   const gridOptions = (grid && typeof grid.getOptions === 'function') ? grid.getOptions() : {};
   const i18n = gridOptions.i18n;
 
-  return i18n?.tr('TASK_X', { x: value } as I18NOptions) ?? '';
+  return i18n?.tr('TASK_X', { x: value } as any) ?? '';
 };
 
 export class Example23 {
   title = 'Example 23: Filtering from Range of Search Values';
   subTitle = `
-    This demo shows how to use Filters with Range of Search Values (<a href="https://github.com/ghiscoding/aurelia-slickgrid/wiki/Range-Filters" target="_blank">Wiki docs</a>)
+    This demo shows how to use Filters with Range of Search Values (<a href="https://ghiscoding.gitbook.io/aurelia-slickgrid/column-functionalities/filters/range-filters" target="_blank">Wiki docs</a>)
     <br/>
     <ul class="small">
       <li>All input filters support the following operators: (>, >=, <, <=, <>, !=, =, ==, *) and now also the (..) for an input range</li>
@@ -85,7 +85,7 @@ export class Example23 {
     this.dataset = this.mockData(NB_ITEMS);
   }
 
-  detached() {
+  detaching() {
     this.saveCurrentGridState();
   }
 
@@ -158,8 +158,9 @@ export class Example23 {
       }
     ];
 
+    const today = new Date();
     const presetLowestDay = moment().add(-2, 'days').format('YYYY-MM-DD');
-    const presetHighestDay = moment().add(20, 'days').format('YYYY-MM-DD');
+    const presetHighestDay = moment().add(today.getDate() < 14 ? 30 : 25, 'days').format('YYYY-MM-DD');
 
     this.gridOptions = {
       autoResize: {
@@ -196,7 +197,7 @@ export class Example23 {
 
   mockData(itemCount: number, startingIndex = 0): any[] {
     // mock a dataset
-    const tempDataset = [];
+    const tempDataset: any[] = [];
     for (let i = startingIndex; i < (startingIndex + itemCount); i++) {
       const randomDuration = randomBetween(0, 365);
       const randomYear = randomBetween(moment().year(), moment().year() + 1);

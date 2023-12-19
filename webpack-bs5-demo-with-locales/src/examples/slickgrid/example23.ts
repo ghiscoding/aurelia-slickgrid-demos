@@ -12,7 +12,7 @@ import {
   OperatorType,
   SliderRangeOption,
 } from 'aurelia-slickgrid';
-import * as moment from 'moment-mini';
+import moment from 'moment-mini';
 
 import { CustomInputFilter } from './custom-inputFilter';
 

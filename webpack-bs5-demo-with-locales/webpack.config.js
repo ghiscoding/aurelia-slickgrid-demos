@@ -8,7 +8,7 @@ const nodeExternals = require('webpack-node-externals');
 
 const baseUrl = '';
 const outDevDir = path.resolve(__dirname, 'dist');
-const outProdDir = path.resolve(__dirname, 'website');
+const outProdDir = path.resolve(__dirname, 'dist');
 const srcDir = path.resolve(__dirname, 'src');
 const title = 'Aurelia-Slickgrid';
 
@@ -27,14 +27,12 @@ module.exports = ({ production, node } = {}, { server } = {}, { analyze } = {}) 
   // const production = server.production || false;
   // const production = env.production || process.env.NODE_ENV === 'production';
   return {
-    target: node ? 'node' : 'web',
+    target: 'web',
     mode: production ? 'production' : 'development',
     // devtool: production ? 'source-map' : 'inline-source-map',
     devtool: production ? false : 'eval-cheap-module-source-map',
     entry: {
-      // Build only plugin in production mode,
-      // build dev-app in non-production mode
-      entry: node ? './src/aurelia-slickgrid/index.ts' : './src/main.ts'
+      entry: './src/main.ts'
     },
     output: {
       path: production ? outProdDir : outDevDir,
@@ -47,7 +45,7 @@ module.exports = ({ production, node } = {}, { server } = {}, { analyze } = {}) 
     },
     resolve: {
       extensions: ['.ts', '.js'],
-      modules: [path.resolve(__dirname, 'src'), 'node_modules'],
+      modules: [path.resolve(__dirname, 'src'), './node_modules'],
       alias: production ? {
         // add your production aliases here
       } : {
@@ -86,6 +84,7 @@ module.exports = ({ production, node } = {}, { server } = {}, { analyze } = {}) 
         },
         { test: /\.(sass|scss)$/, use: ['style-loader', 'css-loader', 'sass-loader'], issuer: /\.[tj]s$/i },
         { test: /\.(sass|scss)$/, use: ['css-loader', 'sass-loader'], issuer: /\.html?$/i },
+        // { test: /\.js$/, enforce: 'pre', use: ['source-map-loader'], include: [/aurelia-slickgrid/] },
         { test: /\.ts$/i, use: ['ts-loader', '@aurelia/webpack-loader'], exclude: /node_modules/ },
         {
           test: /[/\\](?:src|dev-app)[/\\].+\.html$/i,
@@ -155,7 +154,7 @@ function getAureliaDevAliases() {
     const name = pkg === 'aurelia' ? pkg : `@aurelia/${pkg}`;
     try {
       const packageLocation = require.resolve(name);
-      map[name] = path.resolve(packageLocation, `../../esm/index.dev.mjs`);
+      map[name] = path.resolve(packageLocation, `./esm/index.dev.mjs`);
     } catch {/**/ }
     return map;
   });

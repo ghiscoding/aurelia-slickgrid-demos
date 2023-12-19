@@ -1,6 +1,6 @@
 import { ExcelExportService } from '@slickgrid-universal/excel-export';
 import { I18N } from '@aurelia/i18n';
-import { TOptions as I18NOptions } from 'i18next';
+// import { TOptions as I18NOptions } from 'i18next';
 
 import {
   AureliaGridInstance,
@@ -55,7 +55,7 @@ const taskTranslateFormatter: Formatter = (_row, _cell, value, _columnDef, _data
   const gridOptions: GridOption = (grid && typeof grid.getOptions === 'function') ? grid.getOptions() : {};
   const i18n = gridOptions.i18n;
 
-  return i18n?.tr('TASK_X', { x: value } as I18NOptions) ?? '';
+  return i18n?.tr('TASK_X', { x: value } as any) ?? '';
 };
 
 export class Example24 {
@@ -64,11 +64,11 @@ export class Example24 {
     <ul>
       <li>This example demonstrates 2 SlickGrid plugins
       <ol>
-        <li>Using the <b>SlickCellMenu</b> plugin, often used for an Action Menu(s), 1 or more per grid
-          (<a href="https://github.com/ghiscoding/aurelia-slickgrid/wiki/Cell-Menu" target="_blank">Wiki docs</a>).
+        <li>Using the <b>Slick.Plugins.CellMenu</b> plugin, often used for an Action Menu(s), 1 or more per grid
+          (<a href="https://ghiscoding.gitbook.io/aurelia-slickgrid/grid-functionalities/cell-menu" target="_blank">Wiki docs</a>).
         </li>
-        <li>Using the <b>SlickContextMenu</b> plugin, shown after a mouse right+click, only 1 per grid.
-        (<a href="https://github.com/ghiscoding/aurelia-slickgrid/wiki/Context-Menu" target="_blank">Wiki docs</a>).
+        <li>Using the <b>Slick.Plugins.ContextMenu</b> plugin, shown after a mouse right+click, only 1 per grid.
+        (<a href="https://ghiscoding.gitbook.io/aurelia-slickgrid/grid-functionalities/context-menu" target="_blank">Wiki docs</a>).
         </li>
       </ol>
       <li>It will also "autoAdjustDrop" (bottom/top) and "autoAlignSide" (left/right) by default but could be turned off</li>
@@ -344,7 +344,7 @@ export class Example24 {
         alert('Please help!');
         break;
       case 'delete-row':
-        if (confirm(`Do you really want to delete row ${args.row + 1} with ${this.i18n.tr('TASK_X', { x: dataContext.id } as I18NOptions)}`)) {
+        if (confirm(`Do you really want to delete row ${args.row + 1} with ${this.i18n.tr('TASK_X', { x: dataContext.id } as any)}`)) {
           this.aureliaGrid.dataView.deleteItem(dataContext.id);
         }
         break;
@@ -353,7 +353,7 @@ export class Example24 {
 
   getData(count: number): any[] {
     // mock a dataset
-    const tmpData = [];
+    const tmpData: any[] = [];
     for (let i = 0; i < count; i++) {
       const randomYear = 2000 + Math.floor(Math.random() * 30);
       const randomMonth = Math.floor(Math.random() * 11);

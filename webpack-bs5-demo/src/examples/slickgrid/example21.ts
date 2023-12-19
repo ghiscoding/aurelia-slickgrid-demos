@@ -104,7 +104,7 @@ export class Example21 {
 
   getData() {
     // mock a dataset
-    const mockedDataset = [];
+    const mockedDataset: any[] = [];
     for (let i = 0; i < 25; i++) {
       const randomYear = 2000 + Math.floor(Math.random() * 10);
       const randomMonth = Math.floor(Math.random() * 11);

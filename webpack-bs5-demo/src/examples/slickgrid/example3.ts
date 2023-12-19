@@ -62,7 +62,7 @@ const taskFormatter = (_row: number, _cell: number, value: any) => {
 export class Example3 {
   title = 'Example 3: Editors / Delete';
   subTitle = `
-  Grid with Inline Editors and onCellClick actions (<a href="https://github.com/ghiscoding/aurelia-slickgrid/wiki/Editors" target="_blank">Wiki docs</a>).
+  Grid with Inline Editors and onCellClick actions (<a href="https://ghiscoding.gitbook.io/aurelia-slickgrid/column-functionalities/editors" target="_blank">Wiki docs</a>).
   <ul>
     <li>When using "enableCellNavigation: true", clicking on a cell will automatically make it active &amp; selected.</li>
     <ul><li>If you don't want this behavior, then you should disable "enableCellNavigation"</li></ul>
@@ -89,7 +89,7 @@ export class Example3 {
     this.defineGrid();
   }
 
-  attached() {
+  async attached() {
     // populate the dataset once the grid is ready
     this.dataset = this.mockData(NB_ITEMS);
   }
@@ -277,7 +277,7 @@ export class Example3 {
             minLength: 3,
             forceUserInput: true,
             fetch: (searchText: string, updateCallback: (items: false | any[]) => void) => {
-              /** with Angular Http, note this demo won't work because of CORS */
+              /** with Aurelia Http, note this demo won't work because of CORS */
               // this.http.get(`http://gd.geobytes.com/AutoCompleteCity?q=${searchText}`).subscribe(data => updateCallback(data));
 
               /** with JSONP AJAX will work locally but not on the GitHub demo because of CORS */
@@ -501,7 +501,7 @@ export class Example3 {
 
   mockData(itemCount: number, startingIndex = 0) {
     // mock a dataset
-    const tempDataset = [];
+    const tempDataset: any[] = [];
     for (let i = startingIndex; i < (startingIndex + itemCount); i++) {
       const randomYear = 2000 + Math.floor(Math.random() * 10);
       const randomFinishYear = (new Date().getFullYear() - 3) + Math.floor(Math.random() * 10); // use only years not lower than 3 years ago
@@ -583,7 +583,6 @@ export class Example3 {
     // you can dynamically add your column to your column definitions
     // and then use the spread operator [...cols] OR slice to force Aurelia to review the changes
     this.columnDefinitions.push(newCol);
-    this.columnDefinitions = this.columnDefinitions.slice(); // or use spread operator [...cols]
 
     // NOTE if you use an Extensions (Checkbox Selector, Row Detail, ...) that modifies the column definitions in any way
     // you MUST use "getAllColumnDefinitions()" from the GridService, using this will be ALL columns including the 1st column that is created internally
@@ -597,7 +596,6 @@ export class Example3 {
 
   dynamicallyRemoveLastColumn() {
     this.columnDefinitions.pop();
-    this.columnDefinitions = this.columnDefinitions.slice();
 
     // NOTE if you use an Extensions (Checkbox Selector, Row Detail, ...) that modifies the column definitions in any way
     // you MUST use the code below, first you must reassign the Editor facade (from the internalColumnEditor back to the editor)
@@ -611,7 +609,6 @@ export class Example3 {
     // remove your column the full set of columns
     // and use slice or spread [...] to trigger an Aurelia dirty change
     allOriginalColumns.pop();
-    this.columnDefinitions = allOriginalColumns.slice();
     */
   }
 

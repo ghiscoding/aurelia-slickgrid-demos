@@ -6,14 +6,16 @@ import {
   Formatters,
   GridOption,
   GridService,
-  OnEventArgs
+  OnEventArgs,
+  SlickDataView,
+  SlickGrid,
 } from 'aurelia-slickgrid';
-import './custom-styles.scss';
+import './example11.scss';
 
 export class Example11 {
   title = 'Example 11: Add / Update / Highlight a Datagrid Item';
   subTitle = `
-  Add / Update / Hightlight an Item from the Datagrid (<a href="https://github.com/ghiscoding/aurelia-slickgrid/wiki/Add,-Update-or-Highlight-a-Datagrid-Item" target="_blank">Wiki docs</a>).
+  Add / Update / Hightlight an Item from the Datagrid (<a href="https://ghiscoding.gitbook.io/aurelia-slickgrid/grid-functionalities/add-update-highlight" target="_blank">Wiki docs</a>).
   <ul>
     <li><b>Note:</b> this demo is <b>only</b> on the datagrid (client) side, you still need to deal with the backend yourself</li>
     <li>Adding an item, will always be showing as the 1st item in the grid because that is the best visual place to add it</li>
@@ -26,28 +28,24 @@ export class Example11 {
     </ul>
     <li>You can also add CSS class(es) on the fly (or on page load) on rows with certain criteria, (e.g. click on last button)
     <ul>
-      <li>Example, click on button "Highlight Rows with Duration over 50" to see row styling changing. <a href="https://github.com/ghiscoding/aurelia-slickgrid/wiki/Dynamically-Add-CSS-Classes-to-Item-Rows" target="_blank">Wiki doc</a></li>
+      <li>Example, click on button "Highlight Rows with Duration over 50" to see row styling changing. <a href="https://ghiscoding.gitbook.io/aurelia-slickgrid/grid-functionalities/dynamic-item-metadata" target="_blank">Wiki doc</a></li>
     </ul>
   </ul>
   `;
 
-  aureliaGrid: AureliaGridInstance;
-  grid: any;
-  gridService: GridService;
-  dataView: any;
-  columnDefinitions: Column[];
-  gridOptions: GridOption;
-  dataset: any[];
+  aureliaGrid!: AureliaGridInstance;
+  dataView!: SlickDataView;
+  grid!: SlickGrid;
+  gridService!: GridService;
+  columnDefinitions: Column[] = [];
+  gridOptions!: GridOption;
+  dataset: any[] = [];
   updatedObject: any;
 
   constructor() {
     // define the grid options & columns and then create the grid itself
     this.defineGrid();
-  }
-
-  attached() {
-    // populate the dataset once the grid is ready
-    this.getData();
+    this.mockData(1000);
   }
 
   aureliaGridReady(aureliaGrid: AureliaGridInstance) {
@@ -76,7 +74,7 @@ export class Example11 {
         minWidth: 30,
         maxWidth: 30,
         // use onCellClick OR grid.onClick.subscribe which you can see down below
-        onCellClick: (e: Event, args: OnEventArgs) => {
+        onCellClick: (_e: Event, args: OnEventArgs) => {
           console.log(args);
           if (confirm('Are you sure?')) {
             this.aureliaGrid.gridService.deleteItemById(args.dataContext.id);
@@ -98,7 +96,7 @@ export class Example11 {
         editor: {
           model: Editors.text
         },
-        onCellChange: (e: Event, args: OnEventArgs) => {
+        onCellChange: (_e: Event, args: OnEventArgs) => {
           alert('onCellChange directly attached to the column definition');
           console.log(args);
         }
@@ -150,10 +148,10 @@ export class Example11 {
     };
   }
 
-  getData() {
+  mockData(itemCount: number) {
     // mock a dataset
-    const mockedDataset = [];
-    for (let i = 0; i < 1000; i++) {
+    const mockedDataset: any[] = [];
+    for (let i = 0; i < itemCount; i++) {
       const randomYear = 2000 + Math.floor(Math.random() * 10);
       const randomMonth = Math.floor(Math.random() * 11);
       const randomDay = Math.floor((Math.random() * 29));
@@ -175,7 +173,7 @@ export class Example11 {
 
   addNewItem(insertPosition?: 'top' | 'bottom') {
     const newItem1 = this.createNewItem(1);
-    const newItem2 = this.createNewItem(2);
+    // const newItem2 = this.createNewItem(2);
 
     // single insert
     this.aureliaGrid.gridService.addItem(newItem1, { position: insertPosition });
@@ -212,7 +210,7 @@ export class Example11 {
 
   /** Change the Duration Rows Background Color */
   changeDurationBackgroundColor() {
-    this.dataView.getItemMetadata = this.updateItemMetadataForDurationOver50(this.dataView.getItemMetadata);
+    this.dataView.getItemMetadata = this.updateItemMetadataForDurationOver40(this.dataView.getItemMetadata);
     // also re-render the grid for the styling to be applied right away
     this.grid.invalidate();
     this.grid.render();
@@ -227,10 +225,10 @@ export class Example11 {
   }
 
   /**
-   * Change the SlickGrid Item Metadata, we will add a CSS class on all rows with a Duration over 50
+   * Change the SlickGrid Item Metadata, we will add a CSS class on all rows with a Duration over 40
    * For more info, you can see this SO https://stackoverflow.com/a/19985148/1212166
    */
-  updateItemMetadataForDurationOver50(previousItemMetadata: any) {
+  updateItemMetadataForDurationOver40(previousItemMetadata: any) {
     const newCssClass = 'duration-bg';
     return (rowNumber: number) => {
       const item = this.dataView.getItem(rowNumber);
@@ -242,7 +240,7 @@ export class Example11 {
       }
       if (meta && item && item.duration) {
         const duration = +item.duration; // convert to number
-        if (duration > 50) {
+        if (duration > 40) {
           meta.cssClasses = (meta.cssClasses || '') + ' ' + newCssClass;
         }
       }

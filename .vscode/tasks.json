@@ -22,7 +22,7 @@
     {
       "label": "Start Webpack Bootstrap 5 Demo Page",
       "type": "shell",
-      "command": "yarn start",
+      "command": "npm run start",
       "options": {
         "cwd": "${workspaceFolder}/webpack-bs5-demo",
       },
@@ -31,7 +31,7 @@
     {
       "label": "Start Webpack Bootstrap 5 Demo Page - with Custom Locales",
       "type": "shell",
-      "command": "npm start",
+      "command": "npm run start",
       "options": {
         "cwd": "${workspaceFolder}/webpack-bs5-demo-with-locales",
       },

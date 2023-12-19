@@ -27,7 +27,7 @@ Again the following dependencies are totally **OPTIONAL**
 
 ### Build Demo
 ```bash
-run build # OR yarn run build
+npm run build # OR yarn run build
 ```
 
 ## Webpack and Bootstrap 5 (with TypeScript)
@@ -46,7 +46,7 @@ http://localhost:8080
 
 ### Build Demo
 ```bash
-run build # OR yarn run build
+npm run build # OR yarn run build
 ```
 
 ## Webpack and Bootstrap 5 with single Locale & without I18N (TypeScript)
@@ -55,7 +55,7 @@ run build # OR yarn run build
 git clone https://github.com/ghiscoding/aurelia-slickgrid-demos
 cd webpack-bs5-demo-with-locales
 npm install # OR yarn install
-npm start # OR yarn start
+npm run start # OR yarn start
 ```
 
 Then open your browser to
@@ -65,5 +65,5 @@ http://localhost:8080
 
 ### Build Demo
 ```bash
-run build # OR yarn run build
+run run build # OR yarn run build
 ```

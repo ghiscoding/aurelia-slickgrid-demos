@@ -7,15 +7,28 @@ import {
   GridOption,
 } from 'aurelia-slickgrid';
 
+interface DataItem {
+  id: number;
+  title: string;
+  duration: string;
+  percentComplete: number;
+  percentComplete2: number;
+  start: Date;
+  finish: Date;
+  effortDriven: boolean;
+  phone: string;
+  completed: number;
+}
+
 // create my custom Formatter with the Formatter type
-const myCustomCheckmarkFormatter: Formatter = (row, cell, value, columnDef, dataContext) => {
+const myCustomCheckmarkFormatter: Formatter<DataItem> = (_row, _cell, value) => {
   // you can return a string of a object (of type FormatterResultObject), the 2 types are shown below
   return value ? `<i class="fa fa-fire red" aria-hidden="true"></i>` : { text: '<i class="fa fa-snowflake-o" aria-hidden="true"></i>', addClasses: 'lightblue', toolTip: 'Freezing' };
 };
 
-const customEnableButtonFormatter: Formatter = (row: number, cell: number, value: any, columnDef: Column, dataContext: any, grid: any) => {
+const customEnableButtonFormatter: Formatter<DataItem> = (_row: number, _cell: number, value: any) => {
   return `<span style="margin-left: 5px">
-      <button class="btn btn-xs btn-outline-secondary">
+      <button class="btn btn-xs btn-default">
         <i class="fa ${value ? 'fa-check-circle' : 'fa-circle-thin'} fa-lg" style="color: ${value ? 'black' : 'lavender'}"></i>
       </button>
     </span>`;
@@ -24,22 +37,22 @@ const customEnableButtonFormatter: Formatter = (row: number, cell: number, value
 export class Example2 {
   title = 'Example 2: Grid with Formatters';
   subTitle = `
-    Grid with Custom and/or included Slickgrid Formatters (<a href="https://github.com/ghiscoding/aurelia-slickgrid/wiki/Formatters" target="_blank">Wiki docs</a>).
+    Grid with Custom and/or included Slickgrid Formatters (<a href="https://ghiscoding.gitbook.io/aurelia-slickgrid/column-functionalities/formatters" target="_blank">Wiki docs</a>).
     <ul>
       <li>The 2 last columns are using Custom Formatters</li>
       <ul><li>The "Completed" column uses a the "onCellClick" event and a formatter to simulate a toggle action</li></ul>
       <li>
         Support Excel Copy Buffer (SlickGrid Copy Manager Plugin), you can use it by simply enabling "enableExcelCopyBuffer" flag.
-        Note that it will only evaluate Formatter when the "exportWithFormatter" flag is enabled (through "ExportOptions" or the column definition)
+        Note that it will only evaluate Formatter when the "exportWithFormatter" flag is enabled (through "ExcelExportOptions" or "TextExportOptions" or the column definition)
       </li>
       <li>This example also has auto-resize enabled, and we also demo how you can pause the resizer if you wish to</li>
     </ul>
   `;
 
-  aureliaGrid: AureliaGridInstance;
-  gridOptions: GridOption;
-  columnDefinitions: Column[];
-  dataset: any[];
+  aureliaGrid!: AureliaGridInstance;
+  gridOptions!: GridOption;
+  columnDefinitions: Column<DataItem>[] = [];
+  dataset: any[] = [];
   resizerPaused = false;
 
   constructor() {
@@ -54,6 +67,7 @@ export class Example2 {
 
   /* Define grid Options and Columns */
   defineGrid() {
+    // the columns field property is type-safe, try to add a different string not representing one of DataItems properties
     this.columnDefinitions = [
       { id: 'title', name: 'Title', field: 'title', sortable: true, type: FieldType.string, width: 70 },
       { id: 'phone', name: 'Phone Number using mask', field: 'phone', sortable: true, type: FieldType.number, minWidth: 100, formatter: Formatters.mask, params: { mask: '(000) 000-0000' } },
@@ -66,7 +80,7 @@ export class Example2 {
       {
         id: 'completed', name: 'Completed', field: 'completed', type: FieldType.number, sortable: true, minWidth: 100,
         formatter: customEnableButtonFormatter,
-        onCellClick: (e, args) => {
+        onCellClick: (_e, args) => {
           this.toggleCompletedProperty(args && args.dataContext);
         }
       }
@@ -101,24 +115,24 @@ export class Example2 {
 
       // when using the ExcelCopyBuffer, you can see what the selection range is
       enableExcelCopyBuffer: true,
-      excelCopyBufferOptions: {
-        onCopyCells: (e, args) => console.log('onCopyCells', args.ranges),
-        onPasteCells: (e, args) => console.log('onPasteCells', args.ranges),
-        onCopyCancelled: (e, args) => console.log('onCopyCancelled', args.ranges),
-      }
+      // excelCopyBufferOptions: {
+      //   onCopyCells: (e, args: { ranges: SelectedRange[] }) => console.log('onCopyCells', args.ranges),
+      //   onPasteCells: (e, args: { ranges: SelectedRange[] }) => console.log('onPasteCells', args.ranges),
+      //   onCopyCancelled: (e, args: { ranges: SelectedRange[] }) => console.log('onCopyCancelled', args.ranges),
+      // }
     };
   }
 
   getData() {
     // mock a dataset
-    this.dataset = [];
+    const dataset: any[] = [];
     for (let i = 0; i < 500; i++) {
       const randomYear = 2000 + Math.floor(Math.random() * 10);
       const randomMonth = Math.floor(Math.random() * 11);
       const randomDay = Math.floor((Math.random() * 29));
       const randomPercent = Math.round(Math.random() * 100);
 
-      this.dataset[i] = {
+      dataset[i] = {
         id: i,
         title: 'Task ' + i,
         phone: this.generatePhoneNumber(),
@@ -131,6 +145,7 @@ export class Example2 {
         effortDriven: (i % 5 === 0)
       };
     }
+    this.dataset = dataset;
   }
 
   generatePhoneNumber() {
@@ -146,7 +161,7 @@ export class Example2 {
     this.aureliaGrid.resizerService.pauseResizer(this.resizerPaused);
   }
 
-  toggleCompletedProperty(item) {
+  toggleCompletedProperty(item: any) {
     // toggle property
     if (typeof item === 'object') {
       item.completed = !item.completed;

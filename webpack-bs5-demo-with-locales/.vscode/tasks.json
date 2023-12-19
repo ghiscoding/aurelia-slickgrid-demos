@@ -4,19 +4,19 @@
     {
       "label": "Build Github Demo Page",
       "type": "shell",
-      "command": "yarn start build",
+      "command": "npm run build",
       "problemMatcher": []
     },
     {
       "label": "Build Github Demo Page & Copy Files to GhPages Folder",
       "type": "shell",
-      "command": "yarn run build-demo",
+      "command": "npm run build-demo",
       "problemMatcher": []
     },
     {
       "label": "Start Github Demo Page",
       "type": "shell",
-      "command": "yarn start",
+      "command": "npm run start",
       "problemMatcher": []
     }
   ]
