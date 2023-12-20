@@ -23,7 +23,7 @@ export class Example18 {
   title = 'Example 18: Draggable Grouping & Aggregators';
   subTitle = `
   <ul>
-  <li><a href="https://github.com/ghiscoding/aurelia-slickgrid/wiki/Grouping-&-Aggregators" target="_blank">Wiki docs</a></li>
+  <li><a href="https://ghiscoding.gitbook.io/aurelia-slickgrid/grid-functionalities/grouping-aggregators" target="_blank">Wiki docs</a></li>
   <li>This example shows 3 ways of grouping</li>
   <ol>
   <li>Drag any Column Header on the top placeholder to group by that column (support moti-columns grouping by adding more columns to the drop area).</li>
@@ -36,14 +36,14 @@ export class Example18 {
   </ul>
   `;
 
-  aureliaGrid: AureliaGridInstance;
-  columnDefinitions: Column[];
-  dataset: any[];
-  dataviewObj: SlickDataView;
+  aureliaGrid!: AureliaGridInstance;
+  columnDefinitions: Column[] = [];
+  dataset: any[] = [];
+  dataviewObj!: SlickDataView;
   draggableGroupingPlugin: any;
   durationOrderByCount = false;
-  gridObj: SlickGrid;
-  gridOptions: GridOption;
+  gridObj!: SlickGrid;
+  gridOptions!: GridOption;
   processing = false;
   selectedGroupingFields: Array<string | GroupingGetterFunction> = ['', '', ''];
   excelExportService = new ExcelExportService();
@@ -242,7 +242,7 @@ export class Example18 {
 
   loadData(rowCount: number) {
     // mock a dataset
-    this.dataset = [];
+    const tmpData: any[] = [];
     for (let i = 0; i < rowCount; i++) {
       const randomYear = 2000 + Math.floor(Math.random() * 10);
       const randomMonth = Math.floor(Math.random() * 11);
@@ -250,7 +250,7 @@ export class Example18 {
       const randomPercent = Math.round(Math.random() * 100);
       const randomCost = Math.round(Math.random() * 10000) / 100;
 
-      this.dataset[i] = {
+      tmpData[i] = {
         id: 'id_' + i,
         num: i,
         title: 'Task ' + i,
@@ -263,6 +263,7 @@ export class Example18 {
         effortDriven: (i % 5 === 0)
       };
     }
+    this.dataset = tmpData;
   }
 
   clearGroupsAndSelects() {
@@ -307,7 +308,7 @@ export class Example18 {
 
   groupByDuration() {
     this.clearGrouping();
-    if (this.draggableGroupingPlugin && this.draggableGroupingPlugin.setDroppedGroups) {
+    if (this.draggableGroupingPlugin?.setDroppedGroups) {
       this.showPreHeader();
       this.draggableGroupingPlugin.setDroppedGroups('duration');
       this.gridObj.invalidate(); // invalidate all rows and re-render
@@ -355,12 +356,12 @@ export class Example18 {
   }
 
   onGroupChanged(change: { caller?: string; groupColumns: Grouping[] }) {
-    const caller = change && change.caller || [];
-    const groups = change && change.groupColumns || [];
+    const caller = change?.caller ?? [];
+    const groups = change?.groupColumns ?? [];
 
     if (Array.isArray(this.selectedGroupingFields) && Array.isArray(groups) && groups.length > 0) {
       // update all Group By select dropdown
-      this.selectedGroupingFields.forEach((_g, i) => this.selectedGroupingFields[i] = groups[i] && groups[i].getter || '');
+      this.selectedGroupingFields.forEach((_g, i) => this.selectedGroupingFields[i] = groups[i]?.getter ?? '');
       this.selectedGroupingFields = [...this.selectedGroupingFields]; // force dirty checking
     } else if (groups.length === 0 && caller === 'remove-group') {
       this.clearGroupingSelects();

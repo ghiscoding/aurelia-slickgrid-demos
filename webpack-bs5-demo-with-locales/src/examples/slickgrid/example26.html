@@ -15,7 +15,7 @@
   <br />
   <span id="radioAutoEdit">
     <div class="row">
-      <div class="col-12">
+      <div class="col">
         <label class="radio-inline control-label" for="radioTrue">
           <input type="radio" name="inlineRadioOptions" id="radioTrue" checked value.bind="isAutoEdit"
                   click.trigger="setAutoEdit(true)"> ON
@@ -29,7 +29,7 @@
       </div>
     </div>
     <div class="row">
-      <div class="col-12">
+      <div class="col">
         <button class="btn btn-outline-secondary btn-sm" click.trigger="undo()">
           <i class="fa fa-undo"></i>
           Undo last edit(s)
@@ -43,7 +43,7 @@
     </div>
   </span>
   <div class="row" style="margin-top: 5px">
-    <div class="col-12">
+    <div class="col">
       <button class="btn btn-outline-secondary btn-sm" click.trigger="aureliaGrid.filterService.clearFilters()">Clear
         Filters</button>
       <button class="btn btn-outline-secondary btn-sm" click.trigger="aureliaGrid.sortService.clearSorting()">Clear

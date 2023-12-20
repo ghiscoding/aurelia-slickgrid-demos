@@ -1,4 +1,13 @@
-<h2>${title}</h2>
+<h2>
+  ${title}
+  <span class="float-end">
+    <a style="font-size: 18px"
+        target="_blank"
+        href="https://github.com/ghiscoding/aurelia-slickgrid/blob/master/src/examples/slickgrid/example25.ts">
+      <span class="fa fa-link"></span> code
+    </a>
+  </span>
+</h2>
 <div class="subtitle" innerhtml.bind="subTitle"></div>
 
 <div class="row">
@@ -13,8 +22,7 @@
 </div>
 
 <aurelia-slickgrid grid-id="grid25"
-  column-definitions.bind="columnDefinitions"
-  grid-options.bind="gridOptions"
-  dataset.bind="dataset"
-  instances.bind="aureliaGrid">
+                    column-definitions.bind="columnDefinitions"
+                    grid-options.bind="gridOptions"
+                    dataset.bind="dataset">
 </aurelia-slickgrid>

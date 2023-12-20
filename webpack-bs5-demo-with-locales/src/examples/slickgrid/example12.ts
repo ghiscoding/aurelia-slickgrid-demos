@@ -14,7 +14,7 @@ import {
   GridStateChange,
   SlickGrid,
 } from 'aurelia-slickgrid';
-import { localeFrench } from 'locales/fr';
+import { localeFrench } from '../locales/fr';
 
 const NB_ITEMS = 1500;
 
@@ -48,7 +48,7 @@ export class Example12 {
     this.defineGrid();
   }
 
-  attached() {
+  attaching() {
     // populate the dataset once the grid is ready
     this.getData(NB_ITEMS);
   }

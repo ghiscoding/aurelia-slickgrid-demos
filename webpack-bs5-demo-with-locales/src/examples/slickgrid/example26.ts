@@ -57,8 +57,6 @@ export class Example26 {
     { id: '2', name: 'Pierre' },
     { id: '3', name: 'Paul' },
   ];
-  selectedItem: any;
-  selectedId = '';
 
   constructor(private aureliaUtilService: AureliaUtilService) {
     // define the grid options & columns and then create the grid itself
@@ -273,7 +271,7 @@ export class Example26 {
 
   mockData(itemCount: number, startingIndex = 0) {
     // mock a dataset
-    const tempDataset = [];
+    const tempDataset: any[] = [];
     for (let i = startingIndex; i < (startingIndex + itemCount); i++) {
       const randomYear = 2000 + Math.floor(Math.random() * 10);
       const randomMonth = Math.floor(Math.random() * 11);

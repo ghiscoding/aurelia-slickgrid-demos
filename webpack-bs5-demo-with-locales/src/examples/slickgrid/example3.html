@@ -11,7 +11,7 @@
 <div class="subtitle"
       innerhtml.bind="subTitle"></div>
 
-<div class="row col-sm-12">
+<div class="row">
   <div class="col-sm-6">
     <label>autoEdit setting</label>
     <br />
@@ -40,8 +40,7 @@
       </div>
       <div class="row col-sm-12">
         <span>
-          <button class="btn btn-outline-secondary btn-sm mr-1"
-                  click.trigger="undo()" data-test="undo-btn">
+          <button class="btn btn-outline-secondary btn-sm" click.trigger="undo()" data-test="undo-btn">
             <i class="fa fa-undo"></i>
             Undo last edit(s)
           </button>
@@ -58,33 +57,27 @@
       </div>
     </span>
     <div class="row" style="margin-top: 5px">
-      <div class="col-sm-12 mr-1">
-        <button class="btn btn-outline-secondary btn-sm mr-1"
-                click.trigger="aureliaGrid.filterService.clearFilters()">Clear
+      <div class="col-sm-12">
+        <button class="btn btn-outline-secondary btn-sm" click.trigger="aureliaGrid.filterService.clearFilters()">Clear
           Filters</button>
-        <button class="btn btn-outline-secondary btn-sm mr-1"
-                click.trigger="aureliaGrid.sortService.clearSorting()">Clear
+        <button class="btn btn-outline-secondary btn-sm" click.trigger="aureliaGrid.sortService.clearSorting()">Clear
           Sorting</button>
-        <button class="btn btn-outline-info btn-sm mr-1"
-                data-test="add-item-btn"
-                click.trigger="addItem()"
+        <button class="btn btn-outline-primary btn-sm" data-test="add-item-btn" click.trigger="addItem()"
                 title="Clear Filters &amp; Sorting to see it better">
           Add item
         </button>
-        <button class="btn btn-danger btn-sm mr-1" data-test="delete-item-btn" click.trigger="deleteItem()">Delete
+        <button class="btn btn-outline-danger btn-sm" data-test="delete-item-btn" click.trigger="deleteItem()">Delete
           item</button>
       </div>
     </div>
     <div class="row" style="margin-top: 5px">
       <div class="col-sm-12">
-        <button class="btn btn-outline-secondary btn-sm mr-1"
-                data-test="add-title-column"
+        <button class="btn btn-outline-secondary btn-sm" data-test="add-title-column"
                 click.trigger="dynamicallyAddTitleHeader()">
           <i class="fa fa-plus"></i>
           Dynamically Duplicate Title Column
         </button>
-        <button class="btn btn-outline-secondary btn-sm mr-1"
-                data-test="remove-title-column"
+        <button class="btn btn-outline-secondary btn-sm" data-test="remove-title-column"
                 click.trigger="dynamicallyRemoveLastColumn()">
           <i class="fa fa-minus"></i>
           Dynamically Remove Last Column
@@ -105,8 +98,7 @@
   </div>
 </div>
 
-<div id="grid-container"
-      class="col-sm-12">
+<div id="grid-container" class="col-sm-12">
   <aurelia-slickgrid grid-id="grid3"
                       column-definitions.bind="columnDefinitions"
                       grid-options.bind="gridOptions"

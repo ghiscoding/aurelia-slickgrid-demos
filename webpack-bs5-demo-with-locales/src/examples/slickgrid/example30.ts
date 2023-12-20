@@ -1,7 +1,7 @@
 import { IHttpClient } from '@aurelia/fetch-client';
 import { newInstanceOf } from '@aurelia/kernel';
-import { SlickCompositeEditor, SlickCompositeEditorComponent } from '@slickgrid-universal/composite-editor-component';
 import { ExcelExportService } from '@slickgrid-universal/excel-export';
+import { SlickCompositeEditor, SlickCompositeEditorComponent } from '@slickgrid-universal/composite-editor-component';
 
 import {
   AureliaGridInstance,
@@ -37,12 +37,12 @@ const URL_COUNTRIES_COLLECTION = 'assets/data/countries.json';
  * @returns {boolean} isEditable
  */
 function checkItemIsEditable(dataContext: any, columnDef: Column, grid: SlickGrid) {
-  const gridOptions = grid && grid.getOptions && grid.getOptions();
+  const gridOptions = grid?.getOptions();
   const hasEditor = columnDef.editor;
   const isGridEditable = gridOptions.editable;
   let isEditable = !!(isGridEditable && hasEditor);
 
-  if (dataContext && columnDef && gridOptions && gridOptions.editable) {
+  if (dataContext && columnDef && gridOptions?.editable) {
     switch (columnDef.id) {
       case 'finish':
         // case 'percentComplete':
@@ -59,7 +59,6 @@ function checkItemIsEditable(dataContext: any, columnDef: Column, grid: SlickGri
   }
   return isEditable;
 }
-
 
 const customEditableInputFormatter: Formatter = (_row, _cell, value, columnDef, _dataContext, grid) => {
   const gridOptions = grid && grid.getOptions && grid.getOptions();
@@ -82,7 +81,7 @@ const myCustomTitleValidator = (value: any, args: any) => {
 export class Example30 {
   title = 'Example 30: Composite Editor Modal';
   subTitle = `Composite Editor allows you to Create, Clone, Edit, Mass Update & Mass Selection Changes inside a nice Modal Window.
-  <br>The modal is simply populated by looping through your column definition list and also uses a lot of the same logic as inline editing (see <a href="https://github.com/ghiscoding/aurelia-slickgrid/wiki/Composite-Editor-Modal" target="_blank">Composite Editor - Wiki</a>.)`;
+  <br>The modal is simply populated by looping through your column definition list and also uses a lot of the same logic as inline editing (see <a href="https://ghiscoding.gitbook.io/aurelia-slickgrid/grid-functionalities/composite-editor-modal" target="_blank">Composite Editor - Wiki</a>.)`;
 
   aureliaGrid!: AureliaGridInstance;
   compositeEditorInstance: SlickCompositeEditorComponent;
@@ -105,6 +104,9 @@ export class Example30 {
 
   constructor(@newInstanceOf(IHttpClient) readonly http: IHttpClient) {
     this.compositeEditorInstance = new SlickCompositeEditorComponent();
+  }
+
+  created() {
     // define the grid options & columns and then create the grid itself
     this.defineGrids();
   }
@@ -244,7 +246,7 @@ export class Example30 {
           } as FlatpickrOption,
           massUpdate: true,
           validator: (value, args) => {
-            const dataContext = args && args.item;
+            const dataContext = args?.item;
             if (dataContext && (dataContext.completed && !value)) {
               return { valid: false, msg: 'You must provide a "Finish" date when "Completed" is checked.' };
             }
