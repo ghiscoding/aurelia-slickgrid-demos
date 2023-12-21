@@ -10,7 +10,6 @@ import {
   Formatter,
   Formatters,
   GridOption,
-  SlickGrid,
 } from 'aurelia-slickgrid';
 import './example24.scss'; // provide custom CSS/SASS styling
 
@@ -54,11 +53,11 @@ export class Example24 {
     <ul>
       <li>This example demonstrates 2 SlickGrid plugins
       <ol>
-        <li>Using the <b>SlickCellMenu</b> plugin, often used for an Action Menu(s), 1 or more per grid
-          (<a href="https://github.com/ghiscoding/aurelia-slickgrid/wiki/Cell-Menu" target="_blank">Wiki docs</a>).
+        <li>Using the <b>Slick.Plugins.CellMenu</b> plugin, often used for an Action Menu(s), 1 or more per grid
+          (<a href="https://ghiscoding.gitbook.io/aurelia-slickgrid/grid-functionalities/cell-menu" target="_blank">Wiki docs</a>).
         </li>
-        <li>Using the <b>SlickContextMenu</b> plugin, shown after a mouse right+click, only 1 per grid.
-        (<a href="https://github.com/ghiscoding/aurelia-slickgrid/wiki/Context-Menu" target="_blank">Wiki docs</a>).
+        <li>Using the <b>Slick.Plugins.ContextMenu</b> plugin, shown after a mouse right+click, only 1 per grid.
+        (<a href="https://ghiscoding.gitbook.io/aurelia-slickgrid/grid-functionalities/context-menu" target="_blank">Wiki docs</a>).
         </li>
       </ol>
       <li>It will also "autoAdjustDrop" (bottom/top) and "autoAlignSide" (left/right) by default but could be turned off</li>
@@ -330,7 +329,7 @@ export class Example24 {
 
   getData(count: number): any[] {
     // mock a dataset
-    const tmpData = [];
+    const tmpData: any[] = [];
     for (let i = 0; i < count; i++) {
       const randomYear = 2000 + Math.floor(Math.random() * 30);
       const randomMonth = Math.floor(Math.random() * 11);

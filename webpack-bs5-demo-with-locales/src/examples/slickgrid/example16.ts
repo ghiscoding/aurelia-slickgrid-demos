@@ -3,7 +3,7 @@ import { AureliaGridInstance, Column, ExtensionName, Filters, Formatters, GridOp
 export class Example16 {
   title = 'Example 16: Row Move & Checkbox Selector';
   subTitle = `
-    This example demonstrates using the <b>SlickRowMoveManager</b> plugin to easily move a row in the grid.<br/>
+    This example demonstrates using the <b>Slick.Plugins.RowMoveManager</b> plugin to easily move a row in the grid.<br/>
     <ul>
       <li>Click to select, Ctrl+Click to toggle selection, Shift+Click to select a range.</li>
       <li>Drag one or more rows by the handle (icon) to reorder</li>
@@ -125,7 +125,7 @@ export class Example16 {
 
   getData() {
     // Set up some test columns.
-    const mockDataset = [];
+    const mockDataset: any[] = [];
     for (let i = 0; i < 500; i++) {
       mockDataset[i] = {
         id: i,
@@ -140,7 +140,7 @@ export class Example16 {
     this.dataset = mockDataset;
   }
 
-  onBeforeMoveRow(e: Event, data: { rows: number[]; insertBefore: number; }) {
+  onBeforeMoveRow(e: MouseEvent | TouchEvent, data: { rows: number[]; insertBefore: number; }) {
     for (const rowIdx of data.rows) {
       // no point in moving before or after itself
       if (rowIdx === data.insertBefore || (rowIdx === data.insertBefore - 1 && ((data.insertBefore - 1) !== this.aureliaGrid.dataView.getItemCount()))) {
@@ -151,13 +151,13 @@ export class Example16 {
     return true;
   }
 
-  onMoveRows(_e: Event, args: any) {
+  onMoveRows(_e: MouseEvent | TouchEvent, args: any) {
     // rows and insertBefore references,
     // note that these references are assuming that the dataset isn't filtered at all
     // which is not always the case so we will recalcualte them and we won't use these reference afterward
     const rows = args.rows as number[];
     const insertBefore = args.insertBefore;
-    const extractedRows = [];
+    const extractedRows: number[] = [];
 
     // when moving rows, we need to cancel any sorting that might happen
     // we can do this by providing an undefined sort comparer
@@ -238,7 +238,7 @@ export class Example16 {
           params: { iconCssClass: 'fa fa-pencil pointer' },
           minWidth: 30,
           maxWidth: 30,
-          onCellClick: (clickEvent: Event, args: OnEventArgs) => {
+          onCellClick: (_clickEvent: Event, args: OnEventArgs) => {
             alert(`Technically we should Edit "Task ${args.dataContext.id}"`);
           }
         }, {
@@ -251,7 +251,7 @@ export class Example16 {
           params: { iconCssClass: 'fa fa-trash pointer' },
           minWidth: 30,
           maxWidth: 30,
-          onCellClick: (e: Event, args: OnEventArgs) => {
+          onCellClick: (_e: Event, args: OnEventArgs) => {
             if (confirm('Are you sure?')) {
               this.aureliaGrid.gridService.deleteItemById(args.dataContext.id);
             }
@@ -259,8 +259,12 @@ export class Example16 {
         }
       ];
 
-      this.columnDefinitions.splice(0, 0, newCols[0], newCols[1]);
-      this.columnDefinitions = this.columnDefinitions.slice(); // or use spread operator [...cols] to trigger change
+      // NOTE if you use an Extensions (Checkbox Selector, Row Detail, ...) that modifies the column definitions in any way
+      // you MUST use "getAllColumnDefinitions()" from the GridService, using this will be ALL columns including the 1st column that is created internally
+      // for example if you use the Checkbox Selector (row selection), you MUST use the code below
+      const allColumns = this.aureliaGrid.gridService.getAllColumnDefinitions();
+      allColumns.unshift(newCols[0], newCols[1]);
+      this.columnDefinitions = [...allColumns]; // (or use slice) reassign to column definitions for Aurelia to do dirty checking
     }
   }
 

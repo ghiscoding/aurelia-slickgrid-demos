@@ -10,12 +10,13 @@ import {
   FlatpickrOption,
   Formatters,
   GridOption,
+  GridStateChange,
   Metrics,
   MultipleSelectOption,
   OperatorType,
 } from 'aurelia-slickgrid';
 
-function randomBetween(min, max) {
+function randomBetween(min: number, max: number) {
   return Math.floor(Math.random() * (max - min + 1) + min);
 }
 const NB_ITEMS = 1500;
@@ -24,7 +25,7 @@ const URL_SAMPLE_COLLECTION_DATA = 'assets/data/collection_500_numbers.json';
 export class Example4 {
   title = 'Example 4: Client Side Sort/Filter';
   subTitle = `
-  Sort/Filter on client side only using SlickGrid DataView (<a href="https://github.com/ghiscoding/aurelia-slickgrid/wiki/Sorting" target="_blank">Wiki docs</a>)
+  Sort/Filter on client side only using SlickGrid DataView (<a href="https://ghiscoding.gitbook.io/aurelia-slickgrid/column-functionalities/sorting" target="_blank">Wiki docs</a>)
   <br/>
   <ul class="small">
     <li>Support multi-sort (by default), hold "Shift" key and click on the next column to sort.</li>
@@ -41,15 +42,15 @@ export class Example4 {
       </li>
     </ul>
     <li>On String filters, (*) can be used as startsWith (Hello* => matches "Hello Word") ... endsWith (*Doe => matches: "John Doe")</li>
-    <li>Custom Filter are now possible, "Description" column below, is a customized InputFilter with different placeholder. See <a href="https://github.com/ghiscoding/aurelia-slickgrid/wiki/Custom-Filter" target="_blank">Wiki - Custom Filter</a></li>
+    <li>Custom Filter are now possible, "Description" column below, is a customized InputFilter with different placeholder. See <a href="https://ghiscoding.gitbook.io/aurelia-slickgrid/column-functionalities/filters/custom-filter" target="_blank">Wiki - Custom Filter</a></li>
   </ul>
 `;
 
-  aureliaGrid: AureliaGridInstance;
-  columnDefinitions: Column[];
-  gridOptions: GridOption;
-  dataset: any[];
-  metrics: Metrics;
+  aureliaGrid!: AureliaGridInstance;
+  columnDefinitions: Column[] = [];
+  gridOptions!: GridOption;
+  dataset: any[] = [];
+  metrics!: Metrics;
 
   constructor(@newInstanceOf(IHttpClient) readonly http: IHttpClient) {
     this.defineGrid();
@@ -60,7 +61,7 @@ export class Example4 {
     this.dataset = this.mockData(NB_ITEMS);
   }
 
-  detached() {
+  detaching() {
     this.saveCurrentGridState();
   }
 
@@ -150,7 +151,7 @@ export class Example4 {
         filterable: true, filter: { model: Filters.compoundInputNumber }
       },
       {
-        id: 'start', name: 'Start', field: 'start', formatter: Formatters.dateIso, sortable: true, minWidth: 75, exportWithFormatter: false,
+        id: 'start', name: 'Start', field: 'start', formatter: Formatters.dateIso, sortable: true, minWidth: 75,
         type: FieldType.date, filterable: true, filter: { model: Filters.compoundDate }
       },
       {
@@ -224,9 +225,9 @@ export class Example4 {
     };
   }
 
-  mockData(itemCount, startingIndex = 0): any[] {
+  mockData(itemCount: number, startingIndex = 0): any[] {
     // mock a dataset
-    const tempDataset = [];
+    const tempDataset: any[] = [];
     for (let i = startingIndex; i < (startingIndex + itemCount); i++) {
       const randomDuration = Math.round(Math.random() * 100);
       const randomYear = randomBetween(2000, 2035);
@@ -261,7 +262,7 @@ export class Example4 {
   }
 
   /** Dispatched event of a Grid State Changed event */
-  gridStateChanged(gridState) {
+  gridStateChanged(gridState: GridStateChange) {
     console.log('Client sample, Grid State changed:: ', gridState);
   }
 
@@ -288,7 +289,7 @@ export class Example4 {
     ]);
   }
 
-  refreshMetrics(e, args) {
+  refreshMetrics(_e: Event, args: any) {
     if (args && args.current >= 0) {
       setTimeout(() => {
         this.metrics = {

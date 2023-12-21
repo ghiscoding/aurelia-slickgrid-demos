@@ -1,4 +1,3 @@
-import { bindable } from 'aurelia';
 import {
   AureliaGridInstance,
   Column,
@@ -9,7 +8,7 @@ import {
   Formatters,
   GridOption,
 } from 'aurelia-slickgrid';
-
+import { bindable } from 'aurelia';
 import { Example19Preload } from './example19-preload';
 import { Example19DetailView } from './example19-detail-view';
 
@@ -19,7 +18,7 @@ export class Example19 {
   @bindable detailViewRowCount = 9;
   title = 'Example 19: Row Detail View';
   subTitle = `
-    Add functionality to show extra information with a Row Detail View, (<a href="https://github.com/ghiscoding/aurelia-slickgrid/wiki/Row-Detail" target="_blank">Wiki docs</a>)
+    Add functionality to show extra information with a Row Detail View, (<a href="https://ghiscoding.gitbook.io/aurelia-slickgrid/grid-functionalities/row-detail" target="_blank">Wiki docs</a>)
     <ul>
       <li>Click on the row "+" icon or anywhere on the row to open it (the latter can be changed via property "useRowClick: false")</li>
       <li>Pass a View/Model as a Template to the Row Detail</li>
@@ -131,14 +130,14 @@ export class Example19 {
 
   getData() {
     // mock a dataset
-    this.dataset = [];
+    const dataset: any[] = [];
     for (let i = 0; i < NB_ITEMS; i++) {
       const randomYear = 2000 + Math.floor(Math.random() * 10);
       const randomMonth = Math.floor(Math.random() * 11);
       const randomDay = Math.floor((Math.random() * 29));
       const randomPercent = Math.round(Math.random() * 100);
 
-      this.dataset[i] = {
+      dataset[i] = {
         rowId: i,
         title: 'Task ' + i,
         duration: (i % 33 === 0) ? null : Math.random() * 100 + '',
@@ -150,6 +149,8 @@ export class Example19 {
         effortDriven: (i % 5 === 0)
       };
     }
+
+    this.dataset = dataset;
   }
 
   changeDetailViewRowCount() {

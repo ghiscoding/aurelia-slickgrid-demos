@@ -34,9 +34,14 @@
 
   <div class="mb-2">
     <div class="btn-group btn-group-sm" role="group" aria-label="Basic Editing Commands">
+      <button type="button" class="btn btn-outline-secondary" click.trigger="setSelectedRowIds()"
+              data-test="set-dynamic-rows-btn"
+              title="Change Row Selection across multiple pages">
+        <span>Change Row Selection</span>
+      </button>
       <button type="button" class="btn btn-outline-secondary" data-test="toggle-readonly-btn"
               click.trigger="toggleGridEditReadonly()">
-        <i class="fa fa-table"></i> Toggle Edit/Readonly Grid
+        <i class="fa fa-table"></i> Toggle Readonly
       </button>
       <button type="button" class="btn btn-outline-secondary" data-test="undo-last-edit-btn"
               click.trigger="undoLastEdit()">
@@ -56,6 +61,6 @@
                       grid-options.bind="gridOptions"
                       dataset.bind="dataset"
                       on-aurelia-grid-created.trigger="aureliaGridReady($event.detail)"
-                      on-grid-state-changed.trigger="gridStateChanged($event.detail)">
+                      on-selected-row-ids-changed.trigger="handleOnSelectedRowIdsChanged($event.detail.args)">
   </aurelia-slickgrid>
 </div>

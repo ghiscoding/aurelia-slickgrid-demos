@@ -56,7 +56,7 @@ module.exports = ({ production, node } = {}, { server } = {}, { analyze } = {}) 
     devServer: {
       historyApiFallback: true,
       open: !process.env.CI,
-      port: 9000
+      port: 8080
     },
     module: {
       rules: [
@@ -84,7 +84,6 @@ module.exports = ({ production, node } = {}, { server } = {}, { analyze } = {}) 
         },
         { test: /\.(sass|scss)$/, use: ['style-loader', 'css-loader', 'sass-loader'], issuer: /\.[tj]s$/i },
         { test: /\.(sass|scss)$/, use: ['css-loader', 'sass-loader'], issuer: /\.html?$/i },
-        // { test: /\.js$/, enforce: 'pre', use: ['source-map-loader'], include: [/aurelia-slickgrid/] },
         { test: /\.ts$/i, use: ['ts-loader', '@aurelia/webpack-loader'], exclude: /node_modules/ },
         {
           test: /[/\\](?:src|dev-app)[/\\].+\.html$/i,

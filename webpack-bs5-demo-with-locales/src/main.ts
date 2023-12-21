@@ -19,7 +19,7 @@ import { Example19Preload } from './examples/slickgrid/example19-preload';
 Aurelia
   // Register all exports of the plugin
   .register(
-    RouterConfiguration.customize({ useHref: false, basePath: '/aurelia-slickgrid' }),
+    RouterConfiguration.customize({ useHref: false }),
 
     // dynamic components to enhance
     CustomTitleFormatter,

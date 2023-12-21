@@ -20,7 +20,7 @@ const NB_ITEMS = 500;
 export class Example15 {
   title = 'Example 15: Grid State & Presets using Local Storage';
   subTitle = `
-  Grid State & Preset (<a href="https://github.com/ghiscoding/aurelia-slickgrid/wiki/Grid-State-&-Preset" target="_blank">Wiki docs</a>)
+  Grid State & Preset (<a href="https://ghiscoding.gitbook.io/aurelia-slickgrid/grid-functionalities/grid-state-preset" target="_blank">Wiki docs</a>)
   <br/>
   <ul class="small">
     <li>Uses Local Storage to persist the Grid State and uses Grid Options "presets" to put the grid back to it's previous state</li>
@@ -35,7 +35,6 @@ export class Example15 {
   columnDefinitions: Column[] = [];
   gridOptions!: GridOption;
   dataset: any[] = [];
-  selectedLanguage: string;
 
   constructor() {
     const presets = JSON.parse(localStorage[LOCAL_STORAGE_KEY] || null);
@@ -50,7 +49,7 @@ export class Example15 {
     this.dataset = this.getData(NB_ITEMS);
   }
 
-  detached() {
+  detaching() {
     this.saveCurrentGridState();
   }
 
@@ -60,15 +59,15 @@ export class Example15 {
 
   /** Clear the Grid State from Local Storage and reset the grid to it's original state */
   clearGridStateFromLocalStorage() {
-    localStorage.removeItem(LOCAL_STORAGE_KEY);
     this.aureliaGrid.gridService.resetGrid(this.columnDefinitions);
     this.aureliaGrid.paginationService!.changeItemPerPage(DEFAULT_PAGE_SIZE);
+    setTimeout(() => localStorage[LOCAL_STORAGE_KEY] = null);
   }
 
   /* Define grid Options and Columns */
   defineGrid(gridStatePresets?: GridState) {
     // prepare a multiple-select array to filter with
-    const multiSelectFilterArray = [];
+    const multiSelectFilterArray: Array<{ value: number; label: number; }> = [];
     for (let i = 0; i < NB_ITEMS; i++) {
       multiSelectFilterArray.push({ value: i, label: i });
     }
@@ -160,7 +159,7 @@ export class Example15 {
 
   getData(count: number) {
     // mock a dataset
-    const tmpData = [];
+    const tmpData: any[] = [];
     for (let i = 0; i < count; i++) {
       const randomDuration = Math.round(Math.random() * 100);
       const randomYear = randomBetween(2000, 2025);

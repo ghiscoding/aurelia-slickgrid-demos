@@ -1,5 +1,4 @@
-import { GraphqlService, GraphqlPaginatedResult, GraphqlServiceApi, GraphqlServiceOption, } from '@slickgrid-universal/graphql';
-import { I18N } from '@aurelia/i18n';
+import { GraphqlService, GraphqlPaginatedResult, GraphqlServiceApi, GraphqlServiceOption } from '@slickgrid-universal/graphql';
 import moment from 'moment-mini';
 import {
   AureliaGridInstance,
@@ -24,7 +23,7 @@ export class Example6 {
   title = 'Example 6: Grid with Backend GraphQL Service';
   subTitle = `
   Use it when you need to support Pagination with a GraphQL endpoint (for simple JSON, use a regular grid).
-  <br/>Take a look at the (<a href="https://github.com/ghiscoding/aurelia-slickgrid/wiki/GraphQL" target="_blank">Wiki docs</a>)
+  <br/>Take a look at the (<a href="https://ghiscoding.gitbook.io/aurelia-slickgrid/backend-services/graphql" target="_blank">Wiki docs</a>)
     <ul class="small">
       <li><span class="red bold">(*) NO DATA SHOWN</span> - just change filters &amp; page and look at the "GraphQL Query" changing</li>
       <li>Only "Name" field is sortable for the demo (because we use JSON files), however "multiColumnSort: true" is also supported</li>
@@ -33,7 +32,7 @@ export class Example6 {
         <li>The (*) can be used as startsWith (ex.: "abc*" => startsWith "abc") / endsWith (ex.: "*xyz" => endsWith "xyz")</li>
         <li>The other operators can be used on column type number for example: ">=100" (greater or equal than 100)</li>
       </ul>
-      <li>You can also preload a grid with certain "presets" like Filters / Sorters / Pagination <a href="https://github.com/ghiscoding/aurelia-slickgrid/wiki/Grid-State-&-Preset" target="_blank">Wiki - Grid Preset</a>
+      <li>You can also preload a grid with certain "presets" like Filters / Sorters / Pagination <a href="https://ghiscoding.gitbook.io/aurelia-slickgrid/grid-functionalities/grid-state-preset" target="_blank">Wiki - Grid Preset</a>
     </ul>
   `;
   isWithCursor = false;
@@ -46,21 +45,15 @@ export class Example6 {
 
   graphqlQuery = '';
   processing = false;
-  selectedLanguage: string;
   status = { text: '', class: '' };
   serverWaitDelay = FAKE_SERVER_DELAY; // server simulation with default of 250ms but 50ms for Cypress tests
 
-  constructor(@I18N private readonly i18n: I18N) {
+  constructor() {
     // define the grid options & columns and then create the grid itself
     this.defineGrid();
-
-    // always start with English for Cypress E2E tests to be consistent
-    const defaultLang = 'en';
-    this.i18n.setLocale(defaultLang);
-    this.selectedLanguage = defaultLang;
   }
 
-  detached() {
+  detaching() {
     this.saveCurrentGridState();
   }
 
@@ -133,7 +126,6 @@ export class Example6 {
       createPreHeaderPanel: true,
       showPreHeaderPanel: true,
       preHeaderPanelHeight: 28,
-      i18n: this.i18n,
       gridHeight: 200,
       gridWidth: 900,
       gridMenu: {
@@ -264,7 +256,7 @@ export class Example6 {
         this.graphqlQuery = this.graphqlService.buildQuery();
         // this.graphqlQuery = this.gridOptions.backendServiceApi!.service.buildQuery();
         if (this.isWithCursor) {
-          // When using cursor pagination, the pagination service needs to updated with the PageInfo data from the latest request
+          // When using cursor pagination, the pagination service needs to be updated with the PageInfo data from the latest request
           // This might be done automatically if using a framework specific slickgrid library
           // Note because of this timeout, this may cause race conditions with rapid clicks!
           this.aureliaGrid?.paginationService?.setCursorPageInfo(mockedResult.data[GRAPHQL_QUERY_DATASET_NAME].pageInfo);
@@ -341,12 +333,6 @@ export class Example6 {
     this.isWithCursor = isWithCursor;
     this.resetOptions({ useCursor: this.isWithCursor });
     return true;
-  }
-
-  async switchLanguage() {
-    const nextLanguage = (this.selectedLanguage === 'en') ? 'fr' : 'en';
-    await this.i18n.setLocale(nextLanguage);
-    this.selectedLanguage = nextLanguage;
   }
 
   private resetOptions(options: Partial<GraphqlServiceOption>) {

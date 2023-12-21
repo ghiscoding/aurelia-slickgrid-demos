@@ -1,22 +1,13 @@
 import { ExcelExportService } from '@slickgrid-universal/excel-export';
-import {
-  AureliaGridInstance,
-  Column,
-  FieldType,
-  Filters,
-  Formatters,
-  GridOption,
-  GridStateChange,
-  GridStateType,
-  TreeToggledItem,
-  TreeToggleStateChange,
-} from 'aurelia-slickgrid';
+
+import type { AureliaGridInstance, Column, GridOption, GridStateChange, TreeToggledItem, TreeToggleStateChange, } from 'aurelia-slickgrid';
+import { FieldType, GridStateType, Filters, Formatters, } from 'aurelia-slickgrid';
 import './example27.scss'; // provide custom CSS/SASS styling
 
 const NB_ITEMS = 500;
 
 export class Example27 {
-  title = 'Example 27: Tree Data <small> <span class="mdi mdi-file-tree mdi-27px"></span> (from a flat dataset with <code>parentId</code> references - <a href="https://github.com/ghiscoding/aurelia-slickgrid/wiki/Tree-Data-Grid" target="_blank">Wiki</a>)</small>';
+  title = 'Example 27: Tree Data <small> <span class="mdi mdi-file-tree mdi-27px"></span> (from a flat dataset with <code>parentId</code> references - <a href="https://ghiscoding.gitbook.io/aurelia-slickgrid/grid-functionalities/tree-data-grid" target="_blank">Wiki</a>)</small>';
   subTitle = `<ul>
     <li>It is assumed that your dataset will have Parent/Child references AND also Tree Level (indent) property.</li>
     <ul>
@@ -257,8 +248,8 @@ export class Example27 {
   loadData(rowCount: number) {
     this.isLargeDataset = rowCount > 5000; // we'll show a spinner when it's large, else don't show show since it should be fast enough
     let indent = 0;
-    const parents = [];
-    const data = [];
+    const parents: any[] = [];
+    const data: any[] = [];
 
     // prepare the data
     for (let i = 0; i < rowCount; i++) {

@@ -1,4 +1,13 @@
-<h2>${title}</h2>
+<h2>
+  ${title}
+  <span class="float-end">
+    <a style="font-size: 18px"
+        target="_blank"
+        href="https://github.com/ghiscoding/aurelia-slickgrid/blob/master/src/examples/slickgrid/example4.ts">
+      <span class="fa fa-link"></span> code
+    </a>
+  </span>
+</h2>
 <div class="subtitle" innerhtml.bind="subTitle"></div>
 
 <br />
@@ -12,8 +21,7 @@
   <button class="btn btn-sm btn-outline-secondary" data-test="scroll-top-btn" click.trigger="scrollGridTop()">
     <i class="fa fa-arrow-up"></i>
   </button>
-  <button class="btn btn-sm btn-outline-secondary" data-test="scroll-bottom-btn"
-          click.trigger="scrollGridBottom()">
+  <button class="btn btn-sm btn-outline-secondary" data-test="scroll-bottom-btn" click.trigger="scrollGridBottom()">
     <i class="fa fa-arrow-down"></i>
   </button>
 </div>

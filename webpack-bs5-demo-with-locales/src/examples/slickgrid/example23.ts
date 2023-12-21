@@ -1,18 +1,20 @@
+import moment from 'moment-mini';
 import { SlickCustomTooltip } from '@slickgrid-universal/custom-tooltip-plugin';
 import { ExcelExportService } from '@slickgrid-universal/excel-export';
 import {
   AureliaGridInstance,
   Column,
+  CurrentFilter,
   FieldType,
   Filters,
   Formatters,
   GridOption,
+  GridStateChange,
   Metrics,
   MultipleSelectOption,
   OperatorType,
   SliderRangeOption,
 } from 'aurelia-slickgrid';
-import moment from 'moment-mini';
 
 import { CustomInputFilter } from './custom-inputFilter';
 
@@ -65,7 +67,7 @@ export class Example23 {
     this.dataset = this.mockData(NB_ITEMS);
   }
 
-  detached() {
+  detaching() {
     this.saveCurrentGridState();
   }
 
@@ -137,8 +139,9 @@ export class Example23 {
       }
     ];
 
+    const today = new Date();
     const presetLowestDay = moment().add(-2, 'days').format('YYYY-MM-DD');
-    const presetHighestDay = moment().add(20, 'days').format('YYYY-MM-DD');
+    const presetHighestDay = moment().add(today.getDate() < 14 ? 30 : 25, 'days').format('YYYY-MM-DD');
 
     this.gridOptions = {
       autoResize: {
@@ -171,9 +174,9 @@ export class Example23 {
     };
   }
 
-  mockData(itemCount, startingIndex = 0): any[] {
+  mockData(itemCount: number, startingIndex = 0): any[] {
     // mock a dataset
-    const tempDataset = [];
+    const tempDataset: any[] = [];
     for (let i = startingIndex; i < (startingIndex + itemCount); i++) {
       const randomDuration = randomBetween(0, 365);
       const randomYear = randomBetween(moment().year(), moment().year() + 1);
@@ -203,7 +206,7 @@ export class Example23 {
   }
 
   /** Dispatched event of a Grid State Changed event */
-  gridStateChanged(gridState) {
+  gridStateChanged(gridState: GridStateChange) {
     console.log('Client sample, Grid State changed:: ', gridState);
   }
 
@@ -212,7 +215,7 @@ export class Example23 {
     console.log('Client sample, current Grid State:: ', this.aureliaGrid.gridStateService.getCurrentGridState());
   }
 
-  refreshMetrics(e, args) {
+  refreshMetrics(_e: Event, args: any) {
     if (args && args.current >= 0) {
       setTimeout(() => {
         this.metrics = {
@@ -244,8 +247,8 @@ export class Example23 {
     ]);
   }
 
-  predefinedFilterChanged(newPredefinedFilter) {
-    let filters = [];
+  predefinedFilterChanged(newPredefinedFilter: string) {
+    let filters: CurrentFilter[] = [];
     const currentYear = moment().year();
 
     switch (newPredefinedFilter) {

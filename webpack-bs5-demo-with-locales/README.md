@@ -1,7 +1,4 @@
-# Aurelia-Slickgrid - Bootstrap 4 with a Single Custom Locale Demo
-### _This demo does not use I18N, it loads a single locale via a simple TypeScript file._
-
-## :warning: NOT WORKING YET
+# Aurelia-Slickgrid - Bootstrap 5 Demo
 
 ## Important Note
 Please note that some of the npm packages installed in these demos are **optional** and are installed **only** for demo purposes. If you don't need the feature then don't install it (remove it from your `package.json`) and you'll end up with a smaller production build.
@@ -23,7 +20,7 @@ Again the following dependencies are totally **optional**
 ### Install and Start Demo
 ```bash
 git clone https://github.com/ghiscoding/aurelia-slickgrid-demos
-cd webpack-bs4-demo-with-locales
+cd webpack-bs5-demo
 npm install # OR yarn install
 npm start # OR yarn start
 ```

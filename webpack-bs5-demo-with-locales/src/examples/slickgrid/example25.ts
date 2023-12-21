@@ -1,7 +1,6 @@
 import { IHttpClient, json } from '@aurelia/fetch-client';
 import { newInstanceOf } from '@aurelia/kernel';
 import { GraphqlService, GraphqlResult, GraphqlServiceApi, } from '@slickgrid-universal/graphql';
-
 import {
   AureliaGridInstance,
   Column,
@@ -28,12 +27,12 @@ export interface Country {
   languageCode: string;
   languageName: string;
   languageNative: string;
-};
+}
 
 export class Example25 {
   title = 'Example 25: GraphQL Basic API without Pagination';
   subTitle = `
-  Use basic GraphQL query with any external public APIs (<a href="https://github.com/ghiscoding/aurelia-slickgrid/wiki/GraphQL" target="_blank">Wiki docs</a>).
+  Use basic GraphQL query with any external public APIs (<a href="https://ghiscoding.gitbook.io/aurelia-slickgrid/backend-services/graphql" target="_blank">Wiki docs</a>).
   <ul>
     <li>This Examples uses a Public GraphQL API that you can find at this link <a href="https://countries.trevorblades.com/" target="_blank">https://countries.trevorblades.com/</a></li>
     <li>Compare to the regular and default GraphQL implementation, you will find the following differences</li>
@@ -46,16 +45,14 @@ export class Example25 {
   </ul>
   `;
 
-  aureliaGrid: AureliaGridInstance;
-  columnDefinitions: Column[];
-  gridOptions: GridOption;
+  aureliaGrid!: AureliaGridInstance;
+  columnDefinitions: Column[] = [];
+  gridOptions!: GridOption;
   dataset = [];
-  metrics: Metrics;
+  metrics!: Metrics;
 
-  isWithCursor = false;
   graphqlQuery = '';
   processing = false;
-  selectedLanguage: string;
   status = { text: '', class: '' };
 
   constructor(@newInstanceOf(IHttpClient) readonly http: IHttpClient) {
@@ -195,14 +192,14 @@ export class Example25 {
         preProcess: () => this.displaySpinner(true),
         process: (query) => this.getCountries(query),
         postProcess: (result: GraphqlResult<Country>) => {
-          this.metrics = result.metrics;
+          this.metrics = result.metrics as Metrics;
           this.displaySpinner(false);
         }
       } as GraphqlServiceApi
     };
   }
 
-  displaySpinner(isProcessing) {
+  displaySpinner(isProcessing: boolean) {
     this.processing = isProcessing;
     this.status = (isProcessing)
       ? { text: 'processing...', class: 'alert alert-danger' }
@@ -231,7 +228,7 @@ export class Example25 {
    * So we will have to write, by hand, the query to get the continents code & name
    * We also need to resolve the data in a flat array (singleSelect/multipleSelect Filters only accept data at the root of the array)
    */
-  getContinents() {
+  getContinents(): Promise<GraphqlResult<{ code: string; name: string; }>> {
     const continentQuery = `query { continents { code, name  }}`;
     return new Promise(async resolve => {
       const response = await this.http.fetch(COUNTRIES_API, {
@@ -247,7 +244,7 @@ export class Example25 {
    * So we will have to write, by hand, the query to get the languages code & name
    * We also need to resolve the data in a flat array (singleSelect/multipleSelect Filters only accept data at the root of the array)
    */
-  getLanguages() {
+  getLanguages(): Promise<GraphqlResult<{ code: string; name: string; native: string; }>> {
     const languageQuery = `query { languages { code, name, native  }}`;
     return new Promise(async resolve => {
       const response = await this.http.fetch(COUNTRIES_API, {

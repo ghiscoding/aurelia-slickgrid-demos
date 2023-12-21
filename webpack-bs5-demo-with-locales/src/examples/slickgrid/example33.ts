@@ -22,15 +22,14 @@ const NB_ITEMS = 500;
 export class Example33 {
   title = 'Example 33: Regular & Custom Tooltips';
   subTitle = `
-  This demo shows how to create Regular & Custom Tooltips (<a href="https://github.com/ghiscoding/aurelia-slickgrid/wiki/Custom-Tooltip-(plugin)" target="_blank">Wiki docs</a>)
+  This demo shows how to create Regular & Custom Tooltips (<a href="https://ghiscoding.gitbook.io/aurelia-slickgrid/grid-functionalities/custom-tooltip" target="_blank">Wiki docs</a>)
   <br/>
   <ul class="small">
     <li>optionally parse regular [title] attributes and transform them into tooltips</li>
     <li>create your own Custom Tooltip via a Custom Formatter</li>
     <li>create an Async Custom Tooltip (Promise/Observable) to allowing fetching data from an API</li>
     <li>optionally add Custom Tooltip on Column Header & Column Header-Row (filters)</li>
-  </ul>
-  `;
+  </ul>`;
 
   aureliaGrid!: AureliaGridInstance;
   columnDefinitions: Column[] = [];
@@ -96,7 +95,7 @@ export class Example33 {
           maxValue: 10000,
           alwaysSaveOnEnterKey: true,
         },
-        formatter: (row, cell, value) => value > 1 ? `${value} days` : `${value} day`,
+        formatter: (_row, _cell, value) => value > 1 ? `${value} days` : `${value} day`,
         type: FieldType.number,
       },
       {
@@ -108,7 +107,7 @@ export class Example33 {
           minLength: 5,
           maxLength: 255,
         },
-        formatter: (row: number, cell: number, value: any, column: Column, dataContext) => `<span title="regular tooltip (from title attribute)\r${dataContext.title} cell value:\r${value || ''}">${value || ''}</span>`,
+        formatter: (_row, _cell, value: any, _column, dataContext) => `<span title="regular tooltip (from title attribute)\r${dataContext.title} cell value:\r${value || ''}">${value || ''}</span>`,
         // define tooltip options here OR for the entire grid via the grid options (cell tooltip options will have precedence over grid options)
         customTooltip: {
           useRegularTooltip: true, // note regular tooltip will try to find a "title" attribute in the cell formatter (it won't work without a cell formatter)
@@ -123,7 +122,7 @@ export class Example33 {
           minLength: 5,
           maxLength: 255,
         },
-        formatter: (row: number, cell: number, value: any, column: Column, dataContext) => `<span title="regular tooltip (from title attribute)\r${dataContext.title} cell value:\r\r${value || ''}">${value || ''}</span>`,
+        formatter: (_row, _cell, value: any, _column, dataContext) => `<span title="regular tooltip (from title attribute)\r${dataContext.title} cell value:\r\r${value || ''}">${value || ''}</span>`,
         // define tooltip options here OR for the entire grid via the grid options (cell tooltip options will have precedence over grid options)
         customTooltip: {
           useRegularTooltip: true, // note regular tooltip will try to find a "title" attribute in the cell formatter (it won't work without a cell formatter)
@@ -375,7 +374,7 @@ export class Example33 {
   loadData(itemCount: number): any[] {
     // mock a dataset
     // mock data
-    const tmpArray = [];
+    const tmpArray: any[] = [];
     for (let i = 0; i < itemCount; i++) {
       const randomYear = 2000 + Math.floor(Math.random() * 10);
       const randomFinishYear = (new Date().getFullYear() - 3) + Math.floor(Math.random() * 10); // use only years not lower than 3 years ago
@@ -423,19 +422,19 @@ export class Example33 {
     }
   }
 
-  headerFormatter(row: number, cell: number, value: any, column: Column) {
+  headerFormatter: Formatter = (_row, _cell, _value: any, column: Column) => {
     const tooltipTitle = 'Custom Tooltip - Header';
     return `<div class="header-tooltip-title">${tooltipTitle}</div>
     <div class="tooltip-2cols-row"><div>Column:</div> <div>${column.name}</div></div>`;
   }
 
-  headerRowFormatter(row: number, cell: number, value: any, column: Column) {
+  headerRowFormatter: Formatter = (_row, _cell, _value: any, column: Column) => {
     const tooltipTitle = 'Custom Tooltip - Header Row (filter)';
     return `<div class="headerrow-tooltip-title">${tooltipTitle}</div>
     <div class="tooltip-2cols-row"><div>Column:</div> <div>${column.field}</div></div>`;
   }
 
-  tooltipFormatter(row: number, cell: number, value: any, column: Column, dataContext: any, grid: SlickGrid) {
+  tooltipFormatter: Formatter = (row, cell, _value: any, column: Column, dataContext: any, grid: SlickGrid) => {
     const tooltipTitle = 'Custom Tooltip';
     const effortDrivenHtml = Formatters.checkmarkMaterial(row, cell, dataContext.effortDriven, column, dataContext, grid);
 
@@ -447,7 +446,7 @@ export class Example33 {
     `;
   }
 
-  tooltipTaskAsyncFormatter(row: number, cell: number, value: any, column: Column, dataContext: any, grid: SlickGrid) {
+  tooltipTaskAsyncFormatter: Formatter = (row, cell, _value, column: Column, dataContext: any, grid: SlickGrid) => {
     const tooltipTitle = `Task ${dataContext.id} - (async tooltip)`;
 
     // use a 2nd Formatter to get the percent completion
