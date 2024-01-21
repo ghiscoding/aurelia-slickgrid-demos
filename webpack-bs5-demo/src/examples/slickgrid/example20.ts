@@ -52,7 +52,7 @@ export class Example20 {
     this.slickEventHandler.subscribe(this.gridObj.onMouseLeave, (event: Event) => this.colorizeHoveringRow(event, false));
   }
 
-  highlightRow(event: Event, isMouseEnter: boolean) {
+  colorizeHoveringRow(event: Event, isMouseEnter: boolean) {
     const cell = this.gridObj.getCellFromEvent(event);
     const rows = isMouseEnter ? [cell?.row ?? 0] : [];
     this.gridObj.setSelectedRows(rows); // highlight current row
