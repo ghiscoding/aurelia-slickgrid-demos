@@ -42,7 +42,7 @@ const priorityExportFormatter: Formatter = (_row, _cell, value, _columnDef, _dat
   if (!value) {
     return '';
   }
-  const gridOptions: GridOption = (grid && typeof grid.getOptions === 'function') ? grid.getOptions() : {};
+  const gridOptions = grid.getOptions() as GridOption;
   const i18n = gridOptions.i18n;
   const count = +(value >= 3 ? 3 : value);
   const key = count === 3 ? 'HIGH' : (count === 2 ? 'MEDIUM' : 'LOW');
@@ -52,13 +52,14 @@ const priorityExportFormatter: Formatter = (_row, _cell, value, _columnDef, _dat
 
 // create a custom translate Formatter (typically you would move that a separate file, for separation of concerns)
 const taskTranslateFormatter: Formatter = (_row, _cell, value, _columnDef, _dataContext, grid: SlickGrid) => {
-  const gridOptions: GridOption = (grid && typeof grid.getOptions === 'function') ? grid.getOptions() : {};
+  const gridOptions = grid.getOptions() as GridOption;
   const i18n = gridOptions.i18n;
 
   return i18n?.tr('TASK_X', { x: value } as any) ?? '';
 };
 
 export class Example24 {
+  private _darkModeGrid = false;
   title = 'Example 24: Cell Menu & Context Menu Plugins';
   subTitle = `Add Cell Menu and Context Menu
     <ul>
@@ -113,6 +114,11 @@ export class Example24 {
   attached() {
     // populate the dataset once the grid is ready
     this.dataset = this.getData(1000);
+  }
+
+  detaching() {
+    document.querySelector('.panel-wm-content')!.classList.remove('dark-mode');
+    document.querySelector<HTMLDivElement>('#demo-container')!.dataset.bsTheme = 'light';
   }
 
   /* Define grid Options and Columns */
@@ -275,6 +281,7 @@ export class Example24 {
         container: '#demo-container',
         rightPadding: 10
       },
+      darkMode: this._darkModeGrid,
       enableCellNavigation: true,
       enableFiltering: true,
       enableSorting: true,
@@ -301,7 +308,7 @@ export class Example24 {
         onOptionSelected: (_e, args) => {
           // change "Completed" property with new option selected from the Cell Menu
           const dataContext = args?.dataContext;
-          if (dataContext && dataContext.hasOwnProperty('completed')) {
+          if (dataContext?.hasOwnProperty('completed')) {
             dataContext.completed = args.item.option;
             this.aureliaGrid.gridService.updateItem(dataContext);
           }
@@ -491,7 +498,7 @@ export class Example24 {
       onCommand: ((_e, args) => this.executeCommand(_e, args)),
 
       // subscribe to Context Menu onOptionSelected event (or use the action callback on each option)
-      onOptionSelected: ((_e, args) => {
+      onOptionSelected: ((_e: any, args: any) => {
         // change Priority
         const dataContext = args && args.dataContext;
         if (dataContext?.hasOwnProperty('priority')) {
@@ -527,5 +534,17 @@ export class Example24 {
     const nextLanguage = (this.selectedLanguage === 'en') ? 'fr' : 'en';
     await this.i18n.setLocale(nextLanguage);
     this.selectedLanguage = nextLanguage;
+  }
+
+  toggleDarkMode() {
+    this._darkModeGrid = !this._darkModeGrid;
+    if (this._darkModeGrid) {
+      document.querySelector<HTMLDivElement>('.panel-wm-content')!.classList.add('dark-mode');
+      document.querySelector<HTMLDivElement>('#demo-container')!.dataset.bsTheme = 'dark';
+    } else {
+      document.querySelector('.panel-wm-content')!.classList.remove('dark-mode');
+      document.querySelector<HTMLDivElement>('#demo-container')!.dataset.bsTheme = 'light';
+    }
+    this.aureliaGrid.slickGrid?.setOptions({ darkMode: this._darkModeGrid });
   }
 }
