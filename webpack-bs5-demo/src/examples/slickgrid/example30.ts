@@ -1,3 +1,4 @@
+import { resolve } from 'aurelia';
 import { IHttpClient } from '@aurelia/fetch-client';
 import { newInstanceOf } from '@aurelia/kernel';
 import { ExcelExportService } from '@slickgrid-universal/excel-export';
@@ -104,7 +105,7 @@ export class Example30 {
     { value: 4, label: 'Very Complex' },
   ];
 
-  constructor(@newInstanceOf(IHttpClient) readonly http: IHttpClient) {
+  constructor(readonly http: IHttpClient = resolve(newInstanceOf(IHttpClient))) {
     this.compositeEditorInstance = new SlickCompositeEditorComponent();
   }
 

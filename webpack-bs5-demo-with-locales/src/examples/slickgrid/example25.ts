@@ -1,3 +1,4 @@
+import { resolve } from 'aurelia';
 import { IHttpClient, json } from '@aurelia/fetch-client';
 import { newInstanceOf } from '@aurelia/kernel';
 import { GraphqlService, GraphqlResult, GraphqlServiceApi, } from '@slickgrid-universal/graphql';
@@ -55,7 +56,7 @@ export class Example25 {
   processing = false;
   status = { text: '', class: '' };
 
-  constructor(@newInstanceOf(IHttpClient) readonly http: IHttpClient) {
+  constructor(readonly http: IHttpClient = resolve(newInstanceOf(IHttpClient))) {
     // define the grid options & columns and then create the grid itself
     this.defineGrid();
   }

@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
+import { resolve } from 'aurelia';
 import { GridOdataService, OdataServiceApi, OdataOption } from '@slickgrid-universal/odata';
 import { RxJsResource } from '@slickgrid-universal/rxjs-observable';
 import { IHttpClient } from '@aurelia/fetch-client';
@@ -46,7 +46,7 @@ export class Example31 {
   isOtherGenderAdded = false;
   genderCollection = [{ value: 'male', label: 'male' }, { value: 'female', label: 'female' }];
 
-  constructor(@newInstanceOf(IHttpClient) readonly http: IHttpClient) {
+  constructor(readonly http: IHttpClient = resolve(newInstanceOf(IHttpClient))) {
     this.initializeGrid();
   }
 

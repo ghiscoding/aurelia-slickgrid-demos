@@ -1,3 +1,4 @@
+import { resolve } from 'aurelia';
 import { IHttpClient } from '@aurelia/fetch-client';
 import { newInstanceOf } from '@aurelia/kernel';
 import fetchJsonp from 'fetch-jsonp';
@@ -82,7 +83,7 @@ export class Example3 {
   alertWarning: any;
   duplicateTitleHeaderCount = 1;
 
-  constructor(@newInstanceOf(IHttpClient) readonly http: IHttpClient) {
+  constructor(readonly http: IHttpClient = resolve(newInstanceOf(IHttpClient))) {
     // define the grid options & columns and then create the grid itself
     this.defineGrid();
   }

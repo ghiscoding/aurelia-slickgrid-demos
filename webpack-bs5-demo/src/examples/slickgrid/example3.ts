@@ -1,3 +1,4 @@
+import { resolve } from 'aurelia';
 import { IHttpClient } from '@aurelia/fetch-client';
 import { newInstanceOf } from '@aurelia/kernel';
 import { I18N } from '@aurelia/i18n';
@@ -84,7 +85,7 @@ export class Example3 {
   alertWarning: any;
   duplicateTitleHeaderCount = 1;
 
-  constructor(@newInstanceOf(IHttpClient) readonly http: IHttpClient, @I18N private readonly i18n: I18N) {
+  constructor(readonly http: IHttpClient = resolve(newInstanceOf(IHttpClient)), private readonly i18n: I18N = resolve(I18N)) {
     // define the grid options & columns and then create the grid itself
     this.defineGrid();
   }

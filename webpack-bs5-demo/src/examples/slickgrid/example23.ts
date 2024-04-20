@@ -1,3 +1,4 @@
+import { resolve } from 'aurelia';
 import { I18N } from '@aurelia/i18n';
 // import { TOptions as I18NOptions } from 'i18next';
 import moment from 'moment-mini';
@@ -70,7 +71,7 @@ export class Example23 {
   ];
   selectedPredefinedFilter = '';
 
-  constructor(@I18N private readonly i18n: I18N) {
+  constructor(private readonly i18n: I18N = resolve(I18N)) {
     // define the grid options & columns and then create the grid itself
     this.defineGrid();
 

@@ -1,7 +1,7 @@
-import { IAurelia } from 'aurelia';
+import { IAurelia, resolve } from 'aurelia';
 
 export class HomePage {
-  constructor(@IAurelia private aurelia: IAurelia) {
+  constructor(private aurelia: IAurelia = resolve(IAurelia)) {
     console.log(aurelia);
   }
 }

@@ -1,3 +1,4 @@
+import { resolve } from 'aurelia';
 import {
   AureliaGridInstance,
   Column,
@@ -25,7 +26,7 @@ export class Example35 {
   statusClass = 'alert alert-light';
   statusStyle = 'display: none';
 
-  constructor(@I18N private readonly i18n: I18N) {
+  constructor(private readonly i18n: I18N = resolve(I18N)) {
     // define the grid options & columns and then create the grid itself
     this.defineGrid();
 
