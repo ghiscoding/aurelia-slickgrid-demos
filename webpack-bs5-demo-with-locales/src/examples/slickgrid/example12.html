@@ -1,33 +1,45 @@
-<h2>${title}</h2>
+<h2>
+  ${title}
+  <span class="float-end">
+    <a style="font-size: 18px"
+        target="_blank"
+        href="https://github.com/ghiscoding/aurelia-slickgrid/blob/master/packages/demo/src/examples/slickgrid/example12.ts">
+      <span class="mdi mdi-link-variant"></span> code
+    </a>
+  </span>
+</h2>
 <div class="subtitle" innerhtml.bind="subTitle"></div>
 
 <hr />
 
 <div class="row">
-  <span style="margin-left: 20px">
-    <button class="btn btn-outline-secondary btn-sm" click.trigger="exportToFile('csv')">
-      <i class="fa fa-download"></i>
-      Download to CSV
-    </button>
-    <button class="btn btn-outline-secondary btn-sm" click.trigger="exportToFile('txt')">
-      <i class="fa fa-download"></i>
-      Download to Text
-    </button>
-    <button class="btn btn-outline-secondary btn-sm" click.trigger="exportToExcel()">
-      <i class="fa fa-file-excel-o text-success"></i>
-      Download to Excel
-    </button>
-  </span>
-  <span style="margin-left: 10px">
-    <button class="btn btn-outline-secondary btn-sm" click.trigger="dynamicallyAddTitleHeader()">
-      <i class="fa fa-plus"></i>
-      Dynamically Duplicate Title Column
-    </button>
-  </span>
+  <div class="col-sm-12">
+    <span style="margin-left: 20px">
+      <button class="btn btn-outline-secondary btn-sm btn-icon" click.trigger="exportToFile('csv')">
+        <i class="mdi mdi-download"></i>
+        Download to CSV
+      </button>
+      <button class="btn btn-outline-secondary btn-sm btn-icon" click.trigger="exportToFile('txt')">
+        <i class="mdi mdi-download"></i>
+        Download to Text
+      </button>
+      <button class="btn btn-outline-secondary btn-sm btn-icon" click.trigger="exportToExcel()">
+        <i class="mdi mdi-file-excel-outline text-success"></i>
+        Download to Excel
+      </button>
+    </span>
+    <span style="margin-left: 10px">
+      <button class="btn btn-outline-secondary btn-sm btn-icon" click.trigger="dynamicallyAddTitleHeader()">
+        <i class="mdi mdi-shape-square-plus"></i>
+        Dynamically Duplicate Title Column
+      </button>
+    </span>
+  </div>
 </div>
 <aurelia-slickgrid grid-id="grid12"
                     column-definitions.bind="columnDefinitions"
                     grid-options.bind="gridOptions"
                     dataset.bind="dataset"
+                    on-grid-state-changed.trigger="gridStateChanged($event.detail)"
                     on-aurelia-grid-created.trigger="aureliaGridReady($event.detail)">
 </aurelia-slickgrid>

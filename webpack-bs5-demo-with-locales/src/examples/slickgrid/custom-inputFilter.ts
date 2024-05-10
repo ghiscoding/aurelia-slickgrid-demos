@@ -1,15 +1,15 @@
 import {
-  Column,
-  ColumnFilter,
+  type Column,
+  type ColumnFilter,
   emptyElement,
-  Filter,
-  FilterArguments,
-  FilterCallback,
-  GridOption,
+  type Filter,
+  type FilterArguments,
+  type FilterCallback,
+  type GridOption,
   OperatorType,
-  OperatorString,
-  SearchTerm,
-  SlickGrid,
+  type OperatorString,
+  type SearchTerm,
+  type SlickGrid,
 } from 'aurelia-slickgrid';
 
 export class CustomInputFilter implements Filter {
@@ -36,7 +36,7 @@ export class CustomInputFilter implements Filter {
    * Initialize the Filter
    */
   init(args: FilterArguments) {
-    this.grid = args.grid;
+    this.grid = args.grid as SlickGrid;
     this.callback = args.callback;
     this.columnDef = args.columnDef;
     this.searchTerms = (args.hasOwnProperty('searchTerms') ? args.searchTerms : []) || [];

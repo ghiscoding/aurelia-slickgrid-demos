@@ -15,6 +15,7 @@ import { Example19DetailView } from './example19-detail-view';
 const NB_ITEMS = 1000;
 
 export class Example19 {
+  private _darkMode = false;
   @bindable detailViewRowCount = 9;
   title = 'Example 19: Row Detail View';
   subTitle = `
@@ -54,6 +55,11 @@ export class Example19 {
     this.getData();
   }
 
+  detaching() {
+    document.querySelector('.panel-wm-content')!.classList.remove('dark-mode');
+    document.querySelector<HTMLDivElement>('#demo-container')!.dataset.bsTheme = 'light';
+  }
+
   /* Define grid Options and Columns */
   defineGrid() {
     this.columnDefinitions = [
@@ -68,7 +74,7 @@ export class Example19 {
       {
         id: 'effort-driven', name: 'Effort Driven', field: 'effortDriven',
         minWidth: 100,
-        formatter: Formatters.checkmark, type: FieldType.boolean,
+        formatter: Formatters.checkmarkMaterial, type: FieldType.boolean,
         filterable: true, sortable: true,
         filter: {
           collection: [{ value: '', label: '' }, { value: true, label: 'True' }, { value: false, label: 'False' }],
@@ -87,6 +93,7 @@ export class Example19 {
       rowSelectionOptions: {
         selectActiveRow: true
       },
+      darkMode: this._darkMode,
       datasetIdPropertyName: 'rowId', // optionally use a different "id"
       rowDetailView: {
         // optionally change the column index position of the icon (defaults to 0)
@@ -123,7 +130,17 @@ export class Example19 {
         viewModel: Example19DetailView,
 
         // Optionally pass your Parent Component reference to your Child Component (row detail component)
-        parent: this
+        parent: this,
+
+        onBeforeRowDetailToggle: (e, args) => {
+          // you coud cancel opening certain rows
+          // if (args.item.rowId === 1) {
+          //   e.preventDefault();
+          //   return false;
+          // }
+          console.log('before toggling row detail', args.item);
+          return true;
+        },
       }
     };
   }
@@ -163,6 +180,7 @@ export class Example19 {
 
   changeEditableGrid() {
     // this.rowDetailInstance.setOptions({ useRowClick: false });
+    this.rowDetailInstance.collapseAll();
     (this.rowDetailInstance as any).addonOptions.useRowClick = false;
     this.gridOptions.autoCommitEdit = !this.gridOptions.autoCommitEdit;
     this.aureliaGrid?.slickGrid.setOptions({
@@ -200,6 +218,23 @@ export class Example19 {
         resolve(itemDetail);
       }, 1000);
     });
+  }
+
+  toggleDarkMode() {
+    this._darkMode = !this._darkMode;
+    this.toggleBodyBackground();
+    this.aureliaGrid.slickGrid?.setOptions({ darkMode: this._darkMode });
+    this.closeAllRowDetail();
+  }
+
+  toggleBodyBackground() {
+    if (this._darkMode) {
+      document.querySelector<HTMLDivElement>('.panel-wm-content')!.classList.add('dark-mode');
+      document.querySelector<HTMLDivElement>('#demo-container')!.dataset.bsTheme = 'dark';
+    } else {
+      document.querySelector('.panel-wm-content')!.classList.remove('dark-mode');
+      document.querySelector<HTMLDivElement>('#demo-container')!.dataset.bsTheme = 'light';
+    }
   }
 
   private randomNumber(min: number, max: number) {

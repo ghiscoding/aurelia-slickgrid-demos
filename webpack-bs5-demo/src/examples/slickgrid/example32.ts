@@ -1,24 +1,24 @@
-import { resolve } from 'aurelia';
 import { IHttpClient } from '@aurelia/fetch-client';
-import { newInstanceOf } from '@aurelia/kernel';
+import { newInstanceOf, resolve } from '@aurelia/kernel';
 import { ExcelExportService } from '@slickgrid-universal/excel-export';
 
 import {
-  AureliaGridInstance,
-  AutocompleterOption,
-  Column,
-  EditCommand,
+  type AureliaGridInstance,
+  type AutocompleterOption,
+  type Column,
+  type EditCommand,
   Editors,
   FieldType,
   Filters,
   formatNumber,
-  Formatter,
+  type Formatter,
   Formatters,
-  GridOption,
-  LongTextEditorOption,
-  SlickGrid,
+  type GridOption,
+  type LongTextEditorOption,
+  type SlickGrid,
   SortComparers,
   SlickGlobalEditorLock,
+  type VanillaCalendarOption,
 } from 'aurelia-slickgrid';
 import './example32.scss'; // provide custom CSS/SASS styling
 
@@ -33,7 +33,7 @@ const URL_COUNTRIES_COLLECTION = 'assets/data/countries.json';
  * @returns {boolean} isEditable
  */
 function checkItemIsEditable(dataContext: any, columnDef: Column, grid: SlickGrid) {
-  const gridOptions = grid && grid.getOptions && grid.getOptions();
+  const gridOptions = grid.getOptions() as GridOption;
   const hasEditor = columnDef.editor;
   const isGridEditable = gridOptions.editable;
   let isEditable = !!(isGridEditable && hasEditor);
@@ -57,7 +57,7 @@ function checkItemIsEditable(dataContext: any, columnDef: Column, grid: SlickGri
 }
 
 const customEditableInputFormatter: Formatter = (_row, _cell, value, columnDef, _dataContext, grid) => {
-  const gridOptions = grid && grid.getOptions && grid.getOptions();
+  const gridOptions = grid.getOptions() as GridOption;
   const isEditableLine = gridOptions.editable && columnDef.editor;
   value = (value === null || value === undefined) ? '' : value;
   return isEditableLine ? { text: value, addClasses: 'editable-field', toolTip: 'Click to Edit' } : value;
@@ -187,7 +187,7 @@ export class Example32 {
       {
         id: 'completed', name: 'Completed', field: 'completed', width: 80, minWidth: 75, maxWidth: 100,
         cssClass: 'text-center', columnGroup: 'Period',
-        formatter: Formatters.checkmark,
+        formatter: Formatters.checkmarkMaterial,
         exportWithFormatter: false,
         filterable: true, sortable: true,
         filter: {
@@ -205,7 +205,7 @@ export class Example32 {
         exportCustomFormatter: Formatters.dateUs,
         editor: {
           model: Editors.date,
-          editorOptions: { minDate: 'today' },
+          editorOptions: { range: { min: 'today' } } as VanillaCalendarOption,
           validator: (value, args) => {
             const dataContext = args && args.item;
             if (dataContext && (dataContext.completed && !value)) {
@@ -282,7 +282,7 @@ export class Example32 {
       {
         id: 'action', name: 'Action', field: 'action', width: 70, minWidth: 70, maxWidth: 70,
         excludeFromExport: true,
-        formatter: () => `<div class="button-style margin-auto" style="width: 35px;"><span class="fa fa-chevron-down text-primary"></span></div>`,
+        formatter: () => `<div class="button-style margin-auto" style="width: 35px;"><span class="mdi mdi-chevron-down text-primary"></span></div>`,
         cellMenu: {
           hideCloseButton: false,
           commandTitle: 'Commands',
@@ -290,14 +290,14 @@ export class Example32 {
             {
               command: 'help',
               title: 'Help!',
-              iconCssClass: 'fa fa-question-circle',
+              iconCssClass: 'mdi mdi-help-circle',
               positionOrder: 66,
               action: () => alert('Please Help!'),
             },
             'divider',
             {
               command: 'delete-row', title: 'Delete Row', positionOrder: 64,
-              iconCssClass: 'fa fa-times color-danger', cssClass: 'red', textCssClass: 'text-italic color-danger-light',
+              iconCssClass: 'mdi mdi-close color-danger', cssClass: 'red', textCssClass: 'text-italic color-danger-light',
               // only show command to 'Delete Row' when the task is not completed
               itemVisibilityOverride: (args) => {
                 return !args.dataContext?.completed;
@@ -438,7 +438,7 @@ export class Example32 {
     return tmpArray;
   }
 
-  handleValidationError(_e: Event, args: any) {
+  handleValidationError(e: Event, args: any) {
     if (args.validationResults) {
       let errorMsg = args.validationResults.msg || '';
       if (args.editor && args.validationResults.errors) {
@@ -452,6 +452,7 @@ export class Example32 {
     } else {
       alert(args.validationResults.msg);
     }
+    e.preventDefault(); // OR eventData.preventDefault();
     return false;
   }
 
@@ -464,10 +465,11 @@ export class Example32 {
 
     if (column && item) {
       if (!checkItemIsEditable(item, column, grid)) {
-        // event.preventDefault();
-        e.stopImmediatePropagation();
+        e.preventDefault(); // OR eventData.preventDefault();
+        return false;
       }
     }
+    e.preventDefault(); // OR eventData.preventDefault();
     return false;
   }
 
@@ -707,81 +709,57 @@ export class Example32 {
   /** List of icons that are supported in this lib Material Design Icons */
   getRandomIcon(iconIndex?: number) {
     const icons = [
-      'fa-500px',
-      'fa-address-book',
-      'fa-address-book-o',
-      'fa-address-card',
-      'fa-address-card-o',
-      'fa-adjust',
-      'fa-adn',
-      'fa-align-center',
-      'fa-align-justify',
-      'fa-align-left',
-      'fa-align-right',
-      'fa-amazon',
-      'fa-ambulance',
-      'fa-american-sign-language-interpreting',
-      'fa-anchor',
-      'fa-android',
-      'fa-angellist',
-      'fa-angle-double-down',
-      'fa-angle-double-left',
-      'fa-angle-double-right',
-      'fa-angle-double-up',
-      'fa-angle-down',
-      'fa-angle-left',
-      'fa-angle-right',
-      'fa-angle-up',
-      'fa-apple',
-      'fa-archive',
-      'fa-area-chart',
-      'fa-arrow-circle-down',
-      'fa-arrow-circle-left',
-      'fa-arrow-circle-o-down',
-      'fa-arrow-circle-o-left',
-      'fa-arrow-circle-o-right',
-      'fa-arrow-circle-o-up',
-      'fa-arrow-circle-right',
-      'fa-arrow-circle-up',
-      'fa-arrow-down',
-      'fa-arrow-left',
-      'fa-arrow-right',
-      'fa-arrow-up',
-      'fa-arrows',
-      'fa-arrows-alt',
-      'fa-arrows-h',
-      'fa-arrows-v',
-      'fa-assistive-listening-systems',
-      'fa-asterisk',
-      'fa-at',
-      'fa-audio-description',
-      'fa-backward',
-      'fa-balance-scale',
-      'fa-ban',
-      'fa-bandcamp',
-      'fa-bank (alias)',
-      'fa-bar-chart',
-      'fa-barcode',
-      'fa-bars',
-      'fa-bath',
-      'fa-battery-empty',
-      'fa-battery-full',
-      'fa-battery-half',
-      'fa-battery-quarter',
-      'fa-battery-three-quarters',
-      'fa-bed',
-      'fa-beer',
-      'fa-behance',
-      'fa-behance-square',
-      'fa-bell',
-      'fa-bell-o',
-      'fa-bell-slash',
-      'fa-bell-slash-o',
-      'fa-bicycle',
-      'fa-binoculars',
-      'fa-birthday-cake',
-      'fa-bitbucket',
-      'fa-bitbucket-square',
+      'mdi-arrow-collapse',
+      'mdi-arrow-expand',
+      'mdi-cancel',
+      'mdi-check',
+      'mdi-checkbox-blank-outline',
+      'mdi-check-box-outline',
+      'mdi-checkbox-marked',
+      'mdi-close',
+      'mdi-close-circle',
+      'mdi-close-circle-outline',
+      'mdi-close-thick',
+      'mdi-content-copy',
+      'mdi-database-refresh',
+      'mdi-download',
+      'mdi-file-document-outline',
+      'mdi-file-excel-outline',
+      'mdi-file-music-outline',
+      'mdi-file-pdf-outline',
+      'mdi-filter-remove-outline',
+      'mdi-flip-vertical',
+      'mdi-folder',
+      'mdi-folder-open',
+      'mdi-help-circle',
+      'mdi-help-circle-outline',
+      'mdi-history',
+      'mdi-information',
+      'mdi-information-outline',
+      'mdi-link',
+      'mdi-link-variant',
+      'mdi-menu',
+      'mdi-microsoft-excel',
+      'mdi-minus',
+      'mdi-page-first',
+      'mdi-page-last',
+      'mdi-paperclip',
+      'mdi-pin-off-outline',
+      'mdi-pin-outline',
+      'mdi-playlist-plus',
+      'mdi-playlist-remove',
+      'mdi-plus',
+      'mdi-redo',
+      'mdi-refresh',
+      'mdi-shape-square-plus',
+      'mdi-sort-ascending',
+      'mdi-sort-descending',
+      'mdi-swap-horizontal',
+      'mdi-swap-vertical',
+      'mdi-sync',
+      'mdi-table-edit',
+      'mdi-table-refresh',
+      'mdi-undo',
     ];
     const randomNumber = Math.floor((Math.random() * icons.length - 1));
     return icons[iconIndex ?? randomNumber];
@@ -795,7 +773,7 @@ export class Example32 {
       </div>
       <div>
         <span class="autocomplete-top-left">
-          <span class="mdfai ${item.itemTypeName === 'I' ? 'fa-info-circle' : 'fa-copy'}"></span>
+          <span class="fa ${item.itemTypeName === 'I' ? 'mdi-information-outline' : 'mdi-content-copy'}"></span>
           ${item.itemName}
         </span>
       <div>
@@ -813,7 +791,7 @@ export class Example32 {
           </div>
           <div>
             <span class="autocomplete-top-left">
-              <span class="fa ${item.itemTypeName === 'I' ? 'fa-info-circle' : 'fa-copy'}"></span>
+              <span class="fa ${item.itemTypeName === 'I' ? 'mdi-information-outline' : 'mdi-content-copy'}"></span>
               ${item.itemName}
             </span>
             <span class="autocomplete-top-right">${formatNumber(item.listPrice, 2, 2, false, '$')}</span>

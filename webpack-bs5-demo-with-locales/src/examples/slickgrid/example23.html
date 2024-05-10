@@ -1,4 +1,13 @@
-<h2>${title}</h2>
+<h2>
+  ${title}
+  <span class="float-end">
+    <a style="font-size: 18px"
+        target="_blank"
+        href="https://github.com/ghiscoding/aurelia-slickgrid/blob/master/packages/demo/src/examples/slickgrid/example23.ts">
+      <span class="mdi mdi-link-variant"></span> code
+    </a>
+  </span>
+</h2>
 <div class="subtitle" innerhtml.bind="subTitle"></div>
 
 <br />
@@ -8,29 +17,40 @@
   ${metrics.endTime | dateFormat: 'DD MMM, h:mm:ss a'} | ${metrics.itemCount} of ${metrics.totalItemCount} items
 </span>
 
-<div class="form-inline">
-  <button class="btn btn-outline-secondary btn-sm mr-1" data-test="clear-filters"
-          click.trigger="aureliaGrid.filterService.clearFilters()">
-    Clear Filters
-  </button>
-  <button class="btn btn-outline-secondary btn-sm mr-1" data-test="clear-sorting"
-          click.trigger="aureliaGrid.sortService.clearSorting()">
-    Clear Sorting
-  </button>
-  <button class="btn btn-outline-secondary btn-sm mr-1" data-test="set-dynamic-filter"
-          click.trigger="setFiltersDynamically()">
-    Set Filters Dynamically
-  </button>
-  <button class="btn btn-outline-secondary btn-sm mr-1" data-test="set-dynamic-sorting"
-          click.trigger="setSortingDynamically()">
-    Set Sorting Dynamically
-  </button>
-
-  <label for="selectedFilter" style="margin-left: 10px">Predefined Filters</label>
-  <select name="selectedFilter" class="form-control ml-1" data-test="select-dynamic-filter"
-          value.bind="selectedPredefinedFilter" change.trigger="predefinedFilterChanged(selectedPredefinedFilter)">
-    <option model.bind="filter.value" repeat.for="filter of filterList">${filter.label}</option>
-  </select>
+<div class="row row-cols-lg-auto g-1 align-items-center">
+  <div class="col">
+    <button class="btn btn-outline-secondary btn-sm btn-icon" data-test="clear-filters"
+            click.trigger="aureliaGrid.filterService.clearFilters()">
+      Clear Filters
+    </button>
+  </div>
+  <div class="col">
+    <button class="btn btn-outline-secondary btn-sm btn-icon" data-test="clear-sorting"
+            click.trigger="aureliaGrid.sortService.clearSorting()">
+      Clear Sorting
+    </button>
+  </div>
+  <div class="col">
+    <button class="btn btn-outline-secondary btn-sm btn-icon" data-test="set-dynamic-filter"
+            click.trigger="setFiltersDynamically()">
+      Set Filters Dynamically
+    </button>
+  </div>
+  <div class="col">
+    <button class="btn btn-outline-secondary btn-sm btn-icon" data-test="set-dynamic-sorting"
+            click.trigger="setSortingDynamically()">
+      Set Sorting Dynamically
+    </button>
+  </div>
+  <div class="col">
+    <label for="selectedFilter" style="margin-left: 10px">Predefined Filters</label>
+  </div>
+  <div class="col">
+    <select name="selectedFilter" class="form-select" data-test="select-dynamic-filter"
+            value.bind="selectedPredefinedFilter" change.trigger="predefinedFilterChanged(selectedPredefinedFilter)">
+      <option model.bind="filter.value" repeat.for="filter of filterList">${filter.label}</option>
+    </select>
+  </div>
 </div>
 
 <aurelia-slickgrid grid-id="grid23"

@@ -1,15 +1,15 @@
 import { I18N } from '@aurelia/i18n';
 import { resolve } from 'aurelia';
 import {
-  AureliaGridInstance,
-  Column,
+  type AureliaGridInstance,
+  type Column,
   FieldType,
   Filters,
   Formatters,
-  GridOption,
-  GridState,
-  GridStateChange,
-  MultipleSelectOption
+  type GridOption,
+  type GridState,
+  type GridStateChange,
+  type MultipleSelectOption,
 } from 'aurelia-slickgrid';
 
 function randomBetween(min: number, max: number) {
@@ -125,7 +125,7 @@ export class Example15 {
         type: FieldType.date, filterable: true, filter: { model: Filters.compoundDate }
       },
       {
-        id: 'completed', field: 'completed', nameKey: 'COMPLETED', minWidth: 85, maxWidth: 85, formatter: Formatters.checkmark, width: 100,
+        id: 'completed', field: 'completed', nameKey: 'COMPLETED', minWidth: 85, maxWidth: 85, formatter: Formatters.checkmarkMaterial, width: 100,
         type: FieldType.boolean,
         sortable: true,
         filterable: true,

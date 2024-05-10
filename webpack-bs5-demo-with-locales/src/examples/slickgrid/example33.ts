@@ -2,18 +2,19 @@ import { SlickCustomTooltip } from '@slickgrid-universal/custom-tooltip-plugin';
 import { ExcelExportService } from '@slickgrid-universal/excel-export';
 
 import {
-  AureliaGridInstance,
-  Column,
-  EditCommand,
+  type AureliaGridInstance,
+  type Column,
+  type EditCommand,
   Editors,
   FieldType,
   Filters,
-  Formatter,
+  type Formatter,
   Formatters,
-  GridOption,
-  MenuCommandItemCallbackArgs,
+  type GridOption,
+  type MenuCommandItemCallbackArgs,
   OperatorType,
-  SlickGrid,
+  type SlickGrid,
+  type VanillaCalendarOption,
 } from 'aurelia-slickgrid';
 import './example33.scss';
 
@@ -75,7 +76,7 @@ export class Example33 {
           // example 2 (async):
           // when using async, the `formatter` will contain the loading spinner
           // you will need to provide an `asyncPost` function returning a Promise and also `asyncPostFormatter` formatter to display the result once the Promise resolves
-          formatter: () => `<div><span class="fa fa-spinner fa-pulse fa-fw"></span> loading...</div>`,
+          formatter: () => `<div><span class="mdi mdi-load mdi-spin"></span> loading...</div>`,
           asyncProcess: () => new Promise(resolve => {
             setTimeout(() => resolve({ ratio: Math.random() * 10 / 10, lifespan: Math.random() * 100 }), this.serverApiDelay);
           }),
@@ -188,7 +189,10 @@ export class Example33 {
       },
       {
         id: 'finish', name: 'Finish', field: 'finish', sortable: true,
-        editor: { model: Editors.date, editorOptions: { minDate: 'today' }, },
+        editor: {
+          model: Editors.date,
+          editorOptions: { range: { min: 'today' } } as VanillaCalendarOption,
+        },
         // formatter: Formatters.dateIso,
         type: FieldType.date, outputType: FieldType.dateIso,
         formatter: Formatters.dateIso,
@@ -271,7 +275,7 @@ export class Example33 {
       },
       {
         id: 'action', name: 'Action', field: 'action', width: 70, minWidth: 70, maxWidth: 70,
-        formatter: () => `<div class="button-style margin-auto" style="width: 35px;"><span class="fa fa-chevron-down text-primary"></span></div>`,
+        formatter: () => `<div class="button-style margin-auto" style="width: 35px;"><span class="mdi mdi-chevron-down text-primary"></span></div>`,
         excludeFromExport: true,
         cellMenu: {
           hideCloseButton: false,
@@ -432,13 +436,13 @@ export class Example33 {
     const tooltipTitle = 'Custom Tooltip - Header';
     return `<div class="header-tooltip-title">${tooltipTitle}</div>
     <div class="tooltip-2cols-row"><div>Column:</div> <div>${column.name}</div></div>`;
-  }
+  };
 
   headerRowFormatter: Formatter = (_row, _cell, _value: any, column: Column) => {
     const tooltipTitle = 'Custom Tooltip - Header Row (filter)';
     return `<div class="headerrow-tooltip-title">${tooltipTitle}</div>
     <div class="tooltip-2cols-row"><div>Column:</div> <div>${column.field}</div></div>`;
-  }
+  };
 
   tooltipFormatter: Formatter = (row, cell, _value: any, column: Column, dataContext: any, grid: SlickGrid) => {
     const tooltipTitle = 'Custom Tooltip';
@@ -450,7 +454,7 @@ export class Example33 {
     <div class="tooltip-2cols-row"><div>Effort Driven:</div> <div>${effortDrivenHtml.outerHTML || ''}</div></div>
     <div class="tooltip-2cols-row"><div>Completion:</div> <div>${this.loadCompletionIcons(dataContext.percentComplete)}</div></div>
     `;
-  }
+  };
 
   tooltipTaskAsyncFormatter: Formatter = (row, cell, _value, column: Column, dataContext: any, grid: SlickGrid) => {
     const tooltipTitle = `Task ${dataContext.id} - (async tooltip)`;
@@ -464,7 +468,7 @@ export class Example33 {
       <div class="tooltip-2cols-row"><div>Ratio:</div> <div>${dataContext.__params.ratio.toFixed(2)}</div></div>
     `;
     return out;
-  }
+  };
 
   loadCompletionIcons(percentComplete: number) {
     let output = '';
@@ -482,7 +486,7 @@ export class Example33 {
     }
     for (let i = 0; i < iconCount; i++) {
       const iconColor = iconCount === 5 ? 'text-success' : iconCount >= 3 ? 'text-warning' : 'text-secondary';
-      output += `<span class="fa fa-check-circle-o ${iconColor}"></span>`;
+      output += `<span class="mdi mdi-check-circle-outline ${iconColor}"></span>`;
     }
     return output;
   }

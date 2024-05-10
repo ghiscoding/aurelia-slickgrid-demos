@@ -2,14 +2,14 @@ import { faker } from '@faker-js/faker';
 import sparkline from '@fnando/sparkline';
 import {
   Aggregators,
-  AureliaGridInstance,
-  Column,
+  type AureliaGridInstance,
+  type Column,
   deepCopy,
   FieldType,
   Filters,
-  Formatter,
+  type Formatter,
   Formatters,
-  GridOption,
+  type GridOption,
   GroupTotalFormatters,
 } from 'aurelia-slickgrid';
 import './example34.scss';
@@ -17,22 +17,25 @@ import './example34.scss';
 const NB_ROWS = 200;
 
 const currencyFormatter: Formatter = (_cell, _row, value: string) =>
-  `<img src="https://flags.fmcdn.net/data/flags/mini/${value.substr(0, 2).toLowerCase()}.png" width="20"/> ${value}`;
+  `<img src="https://flags.fmcdn.net/data/flags/mini/${value.substring(0, 2).toLowerCase()}.png" width="20"/> ${value}`;
 
 const priceFormatter: Formatter = (_cell, _row, value, _col, dataContext) => {
   const direction = dataContext.priceChange >= 0 ? 'up' : 'down';
   const fragment = new DocumentFragment();
+  const divElm = document.createElement('div');
+  divElm.className = 'd-inline-flex align-items-center';
   const spanElm = document.createElement('span');
-  spanElm.className = `fa fa-arrow-${direction} text-${direction === 'up' ? 'success' : 'danger'}`;
-  fragment.appendChild(spanElm);
+  spanElm.className = `mdi mdi-arrow-${direction} text-${direction === 'up' ? 'success' : 'danger'}`;
+  divElm.appendChild(spanElm);
+  fragment.appendChild(divElm);
   if (value instanceof HTMLElement) {
-    fragment.appendChild(value);
+    divElm.appendChild(value);
   }
   return fragment;
 };
 
 const transactionTypeFormatter: Formatter = (_row, _cell, value: string) =>
-  `<span <span class="fa fa-${value === 'Buy' ? 'plus' : 'minus'}-circle ${value === 'Buy' ? 'text-info' : 'text-warning'}"></span> ${value}`;
+  `<div class="d-inline-flex align-items-center"><span class="me-1 mdi mdi-16px mdi-${value === 'Buy' ? 'plus' : 'minus'}-circle ${value === 'Buy' ? 'text-info' : 'text-warning'}"></span> ${value}</div>`;
 
 const historicSparklineFormatter: Formatter = (_row, _cell, _value, _col, dataContext: any) => {
   const svgElem = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
@@ -45,6 +48,7 @@ const historicSparklineFormatter: Formatter = (_row, _cell, _value, _col, dataCo
 };
 
 export class Example34 {
+  private _darkMode = false;
   title = 'Example 34: Real-Time Trading Platform';
   subTitle = `Simulate a stock trading platform with lot of price changes
   <ul>
@@ -82,6 +86,8 @@ export class Example34 {
 
   detaching() {
     this.stopSimulation();
+    document.querySelector('.panel-wm-content')!.classList.remove('dark-mode');
+    document.querySelector<HTMLDivElement>('#demo-container')!.dataset.bsTheme = 'light';
   }
 
   /* Define grid Options and Columns */
@@ -181,10 +187,11 @@ export class Example34 {
       },
       draggableGrouping: {
         dropPlaceHolderText: 'Drop a column header here to group by any of these available columns: Currency, Market or Type',
-        deleteIconCssClass: 'fa fa-times',
+        deleteIconCssClass: 'mdi mdi-close',
       },
       enableDraggableGrouping: true,
       createPreHeaderPanel: true,
+      darkMode: this._darkMode,
       showPreHeaderPanel: true,
       preHeaderPanelHeight: 40,
       enableCellNavigation: true,
@@ -277,7 +284,7 @@ export class Example34 {
   }
 
   findColumnById(columnName: string): Column {
-    return this.columnDefinitions.find(col => col.field === columnName) as Column;
+    return this.columnDefinitions.find(col => col?.field === columnName) as Column;
   }
 
   renderCellHighlighting(item: any, column: Column, priceChange: number) {
@@ -308,6 +315,22 @@ export class Example34 {
       this.isFullScreen = true;
     }
     this.aureliaGrid.resizerService.resizeGrid();
+  }
+
+  toggleDarkMode() {
+    this._darkMode = !this._darkMode;
+    this.toggleBodyBackground();
+    this.aureliaGrid.slickGrid?.setOptions({ darkMode: this._darkMode });
+  }
+
+  toggleBodyBackground() {
+    if (this._darkMode) {
+      document.querySelector<HTMLDivElement>('.panel-wm-content')!.classList.add('dark-mode');
+      document.querySelector<HTMLDivElement>('#demo-container')!.dataset.bsTheme = 'dark';
+    } else {
+      document.querySelector('.panel-wm-content')!.classList.remove('dark-mode');
+      document.querySelector<HTMLDivElement>('#demo-container')!.dataset.bsTheme = 'light';
+    }
   }
 
   private randomNumber(min: number, max: number, floor = true) {

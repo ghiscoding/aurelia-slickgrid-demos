@@ -2,18 +2,19 @@ import { ExcelExportService } from '@slickgrid-universal/excel-export';
 import { TextExportService } from '@slickgrid-universal/text-export';
 
 import {
-  AureliaGridInstance,
-  Column,
+  type AureliaGridInstance,
+  type Column,
   DelimiterType,
   FieldType,
   FileType,
   Filters,
-  Formatter,
+  type Formatter,
   Formatters,
-  GridOption,
-  GridStateChange,
-  SlickGrid,
+  type GridOption,
+  type GridStateChange,
+  type SlickGrid,
 } from 'aurelia-slickgrid';
+
 import { localeFrench } from '../locales/fr';
 
 const NB_ITEMS = 1500;
@@ -34,12 +35,12 @@ export class Example12 {
       <li>For more info about "Download to File", read the <a href=https://github.com/ghiscoding/aurelia-slickgrid/wiki/Export-to-File" target="_blank">Wiki page</a></li>
     </ul>`;
 
-  aureliaGrid: AureliaGridInstance;
-  gridOptions: GridOption;
-  columnDefinitions: Column[];
-  dataset: any[];
+  aureliaGrid!: AureliaGridInstance;
+  gridOptions!: GridOption;
+  columnDefinitions: Column[] = [];
+  dataset: any[] = [];
   duplicateTitleHeaderCount = 1;
-  gridObj: SlickGrid;
+  gridObj!: SlickGrid;
   excelExportService = new ExcelExportService();
   textExportService = new TextExportService();
 
@@ -48,7 +49,7 @@ export class Example12 {
     this.defineGrid();
   }
 
-  attaching() {
+  attached() {
     // populate the dataset once the grid is ready
     this.getData(NB_ITEMS);
   }
@@ -75,7 +76,7 @@ export class Example12 {
       {
         id: 'completedBool', name: 'Complétée', field: 'completedBool', minWidth: 100,
         sortable: true,
-        formatter: Formatters.checkmark,
+        formatter: Formatters.checkmarkMaterial,
         exportCustomFormatter: exportBooleanFormatter,
         filterable: true,
         filter: {
@@ -134,13 +135,13 @@ export class Example12 {
 
   getData(count: number) {
     // mock a dataset
-    this.dataset = [];
+    const tmpData: any[] = [];
     for (let i = 0; i < count; i++) {
       const randomYear = 2000 + Math.floor(Math.random() * 10);
       const randomMonth = Math.floor(Math.random() * 11);
       const randomDay = Math.floor((Math.random() * 29));
 
-      this.dataset[i] = {
+      tmpData[i] = {
         id: i,
         description: (i % 5) ? 'desc ' + i : '🚀🦄 español', // also add some random to test NULL field
         duration: Math.round(Math.random() * 100) + '',
@@ -150,6 +151,7 @@ export class Example12 {
         completed: (i % 5 === 0) ? 'TRUE' : 'FALSE'
       };
     }
+    this.dataset = tmpData;
   }
 
   dynamicallyAddTitleHeader() {

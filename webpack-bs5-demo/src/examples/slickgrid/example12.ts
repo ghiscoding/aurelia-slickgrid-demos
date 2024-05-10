@@ -1,28 +1,28 @@
-import { resolve } from 'aurelia';
 import { ExcelExportService } from '@slickgrid-universal/excel-export';
 import { TextExportService } from '@slickgrid-universal/text-export';
 import { I18N } from '@aurelia/i18n';
 // import { TOptions as I18NOptions } from 'i18next';
 
 import {
-  AureliaGridInstance,
-  Column,
+  type AureliaGridInstance,
+  type Column,
   DelimiterType,
   FieldType,
   FileType,
   Filters,
-  Formatter,
+  type Formatter,
   Formatters,
-  GridOption,
-  GridStateChange,
-  SlickGrid,
+  type GridOption,
+  type GridStateChange,
+  type SlickGrid,
 } from 'aurelia-slickgrid';
+import { resolve } from 'aurelia';
 
 const NB_ITEMS = 1500;
 
 // create a custom translate Formatter (typically you would move that a separate file, for separation of concerns)
 const taskTranslateFormatter: Formatter = (_row, _cell, value, _columnDef, _dataContext, grid) => {
-  const gridOptions: GridOption = (grid && typeof grid.getOptions === 'function') ? grid.getOptions() : {};
+  const gridOptions = grid.getOptions() as GridOption;
   const i18n = gridOptions.i18n;
 
   return i18n?.tr('TASK_X', { x: value } as any) ?? '';
@@ -111,7 +111,7 @@ export class Example12 {
       {
         id: 'completedBool', name: 'Completed', field: 'completedBool', nameKey: 'COMPLETED', minWidth: 100,
         sortable: true,
-        formatter: Formatters.checkmark,
+        formatter: Formatters.checkmarkMaterial,
         exportCustomFormatter: Formatters.translateBoolean,
         filterable: true,
         filter: {
@@ -184,8 +184,8 @@ export class Example12 {
       },
       excelExportOptions: {
         // optionally pass a custom header to the Excel Sheet
-        // a lot of the info can be found on Web Archive of Excel-Builder
-        // http://web.archive.org/web/20160907052007/http://excelbuilderjs.com/cookbook/fontsAndColors.html
+        // a lot of the info can be found on Excel-Builder-Vanilla
+        // https://ghiscoding.gitbook.io/excel-builder-vanilla/cookbook/fonts-and-colors
         customExcelHeader: (workbook, sheet) => {
           const customTitle = this.i18n.getLocale() === 'fr' ? 'Titre qui est suffisament long pour être coupé' : 'My header that is long enough to wrap';
           const stylesheet = workbook.getStyleSheet();

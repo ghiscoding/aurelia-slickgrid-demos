@@ -1,4 +1,4 @@
-import { AureliaGridInstance, Column, ExtensionName, Filters, Formatters, GridOption, OnEventArgs } from 'aurelia-slickgrid';
+import { type AureliaGridInstance, type Column, ExtensionName, Filters, Formatters, type GridOption, type OnEventArgs } from 'aurelia-slickgrid';
 
 export class Example16 {
   title = 'Example 16: Row Move & Checkbox Selector';
@@ -58,7 +58,7 @@ export class Example16 {
       },
       {
         id: 'effort-driven', name: 'Completed', field: 'effortDriven',
-        formatter: Formatters.checkmark,
+        formatter: Formatters.checkmarkMaterial,
         filterable: true, sortable: true,
         filter: {
           collection: [{ value: '', label: '' }, { value: true, label: 'True' }, { value: false, label: 'False' }],
@@ -144,7 +144,7 @@ export class Example16 {
     for (const rowIdx of data.rows) {
       // no point in moving before or after itself
       if (rowIdx === data.insertBefore || (rowIdx === data.insertBefore - 1 && ((data.insertBefore - 1) !== this.aureliaGrid.dataView.getItemCount()))) {
-        e.stopPropagation();
+        e.preventDefault(); // OR eventData.preventDefault();
         return false;
       }
     }
@@ -235,7 +235,7 @@ export class Example16 {
           excludeFromGridMenu: true,
           excludeFromHeaderMenu: true,
           formatter: Formatters.icon,
-          params: { iconCssClass: 'fa fa-pencil pointer' },
+          params: { iconCssClass: 'mdi mdi-pencil pointer' },
           minWidth: 30,
           maxWidth: 30,
           onCellClick: (_clickEvent: Event, args: OnEventArgs) => {
@@ -248,7 +248,7 @@ export class Example16 {
           excludeFromGridMenu: true,
           excludeFromHeaderMenu: true,
           formatter: Formatters.icon,
-          params: { iconCssClass: 'fa fa-trash pointer' },
+          params: { iconCssClass: 'mdi mdi-trash-can pointer' },
           minWidth: 30,
           maxWidth: 30,
           onCellClick: (_e: Event, args: OnEventArgs) => {

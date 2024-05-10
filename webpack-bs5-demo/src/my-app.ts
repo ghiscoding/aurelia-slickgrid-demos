@@ -1,11 +1,9 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
-import 'font-awesome/css/font-awesome.css';
-import 'flatpickr/dist/flatpickr.min.css';
-import './styles.scss';
 
+import './styles.scss';
 export class MyApp {
   static routes = [
-    { path: 'example1', component: () => import('./examples/slickgrid/example1'), title: '1- Basic Grid / 2 Grids' },
+    { path: ['', 'example1'], component: () => import('./examples/slickgrid/example1'), title: '1- Basic Grid / 2 Grids' },
     { path: 'example2', component: () => import('./examples/slickgrid/example2'), title: '2- Formatters' },
     { path: 'example3', component: () => import('./examples/slickgrid/example3'), title: '3- Editors / Delete' },
     { path: 'example4', component: () => import('./examples/slickgrid/example4'), title: '4- Client Side Sort/Filter' },
@@ -38,7 +36,7 @@ export class MyApp {
     { path: 'example31', component: () => import('./examples/slickgrid/example31'), title: '31- Backend OData with RxJS' },
     { path: 'example32', component: () => import('./examples/slickgrid/example32'), title: '32- Columns Resize by Content' },
     { path: 'example33', component: () => import('./examples/slickgrid/example33'), title: '33- Regular & Custom Tooltip' },
-    { path: ['', 'example34'], component: () => import('./examples/slickgrid/example34'), title: '34- Real-Time Trading Platform' },
+    { path: 'example34', component: () => import('./examples/slickgrid/example34'), title: '34- Real-Time Trading Platform' },
     { path: 'example35', component: () => import('./examples/slickgrid/example35'), title: '35- Row Based Editing' },
     { path: 'home', component: () => import('./home-page'), title: 'Home' },
   ];
@@ -47,6 +45,14 @@ export class MyApp {
 
   attached() {
     this.addGitHubStarsLogo();
+
+    // scroll to active link route, there's probably a better way to do this but couldn't find lifecycle for it
+    setTimeout(() => {
+      const linkElm = document.querySelector('.nav-link.active');
+      if (linkElm) {
+        linkElm.scrollIntoView({ block: 'nearest' });
+      }
+    }, 45)
   }
 
   addGitHubStarsLogo() {

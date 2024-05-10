@@ -1,15 +1,14 @@
-import { ICustomElementController } from '@aurelia/runtime-html';
-import { IBindingContext } from '@aurelia/runtime';
+import type { IBindingContext, ICustomElementController } from '@aurelia/runtime-html';
 
 import {
   AureliaUtilService,
-  Column,
-  Editor,
-  EditorValidator,
-  EditorValidationResult,
-  GridOption,
-  SlickGrid,
-  ViewModelBindableInputData,
+  type Column,
+  type Editor,
+  type EditorValidator,
+  type EditorValidationResult,
+  type GridOption,
+  type SlickGrid,
+  type ViewModelBindableInputData,
 } from 'aurelia-slickgrid';
 
 /*
@@ -40,16 +39,16 @@ export class CustomAureliaViewModelEditor implements Editor {
 
   /** Aurelia Util Service (could be inside the Grid Options Params or the Editor Params ) */
   get aureliaUtilService(): AureliaUtilService {
-    let aureliaUtilService = this.gridOptions && this.gridOptions.params && this.gridOptions.params.aureliaUtilService;
+    let aureliaUtilService = this.gridOptions?.params?.aureliaUtilService;
     if (!aureliaUtilService || !(aureliaUtilService instanceof AureliaUtilService)) {
-      aureliaUtilService = this.columnEditor && this.columnEditor.params && this.columnEditor.params.aureliaUtilService;
+      aureliaUtilService = this.columnEditor?.params?.aureliaUtilService;
     }
     return aureliaUtilService;
   }
 
   /** Get the Collection */
   get collection(): any[] {
-    return this.columnDef?.internalColumnEditor?.collection ?? [];
+    return this.columnDef?.editor?.collection ?? [];
   }
 
   /** Get Column Definition object */
@@ -59,7 +58,7 @@ export class CustomAureliaViewModelEditor implements Editor {
 
   /** Get Column Editor object */
   get columnEditor(): any {
-    return this.columnDef?.internalColumnEditor ?? {};
+    return this.columnDef?.editor ?? {};
   }
 
   /** Getter for the Grid Options pulled through the Grid Object */
@@ -79,7 +78,7 @@ export class CustomAureliaViewModelEditor implements Editor {
   async init() {
     if (!this.columnEditor?.params?.viewModel) {
       throw new Error(`[Aurelia-Slickgrid] For the Editors.aureliaComponent to work properly, you need to fill in the "templateUrl" property of your Custom Element Editor.
-      Example: this.columnDefs = [{ id: 'title', field: 'title', editor: { model: CustomAureliaViewModelFilter, collection: [...], param: { viewModel: MyVM } },`);
+      Example: this.columnDefs = [{ id: 'title', field: 'title', editor: { model: CustomEditor, collection: [...], param: { viewModel: MyVM } },`);
     }
     if (this.columnEditor?.params?.viewModel) {
       const bindableData = {

@@ -1,25 +1,24 @@
-import { resolve } from 'aurelia';
 import { IHttpClient } from '@aurelia/fetch-client';
-import { newInstanceOf } from '@aurelia/kernel';
+import { newInstanceOf, resolve } from '@aurelia/kernel';
 import { I18N } from '@aurelia/i18n';
 import fetchJsonp from 'fetch-jsonp';
 
 import {
-  AureliaGridInstance,
-  AutocompleterOption,
-  Column,
-  EditCommand,
+  type AureliaGridInstance,
+  type AutocompleterOption,
+  type Column,
+  type EditCommand,
   Editors,
-  EditorValidator,
+  type EditorValidator,
   FieldType,
   Filters,
-  FlatpickrOption,
   Formatters,
-  GridOption,
-  OnEventArgs,
+  type GridOption,
+  type OnEventArgs,
   OperatorType,
   SlickGlobalEditorLock,
   SortComparers,
+  type VanillaCalendarOption,
 } from 'aurelia-slickgrid';
 import { CustomInputEditor } from './custom-inputEditor';
 import { CustomInputFilter } from './custom-inputFilter';
@@ -33,12 +32,8 @@ const URL_COUNTRY_NAMES = 'assets/data/country_names.json';
 const myCustomTitleValidator: EditorValidator = (value: any) => {
   // you can get the Editor Args which can be helpful, e.g. we can get the Translate Service from it
   // const grid = args && args.grid;
-  // const gridOptions = (grid && grid.getOptions) ? grid.getOptions() : {};
+  // const gridOptions = grid.getOptions() as GridOption;
   // const i18n = gridOptions.i18n;
-
-  // to get the editor object, you'll need to use "internalColumnEditor"
-  // don't use "editor" property since that one is what SlickGrid uses internally by it's editor factory
-  // const columnEditor = args && args.column && args.column.internalColumnEditor;
 
   if (value === null || value === undefined || !value.length) {
     return { valid: false, msg: 'This is a required field' };
@@ -105,7 +100,7 @@ export class Example3 {
         excludeFromGridMenu: true,
         excludeFromHeaderMenu: true,
         formatter: Formatters.icon,
-        params: { iconCssClass: 'fa fa-pencil pointer' },
+        params: { iconCssClass: 'mdi mdi-pencil pointer' },
         minWidth: 30,
         maxWidth: 30,
         // use onCellClick OR grid.onClick.subscribe which you can see down below
@@ -122,7 +117,7 @@ export class Example3 {
         excludeFromGridMenu: true,
         excludeFromHeaderMenu: true,
         formatter: Formatters.icon,
-        params: { iconCssClass: 'fa fa-trash pointer' },
+        params: { iconCssClass: 'mdi mdi-trash-can pointer' },
         minWidth: 30,
         maxWidth: 30,
         // use onCellClick OR grid.onClick.subscribe which you can see down below
@@ -175,7 +170,10 @@ export class Example3 {
         minWidth: 100,
         sortable: true,
         type: FieldType.number,
-        filter: { model: Filters.slider, filterOptions: { hideSliderNumber: false } },
+        filter: {
+          model: Filters.slider,
+          filterOptions: { hideSliderNumber: false }
+        },
         editor: {
           model: Editors.slider,
           minValue: 0,
@@ -204,7 +202,7 @@ export class Example3 {
         editor: {
           // We can also add HTML text to be rendered (any bad script will be sanitized) but we have to opt-in, else it will be sanitized
           enableRenderHtml: true,
-          collection: Array.from(Array(101).keys()).map(k => ({ value: k, label: k, symbol: '<i class="fa fa-percent" style="color:cadetblue"></i>' })),
+          collection: Array.from(Array(101).keys()).map(k => ({ value: k, label: k, symbol: '<i class="mdi mdi-percent-outline" style="color:cadetblue"></i>' })),
           customStructure: {
             value: 'value',
             label: 'label',
@@ -258,9 +256,8 @@ export class Example3 {
         saveOutputType: FieldType.dateUtc, // save output date format
         editor: {
           model: Editors.date,
-          // override any of the Flatpickr options through "filterOptions"
-          // please note that there's no TSlint on this property since it's generic for any filter, so make sure you entered the correct filter option(s)
-          editorOptions: { minDate: 'today' } as FlatpickrOption
+          // override any of the calendar options through "filterOptions"
+          editorOptions: { range: { min: 'today' } } as VanillaCalendarOption
         },
       }, {
         id: 'cityOfOrigin', name: 'City of Origin', field: 'cityOfOrigin',
@@ -351,7 +348,7 @@ export class Example3 {
           model: Filters.singleSelect,
           collection: [{ value: '', label: '' }, { value: true, label: 'True' }, { value: false, label: 'False' }]
         },
-        formatter: Formatters.checkmark,
+        formatter: Formatters.checkmarkMaterial,
         editor: {
           model: Editors.checkbox,
         },
@@ -504,7 +501,7 @@ export class Example3 {
     // mock a dataset
     const tempDataset: any[] = [];
     for (let i = startingIndex; i < (startingIndex + itemCount); i++) {
-      const randomYear = 2000 + Math.floor(Math.random() * 10);
+      const randomYear = 2000 + this.randomBetween(4, 15);
       const randomFinishYear = (new Date().getFullYear() - 3) + Math.floor(Math.random() * 10); // use only years not lower than 3 years ago
       const randomMonth = Math.floor(Math.random() * 11);
       const randomDay = Math.floor((Math.random() * 29));
@@ -527,6 +524,10 @@ export class Example3 {
       });
     }
     return tempDataset;
+  }
+
+  randomBetween(min: number, max: number): number {
+    return Math.floor(Math.random() * (max - min + 1) + min);
   }
 
   onCellChanged(_e: Event, args: any) {
@@ -598,15 +599,7 @@ export class Example3 {
   dynamicallyRemoveLastColumn() {
     this.columnDefinitions.pop();
 
-    // NOTE if you use an Extensions (Checkbox Selector, Row Detail, ...) that modifies the column definitions in any way
-    // you MUST use the code below, first you must reassign the Editor facade (from the internalColumnEditor back to the editor)
-    // in other words, SlickGrid is not using the same as Aurelia-Slickgrid uses (editor with a "model" and other properties are a facade, SlickGrid only uses what is inside the model)
     /*
-    const allColumns = this.aureliaGrid.gridService.getAllColumnDefinitions();
-    const allOriginalColumns = allColumns.map((column) => {
-      column.editor = column.internalColumnEditor;
-      return column;
-    });
     // remove your column the full set of columns
     // and use slice or spread [...] to trigger an Aurelia dirty change
     allOriginalColumns.pop();

@@ -1,16 +1,16 @@
-import { GraphqlService, GraphqlPaginatedResult, GraphqlServiceApi, GraphqlServiceOption } from '@slickgrid-universal/graphql';
-import moment from 'moment-mini';
+import { addDay, format } from '@formkit/tempo';
+import { GraphqlService, type GraphqlPaginatedResult, type GraphqlServiceApi, type GraphqlServiceOption } from '@slickgrid-universal/graphql';
 import {
-  AureliaGridInstance,
-  Column,
-  CursorPageInfo,
+  type AureliaGridInstance,
+  type Column,
+  type CursorPageInfo,
   FieldType,
   Filters,
   Formatters,
-  GridOption,
-  GridStateChange,
-  Metrics,
-  MultipleSelectOption,
+  type GridOption,
+  type GridStateChange,
+  type Metrics,
+  type MultipleSelectOption,
   OperatorType,
   SortDirection,
 } from 'aurelia-slickgrid';
@@ -39,7 +39,7 @@ export class Example6 {
   aureliaGrid!: AureliaGridInstance;
   columnDefinitions: Column[] = [];
   gridOptions!: GridOption;
-  dataset = [] = [];
+  dataset: any[] = [];
   metrics!: Metrics;
   graphqlService = new GraphqlService();
 
@@ -116,8 +116,8 @@ export class Example6 {
       },
     ];
 
-    const presetLowestDay = moment().add(-2, 'days').format('YYYY-MM-DD');
-    const presetHighestDay = moment().add(20, 'days').format('YYYY-MM-DD');
+    const presetLowestDay = format(addDay(new Date(), -2), 'YYYY-MM-DD');
+    const presetHighestDay = format(addDay(new Date(), 20), 'YYYY-MM-DD');
 
     this.gridOptions = {
       enableFiltering: true,
@@ -206,7 +206,6 @@ export class Example6 {
    * @param query
    * @return Promise<GraphqlPaginatedResult>
    */
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   getCustomerApiCall(_query: string): Promise<GraphqlPaginatedResult> {
     let pageInfo: CursorPageInfo;
     if (this.aureliaGrid?.paginationService) {
@@ -284,8 +283,8 @@ export class Example6 {
   }
 
   setFiltersDynamically() {
-    const presetLowestDay = moment().add(-2, 'days').format('YYYY-MM-DD');
-    const presetHighestDay = moment().add(20, 'days').format('YYYY-MM-DD');
+    const presetLowestDay = format(addDay(new Date(), -2), 'YYYY-MM-DD');
+    const presetHighestDay = format(addDay(new Date(), 20), 'YYYY-MM-DD');
 
     // we can Set Filters Dynamically (or different filters) afterward through the FilterService
     this.aureliaGrid.filterService.updateFilters([
@@ -306,8 +305,8 @@ export class Example6 {
   }
 
   resetToOriginalPresets() {
-    const presetLowestDay = moment().add(-2, 'days').format('YYYY-MM-DD');
-    const presetHighestDay = moment().add(20, 'days').format('YYYY-MM-DD');
+    const presetLowestDay = format(addDay(new Date(), -2), 'YYYY-MM-DD');
+    const presetHighestDay = format(addDay(new Date(), 20), 'YYYY-MM-DD');
 
     this.aureliaGrid.filterService.updateFilters([
       // you can use OperatorType or type them as string, e.g.: operator: 'EQ'

@@ -1,20 +1,19 @@
-import { ICustomElementController } from '@aurelia/runtime-html';
-import { IBindingContext } from '@aurelia/runtime';
+import type { IBindingContext, ICustomElementController } from '@aurelia/runtime-html';
 
 import {
   AureliaUtilService,
-  Column,
-  ColumnFilter,
+  type Column,
+  type ColumnFilter,
   emptyElement,
-  Filter,
-  FilterArguments,
-  FilterCallback,
-  GridOption,
+  type Filter,
+  type FilterArguments,
+  type FilterCallback,
+  type GridOption,
   OperatorType,
-  OperatorString,
-  SearchTerm,
-  SlickGrid,
-  ViewModelBindableInputData,
+  type OperatorString,
+  type SearchTerm,
+  type SlickGrid,
+  type ViewModelBindableInputData,
 } from 'aurelia-slickgrid';
 
 export class CustomAureliaViewModelFilter implements Filter {
@@ -58,14 +57,14 @@ export class CustomAureliaViewModelFilter implements Filter {
    * Initialize the Filter
    */
   async init(args: FilterArguments) {
-    this.grid = args.grid;
+    this.grid = args.grid as SlickGrid;
     this.callback = args.callback;
     this.columnDef = args.columnDef;
     this.searchTerms = (args.hasOwnProperty('searchTerms') ? args.searchTerms : []) || [];
 
     if (!this.columnFilter?.params?.viewModel) {
       throw new Error(`[Aurelia-Slickgrid] For the Filters.aureliaComponent to work properly, you need to fill in the "viewModel" property of your Custom Element Filter.
-      Example: this.columnDefs = [{ id: 'title', field: 'title', filter: { model: CustomAureliaViewModelFilter, collection: [...], param: { viewModel: MyVM } },`);
+      Example: this.columnDefs = [{ id: 'title', field: 'title', filter: { model: CustomFilter, collection: [...], param: { viewModel: MyVM } },`);
     }
 
     if (this.columnFilter.params.viewModel) {

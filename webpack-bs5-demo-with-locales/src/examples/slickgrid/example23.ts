@@ -1,22 +1,25 @@
-import moment from 'moment-mini';
+import { addDay, format } from '@formkit/tempo';
+
 import { SlickCustomTooltip } from '@slickgrid-universal/custom-tooltip-plugin';
 import { ExcelExportService } from '@slickgrid-universal/excel-export';
-import {
-  AureliaGridInstance,
-  Column,
-  CurrentFilter,
-  FieldType,
-  Filters,
-  Formatters,
-  GridOption,
-  GridStateChange,
-  Metrics,
-  MultipleSelectOption,
-  OperatorType,
-  SliderRangeOption,
-} from 'aurelia-slickgrid';
 
 import { CustomInputFilter } from './custom-inputFilter';
+import {
+  type AureliaGridInstance,
+  type Column,
+  type CurrentFilter,
+  FieldType,
+  Filters,
+  type Formatter,
+  Formatters,
+  type GridOption,
+  type GridStateChange,
+  type Metrics,
+  type MultipleSelectOption,
+  OperatorType,
+  type SlickGrid,
+  type SliderRangeOption,
+} from 'aurelia-slickgrid';
 
 const NB_ITEMS = 1500;
 
@@ -27,7 +30,7 @@ function randomBetween(min: number, max: number): number {
 export class Example23 {
   title = 'Example 23: Filtering from Range of Search Values';
   subTitle = `
-    This demo shows how to use Filters with Range of Search Values (<a href="https://github.com/ghiscoding/aurelia-slickgrid/wiki/Range-Filters" target="_blank">Wiki docs</a>)
+    This demo shows how to use Filters with Range of Search Values (<a href="https://ghiscoding.gitbook.io/aurelia-slickgrid/column-functionalities/filters/range-filters" target="_blank">Wiki docs</a>)
     <br/>
     <ul class="small">
       <li>All input filters support the following operators: (>, >=, <, <=, <>, !=, =, ==, *) and now also the (..) for an input range</li>
@@ -36,26 +39,20 @@ export class Example23 {
         <li>For a numeric range defined in an input filter (must be of type text), you can use 2 dots (..) to represent a range</li>
         <li>example: typing "10..90" will filter values between 10 and 90 (but excluding the number 10 and 90)</li>
       </ul>
-      <ul>
-        <li>note that the examples shown below for the operator, are case sensitive</li>
-        <li>by default the range are not inclusive which would be the same as defining the filter options to "operator: 'RangeExclusive'" or "operator: OperatoryType.rangeExclusive"</li>
-        <li>you can also set the inverse (inclusive) by defining the filter options to "operator: 'RangeInclusive'" or "operator: OperatoryType.rangeIncluside"</li>
-      </ul>
-      <li>Date Range with Flatpickr Date Picker, they will also use the locale, choose a start date then drag or click on the end date</li>
     </ul>
   `;
 
-  aureliaGrid: AureliaGridInstance;
-  columnDefinitions: Column[];
-  gridOptions: GridOption;
-  dataset: any[];
-  metrics: Metrics;
+  aureliaGrid!: AureliaGridInstance;
+  columnDefinitions: Column[] = [];
+  gridOptions!: GridOption;
+  dataset: any[] = [];
+  metrics!: Metrics;
   filterList = [
     { value: '', label: '' },
     { value: 'currentYearTasks', label: 'Current Year Completed Tasks' },
     { value: 'nextYearTasks', label: 'Next Year Active Tasks' }
   ];
-  selectedPredefinedFilter: string;
+  selectedPredefinedFilter = '';
 
   constructor() {
     // define the grid options & columns and then create the grid itself
@@ -128,7 +125,7 @@ export class Example23 {
       },
       {
         id: 'completed', name: 'Completed', field: 'completed', minWidth: 85, maxWidth: 90,
-        formatter: Formatters.checkmark,
+        formatter: Formatters.checkmarkMaterial,
         exportWithFormatter: true, // you can set this property in the column definition OR in the grid options, column def has priority over grid options
         filterable: true,
         filter: {
@@ -140,8 +137,8 @@ export class Example23 {
     ];
 
     const today = new Date();
-    const presetLowestDay = moment().add(-2, 'days').format('YYYY-MM-DD');
-    const presetHighestDay = moment().add(today.getDate() < 14 ? 30 : 25, 'days').format('YYYY-MM-DD');
+    const presetLowestDay = format(addDay(new Date(), -2), 'YYYY-MM-DD');
+    const presetHighestDay = format(addDay(new Date(), today.getDate() < 14 ? 30 : 25), 'YYYY-MM-DD');
 
     this.gridOptions = {
       autoResize: {
@@ -179,7 +176,7 @@ export class Example23 {
     const tempDataset: any[] = [];
     for (let i = startingIndex; i < (startingIndex + itemCount); i++) {
       const randomDuration = randomBetween(0, 365);
-      const randomYear = randomBetween(moment().year(), moment().year() + 1);
+      const randomYear = randomBetween(new Date().getFullYear(), new Date().getFullYear() + 1);
       const randomMonth = randomBetween(0, 12);
       const randomDay = randomBetween(10, 28);
       const randomPercent = randomBetween(0, 100);
@@ -228,8 +225,8 @@ export class Example23 {
   }
 
   setFiltersDynamically() {
-    const presetLowestDay = moment().add(-5, 'days').format('YYYY-MM-DD');
-    const presetHighestDay = moment().add(25, 'days').format('YYYY-MM-DD');
+    const presetLowestDay = format(addDay(new Date(), -5), 'YYYY-MM-DD');
+    const presetHighestDay = format(addDay(new Date(), 25), 'YYYY-MM-DD');
 
     // we can Set Filters Dynamically (or different filters) afterward through the FilterService
     this.aureliaGrid.filterService.updateFilters([
@@ -249,7 +246,7 @@ export class Example23 {
 
   predefinedFilterChanged(newPredefinedFilter: string) {
     let filters: CurrentFilter[] = [];
-    const currentYear = moment().year();
+    const currentYear = new Date().getFullYear();
 
     switch (newPredefinedFilter) {
       case 'currentYearTasks':

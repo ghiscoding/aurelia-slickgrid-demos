@@ -1,5 +1,4 @@
 import Aurelia from 'aurelia';
-import { MyApp } from './my-app';
 // Css files imported in this main file are NOT processed by style-loader
 // They are for sharedStyles in shadowDOM.
 // However, css files imported in other js/ts files are processed by style-loader.
@@ -9,9 +8,11 @@ import { I18nConfiguration } from '@aurelia/i18n';
 import Fetch from 'i18next-fetch-backend';
 import { RouterConfiguration } from '@aurelia/router';
 import { DateFormatValueConverter, DecimalValueConverter, StringifyValueConverter } from './examples/resources/value-converters';
+import DOMPurify from 'dompurify';
 import 'bootstrap';
 
 // dynamic components that can be enhanced in Example 19, 26
+import { MyApp } from './my-app';
 import { CustomTitleFormatter } from './examples/slickgrid/custom-title-formatter';
 import { EditorSelect } from './examples/slickgrid/editor-select';
 import { FilterSelect } from './examples/slickgrid/filter-select';
@@ -45,10 +46,11 @@ Aurelia
     };
   }))
   .register(AureliaSlickGridConfiguration.customize(config => {
-    import('flatpickr/dist/l10n/fr');
-
     // change any of the default global options
-    config.options.gridMenu!.iconCssClass = 'fa fa-bars';
+    config.options.gridMenu!.iconCssClass = 'mdi mdi-menu';
+
+    // we strongly suggest you add DOMPurify as a sanitizer
+    config.options.sanitizer = (dirtyHtml) => DOMPurify.sanitize(dirtyHtml, { ADD_ATTR: ['level'], RETURN_TRUSTED_TYPE: true });
   }))
   .register(DecimalValueConverter, StringifyValueConverter, DateFormatValueConverter)
   .app(MyApp)
