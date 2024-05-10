@@ -1,17 +1,18 @@
+import { resolve } from 'aurelia';
 import {
-  AureliaGridInstance,
+  type AureliaGridInstance,
   AureliaUtilService,
-  Column,
-  EditCommand,
+  type Column,
+  type EditCommand,
   Editors,
   FieldType,
   Filters,
   Formatters,
-  GridOption,
-  OnEventArgs,
+  type GridOption,
+  type OnEventArgs,
   OperatorType,
   SlickGlobalEditorLock,
-  ViewModelBindableInputData,
+  type ViewModelBindableInputData,
 } from 'aurelia-slickgrid';
 import { CustomAureliaViewModelEditor } from './custom-aureliaViewModelEditor';
 import { CustomAureliaViewModelFilter } from './custom-aureliaViewModelFilter';
@@ -58,7 +59,7 @@ export class Example26 {
     { id: '3', name: 'Paul' },
   ];
 
-  constructor(private aureliaUtilService: AureliaUtilService) {
+  constructor(private aureliaUtilService: AureliaUtilService = resolve(AureliaUtilService)) {
     // define the grid options & columns and then create the grid itself
     this.defineGrid();
   }
@@ -193,7 +194,7 @@ export class Example26 {
         editor: {
           // We can also add HTML text to be rendered (any bad script will be sanitized) but we have to opt-in, else it will be sanitized
           enableRenderHtml: true,
-          collection: Array.from(Array(101).keys()).map(k => ({ value: k, label: k, symbol: '<i class="fa fa-percent" style="color:cadetblue"></i>' })),
+          collection: Array.from(Array(101).keys()).map(k => ({ value: k, label: k, symbol: '<i class="mdi mdi-percent-outline" style="color:cadetblue"></i>' })),
           customStructure: {
             value: 'value',
             label: 'label',

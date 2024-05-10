@@ -2,20 +2,20 @@ import { ExcelExportService } from '@slickgrid-universal/excel-export';
 import { TextExportService } from '@slickgrid-universal/text-export';
 import {
   Aggregators,
-  AureliaGridInstance,
-  Column,
+  type AureliaGridInstance,
+  type Column,
   DelimiterType,
   FieldType,
   FileType,
   Filters,
   Formatters,
-  GridOption,
-  Grouping,
+  type GridOption,
+  type Grouping,
   GroupTotalFormatters,
   SortDirectionNumber,
   SortComparers,
-  SlickDataView,
-  SlickGrid,
+  type SlickDataView,
+  type SlickGrid,
 } from 'aurelia-slickgrid';
 
 export class Example13 {
@@ -154,7 +154,7 @@ export class Example13 {
         minWidth: 30, width: 80, maxWidth: 90,
         cssClass: 'cell-effort-driven',
         field: 'effortDriven',
-        formatter: Formatters.checkmark,
+        formatter: Formatters.checkmarkMaterial,
         sortable: true,
         filterable: true,
         filter: {

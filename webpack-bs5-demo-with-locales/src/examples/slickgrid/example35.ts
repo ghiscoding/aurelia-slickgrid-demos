@@ -1,13 +1,11 @@
-import { resolve } from 'aurelia';
 import {
-  AureliaGridInstance,
-  Column,
+  type AureliaGridInstance,
+  type Column,
   Editors,
   FieldType,
   Formatters,
-  GridOption,
+  type GridOption,
 } from 'aurelia-slickgrid';
-import { I18N } from '@aurelia/i18n';
 import { SlickCustomTooltip } from '@slickgrid-universal/custom-tooltip-plugin';
 // import { TOptions as I18NOptions } from 'i18next';
 
@@ -20,20 +18,13 @@ export class Example35 {
   gridOptions!: GridOption;
   columnDefinitions!: Column[];
   dataset!: any[];
-  selectedLanguage: string;
-  selectedLanguageFile: string;
   fetchResult = '';
   statusClass = 'alert alert-light';
   statusStyle = 'display: none';
 
-  constructor(private readonly i18n: I18N = resolve(I18N)) {
+  constructor() {
     // define the grid options & columns and then create the grid itself
     this.defineGrid();
-
-    // always start with English for Cypress E2E tests to be consistent
-    const defaultLang = 'en';
-    this.i18n.setLocale(defaultLang);
-    this.selectedLanguage = defaultLang;
   }
 
   attached() {
@@ -126,8 +117,6 @@ export class Example35 {
       editable: true,
       enableCellNavigation: true,
       enableRowBasedEdit: true,
-      enableTranslate: true,
-      i18n: this.i18n,
       rowBasedEditOptions: {
         allowMultipleRows: false,
         onBeforeEditMode: () => this.clearStatus(),
@@ -171,28 +160,25 @@ export class Example35 {
           maxWidth: 100,
         },
         actionButtons: {
-          editButtonClassName: 'button-style margin-auto px-2 me-1',
-          iconEditButtonClassName: 'fa fa-pencil',
-          // since no title and no titleKey is provided, it will fallback to the default text provided by the plugin
-          // if the title is provided but no titleKey, it will override the default text
-          // last but not least if a titleKey is provided, it will use the translation key to translate the text
+          editButtonClassName: 'button-style margin-auto btn-icon px-2 me-1',
+          iconEditButtonClassName: 'mdi mdi-pencil',
           // editButtonTitle: 'Edit row',
 
-          cancelButtonClassName: 'button-style px-2',
+          cancelButtonClassName: 'button-style btn-icon px-2',
           cancelButtonTitle: 'Cancel row',
           cancelButtonTitleKey: 'RBE_BTN_CANCEL',
-          iconCancelButtonClassName: 'fa fa-undo text-danger',
+          iconCancelButtonClassName: 'mdi mdi-undo text-danger',
           cancelButtonPrompt: 'Are you sure you want to cancel your changes?',
 
-          updateButtonClassName: 'button-style px-2 me-1',
+          updateButtonClassName: 'button-style btn-icon px-2 me-1',
           updateButtonTitle: 'Update row',
           updateButtonTitleKey: 'RBE_BTN_UPDATE',
-          iconUpdateButtonClassName: 'fa fa-check text-success',
+          iconUpdateButtonClassName: 'mdi mdi-check text-success',
           updateButtonPrompt: 'Save changes?',
 
-          deleteButtonClassName: 'button-style px-2',
+          deleteButtonClassName: 'button-style btn-icon px-2',
           deleteButtonTitle: 'Delete row',
-          iconDeleteButtonClassName: 'fa fa-trash-o text-danger',
+          iconDeleteButtonClassName: 'mdi mdi-trash-can text-danger',
           deleteButtonPrompt: 'Are you sure you want to delete this row?',
         },
       },
@@ -241,12 +227,6 @@ export class Example35 {
     };
     this.aureliaGrid.slickGrid.setOptions(gridOptions);
     this.gridOptions = this.aureliaGrid.slickGrid.getOptions();
-  }
-
-  async switchLanguage() {
-    const nextLanguage = (this.selectedLanguage === 'en') ? 'fr' : 'en';
-    await this.i18n.setLocale(nextLanguage);
-    this.selectedLanguage = nextLanguage;
   }
 }
 

@@ -7,6 +7,7 @@ import { MyApp } from './my-app';
 import { AureliaSlickGridConfiguration } from 'aurelia-slickgrid';
 import { RouterConfiguration } from '@aurelia/router';
 import { DateFormatValueConverter, DecimalValueConverter, StringifyValueConverter } from './examples/resources/value-converters';
+import DOMPurify from 'dompurify';
 import 'bootstrap';
 
 // dynamic components that can be enhanced in Example 19, 26
@@ -29,10 +30,11 @@ Aurelia
     FilterSelect,
   )
   .register(AureliaSlickGridConfiguration.customize(config => {
-    import('flatpickr/dist/l10n/fr');
-
     // change any of the default global options
-    config.options.gridMenu!.iconCssClass = 'fa fa-bars';
+    config.options.gridMenu!.iconCssClass = 'mdi mdi-menu';
+
+    // we strongly suggest you add DOMPurify as a sanitizer
+    config.options.sanitizer = (dirtyHtml) => DOMPurify.sanitize(dirtyHtml, { ADD_ATTR: ['level'], RETURN_TRUSTED_TYPE: true });
   }))
   .register(DecimalValueConverter, StringifyValueConverter, DateFormatValueConverter)
   .app(MyApp)

@@ -1,15 +1,14 @@
-import { resolve } from 'aurelia';
 import { IHttpClient, json } from '@aurelia/fetch-client';
-import { newInstanceOf } from '@aurelia/kernel';
-import { GraphqlService, GraphqlResult, GraphqlServiceApi, } from '@slickgrid-universal/graphql';
+import { newInstanceOf, resolve } from '@aurelia/kernel';
+import { GraphqlService, type GraphqlResult, type GraphqlServiceApi, } from '@slickgrid-universal/graphql';
 import {
-  AureliaGridInstance,
-  Column,
+  type AureliaGridInstance,
+  type Column,
   Filters,
   Formatters,
-  GridOption,
-  Metrics,
-  MultipleSelectOption,
+  type GridOption,
+  type Metrics,
+  type MultipleSelectOption,
   OperatorType,
 } from 'aurelia-slickgrid';
 import './example25.scss'; // provide custom CSS/SASS styling

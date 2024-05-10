@@ -1,4 +1,4 @@
-import {
+import type {
   Column,
   ColumnEditor,
   Editor,
@@ -26,7 +26,7 @@ export class CustomInputEditor implements Editor {
 
   /** Get Column Editor object */
   get columnEditor(): ColumnEditor {
-    return this.columnDef?.internalColumnEditor ?? {};
+    return this.columnDef?.editor ?? {};
   }
 
   /** Get the Validator function, can be passed in Editor property or Column Definition */

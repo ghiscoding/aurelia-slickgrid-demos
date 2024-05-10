@@ -2,24 +2,25 @@ import { ExcelExportService } from '@slickgrid-universal/excel-export';
 import { TextExportService } from '@slickgrid-universal/text-export';
 import {
   Aggregators,
-  AureliaGridInstance,
-  Column,
+  type AureliaGridInstance,
+  type Column,
   DelimiterType,
   FieldType,
   FileType,
   Filters,
   Formatters,
-  GridOption,
-  GroupingGetterFunction,
+  type GridOption,
+  type GroupingGetterFunction,
+  type Grouping,
   GroupTotalFormatters,
   SortComparers,
   SortDirectionNumber,
-  Grouping,
-  SlickDataView,
-  SlickGrid,
+  type SlickDataView,
+  type SlickGrid,
 } from 'aurelia-slickgrid';
 
 export class Example18 {
+  private _darkMode = false;
   title = 'Example 18: Draggable Grouping & Aggregators';
   subTitle = `
   <ul>
@@ -61,6 +62,11 @@ export class Example18 {
     this.dataviewObj = aureliaGrid.dataView;
   }
 
+  detaching() {
+    document.querySelector('.panel-wm-content')!.classList.remove('dark-mode');
+    document.querySelector<HTMLDivElement>('#demo-container')!.dataset.bsTheme = 'light';
+  }
+
   /* Define grid Options and Columns */
   defineGrid() {
     this.columnDefinitions = [
@@ -72,7 +78,7 @@ export class Example18 {
         sortable: true,
         grouping: {
           getter: 'title',
-          formatter: (g) => `Title: ${g.value}  <span style="color:green">(${g.count} items)</span>`,
+          formatter: (g) => `Title: ${g.value}  <span class="text-primary">(${g.count} items)</span>`,
           aggregators: [
             new Aggregators.Sum('cost')
           ],
@@ -90,7 +96,7 @@ export class Example18 {
         groupTotalsFormatter: GroupTotalFormatters.sumTotals,
         grouping: {
           getter: 'duration',
-          formatter: (g) => `Duration: ${g.value}  <span style="color:green">(${g.count} items)</span>`,
+          formatter: (g) => `Duration: ${g.value}  <span class="text-primary">(${g.count} items)</span>`,
           comparer: (a, b) => {
             return this.durationOrderByCount ? (a.count - b.count) : SortComparers.numeric(a.value, b.value, SortDirectionNumber.asc);
           },
@@ -112,7 +118,7 @@ export class Example18 {
         groupTotalsFormatter: GroupTotalFormatters.avgTotalsPercentage,
         grouping: {
           getter: 'percentComplete',
-          formatter: (g) => `% Complete: ${g.value}  <span style="color:green">(${g.count} items)</span>`,
+          formatter: (g) => `% Complete: ${g.value}  <span class="text-primary">(${g.count} items)</span>`,
           aggregators: [
             new Aggregators.Sum('cost')
           ],
@@ -132,7 +138,7 @@ export class Example18 {
         exportWithFormatter: true,
         grouping: {
           getter: 'start',
-          formatter: (g) => `Start: ${g.value}  <span style="color:green">(${g.count} items)</span>`,
+          formatter: (g) => `Start: ${g.value}  <span class="text-primary">(${g.count} items)</span>`,
           aggregators: [
             new Aggregators.Sum('cost')
           ],
@@ -152,7 +158,7 @@ export class Example18 {
         exportWithFormatter: true,
         grouping: {
           getter: 'finish',
-          formatter: (g) => `Finish: ${g.value} <span style="color:green">(${g.count} items)</span>`,
+          formatter: (g) => `Finish: ${g.value} <span class="text-primary">(${g.count} items)</span>`,
           aggregators: [
             new Aggregators.Sum('cost')
           ],
@@ -172,7 +178,7 @@ export class Example18 {
         type: FieldType.number,
         grouping: {
           getter: 'cost',
-          formatter: (g) => `Cost: ${g.value} <span style="color:green">(${g.count} items)</span>`,
+          formatter: (g) => `Cost: ${g.value} <span class="text-primary">(${g.count} items)</span>`,
           aggregators: [
             new Aggregators.Sum('cost')
           ],
@@ -190,10 +196,10 @@ export class Example18 {
           collection: [{ value: '', label: '' }, { value: true, label: 'True' }, { value: false, label: 'False' }],
           model: Filters.singleSelect
         },
-        formatter: Formatters.checkmark,
+        formatter: Formatters.checkmarkMaterial,
         grouping: {
           getter: 'effortDriven',
-          formatter: (g) => `Effort-Driven: ${g.value ? 'True' : 'False'} <span style="color:green">(${g.count} items)</span>`,
+          formatter: (g) => `Effort-Driven: ${g.value ? 'True' : 'False'} <span class="text-primary">(${g.count} items)</span>`,
           aggregators: [
             new Aggregators.Sum('cost')
           ],
@@ -227,11 +233,12 @@ export class Example18 {
       },
       draggableGrouping: {
         dropPlaceHolderText: 'Drop a column header here to group by the column',
-        // groupIconCssClass: 'fa fa-outdent',
-        deleteIconCssClass: 'fa fa-times',
+        // groupIconCssClass: 'mdi mdi-drag-vertical',
+        deleteIconCssClass: 'mdi mdi-close',
         onGroupChanged: (_e, args) => this.onGroupChanged(args),
         onExtensionRegistered: (extension) => this.draggableGroupingPlugin = extension,
       },
+      darkMode: this._darkMode,
       enableTextExport: true,
       enableExcelExport: true,
       excelExportOptions: { sanitizeDataExport: true },
@@ -390,5 +397,21 @@ export class Example18 {
   toggleDraggableGroupingRow() {
     this.clearGroupsAndSelects();
     this.gridObj.setPreHeaderPanelVisibility(!this.gridObj.getOptions().showPreHeaderPanel);
+  }
+
+  toggleDarkMode() {
+    this._darkMode = !this._darkMode;
+    this.toggleBodyBackground();
+    this.aureliaGrid.slickGrid?.setOptions({ darkMode: this._darkMode });
+  }
+
+  toggleBodyBackground() {
+    if (this._darkMode) {
+      document.querySelector<HTMLDivElement>('.panel-wm-content')!.classList.add('dark-mode');
+      document.querySelector<HTMLDivElement>('#demo-container')!.dataset.bsTheme = 'dark';
+    } else {
+      document.querySelector('.panel-wm-content')!.classList.remove('dark-mode');
+      document.querySelector<HTMLDivElement>('#demo-container')!.dataset.bsTheme = 'light';
+    }
   }
 }

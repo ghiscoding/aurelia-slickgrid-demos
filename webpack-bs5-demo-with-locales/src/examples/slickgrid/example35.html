@@ -4,7 +4,7 @@
     <a style="font-size: 18px"
         target="_blank"
         href="https://github.com/ghiscoding/aurelia-slickgrid/blob/master/packages/demo/src/examples/slickgrid/example35.ts">
-      <span class="fa fa-link"></span> code
+      <span class="mdi mdi-link-variant"></span> code
     </a>
   </span>
 </h2>
@@ -49,20 +49,12 @@
   <div class="row mb-4">
       <div class="col-sm-8">
         <button
-          class="btn btn-outline-secondary btn-sm"
+          class="btn btn-outline-secondary btn-sm btn-icon"
           data-test="single-multi-toggle"
           click.trigger="toggleSingleMultiRowEdit()"
         >
           Toggle Single/Multi Row Edit
         </button>
-        <button class="btn btn-outline-secondary btn-sm" data-test="toggle-language" click.trigger="switchLanguage()">
-          <i class="fa fa-language"></i>
-          Switch Language for Action column buttons
-        </button>
-        <label>Locale:</label>
-        <span style="font-style: italic; width: 70px;" data-test="selected-locale">
-          ${selectedLanguage + '.json'}
-        </span>
       </div>
 
       <div class="col-sm-4" class.bind="statusClass">
