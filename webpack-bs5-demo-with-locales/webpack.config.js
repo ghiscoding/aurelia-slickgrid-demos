@@ -84,17 +84,7 @@ module.exports = ({ production, node } = {}, { server } = {}, { analyze } = {}) 
         },
         { test: /\.(sass|scss)$/, use: ['style-loader', 'css-loader', 'sass-loader'], issuer: /\.[tj]s$/i },
         { test: /\.(sass|scss)$/, use: ['css-loader', 'sass-loader'], issuer: /\.html?$/i },
-        {
-          test: /\.ts$/i, use: [
-            {
-              loader: 'ts-loader',
-              options: {
-                transpileOnly: true
-              }
-            },
-            '@aurelia/webpack-loader'
-          ], exclude: /node_modules/
-        },
+        { test: /\.ts$/i, use: ['ts-loader', '@aurelia/webpack-loader'], exclude: /node_modules/ },
         {
           test: /[/\\](?:src|dev-app)[/\\].+\.html$/i,
           use: {
