@@ -41,12 +41,12 @@ jobs:
 
       - name: Install npm dependencies
         run: |
-          cd webpack-bs5-demo
+          cd webpack-bs5-demo-with-locales
           npm install
 
       - name: Bootstrap 5 Prod Build for GitHub demo website
         run: |
-          cd webpack-bs5-demo
+          cd webpack-bs5-demo-with-locales
           npm run build
 
       - name: Deploy to gh-pages
@@ -54,4 +54,4 @@ jobs:
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./webpack-bs5-demo/dist
+          publish_dir: ./webpack-bs5-demo-with-locales/dist
