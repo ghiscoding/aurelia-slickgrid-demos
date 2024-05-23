@@ -4,6 +4,7 @@ import {
   Aggregators,
   type AureliaGridInstance,
   type Column,
+  createDomElement,
   deepCopy,
   FieldType,
   Filters,
