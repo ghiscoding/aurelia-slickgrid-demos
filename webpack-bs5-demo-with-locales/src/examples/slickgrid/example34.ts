@@ -131,7 +131,7 @@ export class Example34 {
         },
         grouping: {
           getter: 'currency',
-          formatter: (g) => `Currency: <span style="var(--slick-primary-color); font-weight: bold;">${g.value}</span>  <span style="color: #659bff;">(${g.count} items)</span>`,
+          formatter: (g) => `Currency: <span style="color: var(--slick-primary-color); font-weight: bold;">${g.value}</span>  <span style="color: #659bff;">(${g.count} items)</span>`,
           aggregators: [
             new Aggregators.Sum('amount')
           ],
@@ -144,7 +144,7 @@ export class Example34 {
         id: 'market', name: 'Market', field: 'market', filterable: true, sortable: true, minWidth: 75, width: 75,
         grouping: {
           getter: 'market',
-          formatter: (g) => `Market: <span style="var(--slick-primary-color); font-weight: bold;">${g.value}</span>  <span style="color: #659bff;">(${g.count} items)</span>`,
+          formatter: (g) => `Market: <span style="color: var(--slick-primary-color); font-weight: bold;">${g.value}</span>  <span style="color: #659bff;">(${g.count} items)</span>`,
           aggregators: [
             new Aggregators.Sum('amount')
           ],
@@ -162,7 +162,7 @@ export class Example34 {
         },
         grouping: {
           getter: 'trsnType',
-          formatter: (g) => `Type: <span style="var(--slick-primary-color); font-weight: bold;">${g.value}</span>  <span style="color: #659bff;">(${g.count} items)</span>`,
+          formatter: (g) => `Type: <span style="color: var(--slick-primary-color); font-weight: bold;">${g.value}</span>  <span style="color: #659bff;">(${g.count} items)</span>`,
           aggregators: [
             new Aggregators.Sum('amount')
           ],

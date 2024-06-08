@@ -38,6 +38,7 @@ export class MyApp {
     { path: 'example33', component: () => import('./examples/slickgrid/example33'), title: '33- Regular & Custom Tooltip' },
     { path: 'example34', component: () => import('./examples/slickgrid/example34'), title: '34- Real-Time Trading Platform' },
     { path: 'example35', component: () => import('./examples/slickgrid/example35'), title: '35- Row Based Editing' },
+    { path: 'example36', component: () => import('./examples/slickgrid/example36'), title: '36- Excel Export Formulas' },
     { path: 'home', component: () => import('./home-page'), title: 'Home' },
   ];
 
