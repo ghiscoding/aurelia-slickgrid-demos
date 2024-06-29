@@ -67,7 +67,7 @@ export class Example6 {
   defineGrid() {
     this.columnDefinitions = [
       {
-        id: 'name', field: 'name', nameKey: 'NAME', width: 60, columnGroupKey: 'CUSTOMER_INFORMATION',
+        id: 'name', field: 'name', name: 'Name', width: 60, columnGroup: 'Customer Information',
         type: FieldType.string,
         sortable: true,
         filterable: true,
@@ -84,14 +84,14 @@ export class Example6 {
         }
       },
       {
-        id: 'gender', field: 'gender', nameKey: 'GENDER', filterable: true, sortable: true, width: 60, columnGroupKey: 'CUSTOMER_INFORMATION',
+        id: 'gender', field: 'gender', name: 'Gender', filterable: true, sortable: true, width: 60, columnGroup: 'Customer Information',
         filter: {
           model: Filters.singleSelect,
-          collection: [{ value: '', label: '' }, { value: 'male', label: 'male', labelKey: 'MALE' }, { value: 'female', label: 'female', labelKey: 'FEMALE' }]
+          collection: [{ value: '', label: '' }, { value: 'male', label: 'male' }, { value: 'female', label: 'female' }]
         }
       },
       {
-        id: 'company', field: 'company', nameKey: 'COMPANY', width: 60, columnGroupKey: 'CUSTOMER_INFORMATION',
+        id: 'company', field: 'company', name: 'Company', width: 60, columnGroup: 'Customer Information',
         sortable: true,
         filterable: true,
         filter: {
@@ -103,29 +103,29 @@ export class Example6 {
         }
       },
       {
-        id: 'billingAddressStreet', field: 'billing.address.street', nameKey: 'BILLING.ADDRESS.STREET',
-        width: 60, filterable: true, sortable: true, columnGroupKey: 'BILLING.INFORMATION',
+        id: 'billingAddressStreet', field: 'billing.address.street', name: 'Billing Address Street',
+        width: 60, filterable: true, sortable: true, columnGroup: 'Billing Information',
       },
       {
-        id: 'billingAddressZip', field: 'billing.address.zip', nameKey: 'BILLING.ADDRESS.ZIP', width: 60,
+        id: 'billingAddressZip', field: 'billing.address.zip', name: 'Billing Address Zip', width: 60,
         type: FieldType.number,
-        columnGroupKey: 'BILLING.INFORMATION',
+        columnGroup: 'Billing Information',
         filterable: true, sortable: true,
         filter: {
           model: Filters.compoundInput
         },
-        formatter: Formatters.multiple, params: { formatters: [Formatters.complexObject, Formatters.translate] }
+        formatter: Formatters.complexObject
       },
       {
         id: 'finish', field: 'finish', name: 'Date', formatter: Formatters.dateIso, sortable: true, minWidth: 90, width: 120, exportWithFormatter: true,
-        columnGroupKey: 'BILLING.INFORMATION',
+        columnGroup: 'Billing Information',
         type: FieldType.date,
         filterable: true,
         filter: {
           model: Filters.dateRange,
           filterShortcuts: [
             {
-              titleKey: 'NEXT_20_DAYS',
+              title: 'Nexy 20 days',
               iconCssClass: 'mdi mdi-calendar',
               searchTerms: [tempoFormat(new Date(), 'YYYY-MM-DD'), tempoFormat(addDay(new Date(), 20), 'YYYY-MM-DD')],
             },
@@ -140,7 +140,6 @@ export class Example6 {
     this.gridOptions = {
       enableFiltering: true,
       enableCellNavigation: true,
-      enableTranslate: true,
       createPreHeaderPanel: true,
       showPreHeaderPanel: true,
       preHeaderPanelHeight: 28,
