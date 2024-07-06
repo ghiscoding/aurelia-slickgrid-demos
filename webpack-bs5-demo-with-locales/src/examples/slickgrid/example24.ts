@@ -10,7 +10,6 @@ import {
   type Formatter,
   Formatters,
   type GridOption,
-  type SlickGrid,
 } from 'aurelia-slickgrid';
 import './example24.scss'; // provide custom CSS/SASS styling
 
@@ -36,7 +35,7 @@ const priorityFormatter: Formatter = (_row, _cell, value) => {
   return output;
 };
 
-const priorityExportFormatter: Formatter = (_row, _cell, value, _columnDef, _dataContext, grid) => {
+const priorityExportFormatter: Formatter = (_row, _cell, value, _columnDef, _dataContext) => {
   if (!value) {
     return '';
   }
@@ -44,7 +43,7 @@ const priorityExportFormatter: Formatter = (_row, _cell, value, _columnDef, _dat
   return count === 3 ? 'High' : (count === 2 ? 'Medium' : 'Low');
 };
 
-const taskFormatter: Formatter = (row, cell, value, columnDef, dataContext, grid) => {
+const taskFormatter: Formatter = (_row, _cell, value) => {
   return value !== undefined ? `Title ${value}` : '';
 };
 

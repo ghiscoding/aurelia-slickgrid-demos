@@ -10,14 +10,12 @@ import {
   type CurrentFilter,
   FieldType,
   Filters,
-  type Formatter,
   Formatters,
   type GridOption,
   type GridStateChange,
   type Metrics,
   type MultipleSelectOption,
   OperatorType,
-  type SlickGrid,
   type SliderRangeOption,
 } from 'aurelia-slickgrid';
 
