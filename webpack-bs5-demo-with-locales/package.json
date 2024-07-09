@@ -21,8 +21,8 @@
     "test": "au test"
   },
   "dependencies": {
-    "@aurelia/fetch-client": "^2.0.0-beta.19",
-    "@aurelia/router": "^2.0.0-beta.19",
+    "@aurelia/fetch-client": "^2.0.0-beta.20",
+    "@aurelia/router": "^2.0.0-beta.20",
     "@formkit/tempo": "^0.1.2",
     "@popperjs/core": "^2.11.8",
     "@slickgrid-universal/composite-editor-component": "^5.3.3",
@@ -32,7 +32,7 @@
     "@slickgrid-universal/odata": "^5.3.3",
     "@slickgrid-universal/rxjs-observable": "^5.3.3",
     "@slickgrid-universal/text-export": "^5.3.3",
-    "aurelia": "^2.0.0-beta.19",
+    "aurelia": "^2.0.0-beta.20",
     "aurelia-slickgrid": "^8.3.1",
     "bootstrap": "^5.3.3",
     "dompurify": "^3.1.6",
@@ -41,7 +41,7 @@
     "tslib": "^2.6.3"
   },
   "devDependencies": {
-    "@aurelia/webpack-loader": "^2.0.0-beta.19",
+    "@aurelia/webpack-loader": "^2.0.0-beta.20",
     "@faker-js/faker": "^8.4.1",
     "@fnando/sparkline": "^0.3.10",
     "@types/bluebird": "^3.5.42",
