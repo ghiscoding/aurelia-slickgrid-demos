@@ -133,6 +133,7 @@ export class Example6 {
         }
       },
     ];
+
     const currentYear = new Date().getFullYear();
     const presetLowestDay = `${currentYear}-01-01`;
     const presetHighestDay = `${currentYear}-02-15`;

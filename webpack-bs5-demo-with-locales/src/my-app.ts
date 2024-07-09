@@ -1,5 +1,5 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
-import type { IRoute } from '@aurelia/router';
+import { type IRoute } from '@aurelia/router';
 
 import './styles.scss';
 export class MyApp {
