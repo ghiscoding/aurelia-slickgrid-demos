@@ -9,7 +9,7 @@
 /*! name: vanilla-calendar-pro v2.9.10 | url: https://github.com/uvarov-frontend/vanilla-calendar-pro */
 
 /**!
- * Sortable 1.15.2
+ * Sortable 1.15.3
  * @author	RubaXa   <trash@rubaxa.org>
  * @author	owenm    <owen23355@gmail.com>
  * @license MIT
