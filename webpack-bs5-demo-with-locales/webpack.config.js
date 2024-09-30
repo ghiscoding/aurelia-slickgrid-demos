@@ -42,6 +42,7 @@ module.exports = ({ production, node } = {}, { server } = {}, { analyze } = {}) 
       filename: '[name].[contenthash].bundle.js',
       sourceMapFilename: '[name].[contenthash].bundle.js.map',
       chunkFilename: '[name].[contenthash].chunk.js',
+      uniqueName: 'au-slickgrid-demo'
     },
     resolve: {
       extensions: ['.ts', '.js'],
@@ -82,8 +83,29 @@ module.exports = ({ production, node } = {}, { server } = {}, { analyze } = {}) 
           issuer: /\.html$/,
           use: [cssLoader, postcssLoader]
         },
-        { test: /\.(sass|scss)$/, use: ['style-loader', 'css-loader', 'sass-loader'], issuer: /\.[tj]s$/i },
-        { test: /\.(sass|scss)$/, use: ['css-loader', 'sass-loader'], issuer: /\.html?$/i },
+        {
+          test: /\.(sass|scss)$/, use: [
+            'style-loader',
+            'css-loader',
+            {
+              loader: 'sass-loader',
+              options: {
+                sassOptions: { quietDeps: true },
+              },
+            }
+          ], issuer: /\.[tj]s$/i
+        },
+        {
+          test: /\.(sass|scss)$/, use: [
+            'css-loader',
+            {
+              loader: 'sass-loader',
+              options: {
+                sassOptions: { quietDeps: true },
+              },
+            }
+          ], issuer: /\.html?$/i
+        },
         {
           test: /\.ts$/i, use: [
             {
