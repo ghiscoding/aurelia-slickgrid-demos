@@ -16,6 +16,6 @@ $slick-button-border-color: #ababab !default;
   justify-content: center;
   text-align: center;
   &:hover {
-    border-color: color.adjust($slick-button-border-color, -10%);
+    border-color: color.adjust($slick-button-border-color, $lighness: -10%);
   }
 }
