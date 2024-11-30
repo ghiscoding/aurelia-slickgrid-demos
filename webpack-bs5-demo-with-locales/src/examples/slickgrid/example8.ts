@@ -1,4 +1,4 @@
-import { type AureliaGridInstance, type Column, Formatters, type GridOption, type SlickDataView, type SlickGrid } from 'aurelia-slickgrid';
+import { type Column, Formatters, type GridOption } from 'aurelia-slickgrid';
 import './example8.scss'; // provide custom CSS/SASS styling
 
 export class Example8 {
@@ -23,12 +23,9 @@ export class Example8 {
     </ul>
   `;
 
-  aureliaGrid!: AureliaGridInstance;
   columnDefinitions: Column[] = [];
   gridOptions!: GridOption;
   dataset: any[] = [];
-  dataView!: SlickDataView;
-  gridObj!: SlickGrid;
   visibleColumns: Column[] = [];
 
   constructor() {
@@ -39,12 +36,6 @@ export class Example8 {
   attached() {
     // populate the dataset once the grid is ready
     this.getData();
-  }
-
-  aureliaGridReady(aureliaGrid: AureliaGridInstance) {
-    this.aureliaGrid = aureliaGrid;
-    this.gridObj = aureliaGrid?.slickGrid;
-    this.dataView = aureliaGrid?.dataView;
   }
 
   defineGrid() {

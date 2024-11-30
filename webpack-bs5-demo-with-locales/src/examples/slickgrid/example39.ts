@@ -24,7 +24,6 @@ function unescapeAndLowerCase(val: string) {
 }
 
 export class Example39 {
-  private _darkMode = false;
   aureliaGrid: AureliaGridInstance;
   backendService!: GraphqlService;
   columnDefinitions!: Column[];
@@ -305,22 +304,6 @@ export class Example39 {
       this.tagDataClass = this.metrics.itemCount === this.metrics.totalItemCount
         ? 'fully-loaded'
         : 'partial-load';
-    }
-  }
-
-  toggleDarkMode() {
-    this._darkMode = !this._darkMode;
-    this.toggleBodyBackground();
-    this.aureliaGrid.slickGrid?.setOptions({ darkMode: this._darkMode });
-  }
-
-  toggleBodyBackground() {
-    if (this._darkMode) {
-      document.querySelector<HTMLDivElement>('.panel-wm-content')!.classList.add('dark-mode');
-      document.querySelector<HTMLDivElement>('#demo-container')!.dataset.bsTheme = 'dark';
-    } else {
-      document.querySelector('.panel-wm-content')!.classList.remove('dark-mode');
-      document.querySelector<HTMLDivElement>('#demo-container')!.dataset.bsTheme = 'light';
     }
   }
 }
