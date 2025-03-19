@@ -30,6 +30,7 @@ export class Example38 {
   metrics!: Partial<Metrics>;
   tagDataClass = '';
   odataQuery = '';
+  hideSubTitle = false;
   processing = false;
   errorStatus = '';
   errorStatusClass = 'hidden';
@@ -336,7 +337,7 @@ export class Example38 {
           }
           const updatedData = filteredData.slice(firstRow, firstRow + top);
 
-          setTimeout(() => {
+          window.setTimeout(() => {
             const backendResult: any = { query };
             backendResult['value'] = updatedData;
             backendResult['@odata.count'] = countTotalItems;

@@ -33,6 +33,7 @@ export class Example39 {
   metrics!: Partial<Metrics>;
   tagDataClass = '';
   graphqlQuery = '...';
+  hideSubTitle = false;
   processing = false;
   selectedLanguage: string;
   status = { text: 'processing...', class: 'alert alert-danger' };
@@ -298,7 +299,7 @@ export class Example39 {
             },
           };
 
-          setTimeout(() => {
+          window.setTimeout(() => {
             this.graphqlQuery = this.gridOptions.backendServiceApi!.service.buildQuery();
             resolve(mockedResult);
           }, this.serverWaitDelay);

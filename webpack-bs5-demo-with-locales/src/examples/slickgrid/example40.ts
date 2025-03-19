@@ -21,7 +21,7 @@ export class Example40 {
   dataset: any[] = [];
   gridOptions!: GridOption;
   metrics!: Partial<Metrics>;
-  scrollEndCalled = false;
+  hideSubTitle = false;
   shouldResetOnSort = false;
 
   constructor() {
@@ -66,7 +66,6 @@ export class Example40 {
     const viewportElm = args.grid.getViewportNode();
     if (
       ['mousewheel', 'scroll'].includes(args.triggeredBy || '')
-      && !this.scrollEndCalled
       && viewportElm.scrollTop > 0
       && Math.ceil(viewportElm.offsetHeight + args.scrollTop) >= args.scrollHeight
     ) {
@@ -74,7 +73,6 @@ export class Example40 {
       const startIdx = this.aureliaGrid.dataView?.getItemCount() || 0;
       const newItems = this.loadData(startIdx, FETCH_SIZE);
       this.aureliaGrid.dataView?.addItems(newItems);
-      this.scrollEndCalled = false;
     }
   }
 

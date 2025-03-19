@@ -1,3 +1,4 @@
+import { I18N } from '@aurelia/i18n';
 import { IHttpClient } from '@aurelia/fetch-client';
 import { newInstanceOf, resolve } from '@aurelia/kernel';
 import { GraphqlService, type GraphqlPaginatedResult, type GraphqlServiceApi, } from '@slickgrid-universal/graphql';
@@ -32,12 +33,18 @@ export class Example39 {
   metrics!: Partial<Metrics>;
   tagDataClass = '';
   graphqlQuery = '...';
+  hideSubTitle = false;
   processing = false;
+  selectedLanguage: string;
   status = { text: 'processing...', class: 'alert alert-danger' };
   serverWaitDelay = FAKE_SERVER_DELAY; // server simulation with default of 250ms but 50ms for Cypress tests
 
-  constructor(readonly http: IHttpClient = resolve(newInstanceOf(IHttpClient))) {
+  constructor(readonly http: IHttpClient = resolve(newInstanceOf(IHttpClient)), private readonly i18n: I18N = resolve(I18N)) {
     this.backendService = new GraphqlService();
+    // always start with English for Cypress E2E tests to be consistent
+    const defaultLang = 'en';
+    this.i18n.setLocale(defaultLang);
+    this.selectedLanguage = defaultLang;
     this.initializeGrid();
   }
 
@@ -95,6 +102,8 @@ export class Example39 {
       autoTooltipOptions: {
         enableForHeaderCells: true
       },
+      enableTranslate: true,
+      i18n: this.i18n,
       enableFiltering: true,
       enableCellNavigation: true,
       multiColumnSort: false,
@@ -290,7 +299,7 @@ export class Example39 {
             },
           };
 
-          setTimeout(() => {
+          window.setTimeout(() => {
             this.graphqlQuery = this.gridOptions.backendServiceApi!.service.buildQuery();
             resolve(mockedResult);
           }, this.serverWaitDelay);
@@ -305,5 +314,11 @@ export class Example39 {
         ? 'fully-loaded'
         : 'partial-load';
     }
+  }
+
+  async switchLanguage() {
+    const nextLanguage = (this.selectedLanguage === 'en') ? 'fr' : 'en';
+    await this.i18n.setLocale(nextLanguage);
+    this.selectedLanguage = nextLanguage;
   }
 }

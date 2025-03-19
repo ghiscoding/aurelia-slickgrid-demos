@@ -23,11 +23,12 @@ export class Example45 {
   gridOptions!: GridOption;
   aureliaGrid!: AureliaGridInstance;
   dataset: Distributor[] = [];
+  isUsingAutoHeight = false;
   isUsingInnerGridStatePresets = false;
-  showSubTitle = true;
+  hideSubTitle = false;
 
-  get rowDetailInstance(): SlickRowDetailView {
-    return this.aureliaGrid?.extensionService.getExtensionInstanceByName(ExtensionName.rowDetailView);
+  get rowDetailInstance() {
+    return this.aureliaGrid?.extensionService.getExtensionInstanceByName(ExtensionName.rowDetailView) as SlickRowDetailView;
   }
 
   aureliaGridReady(aureliaGrid: AureliaGridInstance) {
@@ -98,9 +99,10 @@ export class Example45 {
     this.gridOptions = {
       autoResize: {
         container: '#demo-container',
+        autoHeight: this.isUsingAutoHeight, // works with/without autoHeight
+        rightPadding: 20,
         bottomPadding: 20,
       },
-      autoHeight: false,
       enableFiltering: true,
       enableRowDetailView: true,
       darkMode: this._darkMode,
@@ -158,10 +160,19 @@ export class Example45 {
     return true;
   }
 
+  changeUsingResizerAutoHeight() {
+    this.isUsingAutoHeight = !this.isUsingAutoHeight;
+    this.aureliaGrid.slickGrid?.setOptions({ autoResize: { ...this.gridOptions.autoResize, autoHeight: this.isUsingAutoHeight } });
+    this.aureliaGrid.resizerService.resizeGrid();
+    return true;
+  }
+
   closeAllRowDetail() {
-    if (this.aureliaGrid?.extensionService) {
-      this.rowDetailInstance.collapseAll();
-    }
+    this.rowDetailInstance?.collapseAll();
+  }
+
+  redrawAllRowDetail() {
+    this.rowDetailInstance?.redrawAllViewSlots(true);
   }
 
   /** Just for demo purposes, we will simulate an async server call and return more details on the selected row item */
@@ -224,11 +235,5 @@ export class Example45 {
       document.querySelector('.panel-wm-content')!.classList.remove('dark-mode');
       document.querySelector<HTMLDivElement>('#demo-container')!.dataset.bsTheme = 'light';
     }
-  }
-
-  toggleSubTitle() {
-    this.showSubTitle = !this.showSubTitle;
-    const action = this.showSubTitle ? 'remove' : 'add';
-    document.querySelector('.subtitle')?.classList[action]('hidden');
   }
 }
