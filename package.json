@@ -1,0 +1,10 @@
+{
+  "name": "test-slickgrid",
+  "version": "1.0.0",
+  "license": "MIT",
+  "scripts": {
+    "dev": "cd vite-bs5 && npm install && npm run dev"
+  },
+  "private": false,
+  "dependencies": {}
+}
