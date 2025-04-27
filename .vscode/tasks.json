@@ -36,6 +36,24 @@
         "cwd": "${workspaceFolder}/webpack-bs5-demo-with-locales",
       },
       "problemMatcher": []
-    }
+    },
+        {
+      "label": "Start Vite Bootstrap 5 Demo Page",
+      "type": "shell",
+      "command": "npm run dev",
+      "options": {
+        "cwd": "${workspaceFolder}/vite-bs5-demo",
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "Build Vite Bootstrap 5 Demo Page",
+      "type": "shell",
+      "command": "npm run build",
+      "options": {
+        "cwd": "${workspaceFolder}/vite-bs5-demo",
+      },
+      "problemMatcher": []
+    },
   ]
 }

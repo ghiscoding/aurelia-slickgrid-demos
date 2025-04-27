@@ -18,7 +18,7 @@ import {
 } from 'aurelia-slickgrid';
 import './example33.scss';
 
-const NB_ITEMS = 500;
+const NB_ITEMS = 1000;
 
 export class Example33 {
   title = 'Example 33: Regular & Custom Tooltips';
@@ -37,7 +37,9 @@ export class Example33 {
   gridOptions!: GridOption;
   editCommandQueue: EditCommand[] = [];
   dataset: any[] = [];
+  hideSubTitle = false;
   serverApiDelay = 500;
+  showLazyLoading = false;
 
   constructor() {
     // define the grid options & columns and then create the grid itself
@@ -78,7 +80,7 @@ export class Example33 {
           // you will need to provide an `asyncPost` function returning a Promise and also `asyncPostFormatter` formatter to display the result once the Promise resolves
           formatter: () => `<div><span class="mdi mdi-load mdi-spin"></span> loading...</div>`,
           asyncProcess: () => new Promise(resolve => {
-            setTimeout(() => resolve({ ratio: Math.random() * 10 / 10, lifespan: Math.random() * 100 }), this.serverApiDelay);
+            window.setTimeout(() => resolve({ ratio: Math.random() * 10 / 10, lifespan: Math.random() * 100 }), this.serverApiDelay);
           }),
           asyncPostFormatter: this.tooltipTaskAsyncFormatter as Formatter,
 
@@ -182,7 +184,7 @@ export class Example33 {
 
           // 2- delay the opening by a simple Promise and `setTimeout`
           asyncProcess: () => new Promise(resolve => {
-            setTimeout(() => resolve({}), this.serverApiDelay); // delayed by half a second
+            window.setTimeout(() => resolve({}), this.serverApiDelay); // delayed by half a second
           }),
           asyncPostFormatter: this.tooltipFormatter.bind(this) as Formatter,
         },
@@ -236,11 +238,11 @@ export class Example33 {
         type: FieldType.string,
         editor: {
           // OR 1- use "fetch client", they are both supported
-          // collectionAsync: fetch(URL_SAMPLE_COLLECTION_DATA),
+          // collectionAsync: fetch(SAMPLE_COLLECTION_DATA_URL),
 
           // OR 2- use a Promise
           collectionAsync: new Promise<any>((resolve) => {
-            setTimeout(() => {
+            window.setTimeout(() => {
               resolve(Array.from(Array(this.dataset.length).keys()).map(k => ({ value: k, label: k, prefix: 'Task', suffix: 'days' })));
             }, 500);
           }),
@@ -255,19 +257,33 @@ export class Example33 {
           model: Editors.multipleSelect,
         },
         filter: {
-          // collectionAsync: fetch(URL_SAMPLE_COLLECTION_DATA),
-          collectionAsync: new Promise((resolve) => {
-            setTimeout(() => {
-              resolve(Array.from(Array(this.dataset.length).keys()).map(k => ({ value: k, label: `Task ${k}` })));
+          // collectionAsync: fetch(SAMPLE_COLLECTION_DATA_URL),
+          // collectionAsync: new Promise((resolve) => {
+          //   window.setTimeout(() => {
+          //     resolve(Array.from(Array(dataset.value?.length).keys()).map((k) => ({ value: k, label: `Task ${k}` })));
+          //   });
+          // }),
+          collectionLazy: () => {
+            this.showLazyLoading = true;
+
+            return new Promise((resolve) => {
+              window.setTimeout(() => {
+                this.showLazyLoading = false;
+                resolve(Array.from(Array((this.dataset || []).length).keys()).map((k) => ({ value: k, label: `Task ${k}` })));
+              }, this.serverApiDelay);
             });
-          }),
+          },
+          // onInstantiated: (msSelect) => console.log('ms-select instance', msSelect),
           customStructure: {
             label: 'label',
             value: 'value',
             labelPrefix: 'prefix',
           },
           collectionOptions: {
-            separatorBetweenTextLabels: ' '
+            separatorBetweenTextLabels: ' ',
+          },
+          filterOptions: {
+            minHeight: 70,
           },
           model: Filters.multipleSelect,
           operator: OperatorType.inContains,
@@ -489,5 +505,12 @@ export class Example33 {
       output += `<span class="mdi mdi-check-circle-outline ${iconColor}"></span>`;
     }
     return output;
+  }
+
+  toggleSubTitle() {
+    this.hideSubTitle = !this.hideSubTitle;
+    const action = this.hideSubTitle ? 'add' : 'remove';
+    document.querySelector('.subtitle')?.classList[action]('hidden');
+    this.aureliaGrid.resizerService.resizeGrid(0);
   }
 }
