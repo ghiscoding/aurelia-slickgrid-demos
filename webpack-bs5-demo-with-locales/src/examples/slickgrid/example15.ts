@@ -2,7 +2,6 @@ import { format as tempoFormat } from '@formkit/tempo';
 import {
   type AureliaGridInstance,
   type Column,
-  FieldType,
   Filters,
   Formatters,
   type GridOption,
@@ -36,6 +35,7 @@ export class Example15 {
   columnDefinitions: Column[] = [];
   gridOptions!: GridOption;
   dataset: any[] = [];
+  hideSubTitle = false;
 
   constructor() {
     const presets = JSON.parse(localStorage[LOCAL_STORAGE_KEY] || null);
@@ -62,13 +62,13 @@ export class Example15 {
   clearGridStateFromLocalStorage() {
     this.aureliaGrid.gridService.resetGrid(this.columnDefinitions);
     this.aureliaGrid.paginationService!.changeItemPerPage(DEFAULT_PAGE_SIZE);
-    setTimeout(() => localStorage[LOCAL_STORAGE_KEY] = null);
+    window.setTimeout(() => (localStorage[LOCAL_STORAGE_KEY] = null));
   }
 
   /* Define grid Options and Columns */
   defineGrid(gridStatePresets?: GridState) {
     // prepare a multiple-select array to filter with
-    const multiSelectFilterArray: Array<{ value: number; label: number; }> = [];
+    const multiSelectFilterArray: Array<{ value: number; label: number }> = [];
     for (let i = 0; i < NB_ITEMS; i++) {
       multiSelectFilterArray.push({ value: i, label: i });
     }
@@ -80,7 +80,6 @@ export class Example15 {
         field: 'title',
         filterable: true,
         sortable: true,
-        type: FieldType.string,
         minWidth: 45, width: 100,
         filter: {
           model: Filters.compoundInput
@@ -88,7 +87,6 @@ export class Example15 {
       },
       {
         id: 'description', name: 'Description', field: 'description', filterable: true, sortable: true, minWidth: 80, width: 100,
-        type: FieldType.string,
         filter: {
           model: Filters.input,
           filterShortcuts: [
@@ -98,26 +96,26 @@ export class Example15 {
         }
       },
       {
-        id: 'duration', name: 'Duration (days)', field: 'duration', sortable: true, type: FieldType.number, exportCsvForceToKeepAsString: true,
+        id: 'duration', name: 'Duration (days)', field: 'duration', sortable: true, type: 'number', exportCsvForceToKeepAsString: true,
         minWidth: 55, width: 100,
         filterable: true,
         filter: {
           collection: multiSelectFilterArray,
           model: Filters.multipleSelect,
           // we could add certain option(s) to the "multiple-select" plugin
-          filterOptions: {
+          options: {
             maxHeight: 250,
             width: 175
           } as MultipleSelectOption
         }
       },
       {
-        id: 'complete', name: '% Complete', field: 'percentComplete', minWidth: 70, type: FieldType.number, sortable: true, width: 100,
+        id: 'complete', name: '% Complete', field: 'percentComplete', minWidth: 70, type: 'number', sortable: true, width: 100,
         formatter: Formatters.percentCompleteBar, filterable: true, filter: { model: Filters.slider, operator: '>' }
       },
       {
         id: 'start', name: 'Start', field: 'start', formatter: Formatters.dateIso, sortable: true, minWidth: 75, exportWithFormatter: true, width: 100,
-        type: FieldType.date, filterable: true,
+        type: 'date', filterable: true,
         filter: {
           model: Filters.compoundDate,
           filterShortcuts: [
@@ -128,7 +126,7 @@ export class Example15 {
       },
       {
         id: 'completed', field: 'completed', minWidth: 85, maxWidth: 85, formatter: Formatters.checkmarkMaterial, width: 100,
-        type: FieldType.boolean,
+        type: 'boolean',
         sortable: true,
         filterable: true,
         filter: {
@@ -141,12 +139,12 @@ export class Example15 {
     this.gridOptions = {
       autoResize: {
         container: '#demo-container',
-        rightPadding: 10
+        rightPadding: 10,
       },
       enableCheckboxSelector: true,
       enableFiltering: true,
       columnPicker: {
-        hideForceFitButton: true
+        hideForceFitButton: true,
       },
       gridMenu: {
         hideForceFitButton: true,
@@ -158,7 +156,7 @@ export class Example15 {
       enablePagination: true,
       pagination: {
         pageSizes: [5, 10, 15, 20, 25, 30, 40, 50, 75, 100],
-        pageSize: DEFAULT_PAGE_SIZE
+        pageSize: DEFAULT_PAGE_SIZE,
       },
     };
 
@@ -178,7 +176,7 @@ export class Example15 {
       const randomYear = randomBetween(currentYear - 15, currentYear + 8);
       const randomYearShort = randomBetween(10, 25);
       const randomMonth = randomBetween(1, 12);
-      const randomMonthStr = (randomMonth < 10) ? `0${randomMonth}` : randomMonth;
+      const randomMonthStr = randomMonth < 10 ? `0${randomMonth}` : randomMonth;
       const randomDay = randomBetween(10, 28);
       const randomPercent = randomBetween(0, 100);
       const randomHour = randomBetween(10, 23);
@@ -187,14 +185,14 @@ export class Example15 {
       tmpData[i] = {
         id: i,
         title: 'Task ' + i,
-        description: (i % 5) ? 'desc ' + i : null, // also add some random to test NULL field
+        description: i % 5 ? 'desc ' + i : null, // also add some random to test NULL field
         duration: randomDuration,
         percentComplete: randomPercent,
         percentCompleteNumber: randomPercent,
-        start: new Date(randomYear, randomMonth, randomDay),          // provide a Date format
+        start: new Date(randomYear, randomMonth, randomDay), // provide a Date format
         usDateShort: `${randomMonth}/${randomDay}/${randomYearShort}`, // provide a date US Short in the dataset
         utcDate: `${randomYear}-${randomMonthStr}-${randomDay}T${randomHour}:${randomTime}:${randomTime}Z`,
-        completed: (i % 3 === 0)
+        completed: i % 3 === 0,
       };
     }
     return tmpData;
@@ -234,8 +232,15 @@ export class Example15 {
       ],
       sorters: [
         { columnId: 'duration', direction: 'DESC' },
-        { columnId: 'complete', direction: 'ASC' }
+        { columnId: 'complete', direction: 'ASC' },
       ],
     } as GridState;
+  }
+
+  toggleSubTitle() {
+    this.hideSubTitle = !this.hideSubTitle;
+    const action = this.hideSubTitle ? 'add' : 'remove';
+    document.querySelector('.subtitle')?.classList[action]('hidden');
+    this.aureliaGrid.resizerService.resizeGrid(0);
   }
 }

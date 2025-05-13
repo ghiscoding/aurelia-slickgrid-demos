@@ -41,7 +41,7 @@ function fetchJsonp<T = any>(_url: string, options: Partial<JsonpOptions> = {}):
     (window as any)[callbackFunction] = (response: T) => {
       // keep consistent with fetch API
       resolve({ ok: true, json: () => Promise.resolve(response) });
-      if (timeoutId) clearTimeout(timeoutId);
+      if (timeoutId) { clearTimeout(timeoutId); }
       removeScript(scriptId);
       clearFunction(callbackFunction);
     };
@@ -81,7 +81,7 @@ function fetchJsonp<T = any>(_url: string, options: Partial<JsonpOptions> = {}):
       reject(new Error(`JSONP request to ${_url} failed`));
       clearFunction(callbackFunction);
       removeScript(scriptId);
-      if (timeoutId) clearTimeout(timeoutId);
+      if (timeoutId) { clearTimeout(timeoutId); }
     };
   });
 }

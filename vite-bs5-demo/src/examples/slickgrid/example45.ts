@@ -1,15 +1,9 @@
 import { faker } from '@faker-js/faker';
 import { bindable } from 'aurelia';
-import {
-  type AureliaGridInstance,
-  type Column,
-  ExtensionName,
-  type GridOption,
-  type SlickRowDetailView,
-} from 'aurelia-slickgrid';
+import { type AureliaGridInstance, type Column, ExtensionName, type GridOption, type SlickRowDetailView } from 'aurelia-slickgrid';
 
-import { Example45Preload } from './example45-preload';
-import { type Distributor, Example45DetailView, type OrderData } from './example45-detail-view';
+import { Example45Preload } from './example45-preload.js';
+import { type Distributor, Example45DetailView, type OrderData } from './example45-detail-view.js';
 
 const FAKE_SERVER_DELAY = 250;
 const NB_ITEMS = 995;
@@ -105,6 +99,7 @@ export class Example45 {
       },
       enableFiltering: true,
       enableRowDetailView: true,
+      rowTopOffsetRenderType: 'top', // RowDetail and/or RowSpan don't render well with "transform", you should use "top"
       darkMode: this._darkMode,
       rowHeight: 33,
       rowDetailView: {
@@ -114,7 +109,7 @@ export class Example45 {
         // how many grid rows do we want to use for the row detail panel
         panelRows: this.detailViewRowCount,
         // optionally expose the functions that you want to use from within the row detail Child Component
-        parent: this,
+        parentRef: this,
         // Preload View Template
         preloadViewModel: Example45Preload,
 

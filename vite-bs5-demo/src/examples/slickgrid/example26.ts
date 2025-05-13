@@ -5,20 +5,20 @@ import {
   type Column,
   type EditCommand,
   Editors,
-  FieldType,
   Filters,
   Formatters,
   type GridOption,
   type OnEventArgs,
   OperatorType,
   SlickGlobalEditorLock,
+  type SliderOption,
   type ViewModelBindableInputData,
 } from 'aurelia-slickgrid';
-import { CustomAureliaViewModelEditor } from './custom-aureliaViewModelEditor';
-import { CustomAureliaViewModelFilter } from './custom-aureliaViewModelFilter';
-import { CustomTitleFormatter } from './custom-title-formatter';
-import { EditorSelect } from './editor-select';
-import { FilterSelect } from './filter-select';
+import { CustomAureliaViewModelEditor } from './custom-aureliaViewModelEditor.js';
+import { CustomAureliaViewModelFilter } from './custom-aureliaViewModelFilter.js';
+import { CustomTitleFormatter } from './custom-title-formatter.js';
+import { EditorSelect } from './editor-select.js';
+import { FilterSelect } from './filter-select.js';
 
 const NB_ITEMS = 100;
 
@@ -79,7 +79,6 @@ export class Example26 {
         field: 'title',
         filterable: true,
         sortable: true,
-        type: FieldType.string,
         editor: {
           model: Editors.longText,
           minLength: 5,
@@ -89,8 +88,9 @@ export class Example26 {
         onCellChange: (_e: Event, args: OnEventArgs) => {
           console.log(args);
           this.alertWarning = `Updated Title: ${args.dataContext.title}`;
-        }
-      }, {
+        },
+      },
+      {
         id: 'assignee',
         name: 'Assignee',
         field: 'assignee',
@@ -101,10 +101,10 @@ export class Example26 {
           model: CustomAureliaViewModelFilter,
           collection: this.assignees,
           params: {
-            viewModel: FilterSelect
+            viewModel: FilterSelect,
             // aureliaUtilService: this.aureliaUtilService, // pass the aureliaUtilService here OR in the grid option params
             // templateUrl: PLATFORM.moduleName('examples/slickgrid/filter-select') // FilterSelect,
-          }
+          },
         },
         queryFieldFilter: 'assignee.id', // for a complex object it's important to tell the Filter which field to query and our CustomAureliaComponentFilter returns the "id" property
         queryFieldSorter: 'assignee.name',
@@ -120,13 +120,14 @@ export class Example26 {
             viewModel: EditorSelect,
             // aureliaUtilService: this.aureliaUtilService, // pass the aureliaUtilService here OR in the grid option params
             // templateUrl: PLATFORM.moduleName('examples/slickgrid/editor-select') // EditorSelect,
-          }
+          },
         },
         onCellChange: (_e: Event, args: OnEventArgs) => {
           console.log(args);
           this.alertWarning = `Updated Title: ${args.dataContext.title}`;
-        }
-      }, {
+        },
+      },
+      {
         id: 'assignee2',
         name: 'Assignee with Aurelia Component',
         field: 'assignee',
@@ -137,10 +138,10 @@ export class Example26 {
           model: CustomAureliaViewModelFilter,
           collection: this.assignees,
           params: {
-            viewModel: FilterSelect
+            viewModel: FilterSelect,
             // aureliaUtilService: this.aureliaUtilService, // pass the aureliaUtilService here OR in the grid option params
             // templateUrl: PLATFORM.moduleName('examples/slickgrid/filter-select') // FilterSelect,
-          }
+          },
         },
         queryFieldFilter: 'assignee.id', // for a complex object it's important to tell the Filter which field to query and our CustomAureliaComponentFilter returns the "id" property
         queryFieldSorter: 'assignee.name',
@@ -155,23 +156,27 @@ export class Example26 {
         params: {
           viewModel: CustomTitleFormatter,
           // templateUrl: PLATFORM.moduleName('examples/slickgrid/custom-title-formatter'), // CustomTitleFormatterCustomElement,
-          complexFieldLabel: 'assignee.name' // for the exportCustomFormatter
+          complexFieldLabel: 'assignee.name', // for the exportCustomFormatter
         },
         exportCustomFormatter: Formatters.complexObject,
-      }, {
+      },
+      {
         id: 'duration',
         name: 'Duration (days)',
         field: 'duration',
         filterable: true,
         minWidth: 100,
         sortable: true,
-        type: FieldType.number,
-        filter: { model: Filters.slider, filterOptions: { hideSliderNumber: false } },
+        type: 'number',
+        filter: {
+          model: Filters.slider,
+          options: { hideSliderNumber: false } as SliderOption,
+        },
         editor: {
           model: Editors.slider,
           minValue: 0,
           maxValue: 100,
-          // editorOptions: { hideSliderNumber: true },
+          // options: { hideSliderNumber: true },
         },
         /*
         editor: {
@@ -185,38 +190,44 @@ export class Example26 {
           params: { decimalPlaces: 2 },
         },
         */
-      }, {
+      },
+      {
         id: 'complete',
         name: '% Complete',
         field: 'percentComplete',
         filterable: true,
         formatter: Formatters.multiple,
-        type: FieldType.number,
+        type: 'number',
         editor: {
           // We can also add HTML text to be rendered (any bad script will be sanitized) but we have to opt-in, else it will be sanitized
           enableRenderHtml: true,
-          collection: Array.from(Array(101).keys()).map(k => ({ value: k, label: k, symbol: '<i class="mdi mdi-percent-outline" style="color:cadetblue"></i>' })),
+          collection: Array.from(Array(101).keys()).map((k) => ({
+            value: k,
+            label: k,
+            symbol: '<i class="mdi mdi-percent-outline" style="color:cadetblue"></i>',
+          })),
           customStructure: {
             value: 'value',
             label: 'label',
-            labelSuffix: 'symbol'
+            labelSuffix: 'symbol',
           },
           collectionSortBy: {
             property: 'label',
-            sortDesc: true
+            sortDesc: true,
           },
           collectionFilterBy: {
             property: 'value',
             value: 0,
-            operator: OperatorType.notEqual
+            operator: OperatorType.notEqual,
           },
           model: Editors.singleSelect,
         },
         minWidth: 100,
         params: {
           formatters: [Formatters.collectionEditor, Formatters.percentCompleteBar],
-        }
-      }, {
+        },
+      },
+      {
         id: 'start',
         name: 'Start',
         field: 'start',
@@ -225,11 +236,12 @@ export class Example26 {
         formatter: Formatters.dateIso,
         sortable: true,
         minWidth: 100,
-        type: FieldType.date,
+        type: 'date',
         editor: {
-          model: Editors.date
+          model: Editors.date,
         },
-      }, {
+      },
+      {
         id: 'finish',
         name: 'Finish',
         field: 'finish',
@@ -238,11 +250,11 @@ export class Example26 {
         formatter: Formatters.dateIso,
         sortable: true,
         minWidth: 100,
-        type: FieldType.date,
+        type: 'date',
         editor: {
-          model: Editors.date
+          model: Editors.date,
         },
-      }
+      },
     ];
 
     this.gridOptions = {
@@ -251,7 +263,7 @@ export class Example26 {
       autoCommitEdit: false,
       autoResize: {
         container: '#demo-container',
-        rightPadding: 10
+        rightPadding: 10,
       },
       rowHeight: 45, // increase row height so that the custom elements fits in the cell
       editable: true,
@@ -260,24 +272,24 @@ export class Example26 {
       enableExcelCopyBuffer: true,
       enableFiltering: true,
       enableAsyncPostRender: true, // for the Aurelia PostRenderer, don't forget to enable it
-      asyncPostRenderDelay: 0,    // also make sure to remove any delay to render it
+      asyncPostRenderDelay: 0, // also make sure to remove any delay to render it
       editCommandHandler: (_item, _column, editCommand) => {
         this._commandQueue.push(editCommand);
         editCommand.execute();
       },
       params: {
-        aureliaUtilService: this.aureliaUtilService // provide the service to all at once (Editor, Filter, AsyncPostRender)
-      }
+        aureliaUtilService: this.aureliaUtilService, // provide the service to all at once (Editor, Filter, AsyncPostRender)
+      },
     };
   }
 
   mockData(itemCount: number, startingIndex = 0) {
     // mock a dataset
     const tempDataset: any[] = [];
-    for (let i = startingIndex; i < (startingIndex + itemCount); i++) {
+    for (let i = startingIndex; i < startingIndex + itemCount; i++) {
       const randomYear = 2000 + Math.floor(Math.random() * 10);
       const randomMonth = Math.floor(Math.random() * 11);
-      const randomDay = Math.floor((Math.random() * 29));
+      const randomDay = Math.floor(Math.random() * 29);
       const randomPercent = Math.round(Math.random() * 100);
 
       tempDataset.push({
@@ -288,8 +300,8 @@ export class Example26 {
         percentComplete: randomPercent,
         percentCompleteNumber: randomPercent,
         start: new Date(randomYear, randomMonth, randomDay),
-        finish: new Date(randomYear, (randomMonth + 1), randomDay),
-        effortDriven: (i % 5 === 0),
+        finish: new Date(randomYear, randomMonth + 1, randomDay),
+        effortDriven: i % 5 === 0,
       });
     }
     return tempDataset;
@@ -327,7 +339,7 @@ export class Example26 {
   changeAutoCommit() {
     this.gridOptions.autoCommitEdit = !this.gridOptions.autoCommitEdit;
     this.aureliaGrid.slickGrid.setOptions({
-      autoCommitEdit: this.gridOptions.autoCommitEdit
+      autoCommitEdit: this.gridOptions.autoCommitEdit,
     });
     return true;
   }
@@ -345,7 +357,7 @@ export class Example26 {
   setAutoEdit(isAutoEdit: boolean) {
     this.isAutoEdit = isAutoEdit;
     this.aureliaGrid.slickGrid.setOptions({
-      autoEdit: isAutoEdit
+      autoEdit: isAutoEdit,
     });
     return true;
   }

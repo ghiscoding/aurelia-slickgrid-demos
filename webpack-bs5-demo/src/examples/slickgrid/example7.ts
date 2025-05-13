@@ -30,6 +30,7 @@ export class Example7 {
   dataset2: any[] = [];
   aureliaGrid1!: AureliaGridInstance;
   aureliaGrid2!: AureliaGridInstance;
+  hideSubTitle = false;
 
   constructor() {
     // define the grid options & columns and then create the grid itself
@@ -62,7 +63,7 @@ export class Example7 {
       enableHeaderMenu: false,
       autoResize: {
         container: '#demo-container',
-        rightPadding: 10
+        rightPadding: 10,
       },
       enableFiltering: false,
       enableExcelCopyBuffer: true,
@@ -75,8 +76,8 @@ export class Example7 {
       gridHeight: 275,
       headerButton: {
         // you can use the "onCommand" (in Grid Options) and/or the "action" callback (in Column Definition)
-        onCommand: (_e: any, args) => this.handleOnCommand(_e, args, 1)
-      }
+        onCommand: (_e: any, args) => this.handleOnCommand(_e, args, 1),
+      },
     };
 
     // grid 2 options, same as grid 1 + extras
@@ -87,8 +88,8 @@ export class Example7 {
       // frozenColumn: 2,
       // frozenRow: 2,
       headerButton: {
-        onCommand: (_e: any, args) => this.handleOnCommand(_e, args, 2)
-      }
+        onCommand: (_e: any, args) => this.handleOnCommand(_e, args, 2),
+      },
     };
   }
 
@@ -157,10 +158,10 @@ export class Example7 {
                 // you can use the "action" callback and/or subscribe to the "onCallback" event, they both have the same arguments
                 // do something
                 console.log(`execute a callback action to "${args.command}" on ${args.column.name}`);
-              }
-            }
-          ]
-        }
+              },
+            },
+          ],
+        },
       });
     }
 
@@ -172,27 +173,27 @@ export class Example7 {
           cssClass: 'mdi mdi-message-text',
           handler: () => {
             alert('Tag');
-          }
+          },
         },
         {
           cssClass: 'mdi mdi-forum-outline',
           handler: () => {
             alert('Comment');
-          }
+          },
         },
         {
           cssClass: 'mdi mdi-information',
           handler: () => {
             alert('Info');
-          }
+          },
         },
         {
           cssClass: 'mdi mdi-help-circle',
           handler: () => {
             alert('Help');
-          }
-        }
-      ]
+          },
+        },
+      ],
     };
 
     // when floating to left, you might want to inverse the icon orders
@@ -210,9 +211,9 @@ export class Example7 {
           tooltip: 'This button only appears on hover.',
           handler: () => {
             alert('Help');
-          }
-        }
-      ]
+          },
+        },
+      ],
     };
 
     // mock a dataset

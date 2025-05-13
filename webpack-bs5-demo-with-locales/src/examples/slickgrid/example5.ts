@@ -4,7 +4,6 @@ import { GridOdataService, type OdataServiceApi, type OdataOption } from '@slick
 import {
   type AureliaGridInstance,
   type Column,
-  FieldType,
   Filters,
   type GridOption,
   type GridStateChange,
@@ -45,6 +44,7 @@ export class Example5 {
   columnDefinitions: Column[] = [];
   gridOptions!: GridOption;
   dataset: any[] = [];
+  hideSubTitle = false;
   metrics!: Metrics;
   paginationOptions!: Pagination;
 
@@ -70,8 +70,10 @@ export class Example5 {
   defineGrid() {
     this.columnDefinitions = [
       {
-        id: 'name', name: 'Name', field: 'name', sortable: true,
-        type: FieldType.string,
+        id: 'name',
+        name: 'Name',
+        field: 'name',
+        sortable: true,
         filterable: true,
         filter: {
           model: Filters.compoundInput,
@@ -83,14 +85,22 @@ export class Example5 {
             { operator: 'a*', desc: 'Starts With' },
             { operator: 'Custom', desc: 'SQL Like' },
           ],
-        }
+        },
       },
       {
-        id: 'gender', name: 'Gender', field: 'gender', filterable: true, sortable: true,
+        id: 'gender',
+        name: 'Gender',
+        field: 'gender',
+        filterable: true,
+        sortable: true,
         filter: {
           model: Filters.singleSelect,
-          collection: [{ value: '', label: '' }, { value: 'male', label: 'male' }, { value: 'female', label: 'female' }]
-        }
+          collection: [
+            { value: '', label: '' },
+            { value: 'male', label: 'male' },
+            { value: 'female', label: 'female' },
+          ],
+        },
       },
       { id: 'company', name: 'Company', field: 'company', filterable: true, sortable: true },
       { id: 'category_name', name: 'Category', field: 'category/name', filterable: true, sortable: true },
@@ -100,16 +110,16 @@ export class Example5 {
       enableAutoResize: true,
       autoResize: {
         container: '#demo-container',
-        rightPadding: 10
+        rightPadding: 10,
       },
       checkboxSelector: {
         // you can toggle these 2 properties to show the "select all" checkbox in different location
         hideInFilterHeaderRow: false,
-        hideInColumnTitleRow: true
+        hideInColumnTitleRow: true,
       },
       compoundOperatorAltTexts: {
         // where '=' is any of the `OperatorString` type shown above
-        text: { 'Custom': { operatorAlt: '%%', descAlt: 'SQL Like' } },
+        text: { Custom: { operatorAlt: '%%', descAlt: 'SQL Like' } },
       },
       enableCellNavigation: true,
       enableFiltering: true,
@@ -119,18 +129,16 @@ export class Example5 {
       pagination: {
         pageSizes: [10, 20, 50, 100, 500, 50000],
         pageSize: defaultPageSize,
-        totalItems: 0
+        totalItems: 0,
       },
       presets: {
         // you can also type operator as string, e.g.: operator: 'EQ'
-        filters: [
-          { columnId: 'gender', searchTerms: ['male'], operator: OperatorType.equal },
-        ],
+        filters: [{ columnId: 'gender', searchTerms: ['male'], operator: OperatorType.equal }],
         sorters: [
           // direction can be written as 'asc' (uppercase or lowercase) and/or use the SortDirection type
           { columnId: 'name', direction: 'asc' },
         ],
-        pagination: { pageNumber: 2, pageSize: 20 }
+        pagination: { pageNumber: 2, pageSize: 20 },
       },
       backendServiceApi: {
         service: new GridOdataService(),
@@ -142,13 +150,13 @@ export class Example5 {
             if (columnFilterOperator === OperatorType.custom && columnDef?.id === 'name') {
               let matchesSearch = searchValues[0].replace(/\*/g, '.*');
               matchesSearch = matchesSearch.slice(0, 1) + CARET_HTML_ESCAPED + matchesSearch.slice(1);
-              matchesSearch = matchesSearch.slice(0, -1) + '$\'';
+              matchesSearch = matchesSearch.slice(0, -1) + "$'";
 
               return `matchesPattern(${fieldName}, ${matchesSearch})`;
             }
             return;
           },
-          version: this.odataVersion        // defaults to 2, the query string is slightly different between OData 2 and 4
+          version: this.odataVersion, // defaults to 2, the query string is slightly different between OData 2 and 4
         },
         onError: (error: Error) => {
           console.log('ERROR', error);
@@ -164,8 +172,8 @@ export class Example5 {
           this.metrics = response.metrics;
           this.displaySpinner(false);
           this.getCustomerCallback(response);
-        }
-      } as OdataServiceApi
+        },
+      } as OdataServiceApi,
     };
   }
 
@@ -174,9 +182,7 @@ export class Example5 {
     if (isError) {
       this.status = { text: 'ERROR!!!', class: 'alert alert-danger' };
     } else {
-      this.status = (isProcessing)
-        ? { text: 'loading', class: 'alert alert-warning' }
-        : { text: 'finished', class: 'alert alert-success' };
+      this.status = isProcessing ? { text: 'loading', class: 'alert alert-warning' } : { text: 'finished', class: 'alert alert-success' };
     }
   }
 
@@ -185,7 +191,7 @@ export class Example5 {
     // however we need to force Aurelia to do a dirty check, doing a clone object will do just that
     let totalItemCount: number = data['totalRecordCount']; // you can use "totalRecordCount" or any name or "odata.count" when "enableCount" is set
     if (this.isCountEnabled) {
-      totalItemCount = (this.odataVersion === 4) ? data['@odata.count'] : data['d']['__count'];
+      totalItemCount = this.odataVersion === 4 ? data['@odata.count'] : data['d']['__count'];
     }
     if (this.metrics) {
       this.metrics.totalItemCount = totalItemCount;
@@ -209,7 +215,7 @@ export class Example5 {
    */
   getCustomerDataApiMock(query: string): Promise<any> {
     // the mock is returning a Promise, just like a WebAPI typically does
-    return new Promise(resolve => {
+    return new Promise((resolve) => {
       const queryParams = query.toLowerCase().split('&');
       let top: number;
       let skip = 0;
@@ -224,13 +230,13 @@ export class Example5 {
 
       for (const param of queryParams) {
         if (param.includes('$top=')) {
-          top = +(param.substring('$top='.length));
+          top = +param.substring('$top='.length);
           if (top === 50000) {
             throw new Error('Server timed out retrieving 50,000 rows');
           }
         }
         if (param.includes('$skip=')) {
-          skip = +(param.substring('$skip='.length));
+          skip = +param.substring('$skip='.length);
         }
         if (param.includes('$orderby=')) {
           orderBy = param.substring('$orderby='.length);
@@ -347,17 +353,28 @@ export class Example5 {
                     const [term1, term2] = Array.isArray(searchTerm) ? searchTerm : [searchTerm];
 
                     switch (filterType) {
-                      case 'eq': return filterTerm.toLowerCase() === term1;
-                      case 'ne': return filterTerm.toLowerCase() !== term1;
-                      case 'le': return filterTerm.toLowerCase() <= term1;
-                      case 'lt': return filterTerm.toLowerCase() < term1;
-                      case 'gt': return filterTerm.toLowerCase() > term1;
-                      case 'ge': return filterTerm.toLowerCase() >= term1;
-                      case 'ends': return filterTerm.toLowerCase().endsWith(term1);
-                      case 'starts': return filterTerm.toLowerCase().startsWith(term1);
-                      case 'starts+ends': return filterTerm.toLowerCase().startsWith(term1) && filterTerm.toLowerCase().endsWith(term2);
-                      case 'substring': return filterTerm.toLowerCase().includes(term1);
-                      case 'matchespattern': return new RegExp((term1 as string).replaceAll(PERCENT_HTML_ESCAPED, '.*'), 'i').test(filterTerm);
+                      case 'eq':
+                        return filterTerm.toLowerCase() === term1;
+                      case 'ne':
+                        return filterTerm.toLowerCase() !== term1;
+                      case 'le':
+                        return filterTerm.toLowerCase() <= term1;
+                      case 'lt':
+                        return filterTerm.toLowerCase() < term1;
+                      case 'gt':
+                        return filterTerm.toLowerCase() > term1;
+                      case 'ge':
+                        return filterTerm.toLowerCase() >= term1;
+                      case 'ends':
+                        return filterTerm.toLowerCase().endsWith(term1);
+                      case 'starts':
+                        return filterTerm.toLowerCase().startsWith(term1);
+                      case 'starts+ends':
+                        return filterTerm.toLowerCase().startsWith(term1) && filterTerm.toLowerCase().endsWith(term2);
+                      case 'substring':
+                        return filterTerm.toLowerCase().includes(term1);
+                      case 'matchespattern':
+                        return new RegExp((term1 as string).replaceAll(PERCENT_HTML_ESCAPED, '.*'), 'i').test(filterTerm);
                     }
                   }
                 });
@@ -373,7 +390,7 @@ export class Example5 {
           }
           const updatedData = filteredData.slice(firstRow, firstRow + top!);
 
-          setTimeout(() => {
+          window.setTimeout(() => {
             const backendResult: any = { query };
             if (!this.isCountEnabled) {
               backendResult['totalRecordCount'] = countTotalItems;
@@ -421,9 +438,7 @@ export class Example5 {
   }
 
   setSortingDynamically() {
-    this.aureliaGrid.sortService.updateSorting([
-      { columnId: 'name', direction: 'DESC' },
-    ]);
+    this.aureliaGrid.sortService.updateSorting([{ columnId: 'name', direction: 'DESC' }]);
   }
 
   throwPageChangeError() {
@@ -484,5 +499,12 @@ export class Example5 {
     odataService.updateOptions(options);
     odataService.clearFilters();
     this.aureliaGrid?.filterService.clearFilters();
+  }
+
+  toggleSubTitle() {
+    this.hideSubTitle = !this.hideSubTitle;
+    const action = this.hideSubTitle ? 'add' : 'remove';
+    document.querySelector('.subtitle')?.classList[action]('hidden');
+    this.aureliaGrid.resizerService.resizeGrid(0);
   }
 }

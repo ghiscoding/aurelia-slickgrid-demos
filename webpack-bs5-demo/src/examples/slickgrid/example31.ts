@@ -7,7 +7,6 @@ import {
   type AureliaGridInstance,
   type Column,
   Editors,
-  FieldType,
   Filters,
   type GridOption,
   type GridStateChange,
@@ -15,6 +14,7 @@ import {
   OperatorType,
   type Pagination,
 } from 'aurelia-slickgrid';
+
 import './example31.scss'; // provide custom CSS/SASS styling
 
 const defaultPageSize = 20;
@@ -30,7 +30,7 @@ export class Example31 {
   dataset: any[] = [];
   metrics!: Metrics;
   paginationOptions!: Pagination;
-
+  hideSubTitle = false;
   isCountEnabled = true;
   isSelectEnabled = false;
   isExpandEnabled = false;
@@ -41,7 +41,10 @@ export class Example31 {
   isPageErrorTest = false;
   status = { text: '', class: '' };
   isOtherGenderAdded = false;
-  genderCollection = [{ value: 'male', label: 'male' }, { value: 'female', label: 'female' }];
+  genderCollection = [
+    { value: 'male', label: 'male' },
+    { value: 'female', label: 'female' },
+  ];
 
   constructor(readonly http: IHttpClient = resolve(newInstanceOf(IHttpClient))) {
     this.initializeGrid();
@@ -54,27 +57,32 @@ export class Example31 {
   initializeGrid() {
     this.columnDefinitions = [
       {
-        id: 'name', name: 'Name', field: 'name', sortable: true,
-        type: FieldType.string,
+        id: 'name',
+        name: 'Name',
+        field: 'name',
+        sortable: true,
         filterable: true,
         filter: {
-          model: Filters.compoundInput
-        }
+          model: Filters.compoundInput,
+        },
       },
       {
-        id: 'gender', name: 'Gender', field: 'gender', filterable: true,
+        id: 'gender',
+        name: 'Gender',
+        field: 'gender',
+        filterable: true,
         editor: {
           model: Editors.singleSelect,
           // collection: this.genderCollection,
-          collectionAsync: of(this.genderCollection)
+          collectionAsync: of(this.genderCollection),
         },
         filter: {
           model: Filters.singleSelect,
           collectionAsync: of(this.genderCollection),
           collectionOptions: {
-            addBlankEntry: true
-          }
-        }
+            addBlankEntry: true,
+          },
+        },
       },
       { id: 'company', name: 'Company', field: 'company', filterable: true, sortable: true },
       { id: 'category_name', name: 'Category', field: 'category/name', filterable: true, sortable: true },
@@ -84,12 +92,12 @@ export class Example31 {
       enableAutoResize: true,
       autoResize: {
         container: '#demo-container',
-        rightPadding: 10
+        rightPadding: 10,
       },
       checkboxSelector: {
         // you can toggle these 2 properties to show the "select all" checkbox in different location
         hideInFilterHeaderRow: false,
-        hideInColumnTitleRow: true
+        hideInColumnTitleRow: true,
       },
       editable: true,
       autoEdit: true,
@@ -115,7 +123,7 @@ export class Example31 {
           // direction can be written as 'asc' (uppercase or lowercase) and/or use the SortDirection type
           { columnId: 'name', direction: 'asc' },
         ],
-        pagination: { pageNumber: 2, pageSize: 20 }
+        pagination: { pageNumber: 2, pageSize: 20 },
       },
       backendServiceApi: {
         service: new GridOdataService(),
@@ -123,7 +131,7 @@ export class Example31 {
           enableCount: this.isCountEnabled, // add the count in the OData query, which will return a property named "__count" (v2) or "@odata.count" (v4)
           enableSelect: this.isSelectEnabled,
           enableExpand: this.isExpandEnabled,
-          version: this.odataVersion        // defaults to 2, the query string is slightly different between OData 2 and 4
+          version: this.odataVersion, // defaults to 2, the query string is slightly different between OData 2 and 4
         },
         preProcess: () => this.displaySpinner(true),
         process: (query) => this.getCustomerApiCall(query),
@@ -131,9 +139,9 @@ export class Example31 {
           this.metrics = response.metrics;
           this.displaySpinner(false);
           this.getCustomerCallback(response);
-        }
+        },
       } as OdataServiceApi,
-      externalResources: [new RxJsResource()]
+      externalResources: [new RxJsResource()],
     };
   }
 
@@ -170,7 +178,7 @@ export class Example31 {
 
   displaySpinner(isProcessing: boolean) {
     this.processing = isProcessing;
-    this.status = (isProcessing)
+    this.status = isProcessing
       ? { text: 'loading...', class: 'col-md-2 alert alert-warning' }
       : { text: 'finished!!', class: 'col-md-2 alert alert-success' };
   }
@@ -180,7 +188,7 @@ export class Example31 {
     // however we need to force Aurelia to do a dirty check, doing a clone object will do just that
     let totalItemCount: number = data['totalRecordCount']; // you can use "totalRecordCount" or any name or "odata.count" when "enableCount" is set
     if (this.isCountEnabled) {
-      totalItemCount = (this.odataVersion === 4) ? data['@odata.count'] : data['d']['__count'];
+      totalItemCount = this.odataVersion === 4 ? data['@odata.count'] : data['d']['__count'];
     }
     if (this.metrics) {
       this.metrics.totalItemCount = totalItemCount;
@@ -214,10 +222,10 @@ export class Example31 {
 
       for (const param of queryParams) {
         if (param.includes('$top=')) {
-          top = +(param.substring('$top='.length));
+          top = +param.substring('$top='.length);
         }
         if (param.includes('$skip=')) {
-          skip = +(param.substring('$skip='.length));
+          skip = +param.substring('$skip='.length);
         }
         if (param.includes('$orderby=')) {
           orderBy = param.substring('$orderby='.length);
@@ -309,10 +317,14 @@ export class Example31 {
 
                   if (filterTerm) {
                     switch (filterType) {
-                      case 'equal': return filterTerm.toLowerCase() === searchTerm;
-                      case 'ends': return filterTerm.toLowerCase().endsWith(searchTerm);
-                      case 'starts': return filterTerm.toLowerCase().startsWith(searchTerm);
-                      case 'substring': return filterTerm.toLowerCase().includes(searchTerm);
+                      case 'equal':
+                        return filterTerm.toLowerCase() === searchTerm;
+                      case 'ends':
+                        return filterTerm.toLowerCase().endsWith(searchTerm);
+                      case 'starts':
+                        return filterTerm.toLowerCase().startsWith(searchTerm);
+                      case 'substring':
+                        return filterTerm.toLowerCase().includes(searchTerm);
                     }
                   }
                 });
@@ -328,7 +340,7 @@ export class Example31 {
           }
           const updatedData = filteredData.slice(firstRow, firstRow + top!);
 
-          setTimeout(() => {
+          window.setTimeout(() => {
             const backendResult: any = { query };
             if (!this.isCountEnabled) {
               backendResult['totalRecordCount'] = countTotalItems;
@@ -381,9 +393,7 @@ export class Example31 {
   }
 
   setSortingDynamically() {
-    this.aureliaGrid?.sortService.updateSorting([
-      { columnId: 'name', direction: 'DESC' },
-    ]);
+    this.aureliaGrid?.sortService.updateSorting([{ columnId: 'name', direction: 'DESC' }]);
   }
 
   // YOU CAN CHOOSE TO PREVENT EVENT FROM BUBBLING IN THE FOLLOWING 3x EVENTS
@@ -433,6 +443,13 @@ export class Example31 {
     this.odataVersion = version;
     this.resetOptions({ version: this.odataVersion });
     return true;
+  }
+
+  toggleSubTitle() {
+    this.hideSubTitle = !this.hideSubTitle;
+    const action = this.hideSubTitle ? 'add' : 'remove';
+    document.querySelector('.subtitle')?.classList[action]('hidden');
+    this.aureliaGrid.resizerService.resizeGrid(0);
   }
 
   private resetOptions(options: Partial<OdataOption>) {

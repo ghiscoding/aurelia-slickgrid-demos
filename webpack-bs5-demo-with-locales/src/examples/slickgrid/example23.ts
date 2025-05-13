@@ -8,7 +8,6 @@ import {
   type AureliaGridInstance,
   type Column,
   type CurrentFilter,
-  FieldType,
   Filters,
   Formatters,
   type GridOption,
@@ -44,11 +43,12 @@ export class Example23 {
   columnDefinitions: Column[] = [];
   gridOptions!: GridOption;
   dataset: any[] = [];
+  hideSubTitle = false;
   metrics!: Metrics;
   filterList = [
     { value: '', label: '' },
     { value: 'currentYearTasks', label: 'Current Year Completed Tasks' },
-    { value: 'nextYearTasks', label: 'Next Year Active Tasks' }
+    { value: 'nextYearTasks', label: 'Next Year Active Tasks' },
   ];
   selectedPredefinedFilter = '';
 
@@ -77,24 +77,23 @@ export class Example23 {
       },
       {
         id: 'description', name: 'Description', field: 'description', filterable: true, sortable: true, minWidth: 80,
-        type: FieldType.string,
         filter: {
           model: CustomInputFilter, // create a new instance to make each Filter independent from each other
           enableTrimWhiteSpace: true // or use global "enableFilterTrimWhiteSpace" to trim on all Filters
         }
       },
       {
-        id: 'percentComplete', name: '% Complete', field: 'percentComplete', nameKey: 'PERCENT_COMPLETE', minWidth: 120,
+        id: 'percentComplete', name: '% Complete', field: 'percentComplete', minWidth: 120,
         sortable: true,
         customTooltip: { position: 'center' },
         formatter: Formatters.progressBar,
-        type: FieldType.number,
+        type: 'number',
         filterable: true,
         filter: {
           model: Filters.sliderRange,
-          maxValue: 100, // or you can use the filterOptions as well
+          maxValue: 100, // or you can use the filter options as well
           operator: OperatorType.rangeInclusive, // defaults to inclusive
-          filterOptions: {
+          options: {
             hideSliderNumbers: false, // you can hide/show the slider numbers on both side
             min: 0, step: 5
           } as SliderRangeOption
@@ -102,11 +101,11 @@ export class Example23 {
       },
       {
         id: 'start', name: 'Start', field: 'start', formatter: Formatters.dateIso, sortable: true, minWidth: 75, width: 100, exportWithFormatter: true,
-        type: FieldType.date, filterable: true, filter: { model: Filters.compoundDate }
+        type: 'date', filterable: true, filter: { model: Filters.compoundDate }
       },
       {
         id: 'finish', name: 'Finish', field: 'finish', formatter: Formatters.dateIso, sortable: true, minWidth: 75, width: 120, exportWithFormatter: true,
-        type: FieldType.date,
+        type: 'date',
         filterable: true,
         filter: {
           model: Filters.dateRange,
@@ -114,7 +113,7 @@ export class Example23 {
       },
       {
         id: 'duration', field: 'duration', name: 'Duration', maxWidth: 90,
-        type: FieldType.number,
+        type: 'number',
         sortable: true,
         filterable: true, filter: {
           model: Filters.input,
@@ -129,19 +128,18 @@ export class Example23 {
         filter: {
           collection: [{ value: '', label: '' }, { value: true, label: 'True' }, { value: false, label: 'False' }],
           model: Filters.singleSelect,
-          filterOptions: { autoAdjustDropHeight: true } as MultipleSelectOption
+          options: { autoAdjustDropHeight: true } as MultipleSelectOption
         }
       }
     ];
 
-    const today = new Date();
     const presetLowestDay = format(addDay(new Date(), -2), 'YYYY-MM-DD');
-    const presetHighestDay = format(addDay(new Date(), today.getDate() < 14 ? 28 : 25), 'YYYY-MM-DD');
+    const presetHighestDay = format(addDay(new Date(), 25), 'YYYY-MM-DD');
 
     this.gridOptions = {
       autoResize: {
         container: '#demo-container',
-        rightPadding: 10
+        rightPadding: 10,
       },
       enableExcelCopyBuffer: true,
       enableFiltering: true,
@@ -172,7 +170,7 @@ export class Example23 {
   mockData(itemCount: number, startingIndex = 0): any[] {
     // mock a dataset
     const tempDataset: any[] = [];
-    for (let i = startingIndex; i < (startingIndex + itemCount); i++) {
+    for (let i = startingIndex; i < startingIndex + itemCount; i++) {
       const randomDuration = randomBetween(0, 365);
       const randomYear = randomBetween(new Date().getFullYear(), new Date().getFullYear() + 1);
       const randomMonth = randomBetween(0, 12);
@@ -182,13 +180,13 @@ export class Example23 {
       tempDataset.push({
         id: i,
         title: 'Task ' + i,
-        description: (i % 5) ? 'desc ' + i : null, // also add some random to test NULL field
+        description: i % 5 ? 'desc ' + i : null, // also add some random to test NULL field
         duration: randomDuration,
         percentComplete: randomPercent,
         percentCompleteNumber: randomPercent,
-        start: (i % 4) ? null : new Date(randomYear, randomMonth, randomDay),          // provide a Date format
+        start: i % 4 ? null : new Date(randomYear, randomMonth, randomDay), // provide a Date format
         finish: new Date(randomYear, randomMonth, randomDay),
-        completed: (randomPercent === 100) ? true : false,
+        completed: randomPercent === 100 ? true : false,
       });
     }
 
@@ -212,11 +210,11 @@ export class Example23 {
 
   refreshMetrics(_e: Event, args: any) {
     if (args && args.current >= 0) {
-      setTimeout(() => {
+      window.setTimeout(() => {
         this.metrics = {
           startTime: new Date(),
-          itemCount: args && args.current || 0,
-          totalItemCount: this.dataset.length || 0
+          itemCount: (args && args.current) || 0,
+          totalItemCount: this.dataset.length || 0,
         };
       });
     }
@@ -258,5 +256,12 @@ export class Example23 {
         break;
     }
     this.aureliaGrid.filterService.updateFilters(filters);
+  }
+
+  toggleSubTitle() {
+    this.hideSubTitle = !this.hideSubTitle;
+    const action = this.hideSubTitle ? 'add' : 'remove';
+    document.querySelector('.subtitle')?.classList[action]('hidden');
+    this.aureliaGrid.resizerService.resizeGrid(0);
   }
 }

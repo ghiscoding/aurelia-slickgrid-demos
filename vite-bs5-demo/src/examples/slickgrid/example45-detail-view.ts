@@ -1,10 +1,5 @@
 import { bindable } from 'aurelia';
-import {
-  type AureliaGridInstance,
-  type Column,
-  type GridOption,
-  type GridState,
-} from 'aurelia-slickgrid';
+import { type AureliaGridInstance, type Column, type GridOption, type GridState } from 'aurelia-slickgrid';
 
 import './example45-detail-view.scss';
 
@@ -83,11 +78,12 @@ export class Example45DetailView {
       enableCellNavigation: true,
       datasetIdPropertyName: 'orderId',
       presets: gridState,
+      rowTopOffsetRenderType: 'top', // RowDetail and/or RowSpan don't render well with "transform", you should use "top"
     };
   }
 
   handleBeforeGridDestroy() {
-    console.log('handleBeforeGridDestroy', this.model)
+    console.log('handleBeforeGridDestroy', this.model);
     if (this.model.isUsingInnerGridStatePresets) {
       const gridState = this.aureliaGrid.gridStateService.getCurrentGridState();
       sessionStorage.setItem(`gridstate_${this.innerGridClass}`, JSON.stringify(gridState));

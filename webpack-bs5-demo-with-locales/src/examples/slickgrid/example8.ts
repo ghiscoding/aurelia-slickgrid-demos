@@ -26,6 +26,8 @@ export class Example8 {
   columnDefinitions: Column[] = [];
   gridOptions!: GridOption;
   dataset: any[] = [];
+  hideSubTitle = false;
+  selectedLanguage: string;
   visibleColumns: Column[] = [];
 
   constructor() {
@@ -130,7 +132,7 @@ export class Example8 {
       enableHeaderMenu: true,
       autoResize: {
         container: '#demo-container',
-        rightPadding: 10
+        rightPadding: 10,
       },
       enableFiltering: false,
       enableCellNavigation: true,
@@ -167,7 +169,7 @@ export class Example8 {
         percentComplete: Math.round(Math.random() * 100),
         start: '01/01/2009',
         finish: '01/05/2009',
-        completed: (i % 5 === 0)
+        completed: i % 5 === 0,
       };
     }
     this.dataset = mockDataset;

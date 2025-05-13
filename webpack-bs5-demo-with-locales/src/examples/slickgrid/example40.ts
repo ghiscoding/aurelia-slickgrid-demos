@@ -3,7 +3,6 @@ import {
   type AureliaGridInstance,
   Aggregators,
   type Column,
-  FieldType,
   Filters,
   Formatters,
   type GridOption,
@@ -50,7 +49,7 @@ export class Example40 {
         sortable: true,
         minWidth: 100,
         filterable: true,
-        type: FieldType.number,
+        type: 'number',
       },
       {
         id: 'percentComplete',
@@ -59,14 +58,14 @@ export class Example40 {
         sortable: true,
         minWidth: 100,
         filterable: true,
-        type: FieldType.number,
+        type: 'number',
       },
       {
         id: 'start',
         name: 'Start',
         field: 'start',
-        type: FieldType.date,
-        outputType: FieldType.dateIso, // for date picker format
+        type: 'date',
+        outputType: 'dateIso', // for date picker format
         formatter: Formatters.date,
         exportWithFormatter: true,
         params: { dateFormat: 'MMM DD, YYYY' },
@@ -80,8 +79,8 @@ export class Example40 {
         id: 'finish',
         name: 'Finish',
         field: 'finish',
-        type: FieldType.date,
-        outputType: FieldType.dateIso, // for date picker format
+        type: 'date',
+        outputType: 'dateIso', // for date picker format
         formatter: Formatters.date,
         exportWithFormatter: true,
         params: { dateFormat: 'MMM DD, YYYY' },
@@ -105,7 +104,7 @@ export class Example40 {
     this.gridOptions = {
       autoResize: {
         container: '#demo-container',
-        rightPadding: 10
+        rightPadding: 10,
       },
       enableAutoResize: true,
       enableFiltering: true,
@@ -122,9 +121,9 @@ export class Example40 {
   handleOnScroll(args: any) {
     const viewportElm = args.grid.getViewportNode();
     if (
-      ['mousewheel', 'scroll'].includes(args.triggeredBy || '')
-      && viewportElm.scrollTop > 0
-      && Math.ceil(viewportElm.offsetHeight + args.scrollTop) >= args.scrollHeight
+      ['mousewheel', 'scroll'].includes(args.triggeredBy || '') &&
+      viewportElm.scrollTop > 0 &&
+      Math.ceil(viewportElm.offsetHeight + args.scrollTop) >= args.scrollHeight
     ) {
       console.log('onScroll end reached, add more items');
       const startIdx = this.aureliaGrid.dataView?.getItemCount() || 0;
@@ -149,12 +148,9 @@ export class Example40 {
       getter: 'duration',
       formatter: (g) => `Duration: ${g.value} <span class="text-green">(${g.count} items)</span>`,
       comparer: (a, b) => SortComparers.numeric(a.value, b.value, SortDirectionNumber.asc),
-      aggregators: [
-        new Aggregators.Avg('percentComplete'),
-        new Aggregators.Sum('cost')
-      ],
+      aggregators: [new Aggregators.Avg('percentComplete'), new Aggregators.Sum('cost')],
       aggregateCollapsed: false,
-      lazyTotalsCalculation: true
+      lazyTotalsCalculation: true,
     } as Grouping);
 
     // you need to manually add the sort icon(s) in UI
@@ -210,9 +206,7 @@ export class Example40 {
   }
 
   setSortingDynamically() {
-    this.aureliaGrid?.sortService.updateSorting([
-      { columnId: 'title', direction: 'DESC' },
-    ]);
+    this.aureliaGrid?.sortService.updateSorting([{ columnId: 'title', direction: 'DESC' }]);
   }
 
   toggleSubTitle() {

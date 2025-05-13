@@ -5,7 +5,6 @@ import {
   type Column,
   type ContextMenu,
   ExtensionName,
-  FieldType,
   Filters,
   type Formatter,
   Formatters,
@@ -14,7 +13,8 @@ import {
 import './example24.scss'; // provide custom CSS/SASS styling
 
 const actionFormatter: Formatter = (_row, _cell, _value, _columnDef, dataContext) => {
-  if (dataContext.priority === 3) { // option 3 is High
+  if (dataContext.priority === 3) {
+    // option 3 is High
     return `<div class="cell-menu-dropdown-outline">Action<i class="mdi mdi-chevron-down"></i></div>`;
   }
   return `<div class="cell-menu-dropdown-outline disabled">Action <i class="mdi mdi-chevron-down"></i></div>`;
@@ -26,7 +26,7 @@ const priorityFormatter: Formatter = (_row, _cell, value) => {
   }
   let output = '';
   const count = +(value >= 3 ? 3 : value);
-  const color = count === 3 ? 'red' : (count === 2 ? 'orange' : 'yellow');
+  const color = count === 3 ? 'red' : count === 2 ? 'orange' : 'yellow';
   const icon = `<i class="mdi mdi-star ${color}" aria-hidden="true"></i>`;
 
   for (let i = 1; i <= count; i++) {
@@ -80,6 +80,7 @@ export class Example24 {
   gridOptions!: GridOption;
   columnDefinitions: Column[] = [];
   dataset: any[] = [];
+  hideSubTitle = false;
 
   constructor() {
     // define the grid options & columns and then create the grid itself
@@ -120,14 +121,14 @@ export class Example24 {
         exportWithFormatter: false,
         sortable: true, filterable: true,
         filter: { model: Filters.slider, operator: '>=' },
-        formatter: Formatters.percentCompleteBar, type: FieldType.number,
+        formatter: Formatters.percentCompleteBar, type: 'number',
       },
       {
         id: 'start', name: 'Start', field: 'start', minWidth: 100,
-        formatter: Formatters.dateIso, outputType: FieldType.dateIso, type: FieldType.date,
+        formatter: Formatters.dateIso, outputType: 'dateIso', type: 'date',
         filterable: true, filter: { model: Filters.compoundDate }
       },
-      { id: 'finish', name: 'Finish', field: 'finish', formatter: Formatters.dateIso, outputType: FieldType.dateIso, type: FieldType.date, minWidth: 100, filterable: true, filter: { model: Filters.compoundDate } },
+      { id: 'finish', name: 'Finish', field: 'finish', formatter: Formatters.dateIso, outputType: 'dateIso', type: 'date', minWidth: 100, filterable: true, filter: { model: Filters.compoundDate } },
       {
         id: 'priority', name: 'Priority', field: 'priority',
         exportCustomFormatter: priorityExportFormatter,
@@ -256,7 +257,7 @@ export class Example24 {
     this.gridOptions = {
       autoResize: {
         container: '#demo-container',
-        rightPadding: 10
+        rightPadding: 10,
       },
       darkMode: this._darkModeGrid,
       enableCellNavigation: true,
@@ -268,7 +269,7 @@ export class Example24 {
         customColumnWidth: 15,
 
         // you can customize how the header titles will be styled (defaults to Bold)
-        columnHeaderStyle: { font: { bold: true, italic: true } }
+        columnHeaderStyle: { font: { bold: true, italic: true } },
       },
       externalResources: [new ExcelExportService()],
 
@@ -288,12 +289,12 @@ export class Example24 {
             this.aureliaGrid.gridService.updateItem(dataContext);
           }
         },
-        onBeforeMenuShow: ((_e, args) => {
+        onBeforeMenuShow: (_e, args) => {
           // for example, you could select the row that the click originated
           // this.aureliaGrid.gridService.setSelectedRows([args.row]);
           console.log('Before the Cell Menu is shown', args);
-        }),
-        onBeforeMenuClose: ((_e, args) => console.log('Cell Menu is closing', args)),
+        },
+        onBeforeMenuClose: (_e, args) => console.log('Cell Menu is closing', args),
       },
 
       // load Context Menu structure
@@ -339,16 +340,16 @@ export class Example24 {
     for (let i = 0; i < count; i++) {
       const randomYear = 2000 + Math.floor(Math.random() * 30);
       const randomMonth = Math.floor(Math.random() * 11);
-      const randomDay = Math.floor((Math.random() * 29));
+      const randomDay = Math.floor(Math.random() * 29);
 
       tmpData[i] = {
         id: i,
         duration: Math.floor(Math.random() * 25) + ' days',
         percentComplete: Math.floor(Math.random() * 100),
         start: new Date(randomYear, randomMonth, randomDay),
-        finish: new Date(randomYear, (randomMonth + 1), randomDay),
-        priority: i % 3 ? 2 : (i % 5 ? 3 : 1),
-        completed: (i % 4 === 0),
+        finish: new Date(randomYear, randomMonth + 1, randomDay),
+        priority: i % 3 ? 2 : i % 5 ? 3 : 1,
+        completed: i % 4 === 0,
       };
     }
     return tmpData;
@@ -497,7 +498,7 @@ export class Example24 {
   showCellMenuCommandsAndOptions(showBothList: boolean) {
     // change via the plugin setOptions
     this.cellMenuInstance?.setOptions({
-      hideOptionSection: !showBothList
+      hideOptionSection: !showBothList,
     });
 
     // OR find the column, then change the same hide property
@@ -515,5 +516,12 @@ export class Example24 {
       document.querySelector<HTMLDivElement>('#demo-container')!.dataset.bsTheme = 'light';
     }
     this.aureliaGrid.slickGrid?.setOptions({ darkMode: this._darkModeGrid });
+  }
+
+  toggleSubTitle() {
+    this.hideSubTitle = !this.hideSubTitle;
+    const action = this.hideSubTitle ? 'add' : 'remove';
+    document.querySelector('.subtitle')?.classList[action]('hidden');
+    this.aureliaGrid.resizerService.resizeGrid(0);
   }
 }

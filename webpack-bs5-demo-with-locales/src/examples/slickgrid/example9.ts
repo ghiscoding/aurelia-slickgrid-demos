@@ -2,7 +2,6 @@ import {
   type AureliaGridInstance,
   type Column,
   ExtensionName,
-  FieldType,
   Filters,
   Formatters,
   type GridOption,
@@ -32,6 +31,7 @@ export class Example9 {
   dataset: any[] = [];
   dataView!: SlickDataView;
   gridObj!: SlickGrid;
+  hideSubTitle = false;
 
   constructor() {
     // define the grid options & columns and then create the grid itself
@@ -51,19 +51,19 @@ export class Example9 {
 
   defineGrid() {
     this.columnDefinitions = [
-      { id: 'title', name: 'Title', field: 'title', filterable: true, type: FieldType.string },
-      { id: 'duration', name: 'Duration', field: 'duration', sortable: true, filterable: true, type: FieldType.string },
+      { id: 'title', name: 'Title', field: 'title', filterable: true },
+      { id: 'duration', name: 'Duration', field: 'duration', sortable: true, filterable: true },
       {
         id: 'percentComplete', name: '% Complete', field: 'percentComplete', sortable: true, filterable: true,
-        type: FieldType.number,
+        type: 'number',
         formatter: Formatters.percentCompleteBar,
-        filter: { model: Filters.compoundSlider, filterOptions: { hideSliderNumber: false } }
+        filter: { model: Filters.compoundSlider, options: { hideSliderNumber: false } }
       },
-      { id: 'start', name: 'Start', field: 'start', filterable: true, type: FieldType.dateUs, filter: { model: Filters.compoundDate } },
-      { id: 'finish', name: 'Finish', field: 'finish', filterable: true, type: FieldType.dateUs, filter: { model: Filters.compoundDate } },
+      { id: 'start', name: 'Start', field: 'start', filterable: true, type: 'dateUs', filter: { model: Filters.compoundDate } },
+      { id: 'finish', name: 'Finish', field: 'finish', filterable: true, type: 'dateUs', filter: { model: Filters.compoundDate } },
       {
         id: 'completed', name: 'Completed', field: 'completed', maxWidth: 80, formatter: Formatters.checkmarkMaterial,
-        type: FieldType.boolean,
+        type: 'boolean',
         minWidth: 100,
         sortable: true,
         filterable: true,
@@ -80,13 +80,13 @@ export class Example9 {
         hideSyncResizeButton: true,
         onColumnsChanged: (_e, args) => {
           console.log('Column selection changed from Column Picker, visible columns: ', args.visibleColumns);
-        }
+        },
       },
       enableAutoResize: true,
       enableGridMenu: true,
       autoResize: {
         container: '#demo-container',
-        rightPadding: 10
+        rightPadding: 10,
       },
       enableFiltering: true,
       enableCellNavigation: true,
@@ -109,12 +109,12 @@ export class Example9 {
           // if you want yours at the bottom then start with 61, below 50 will make your command(s) show on top
           {
             iconCssClass: 'mdi mdi-help-circle',
-            titleKey: 'HELP',
+            title: 'Help',
             disabled: false,
             command: 'help',
             positionOrder: 90,
-            cssClass: 'bold',     // container css class
-            textCssClass: 'blue'  // just the text css class
+            cssClass: 'bold', // container css class
+            textCssClass: 'blue', // just the text css class
           },
           // you can pass divider as a string or an object with a boolean (if sorting by position, then use the object)
           // note you should use the "divider" string only when items array is already sorted and positionOrder are not specified
@@ -140,7 +140,7 @@ export class Example9 {
             title: 'Command 2',
             command: 'command2',
             positionOrder: 92,
-            cssClass: 'red',        // container css class
+            cssClass: 'red', // container css class
             textCssClass: 'italic', // just the text css class
             action: (_e, args) => alert(args.command),
             itemVisibilityOverride: () => {
@@ -155,38 +155,55 @@ export class Example9 {
             title: 'Disabled command',
             disabled: true,
             command: 'disabled-command',
-            positionOrder: 98
+            positionOrder: 98,
           },
           { command: '', divider: true, positionOrder: 98 },
           {
             // we can also have multiple nested sub-menus
-            command: 'export', title: 'Exports', positionOrder: 99,
+            command: 'export',
+            title: 'Exports',
+            positionOrder: 99,
             commandItems: [
               { command: 'exports-txt', title: 'Text (tab delimited)' },
               {
-                command: 'sub-menu', title: 'Excel', cssClass: 'green', subMenuTitle: 'available formats', subMenuTitleCssClass: 'text-italic orange',
+                command: 'sub-menu',
+                title: 'Excel',
+                cssClass: 'green',
+                subMenuTitle: 'available formats',
+                subMenuTitleCssClass: 'text-italic orange',
                 commandItems: [
                   { command: 'exports-csv', title: 'Excel (csv)' },
                   { command: 'exports-xlsx', title: 'Excel (xlsx)' },
-                ]
-              }
-            ]
+                ],
+              },
+            ],
           },
           {
-            command: 'feedback', title: 'Feedback', positionOrder: 100,
+            command: 'feedback',
+            title: 'Feedback',
+            positionOrder: 100,
             commandItems: [
-              { command: 'request-update', title: 'Request update from supplier', iconCssClass: 'mdi mdi-star', tooltip: 'this will automatically send an alert to the shipping team to contact the user for an update' },
+              {
+                command: 'request-update',
+                title: 'Request update from supplier',
+                iconCssClass: 'mdi mdi-star',
+                tooltip: 'this will automatically send an alert to the shipping team to contact the user for an update',
+              },
               'divider',
               {
-                command: 'sub-menu', title: 'Contact Us', iconCssClass: 'mdi mdi-account', subMenuTitle: 'contact us...', subMenuTitleCssClass: 'italic',
+                command: 'sub-menu',
+                title: 'Contact Us',
+                iconCssClass: 'mdi mdi-account',
+                subMenuTitle: 'contact us...',
+                subMenuTitleCssClass: 'italic',
                 commandItems: [
                   { command: 'contact-email', title: 'Email us', iconCssClass: 'mdi mdi-pencil-outline' },
                   { command: 'contact-chat', title: 'Chat with us', iconCssClass: 'mdi mdi-message-text-outline' },
                   { command: 'contact-meeting', title: 'Book an appointment', iconCssClass: 'mdi mdi-coffee' },
-                ]
-              }
-            ]
-          }
+                ],
+              },
+            ],
+          },
         ],
         // you can use the "action" callback and/or use "onCallback" callback from the grid options, they both have the same arguments
         onCommand: (_e: Event, args: any) => {
@@ -202,7 +219,7 @@ export class Example9 {
         },
         onColumnsChanged: (_e, args) => {
           console.log('Column selection changed from Grid Menu, visible columns: ', args.visibleColumns);
-        }
+        },
       },
     };
   }
@@ -219,7 +236,7 @@ export class Example9 {
         percentComplete: Math.round(Math.random() * 100),
         start: '01/01/2009',
         finish: '01/05/2009',
-        completed: (i % 5 === 0)
+        completed: i % 5 === 0,
       };
     }
     this.dataset = mockDataset;
@@ -240,6 +257,13 @@ export class Example9 {
       // for example we want to align our external button on the right without affecting the menu within the grid which will stay aligned on the left
       gridMenuInstance.showGridMenu(e, { dropSide: 'right' });
     }
+  }
+
+  toggleSubTitle() {
+    this.hideSubTitle = !this.hideSubTitle;
+    const action = this.hideSubTitle ? 'add' : 'remove';
+    document.querySelector('.subtitle')?.classList[action]('hidden');
+    this.aureliaGrid.resizerService.resizeGrid(0);
   }
 
   private isObjectEmpty(obj: any) {

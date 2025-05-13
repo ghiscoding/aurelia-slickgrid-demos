@@ -1,13 +1,5 @@
-import {
-  type AureliaGridInstance,
-  type Column,
-  Editors,
-  FieldType,
-  Formatters,
-  type GridOption,
-} from 'aurelia-slickgrid';
+import { type AureliaGridInstance, type Column, Editors, Formatters, type GridOption } from 'aurelia-slickgrid';
 import { SlickCustomTooltip } from '@slickgrid-universal/custom-tooltip-plugin';
-// import { TOptions as I18NOptions } from 'i18next';
 
 import './example35.scss';
 
@@ -19,6 +11,7 @@ export class Example35 {
   columnDefinitions!: Column[];
   dataset!: any[];
   fetchResult = '';
+  hideSubTitle = false;
   statusClass = 'alert alert-light';
   statusStyle = 'display: none';
 
@@ -31,7 +24,6 @@ export class Example35 {
     // mock some data (different in each dataset)
     this.dataset = this.getData(NB_ITEMS);
   }
-
   aureliaGridReady(aureliaGrid: AureliaGridInstance) {
     this.aureliaGrid = aureliaGrid;
   }
@@ -55,7 +47,7 @@ export class Example35 {
         sortable: true,
         minWidth: 100,
         filterable: true,
-        type: FieldType.number,
+        type: 'number',
         editor: { model: Editors.text },
       },
       {
@@ -65,7 +57,7 @@ export class Example35 {
         sortable: true,
         minWidth: 100,
         filterable: true,
-        type: FieldType.number,
+        type: 'number',
         editor: { model: Editors.text },
       },
       {
@@ -132,12 +124,13 @@ export class Example35 {
             method: 'POST',
             body: JSON.stringify({ effortDriven, percentComplete, finish, start, duration, title }),
             headers: {
-              'Content-type': 'application/json; charset=UTF-8'
-            }
-          }).catch(err => {
-            console.error(err);
-            return false;
+              'Content-type': 'application/json; charset=UTF-8',
+            },
           })
+            .catch((err) => {
+              console.error(err);
+              return false;
+            })
             .then((response: any) => {
               if (response === false) {
                 this.statusClass = 'alert alert-danger';
@@ -147,14 +140,15 @@ export class Example35 {
                 return response!.json();
               }
             })
-            .then(json => {
+            .then((json) => {
               this.statusStyle = 'display: block';
               this.statusClass = 'alert alert-success';
               this.fetchResult = json.message;
               return true;
             });
         },
-        actionColumnConfig: { // override the defaults of the action column
+        actionColumnConfig: {
+          // override the defaults of the action column
           width: 100,
           minWidth: 100,
           maxWidth: 100,
@@ -228,13 +222,23 @@ export class Example35 {
     this.aureliaGrid.slickGrid.setOptions(gridOptions);
     this.gridOptions = this.aureliaGrid.slickGrid.getOptions();
   }
+
+  toggleSubTitle() {
+    this.hideSubTitle = !this.hideSubTitle;
+    const action = this.hideSubTitle ? 'add' : 'remove';
+    document.querySelector('.subtitle')?.classList[action]('hidden');
+    this.aureliaGrid.resizerService.resizeGrid(0);
+  }
 }
 
 function fakeFetch(_input: string | URL | Request, _init?: RequestInit | undefined): Promise<Response> {
   return new Promise((resolve) => {
-    setTimeout(() => {
-      resolve(new Response(JSON.stringify({ status: 200, message: 'success' })));
-      // reduces the delay for automated Cypress tests
-    }, (window as any).Cypress ? 10 : 500);
+    window.setTimeout(
+      () => {
+        resolve(new Response(JSON.stringify({ status: 200, message: 'success' })));
+        // reduces the delay for automated Cypress tests
+      },
+      (window as any).Cypress ? 10 : 500
+    );
   });
 }

@@ -11,7 +11,6 @@ import {
   type CompositeEditorModalType,
   type EditCommand,
   Editors,
-  FieldType,
   Filters,
   formatNumber,
   type Formatter,
@@ -25,6 +24,7 @@ import {
   SortComparers,
   type VanillaCalendarOption,
 } from 'aurelia-slickgrid';
+
 import './example30.scss'; // provide custom CSS/SASS styling
 
 const NB_ITEMS = 500;
@@ -64,13 +64,17 @@ function checkItemIsEditable(dataContext: any, columnDef: Column, grid: SlickGri
 const customEditableInputFormatter: Formatter = (_row, _cell, value, columnDef, _dataContext, grid) => {
   const gridOptions = grid.getOptions() as GridOption;
   const isEditableLine = gridOptions.editable && columnDef.editor;
-  value = (value === null || value === undefined) ? '' : value;
+  value = value === null || value === undefined ? '' : value;
   return isEditableLine ? { text: value, addClasses: 'editable-field', toolTip: 'Click to Edit' } : value;
 };
 
 // you can create custom validator to pass to an inline editor
 const myCustomTitleValidator = (value: any, args: any) => {
-  if ((value === null || value === undefined || !value.length) && (args.compositeEditorOptions && args.compositeEditorOptions.modalType === 'create' || args.compositeEditorOptions.modalType === 'edit')) {
+  if (
+    (value === null || value === undefined || !value.length) &&
+    ((args.compositeEditorOptions && args.compositeEditorOptions.modalType === 'create') ||
+      args.compositeEditorOptions.modalType === 'edit')
+  ) {
     // we will only check if the field is supplied when it's an inline editing OR a composite editor of type create/edit
     return { valid: false, msg: 'This is a required field.' };
   } else if (!/^(task\s\d+)*$/i.test(value)) {
@@ -92,6 +96,7 @@ export class Example30 {
   dataset: any[] = [];
   editQueue: any[] = [];
   editedItems: any = {};
+  hideSubTitle = false;
   isGridEditable = true;
   isCompositeDisabled = false;
   isMassSelectionDisabled = true;
@@ -127,55 +132,92 @@ export class Example30 {
   defineGrids() {
     this.columnDefinitions = [
       {
-        id: 'title', name: '<span title="Task must always be followed by a number" class="text-warning mdi mdi-alert-outline"></span> Title <span title="Title is always rendered as UPPERCASE" class="mdi mdi-information-outline"></span>',
-        field: 'title', sortable: true, type: FieldType.string, minWidth: 75,
-        cssClass: 'text-uppercase fw-bold', columnGroup: 'Common Factor',
-        filterable: true, filter: { model: Filters.compoundInputText },
+        id: 'title',
+        name: '<span title="Task must always be followed by a number" class="text-warning mdi mdi-alert-outline"></span> Title <span title="Title is always rendered as UPPERCASE" class="mdi mdi-information-outline"></span>',
+        field: 'title',
+        sortable: true,
+        minWidth: 75,
+        cssClass: 'text-uppercase fw-bold',
+        columnGroup: 'Common Factor',
+        filterable: true,
+        filter: { model: Filters.compoundInputText },
         editor: {
-          model: Editors.longText, massUpdate: false, required: true, alwaysSaveOnEnterKey: true,
+          model: Editors.longText,
+          massUpdate: false,
+          required: true,
+          alwaysSaveOnEnterKey: true,
           maxLength: 12,
-          editorOptions: {
+          options: {
             cols: 45,
             rows: 6,
             buttonTexts: {
               cancel: 'Close',
-              save: 'Done'
-            }
+              save: 'Done',
+            },
           } as LongTextEditorOption,
           validator: myCustomTitleValidator,
         },
       },
       {
-        id: 'duration', name: 'Duration', field: 'duration', sortable: true, filterable: true, minWidth: 75,
-        type: FieldType.number, columnGroup: 'Common Factor',
+        id: 'duration',
+        name: 'Duration',
+        field: 'duration',
+        sortable: true,
+        filterable: true,
+        minWidth: 75,
+        type: 'number',
+        columnGroup: 'Common Factor',
         formatter: (_row, _cell, value) => {
           if (value === null || value === undefined || value === '') {
             return '';
           }
           return value > 1 ? `${value} days` : `${value} day`;
         },
-        editor: { model: Editors.float, massUpdate: true, decimal: 2, valueStep: 1, minValue: 0, maxValue: 10000, alwaysSaveOnEnterKey: true, required: true },
+        editor: {
+          model: Editors.float,
+          massUpdate: true,
+          decimal: 2,
+          valueStep: 1,
+          minValue: 0,
+          maxValue: 10000,
+          alwaysSaveOnEnterKey: true,
+          required: true,
+        },
       },
       {
-        id: 'cost', name: 'Cost', field: 'cost', width: 90, minWidth: 70,
-        sortable: true, filterable: true, type: FieldType.number, columnGroup: 'Analysis',
+        id: 'cost',
+        name: 'Cost',
+        field: 'cost',
+        width: 90,
+        minWidth: 70,
+        sortable: true,
+        filterable: true,
+        type: 'number',
+        columnGroup: 'Analysis',
         filter: { model: Filters.compoundInputNumber },
         formatter: Formatters.dollar,
       },
       {
-        id: 'percentComplete', name: '% Complete', field: 'percentComplete', minWidth: 100,
-        type: FieldType.number,
-        sortable: true, filterable: true, columnGroup: 'Analysis',
+        id: 'percentComplete',
+        name: '% Complete',
+        field: 'percentComplete',
+        minWidth: 100,
+        type: 'number',
+        sortable: true,
+        filterable: true,
+        columnGroup: 'Analysis',
         filter: { model: Filters.compoundSlider, operator: '>=' },
         editor: {
           model: Editors.slider,
-          massUpdate: true, minValue: 0, maxValue: 100,
+          massUpdate: true,
+          minValue: 0,
+          maxValue: 100,
         },
-        customTooltip: { position: 'center' }
+        customTooltip: { position: 'center' },
       },
       // {
       //   id: 'percentComplete2', name: '% Complete', field: 'analysis.percentComplete', minWidth: 100,
-      //   type: FieldType.number,
+      //   type: 'number',
       //   sortable: true, filterable: true, columnGroup: 'Analysis',
       //   // filter: { model: Filters.compoundSlider, operator: '>=' },
       //   formatter: Formatters.complex,
@@ -199,81 +241,116 @@ export class Example30 {
       //   },
       // },
       {
-        id: 'complexity', name: 'Complexity', field: 'complexity', minWidth: 100,
-        type: FieldType.number,
-        sortable: true, filterable: true, columnGroup: 'Analysis',
+        id: 'complexity',
+        name: 'Complexity',
+        field: 'complexity',
+        minWidth: 100,
+        type: 'number',
+        sortable: true,
+        filterable: true,
+        columnGroup: 'Analysis',
         formatter: (_row, _cell, value) => this.complexityLevelList[value]?.label,
         exportCustomFormatter: (_row, _cell, value) => this.complexityLevelList[value]?.label,
         filter: {
           model: Filters.multipleSelect,
-          collection: this.complexityLevelList
+          collection: this.complexityLevelList,
         },
         editor: {
           model: Editors.singleSelect,
           collection: this.complexityLevelList,
-          massUpdate: true
+          massUpdate: true,
         },
       },
       {
-        id: 'start', name: 'Start', field: 'start', sortable: true, minWidth: 100,
-        formatter: Formatters.dateUs, columnGroup: 'Period',
+        id: 'start',
+        name: 'Start',
+        field: 'start',
+        sortable: true,
+        minWidth: 100,
+        formatter: Formatters.dateUs,
+        columnGroup: 'Period',
         exportCustomFormatter: Formatters.dateUs,
-        type: FieldType.date, outputType: FieldType.dateUs, saveOutputType: FieldType.dateUtc,
-        filterable: true, filter: { model: Filters.compoundDate },
-        editor: { model: Editors.date, massUpdate: true, editorOptions: { hideClearButton: false } },
+        type: 'date',
+        outputType: 'dateUs',
+        saveOutputType: 'dateUtc',
+        filterable: true,
+        filter: { model: Filters.compoundDate },
+        editor: { model: Editors.date, massUpdate: true, options: { hideClearButton: false } },
       },
       {
-        id: 'completed', name: 'Completed', field: 'completed', width: 80, minWidth: 75, maxWidth: 100,
-        sortable: true, filterable: true, columnGroup: 'Period',
-        cssClass: 'text-center', formatter: Formatters.checkmarkMaterial,
+        id: 'completed',
+        name: 'Completed',
+        field: 'completed',
+        width: 80,
+        minWidth: 75,
+        maxWidth: 100,
+        sortable: true,
+        filterable: true,
+        columnGroup: 'Period',
+        cssClass: 'text-center',
+        formatter: Formatters.checkmarkMaterial,
         exportWithFormatter: false,
         filter: {
-          collection: [{ value: '', label: '' }, { value: true, label: 'True' }, { value: false, label: 'False' }],
-          model: Filters.singleSelect
+          collection: [
+            { value: '', label: '' },
+            { value: true, label: 'True' },
+            { value: false, label: 'False' },
+          ],
+          model: Filters.singleSelect,
         },
-        editor: { model: Editors.checkbox, massUpdate: true, },
+        editor: { model: Editors.checkbox, massUpdate: true },
         // editor: { model: Editors.singleSelect, collection: [{ value: true, label: 'Yes' }, { value: false, label: 'No' }], },
       },
       {
-        id: 'finish', name: 'Finish', field: 'finish', sortable: true, minWidth: 100,
-        formatter: Formatters.dateUs, columnGroup: 'Period',
-        type: FieldType.date, outputType: FieldType.dateUs, saveOutputType: FieldType.dateUtc,
-        filterable: true, filter: { model: Filters.compoundDate },
+        id: 'finish',
+        name: 'Finish',
+        field: 'finish',
+        sortable: true,
+        minWidth: 100,
+        formatter: Formatters.dateUs,
+        columnGroup: 'Period',
+        type: 'date',
+        outputType: 'dateUs',
+        saveOutputType: 'dateUtc',
+        filterable: true,
+        filter: { model: Filters.compoundDate },
         exportCustomFormatter: Formatters.dateUs,
         editor: {
           model: Editors.date,
-          editorOptions: {
-            range: { min: 'today' },
+          options: {
+            displayDateMin: 'today',
 
             // if we want to preload the date picker with a different date,
             // we could do it by assigning settings.seleted.dates
             // NOTE: vanilla-calendar doesn't automatically focus the picker to the year/month and you need to do it yourself
-            // selected: {
-            //   dates: ['2021-06-04'],
-            //   month: 6 - 1, // Note: JS Date month (only) is zero index based, so June is 6-1 => 5
-            //   year: 2021
+            // selectedDates: ['2021-06-04'],
+            // selectedMonth: 6 - 1, // Note: JS Date month (only) is zero index based, so June is 6-1 => 5
+            // selectedYear: 2021
             // }
           } as VanillaCalendarOption,
           massUpdate: true,
           validator: (value, args) => {
             const dataContext = args?.item;
-            if (dataContext && (dataContext.completed && !value)) {
+            if (dataContext && dataContext.completed && !value) {
               return { valid: false, msg: 'You must provide a "Finish" date when "Completed" is checked.' };
             }
             return { valid: true, msg: '' };
-          }
+          },
         },
       },
       {
-        id: 'product', name: 'Product', field: 'product',
-        filterable: true, columnGroup: 'Item',
+        id: 'product',
+        name: 'Product',
+        field: 'product',
+        filterable: true,
+        columnGroup: 'Item',
         minWidth: 100,
         exportWithFormatter: true,
         dataKey: 'id',
         labelKey: 'itemName',
         formatter: Formatters.complexObject,
         exportCustomFormatter: Formatters.complex, // without the Editing cell Formatter
-        type: FieldType.object,
+        type: 'object',
         sortComparer: SortComparers.objectString,
         editor: {
           model: Editors.autocompleter,
@@ -281,11 +358,11 @@ export class Example30 {
           massUpdate: true,
 
           // example with a Remote API call
-          editorOptions: {
+          options: {
             minLength: 1,
             fetch: (searchTerm: string, callback: (items: false | any[]) => void) => {
               const products = this.mockProducts();
-              callback(products.filter(product => product.itemName.toLowerCase().includes(searchTerm.toLowerCase())));
+              callback(products.filter((product) => product.itemName.toLowerCase().includes(searchTerm.toLowerCase())));
             },
             renderItem: {
               // layout: 'twoRows',
@@ -299,17 +376,19 @@ export class Example30 {
         filter: {
           model: Filters.inputText,
           // placeholder: '🔎︎ search product',
-          type: FieldType.string,
           queryField: 'product.itemName',
-        }
+        },
       },
       {
-        id: 'origin', name: 'Country of Origin', field: 'origin',
-        formatter: Formatters.complexObject, columnGroup: 'Item',
+        id: 'origin',
+        name: 'Country of Origin',
+        field: 'origin',
+        formatter: Formatters.complexObject,
+        columnGroup: 'Item',
         exportCustomFormatter: Formatters.complex, // without the Editing cell Formatter
         dataKey: 'code',
         labelKey: 'name',
-        type: FieldType.object,
+        type: 'object',
         sortComparer: SortComparers.objectString,
         filterable: true,
         sortable: true,
@@ -319,18 +398,23 @@ export class Example30 {
           massUpdate: true,
           customStructure: { label: 'name', value: 'code' },
           collectionAsync: this.http.fetch(URL_COUNTRIES_COLLECTION),
-          editorOptions: { minLength: 0 }
+          options: { minLength: 0 },
         },
         filter: {
           model: Filters.inputText,
-          type: 'string',
           queryField: 'origin.name',
-        }
+        },
       },
       {
-        id: 'action', name: 'Action', field: 'action', width: 70, minWidth: 70, maxWidth: 70,
+        id: 'action',
+        name: 'Action',
+        field: 'action',
+        width: 70,
+        minWidth: 70,
+        maxWidth: 70,
         excludeFromExport: true,
-        formatter: () => `<div class="button-style margin-auto" style="width: 35px;"><span class="mdi mdi-chevron-down text-primary"></span></div>`,
+        formatter: () =>
+          `<div class="button-style margin-auto" style="width: 35px;"><span class="mdi mdi-chevron-down text-primary"></span></div>`,
         cellMenu: {
           hideCloseButton: false,
           commandTitle: 'Commands',
@@ -351,8 +435,12 @@ export class Example30 {
             },
             'divider',
             {
-              command: 'delete-row', title: 'Delete Row', positionOrder: 64,
-              iconCssClass: 'mdi mdi-close color-danger', cssClass: 'red', textCssClass: 'text-italic color-danger-light',
+              command: 'delete-row',
+              title: 'Delete Row',
+              positionOrder: 64,
+              iconCssClass: 'mdi mdi-close color-danger',
+              cssClass: 'red',
+              textCssClass: 'text-italic color-danger-light',
               // only show command to 'Delete Row' when the task is not completed
               itemVisibilityOverride: (args) => {
                 return !args.dataContext?.completed;
@@ -363,10 +451,10 @@ export class Example30 {
                 if (confirm(`Do you really want to delete row (${row + 1}) with "${dataContext.title}"`)) {
                   this.aureliaGrid.gridService.deleteItemById(dataContext.id);
                 }
-              }
+              },
             },
           ],
-        }
+        },
       },
     ];
 
@@ -380,7 +468,7 @@ export class Example30 {
       autoAddCustomEditorFormatter: customEditableInputFormatter,
       autoResize: {
         container: '#demo-container',
-        rightPadding: 10
+        rightPadding: 10,
       },
       darkMode: this._darkMode,
       enableAutoSizeColumns: true,
@@ -389,17 +477,17 @@ export class Example30 {
       enablePagination: true,
       pagination: {
         pageSize: 10,
-        pageSizes: [10, 200, 250, 500, 5000]
+        pageSizes: [10, 200, 250, 500, 5000],
       },
       enableExcelExport: true,
       excelExportOptions: {
-        exportWithFormatter: false
+        exportWithFormatter: false,
       },
       externalResources: [new ExcelExportService(), new SlickCustomTooltip(), this.compositeEditorInstance],
       enableFiltering: true,
       rowSelectionOptions: {
         // True (Single Selection), False (Multiple Selections)
-        selectActiveRow: false
+        selectActiveRow: false,
       },
       createPreHeaderPanel: true,
       showPreHeaderPanel: true,
@@ -414,7 +502,9 @@ export class Example30 {
       enableCompositeEditor: true,
       editCommandHandler: (item, column, editCommand) => {
         // composite editors values are saved as array, so let's convert to array in any case and we'll loop through these values
-        const prevSerializedValues = Array.isArray(editCommand.prevSerializedValue) ? editCommand.prevSerializedValue : [editCommand.prevSerializedValue];
+        const prevSerializedValues = Array.isArray(editCommand.prevSerializedValue)
+          ? editCommand.prevSerializedValue
+          : [editCommand.prevSerializedValue];
         const serializedValues = Array.isArray(editCommand.serializedValue) ? editCommand.serializedValue : [editCommand.serializedValue];
         const editorColumns = this.columnDefinitions.filter((col) => col.editor !== undefined);
 
@@ -451,8 +541,8 @@ export class Example30 {
             this._darkMode = !this._darkMode; // keep local toggle var in sync
             this.toggleBodyBackground();
           }
-        }
-      }
+        },
+      },
     };
   }
 
@@ -462,11 +552,11 @@ export class Example30 {
     for (let i = 0; i < count; i++) {
       const randomItemId = Math.floor(Math.random() * this.mockProducts().length);
       const randomYear = 2000 + Math.floor(Math.random() * 10);
-      const randomFinishYear = (new Date().getFullYear()) + Math.floor(Math.random() * 10); // use only years not lower than 3 years ago
+      const randomFinishYear = new Date().getFullYear() + Math.floor(Math.random() * 10); // use only years not lower than 3 years ago
       const randomMonth = Math.floor(Math.random() * 11);
-      const randomDay = Math.floor((Math.random() * 29));
-      const randomTime = Math.floor((Math.random() * 59));
-      const randomFinish = new Date(randomFinishYear, (randomMonth + 1), randomDay, randomTime, randomTime, randomTime);
+      const randomDay = Math.floor(Math.random() * 29);
+      const randomTime = Math.floor(Math.random() * 59);
+      const randomFinish = new Date(randomFinishYear, randomMonth + 1, randomDay, randomTime, randomTime, randomTime);
       const randomPercentComplete = Math.floor(Math.random() * 100) + 15; // make it over 15 for E2E testing purposes
       const percentCompletion = randomPercentComplete > 100 ? (i > 5 ? 100 : 88) : randomPercentComplete; // don't use 100 unless it's over index 5, for E2E testing purposes
       const isCompleted = percentCompletion === 100;
@@ -481,11 +571,11 @@ export class Example30 {
         },
         complexity: i % 3 ? 0 : 2,
         start: new Date(randomYear, randomMonth, randomDay, randomDay, randomTime, randomTime, randomTime),
-        finish: (isCompleted || (i % 3 === 0 && (randomFinish > new Date() && i > 3)) ? (isCompleted ? new Date() : randomFinish) : ''), // make sure the random date is earlier than today and it's index is bigger than 3
-        cost: (i % 33 === 0) ? null : Math.round(Math.random() * 10000) / 100,
-        completed: (isCompleted || (i % 3 === 0 && (randomFinish > new Date() && i > 3))),
-        product: { id: this.mockProducts()[randomItemId]?.id, itemName: this.mockProducts()[randomItemId]?.itemName, },
-        origin: (i % 2) ? { code: 'CA', name: 'Canada' } : { code: 'US', name: 'United States' },
+        finish: isCompleted || (i % 3 === 0 && randomFinish > new Date() && i > 3) ? (isCompleted ? new Date() : randomFinish) : '', // make sure the random date is earlier than today and it's index is bigger than 3
+        cost: i % 33 === 0 ? null : Math.round(Math.random() * 10000) / 100,
+        completed: (isCompleted && i > 5) || (i % 3 === 0 && randomFinish > new Date() && i > 3),
+        product: { id: this.mockProducts()[randomItemId]?.id, itemName: this.mockProducts()[randomItemId]?.itemName },
+        origin: i % 2 ? { code: 'CA', name: 'Canada' } : { code: 'US', name: 'United States' },
       };
 
       if (!(i % 8)) {
@@ -507,7 +597,7 @@ export class Example30 {
   handleValidationError(e: Event, args: any) {
     if (args.validationResults) {
       let errorMsg = args.validationResults.msg || '';
-      if (args.editor && (args.editor instanceof SlickCompositeEditor)) {
+      if (args.editor && args.editor instanceof SlickCompositeEditor) {
         if (args.validationResults.errors) {
           errorMsg += '\n';
           for (const error of args.validationResults.errors) {
@@ -582,11 +672,13 @@ export class Example30 {
       // this.compositeEditorInstance.changeFormInputValue('cost', 9999.99, true);
     }
 
-    // you can also change some editor options (not all Editors supports this functionality, so far only these Editors AutoComplete, Date MultipleSelect & SingleSelect)
+    // you can also change some editor options
+    // not all Editors supports this functionality, so far only these Editors are supported are: Date, Single/Multiple Select, Slider
     /*
     if (columnDef.id === 'completed') {
-      this.compositeEditorInstance.changeFormEditorOption('percentComplete', 'filter', formValues.completed);
-      this.compositeEditorInstance.changeFormEditorOption('product', 'minLength', 3);
+      this.compositeEditorInstance.changeFormEditorOption('complexity', 'filter', true); // multiple-select dropdown editor
+      this.compositeEditorInstance.changeFormEditorOption('percentComplete', 'hideSliderNumber', formValues['completed']); // slider editor
+      this.compositeEditorInstance.changeFormEditorOption('finish', 'displayDateMin', 'today'); // calendar picker, change minDate to today
     }
     */
   }
@@ -649,7 +741,7 @@ export class Example30 {
         // when processing a mass update or mass selection
         if (modalType === 'mass-update' || modalType === 'mass-selection') {
           return new Promise((resolve, reject) => {
-            setTimeout(() => {
+            window.setTimeout(() => {
               if (formValues.percentComplete >= 50) {
                 resolve(true);
               } else {
@@ -662,9 +754,9 @@ export class Example30 {
           // we'll just apply the change without any rejection from the server and
           // note that we also have access to the "dataContext" which is only available for these modal
           console.log(`${modalType} item data context`, dataContext);
-          return new Promise(resolve => setTimeout(() => resolve(true), serverResponseDelay));
+          return new Promise((resolve) => window.setTimeout(() => resolve(true), serverResponseDelay));
         }
-      }
+      },
     });
   }
 
@@ -702,7 +794,7 @@ export class Example30 {
     // remove unsaved css class from that cell
     const cssStyleKey = `unsaved_highlight_${[column.id]}${row}`;
     this.aureliaGrid.slickGrid.removeCellCssStyles(cssStyleKey);
-    const foundIdx = this.cellCssStyleQueue.findIndex(styleKey => styleKey === cssStyleKey);
+    const foundIdx = this.cellCssStyleQueue.findIndex((styleKey) => styleKey === cssStyleKey);
     if (foundIdx >= 0) {
       this.cellCssStyleQueue.splice(foundIdx, 1);
     }
@@ -769,7 +861,6 @@ export class Example30 {
       }
       this.aureliaGrid.slickGrid.invalidate();
 
-
       // optionally open the last cell editor associated
       if (showLastEditor) {
         this.aureliaGrid.slickGrid.gotoCell(lastEditCommand.row, lastEditCommand.cell, false);
@@ -802,7 +893,7 @@ export class Example30 {
         listPrice: 2100.23,
         itemTypeName: 'I',
         image: 'http://i.stack.imgur.com/pC1Tv.jpg',
-        icon: this.getRandomIcon(0)
+        icon: this.getRandomIcon(0),
       },
       {
         id: 1,
@@ -811,16 +902,16 @@ export class Example30 {
         listPrice: 3200.12,
         itemTypeName: 'I',
         image: 'https://i.imgur.com/Fnm7j6h.jpg',
-        icon: this.getRandomIcon(1)
+        icon: this.getRandomIcon(1),
       },
       {
         id: 2,
         itemName: 'Awesome Wooden Mouse',
         itemNameTranslated: 'super old mouse',
-        listPrice: 15.00,
+        listPrice: 15.0,
         itemTypeName: 'I',
         image: 'https://i.imgur.com/RaVJuLr.jpg',
-        icon: this.getRandomIcon(2)
+        icon: this.getRandomIcon(2),
       },
       {
         id: 3,
@@ -829,7 +920,7 @@ export class Example30 {
         listPrice: 25.76,
         itemTypeName: 'I',
         image: 'http://i.stack.imgur.com/pC1Tv.jpg',
-        icon: this.getRandomIcon(3)
+        icon: this.getRandomIcon(3),
       },
       {
         id: 4,
@@ -838,7 +929,7 @@ export class Example30 {
         listPrice: 13.35,
         itemTypeName: 'I',
         image: 'https://i.imgur.com/Fnm7j6h.jpg',
-        icon: this.getRandomIcon(4)
+        icon: this.getRandomIcon(4),
       },
       {
         id: 5,
@@ -847,7 +938,7 @@ export class Example30 {
         listPrice: 23.33,
         itemTypeName: 'I',
         image: 'https://i.imgur.com/RaVJuLr.jpg',
-        icon: this.getRandomIcon(5)
+        icon: this.getRandomIcon(5),
       },
       {
         id: 6,
@@ -856,7 +947,7 @@ export class Example30 {
         listPrice: 71.21,
         itemTypeName: 'I',
         image: 'http://i.stack.imgur.com/pC1Tv.jpg',
-        icon: this.getRandomIcon(6)
+        icon: this.getRandomIcon(6),
       },
       {
         id: 7,
@@ -865,7 +956,7 @@ export class Example30 {
         listPrice: 2.43,
         itemTypeName: 'I',
         image: 'https://i.imgur.com/Fnm7j6h.jpg',
-        icon: this.getRandomIcon(7)
+        icon: this.getRandomIcon(7),
       },
       {
         id: 8,
@@ -874,7 +965,7 @@ export class Example30 {
         listPrice: 31288.39,
         itemTypeName: 'I',
         image: 'https://i.imgur.com/RaVJuLr.jpg',
-        icon: this.getRandomIcon(8)
+        icon: this.getRandomIcon(8),
       },
     ];
   }
@@ -934,7 +1025,7 @@ export class Example30 {
       'mdi-table-refresh',
       'mdi-undo',
     ];
-    const randomNumber = Math.floor((Math.random() * icons.length - 1));
+    const randomNumber = Math.floor(Math.random() * icons.length - 1);
     return icons[iconIndex ?? randomNumber];
   }
 
@@ -942,11 +1033,11 @@ export class Example30 {
     return `<div class="autocomplete-container-list">
       <div class="autocomplete-left">
         <!--<img src="http://i.stack.imgur.com/pC1Tv.jpg" width="50" />-->
-        <span class="fa ${item.icon}"></span>
+        <span class="mdi ${item.icon}"></span>
       </div>
       <div>
         <span class="autocomplete-top-left">
-          <span class="fa ${item.itemTypeName === 'I' ? 'mdi-information-outline' : 'mdi-content-copy'}"></span>
+          <span class="mdi ${item.itemTypeName === 'I' ? 'mdi-information-outline' : 'mdi-content-copy'}"></span>
           ${item.itemName}
         </span>
       <div>
@@ -960,11 +1051,11 @@ export class Example30 {
     return `<div class="autocomplete-container-list">
           <div class="autocomplete-left">
             <!--<img src="http://i.stack.imgur.com/pC1Tv.jpg" width="50" />-->
-            <span class="fa ${item.icon}"></span>
+            <span class="mdi ${item.icon}"></span>
           </div>
           <div>
             <span class="autocomplete-top-left">
-              <span class="fa ${item.itemTypeName === 'I' ? 'mdi-information-outline' : 'mdi-content-copy'}"></span>
+              <span class="mdi ${item.itemTypeName === 'I' ? 'mdi-information-outline' : 'mdi-content-copy'}"></span>
               ${item.itemName}
             </span>
             <span class="autocomplete-top-right">${formatNumber(item.listPrice, 2, 2, false, '$')}</span>
@@ -974,5 +1065,12 @@ export class Example30 {
           <div class="autocomplete-bottom-left">${item.itemNameTranslated}</div>
           <span class="autocomplete-bottom-right">Type: <b>${item.itemTypeName === 'I' ? 'Item' : item.itemTypeName === 'C' ? 'PdCat' : 'Cat'}</b></span>
         </div>`;
+  }
+
+  toggleSubTitle() {
+    this.hideSubTitle = !this.hideSubTitle;
+    const action = this.hideSubTitle ? 'add' : 'remove';
+    document.querySelector('.subtitle')?.classList[action]('hidden');
+    this.aureliaGrid.resizerService.resizeGrid(0);
   }
 }

@@ -2,7 +2,6 @@ import {
   type AureliaGridInstance,
   type Column,
   Editors,
-  FieldType,
   Formatters,
   type GridOption,
   type GridService,
@@ -40,6 +39,7 @@ export class Example11 {
   columnDefinitions: Column[] = [];
   gridOptions!: GridOption;
   dataset: any[] = [];
+  hideSubTitle = false;
 
   constructor() {
     // define the grid options & columns and then create the grid itself
@@ -78,41 +78,48 @@ export class Example11 {
           if (confirm('Are you sure?')) {
             this.aureliaGrid.gridService.deleteItemById(args.dataContext.id);
           }
-        }
+        },
       },
       {
-        id: 'title', name: 'Title', field: 'title',
+        id: 'title',
+        name: 'Title',
+        field: 'title',
         sortable: true,
-        type: FieldType.string,
         editor: {
-          model: Editors.longText
-        }
+          model: Editors.longText,
+        },
       },
       {
-        id: 'duration', name: 'Duration (days)', field: 'duration',
+        id: 'duration',
+        name: 'Duration (days)',
+        field: 'duration',
         sortable: true,
-        type: FieldType.number,
+        type: 'number',
         editor: {
-          model: Editors.text
+          model: Editors.text,
         },
         onCellChange: (_e: Event, args: OnEventArgs) => {
           alert('onCellChange directly attached to the column definition');
           console.log(args);
-        }
+        },
       },
       {
-        id: 'complete', name: '% Complete', field: 'percentComplete',
+        id: 'complete',
+        name: '% Complete',
+        field: 'percentComplete',
         formatter: Formatters.percentCompleteBar,
-        type: FieldType.number,
+        type: 'number',
         editor: {
-          model: Editors.integer
-        }
+          model: Editors.integer,
+        },
       },
       {
-        id: 'start', name: 'Start', field: 'start',
+        id: 'start',
+        name: 'Start',
+        field: 'start',
         formatter: Formatters.dateIso,
         sortable: true,
-        type: FieldType.date,
+        type: 'date',
         /*
         editor: {
           model: Editors.date
@@ -120,30 +127,35 @@ export class Example11 {
         */
       },
       {
-        id: 'finish', name: 'Finish', field: 'finish',
-        formatter: Formatters.dateIso, sortable: true,
-        type: FieldType.date
+        id: 'finish',
+        name: 'Finish',
+        field: 'finish',
+        formatter: Formatters.dateIso,
+        sortable: true,
+        type: 'date',
       },
       {
-        id: 'effort-driven', name: 'Effort Driven', field: 'effortDriven',
+        id: 'effort-driven',
+        name: 'Effort Driven',
+        field: 'effortDriven',
         formatter: Formatters.checkmarkMaterial,
-        type: FieldType.number,
+        type: 'number',
         editor: {
-          model: Editors.checkbox
-        }
-      }
+          model: Editors.checkbox,
+        },
+      },
     ];
 
     this.gridOptions = {
       asyncEditorLoading: false,
       autoResize: {
         container: '#demo-container',
-        rightPadding: 10
+        rightPadding: 10,
       },
       editable: true,
       enableColumnPicker: true,
       enableCellNavigation: true,
-      enableRowSelection: true
+      enableRowSelection: true,
     };
   }
 
@@ -153,7 +165,7 @@ export class Example11 {
     for (let i = 0; i < itemCount; i++) {
       const randomYear = 2000 + Math.floor(Math.random() * 10);
       const randomMonth = Math.floor(Math.random() * 11);
-      const randomDay = Math.floor((Math.random() * 29));
+      const randomDay = Math.floor(Math.random() * 29);
       const randomPercent = Math.round(Math.random() * 100);
 
       mockedDataset[i] = {
@@ -163,8 +175,8 @@ export class Example11 {
         percentComplete: randomPercent,
         percentCompleteNumber: randomPercent,
         start: new Date(randomYear, randomMonth, randomDay),
-        finish: new Date(randomYear, (randomMonth + 1), randomDay),
-        effortDriven: (i % 5 === 0)
+        finish: new Date(randomYear, randomMonth + 1, randomDay),
+        effortDriven: i % 5 === 0,
       };
     }
     this.dataset = mockedDataset;
@@ -184,7 +196,7 @@ export class Example11 {
   createNewItem(incrementIdByHowMany = 1) {
     const dataset = this.aureliaGrid.dataView.getItems();
     let highestId = 0;
-    dataset.forEach(item => {
+    dataset.forEach((item) => {
       if (item.id > highestId) {
         highestId = item.id;
       }
@@ -192,7 +204,7 @@ export class Example11 {
     const newId = highestId + incrementIdByHowMany;
     const randomYear = 2000 + Math.floor(Math.random() * 10);
     const randomMonth = Math.floor(Math.random() * 11);
-    const randomDay = Math.floor((Math.random() * 29));
+    const randomDay = Math.floor(Math.random() * 29);
     const randomPercent = Math.round(Math.random() * 100);
 
     return {
@@ -202,8 +214,8 @@ export class Example11 {
       percentComplete: randomPercent,
       percentCompleteNumber: randomPercent,
       start: new Date(randomYear, randomMonth, randomDay),
-      finish: new Date(randomYear, (randomMonth + 2), randomDay),
-      effortDriven: true
+      finish: new Date(randomYear, randomMonth + 2, randomDay),
+      effortDriven: true,
     };
   }
 
@@ -232,7 +244,7 @@ export class Example11 {
     return (rowNumber: number) => {
       const item = this.dataView.getItem(rowNumber);
       let meta = {
-        cssClasses: ''
+        cssClasses: '',
       };
       if (typeof previousItemMetadata === 'object') {
         meta = previousItemMetadata(rowNumber);
@@ -272,5 +284,12 @@ export class Example11 {
 
   scrollGridTop() {
     this.aureliaGrid.slickGrid.navigateTop();
+  }
+
+  toggleSubTitle() {
+    this.hideSubTitle = !this.hideSubTitle;
+    const action = this.hideSubTitle ? 'add' : 'remove';
+    document.querySelector('.subtitle')?.classList[action]('hidden');
+    this.aureliaGrid.resizerService.resizeGrid(0);
   }
 }

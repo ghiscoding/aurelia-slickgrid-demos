@@ -7,7 +7,7 @@ export class Example17 {
   columnDefinitions: Column[] = [];
   gridOptions!: GridOption;
   gridCreated = false;
-  showSubTitle = true;
+  hideSubTitle = false;
   dataset: any[] = [];
   paginationPosition: 'bottom' | 'top' = 'top';
   templateUrl = `${sampleDataRoot}/users.csv`;
@@ -90,13 +90,7 @@ export class Example17 {
 
     this.dataset = outputData;
     this.columnDefinitions = colDefs;
-    console.log(this.columnDefinitions, this.dataset)
+    console.log(this.columnDefinitions, this.dataset);
     this.gridCreated = true;
-  }
-
-  toggleSubTitle() {
-    this.showSubTitle = !this.showSubTitle;
-    const action = this.showSubTitle ? 'remove' : 'add';
-    document.querySelector('.subtitle')?.classList[action]('hidden');
   }
 }

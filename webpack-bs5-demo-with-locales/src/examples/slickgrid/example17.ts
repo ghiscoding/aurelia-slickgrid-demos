@@ -90,7 +90,6 @@ export class Example17 {
 
     this.dataset = outputData;
     this.columnDefinitions = colDefs;
-    console.log(this.columnDefinitions, this.dataset)
     this.gridCreated = true;
   }
 

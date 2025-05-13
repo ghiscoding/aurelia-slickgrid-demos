@@ -7,7 +7,6 @@ import {
   type EditCommand,
   Editors,
   type EditorValidator,
-  FieldType,
   Filters,
   Formatters,
   type GridOption,
@@ -20,7 +19,7 @@ import {
 
 import { CustomInputEditor } from './custom-inputEditor';
 import { CustomInputFilter } from './custom-inputFilter';
-import fetchJsonp from '../jsonp';
+import fetchJsonp from './jsonp';
 
 const NB_ITEMS = 100;
 const URL_SAMPLE_COLLECTION_DATA = 'assets/data/collection_100_numbers.json';
@@ -32,14 +31,12 @@ const myCustomTitleValidator: EditorValidator = (value: any) => {
   // you can get the Editor Args which can be helpful, e.g. we can get the Translate Service from it
   // const grid = args && args.grid;
   // const gridOptions = grid.getOptions() as GridOption;
-  // const i18n = gridOptions.i18n;
 
   if (value === null || value === undefined || !value.length) {
     return { valid: false, msg: 'This is a required field' };
   } else if (!/^Task\s\d+$/.test(value)) {
     return { valid: false, msg: 'Your title is invalid, it must start with "Task" followed by a number' };
     // OR use the Translate Service with your custom message
-    // return { valid: false, msg: i18n.tr('YOUR_ERROR', { x: value }) };
   }
   return { valid: true, msg: '' };
 };
@@ -75,6 +72,7 @@ export class Example3 {
   columnDefinitions: Column[] = [];
   dataset: any[] = [];
   updatedObject: any;
+  hideSubTitle = false;
   isAutoEdit = true;
   alertWarning: any;
   duplicateTitleHeaderCount = 1;
@@ -108,8 +106,9 @@ export class Example3 {
           this.alertWarning = `Editing: ${args.dataContext.title}`;
           this.aureliaGrid.gridService.highlightRow(args.row, 1500);
           this.aureliaGrid.gridService.setSelectedRow(args.row);
-        }
-      }, {
+        },
+      },
+      {
         id: 'delete',
         field: 'id',
         excludeFromColumnPicker: true,
@@ -126,13 +125,13 @@ export class Example3 {
           this.alertWarning = `Deleting: ${args.dataContext.title}`;
         }
         */
-      }, {
+      },
+      {
         id: 'title',
         name: 'Title',
         field: 'title',
         filterable: true,
         sortable: true,
-        type: FieldType.string,
         editor: {
           model: Editors.longText,
           placeholder: 'something',
@@ -143,14 +142,14 @@ export class Example3 {
         onCellChange: (_e: Event, args: OnEventArgs) => {
           console.log(args);
           this.alertWarning = `Updated Title: ${args.dataContext.title}`;
-        }
-      }, {
+        },
+      },
+      {
         id: 'title2',
         name: 'Title, Custom Editor',
         field: 'title',
         filterable: true,
         sortable: true,
-        type: FieldType.string,
         editor: {
           model: CustomInputEditor,
           placeholder: 'custom',
@@ -160,24 +159,25 @@ export class Example3 {
           model: CustomInputFilter,
           placeholder: '🔎︎ custom',
         },
-        minWidth: 70
-      }, {
+        minWidth: 70,
+      },
+      {
         id: 'duration',
         name: 'Duration (days)',
         field: 'duration',
         filterable: true,
         minWidth: 100,
         sortable: true,
-        type: FieldType.number,
+        type: 'number',
         filter: {
           model: Filters.slider,
-          filterOptions: { hideSliderNumber: false }
+          options: { hideSliderNumber: false },
         },
         editor: {
           model: Editors.slider,
           minValue: 0,
           maxValue: 100,
-          // editorOptions: { hideSliderNumber: true },
+          // options: { hideSliderNumber: true },
         },
         /*
         editor: {
@@ -187,34 +187,39 @@ export class Example3 {
           minValue: 0,
           maxValue: 365,
           // the default validation error message is in English but you can override it by using "errorMessage"
-          // errorMessage: this.i18n.tr('INVALID_FLOAT', { maxDecimal: 2 }),
+          // errorMessage: 'invalid float maxDecimal: 2',
           params: { decimalPlaces: 2 },
         },
         */
-      }, {
+      },
+      {
         id: 'complete',
         name: '% Complete',
         field: 'percentComplete',
         filterable: true,
         formatter: Formatters.multiple,
-        type: FieldType.number,
+        type: 'number',
         editor: {
           // We can also add HTML text to be rendered (any bad script will be sanitized) but we have to opt-in, else it will be sanitized
           enableRenderHtml: true,
-          collection: Array.from(Array(101).keys()).map(k => ({ value: k, label: k, symbol: '<i class="mdi mdi-percent-outline" style="color:cadetblue"></i>' })),
+          collection: Array.from(Array(101).keys()).map((k) => ({
+            value: k,
+            label: k,
+            symbol: '<i class="mdi mdi-percent-outline" style="color:cadetblue"></i>',
+          })),
           customStructure: {
             value: 'value',
             label: 'label',
-            labelSuffix: 'symbol'
+            labelSuffix: 'symbol',
           },
           collectionSortBy: {
             property: 'label',
-            sortDesc: true
+            sortDesc: true,
           },
           collectionFilterBy: {
             property: 'value',
             value: 0,
-            operator: OperatorType.notEqual
+            operator: OperatorType.notEqual,
           },
           model: Editors.singleSelect,
           // validator: (value, args) => {
@@ -227,8 +232,9 @@ export class Example3 {
         minWidth: 100,
         params: {
           formatters: [Formatters.collectionEditor, Formatters.percentCompleteBar],
-        }
-      }, {
+        },
+      },
+      {
         id: 'start',
         name: 'Start',
         field: 'start',
@@ -237,11 +243,12 @@ export class Example3 {
         formatter: Formatters.dateIso,
         sortable: true,
         minWidth: 100,
-        type: FieldType.date,
+        type: 'date',
         editor: {
-          model: Editors.date
+          model: Editors.date,
         },
-      }, {
+      },
+      {
         id: 'finish',
         name: 'Finish',
         field: 'finish',
@@ -250,16 +257,19 @@ export class Example3 {
         formatter: Formatters.dateIso,
         sortable: true,
         minWidth: 100,
-        type: FieldType.date,              // dataset cell input format
-        // outputType: FieldType.dateUs,   // date picker format
-        saveOutputType: FieldType.dateUtc, // save output date format
+        type: 'date', // dataset cell input format
+        // outputType: 'dateUs',   // date picker format
+        saveOutputType: 'dateUtc', // save output date format
         editor: {
           model: Editors.date,
-          // override any of the calendar options through "filterOptions"
-          editorOptions: { range: { min: 'today' } } as VanillaCalendarOption
+          // override any of the calendar options through "options"
+          options: { displayDateMin: 'today' } as VanillaCalendarOption,
         },
-      }, {
-        id: 'cityOfOrigin', name: 'City of Origin', field: 'cityOfOrigin',
+      },
+      {
+        id: 'cityOfOrigin',
+        name: 'City of Origin',
+        field: 'cityOfOrigin',
         filterable: true,
         sortable: true,
         minWidth: 100,
@@ -270,14 +280,14 @@ export class Example3 {
           // We can use the autocomplete through 3 ways "collection", "collectionAsync" or with your own autocomplete options
           // use your own autocomplete options, instead of fetch-jsonp, use Aurelia HttpClient or FetchClient
           // here we use fetch-jsonp just because I'm not sure how to configure Aurelia HttpClient with JSONP and CORS
-          editorOptions: {
+          options: {
             minLength: 3,
             forceUserInput: true,
             fetch: (searchText: string, updateCallback: (items: false | any[]) => void) => {
               /** with Aurelia Http, note this demo won't work because of CORS */
               // this.http.get(`http://gd.geobytes.com/AutoCompleteCity?q=${searchText}`).subscribe(data => updateCallback(data));
 
-              /** with JSONP AJAX will work locally but not on the GitHub demo because of CORS */
+              /** with JSONP will work locally but not on the GitHub demo because of CORS */
               fetchJsonp<string[]>(`http://gd.geobytes.com/AutoCompleteCity?q=${searchText}`)
                 .then((response: { json: () => Promise<any[]> }) => response.json())
                 .then((json: any[]) => updateCallback(json))
@@ -294,7 +304,7 @@ export class Example3 {
 
           // OR use the autocomplete through 3 ways "collection", "collectionAsync" or with your own autocomplete options
           // use your own autocomplete options, instead of fetch-jsonp, use HttpClient or FetchClient
-          filterOptions: {
+          options: {
             minLength: 3,
             fetch: (searchText: string, updateCallback: (items: false | any[]) => void) => {
               fetchJsonp<string[]>(`http://gd.geobytes.com/AutoCompleteCity?q=${searchText}`)
@@ -303,13 +313,16 @@ export class Example3 {
                 .catch((ex: any) => console.log('invalid JSONP response', ex));
             },
           } as AutocompleterOption,
-        }
-      }, {
-        id: 'countryOfOrigin', name: 'Country of Origin', field: 'countryOfOrigin',
+        },
+      },
+      {
+        id: 'countryOfOrigin',
+        name: 'Country of Origin',
+        field: 'countryOfOrigin',
         formatter: Formatters.complexObject,
         dataKey: 'code',
         labelKey: 'name',
-        type: FieldType.object,
+        type: 'object',
         sortComparer: SortComparers.objectString,
         filterable: true,
         sortable: true,
@@ -323,9 +336,12 @@ export class Example3 {
           model: Filters.autocompleter,
           customStructure: { label: 'name', value: 'code' },
           collectionAsync: this.http.fetch(URL_COUNTRIES_COLLECTION),
-        }
-      }, {
-        id: 'countryOfOriginName', name: 'Country of Origin Name', field: 'countryOfOriginName',
+        },
+      },
+      {
+        id: 'countryOfOriginName',
+        name: 'Country of Origin Name',
+        field: 'countryOfOriginName',
         filterable: true,
         sortable: true,
         minWidth: 100,
@@ -336,23 +352,29 @@ export class Example3 {
         filter: {
           model: Filters.autocompleter,
           collectionAsync: this.http.fetch(URL_COUNTRY_NAMES),
-        }
-      }, {
+        },
+      },
+      {
         id: 'effort-driven',
         name: 'Effort Driven',
         field: 'effortDriven',
         filterable: true,
-        type: FieldType.boolean,
+        type: 'boolean',
         filter: {
           model: Filters.singleSelect,
-          collection: [{ value: '', label: '' }, { value: true, label: 'True' }, { value: false, label: 'False' }]
+          collection: [
+            { value: '', label: '' },
+            { value: true, label: 'True' },
+            { value: false, label: 'False' },
+          ],
         },
         formatter: Formatters.checkmarkMaterial,
         editor: {
           model: Editors.checkbox,
         },
-        minWidth: 70
-      }, {
+        minWidth: 70,
+      },
+      {
         id: 'prerequisites',
         name: 'Prerequisites',
         field: 'prerequisites',
@@ -362,7 +384,6 @@ export class Example3 {
         sanitizeDataExport: true,
         minWidth: 100,
         sortable: true,
-        type: FieldType.string,
         editor: {
           // We can load the "collection" asynchronously (on first load only, after that we will simply use "collection")
           // 3 ways are supported (aurelia-http-client, aurelia-fetch-client OR even Promise)
@@ -375,7 +396,7 @@ export class Example3 {
 
           // OR 3- use a Promise
           // collectionAsync: new Promise<any>((resolve) => {
-          //   setTimeout(() => {
+          //   window.setTimeout(() => {
           //     resolve(Array.from(Array(NB_ITEMS).keys()).map(k => ({ value: k, label: k, prefix: 'Task', suffix: 'days' })));
           //   }, 500);
           // }),
@@ -385,7 +406,7 @@ export class Example3 {
           collectionSortBy: {
             property: 'value',
             sortDesc: true,
-            fieldType: FieldType.number
+            fieldType: 'number',
           },
           customStructure: {
             label: 'label',
@@ -393,14 +414,14 @@ export class Example3 {
             labelPrefix: 'prefix',
           },
           collectionOptions: {
-            separatorBetweenTextLabels: ' '
+            separatorBetweenTextLabels: ' ',
           },
           model: Editors.multipleSelect,
         },
         filter: {
           collectionAsync: this.http.fetch(URL_SAMPLE_COLLECTION_DATA),
           // collectionAsync: new Promise((resolve) => {
-          //   setTimeout(() => {
+          //   window.setTimeout(() => {
           //     resolve(Array.from(Array(this.dataset.length).keys()).map(k => ({ value: k, label: `Task ${k}` })));
           //   });
           // }),
@@ -410,7 +431,7 @@ export class Example3 {
           collectionSortBy: {
             property: 'value',
             sortDesc: true,
-            fieldType: FieldType.number
+            fieldType: 'number',
           },
           customStructure: {
             label: 'label',
@@ -418,12 +439,12 @@ export class Example3 {
             labelPrefix: 'prefix',
           },
           collectionOptions: {
-            separatorBetweenTextLabels: ' '
+            separatorBetweenTextLabels: ' ',
           },
           model: Filters.multipleSelect,
           operator: OperatorType.inContains,
         },
-      }
+      },
     ];
 
     this.gridOptions = {
@@ -431,7 +452,7 @@ export class Example3 {
       autoCommitEdit: false,
       autoResize: {
         container: '#demo-container',
-        rightPadding: 10
+        rightPadding: 10,
       },
       editable: true,
       enableCellNavigation: true,
@@ -450,7 +471,7 @@ export class Example3 {
     const newRows = this.mockData(1, lastRowIndex);
 
     // wrap into a timer to simulate a backend async call
-    setTimeout(() => {
+    window.setTimeout(() => {
       // at any time, we can poke the "collection" property and modify it
       const requisiteColumnDef = this.columnDefinitions.find((column: Column) => column.id === 'prerequisites');
       if (requisiteColumnDef) {
@@ -498,13 +519,13 @@ export class Example3 {
   mockData(itemCount: number, startingIndex = 0) {
     // mock a dataset
     const tempDataset: any[] = [];
-    for (let i = startingIndex; i < (startingIndex + itemCount); i++) {
+    for (let i = startingIndex; i < startingIndex + itemCount; i++) {
       const randomYear = 2000 + this.randomBetween(4, 15);
-      const randomFinishYear = (new Date().getFullYear() - 3) + Math.floor(Math.random() * 10); // use only years not lower than 3 years ago
+      const randomFinishYear = new Date().getFullYear() - 3 + Math.floor(Math.random() * 10); // use only years not lower than 3 years ago
       const randomMonth = Math.floor(Math.random() * 11);
-      const randomDay = Math.floor((Math.random() * 29));
+      const randomDay = Math.floor(Math.random() * 29);
       const randomPercent = Math.round(Math.random() * 100);
-      const randomFinish = new Date(randomFinishYear, (randomMonth + 1), randomDay);
+      const randomFinish = new Date(randomFinishYear, randomMonth + 1, randomDay);
 
       tempDataset.push({
         id: i,
@@ -514,11 +535,11 @@ export class Example3 {
         percentCompleteNumber: randomPercent,
         start: new Date(randomYear, randomMonth, randomDay),
         finish: randomFinish < new Date() ? '' : randomFinish, // make sure the random date is earlier than today
-        effortDriven: (i % 5 === 0),
-        prerequisites: (i % 2 === 0) && i !== 0 && i < 12 ? [i, i - 1] : [],
-        countryOfOrigin: (i % 2) ? { code: 'CA', name: 'Canada' } : { code: 'US', name: 'United States' },
-        countryOfOriginName: (i % 2) ? 'Canada' : 'United States',
-        cityOfOrigin: (i % 2) ? 'Vancouver, BC, Canada' : 'Boston, MA, United States',
+        effortDriven: i % 5 === 0,
+        prerequisites: i % 2 === 0 && i !== 0 && i < 12 ? [i, i - 1] : [],
+        countryOfOrigin: i % 2 ? { code: 'CA', name: 'Canada' } : { code: 'US', name: 'United States' },
+        countryOfOriginName: i % 2 ? 'Canada' : 'United States',
+        cityOfOrigin: i % 2 ? 'Vancouver, BC, Canada' : 'Boston, MA, United States',
       });
     }
     return tempDataset;
@@ -562,7 +583,7 @@ export class Example3 {
   changeAutoCommit() {
     this.gridOptions.autoCommitEdit = !this.gridOptions.autoCommitEdit;
     this.aureliaGrid.slickGrid.setOptions({
-      autoCommitEdit: this.gridOptions.autoCommitEdit
+      autoCommitEdit: this.gridOptions.autoCommitEdit,
     });
     return true;
   }
@@ -577,7 +598,9 @@ export class Example3 {
         required: true,
         validator: myCustomTitleValidator, // use a custom validator
       },
-      sortable: true, minWidth: 100, filterable: true,
+      sortable: true,
+      minWidth: 100,
+      filterable: true,
     };
 
     // you can dynamically add your column to your column definitions
@@ -607,7 +630,7 @@ export class Example3 {
   setAutoEdit(isAutoEdit: boolean) {
     this.isAutoEdit = isAutoEdit;
     this.aureliaGrid.slickGrid.setOptions({
-      autoEdit: isAutoEdit
+      autoEdit: isAutoEdit,
     });
     return true;
   }
@@ -618,5 +641,12 @@ export class Example3 {
       command.undo();
       this.aureliaGrid.slickGrid.gotoCell(command.row, command.cell, false);
     }
+  }
+
+  toggleSubTitle() {
+    this.hideSubTitle = !this.hideSubTitle;
+    const action = this.hideSubTitle ? 'add' : 'remove';
+    document.querySelector('.subtitle')?.classList[action]('hidden');
+    this.aureliaGrid.resizerService.resizeGrid(0);
   }
 }

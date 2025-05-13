@@ -5,8 +5,6 @@ import {
   type AureliaGridInstance,
   type Column,
   DelimiterType,
-  FieldType,
-  FileType,
   Filters,
   type Formatter,
   Formatters,
@@ -19,6 +17,7 @@ import { localeFrench } from '../locales/fr';
 
 const NB_ITEMS = 1500;
 
+// create a custom translate Formatter (typically you would move that a separate file, for separation of concerns)
 const taskFormatter: Formatter = (_row, _cell, value) => {
   return value !== undefined ? `Titre ${value}` : '';
 };
@@ -41,6 +40,7 @@ export class Example12 {
   dataset: any[] = [];
   duplicateTitleHeaderCount = 1;
   gridObj!: SlickGrid;
+  hideSubTitle = false;
   excelExportService = new ExcelExportService();
   textExportService = new TextExportService();
 
@@ -71,8 +71,8 @@ export class Example12 {
         filterable: true,
         filter: { model: Filters.compoundSlider, operator: '>=' }
       },
-      { id: 'start', name: 'Début', field: 'start', formatter: Formatters.dateIso, outputType: FieldType.dateIso, type: FieldType.date, minWidth: 100, filterable: true, filter: { model: Filters.compoundDate } },
-      { id: 'finish', name: 'Fin', field: 'finish', formatter: Formatters.dateIso, outputType: FieldType.dateIso, type: FieldType.date, minWidth: 100, filterable: true, filter: { model: Filters.compoundDate } },
+      { id: 'start', name: 'Début', field: 'start', formatter: Formatters.dateIso, outputType: 'dateIso', type: 'date', minWidth: 100, filterable: true, filter: { model: Filters.compoundDate } },
+      { id: 'finish', name: 'Fin', field: 'finish', formatter: Formatters.dateIso, outputType: 'dateIso', type: 'date', minWidth: 100, filterable: true, filter: { model: Filters.compoundDate } },
       {
         id: 'completedBool', name: 'Complétée', field: 'completedBool', minWidth: 100,
         sortable: true,
@@ -89,7 +89,7 @@ export class Example12 {
     this.gridOptions = {
       autoResize: {
         container: '#demo-container',
-        rightPadding: 10
+        rightPadding: 10,
       },
       enableAutoResize: true,
       enableExcelCopyBuffer: true,
@@ -97,11 +97,10 @@ export class Example12 {
       checkboxSelector: {
         // you can toggle these 2 properties to show the "select all" checkbox in different location
         hideInFilterHeaderRow: false,
-        hideInColumnTitleRow: true
+        hideInColumnTitleRow: true,
       },
       enableCheckboxSelector: true,
       enableRowSelection: true,
-
       // Provide a custom locales set
       locale: 'fr', // this helps certain elements to know which locale to use, for example the Date Filter/Editor
       locales: localeFrench,
@@ -111,22 +110,22 @@ export class Example12 {
           // default text displayed in the metrics section on the right
           items: 'Éléments',
           of: 'de',
-          lastUpdateKey: 'Dernière mise à jour',
+          lastUpdate: 'Dernière mise à jour',
         },
         dateFormat: 'YYYY-MM-DD hh:mm a',
         hideTotalItemCount: false,
         hideLastUpdateTimestamp: false,
       },
       gridMenu: {
-        hideExportCsvCommand: false,           // false by default, so it's optional
-        hideExportTextDelimitedCommand: false  // true by default, so if you want it, you will need to disable the flag
+        hideExportCsvCommand: false, // false by default, so it's optional
+        hideExportTextDelimitedCommand: false, // true by default, so if you want it, you will need to disable the flag
       },
       enableExcelExport: true,
       enableTextExport: true,
       textExportOptions: {
         // set at the grid option level, meaning all column will evaluate the Formatter (when it has a Formatter defined)
         exportWithFormatter: true,
-        sanitizeDataExport: true
+        sanitizeDataExport: true,
       },
       excelExportOptions: { exportWithFormatter: true, sanitizeDataExport: true },
       externalResources: [this.excelExportService, this.textExportService],
@@ -139,16 +138,16 @@ export class Example12 {
     for (let i = 0; i < count; i++) {
       const randomYear = 2000 + Math.floor(Math.random() * 10);
       const randomMonth = Math.floor(Math.random() * 11);
-      const randomDay = Math.floor((Math.random() * 29));
+      const randomDay = Math.floor(Math.random() * 29);
 
       tmpData[i] = {
         id: i,
-        description: (i % 5) ? 'desc ' + i : '🚀🦄 español', // also add some random to test NULL field
+        description: i % 5 ? 'desc ' + i : '🚀🦄 español', // also add some random to test NULL field
         duration: Math.round(Math.random() * 100) + '',
         start: new Date(randomYear, randomMonth, randomDay),
-        finish: new Date(randomYear, (randomMonth + 1), randomDay),
-        completedBool: (i % 5 === 0) ? true : false,
-        completed: (i % 5 === 0) ? 'TRUE' : 'FALSE'
+        finish: new Date(randomYear, randomMonth + 1, randomDay),
+        completedBool: i % 5 === 0 ? true : false,
+        completed: i % 5 === 0 ? 'TRUE' : 'FALSE',
       };
     }
     this.dataset = tmpData;
@@ -174,15 +173,15 @@ export class Example12 {
   exportToExcel() {
     this.excelExportService.exportToExcel({
       filename: 'Export',
-      format: FileType.xlsx
+      format: 'xlsx',
     });
   }
 
   exportToFile(type = 'csv') {
     this.textExportService.exportToFile({
-      delimiter: (type === 'csv') ? DelimiterType.comma : DelimiterType.tab,
+      delimiter: type === 'csv' ? DelimiterType.comma : DelimiterType.tab,
       filename: 'myExport',
-      format: (type === 'csv') ? FileType.csv : FileType.txt
+      format: type === 'csv' ? 'csv' : 'txt',
     });
   }
 
@@ -190,5 +189,12 @@ export class Example12 {
   gridStateChanged(gridStateChanges: GridStateChange) {
     console.log('Grid State changed:: ', gridStateChanges);
     console.log('Grid State changed:: ', gridStateChanges.change);
+  }
+
+  toggleSubTitle() {
+    this.hideSubTitle = !this.hideSubTitle;
+    const action = this.hideSubTitle ? 'add' : 'remove';
+    document.querySelector('.subtitle')?.classList[action]('hidden');
+    this.aureliaGrid.resizerService.resizeGrid(0);
   }
 }

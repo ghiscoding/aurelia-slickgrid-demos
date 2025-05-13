@@ -1,11 +1,5 @@
 import { ExcelExportService } from '@slickgrid-universal/excel-export';
-import {
-  type AureliaGridInstance,
-  type Column,
-  Editors,
-  type GridOption,
-  type ItemMetadata,
-} from 'aurelia-slickgrid';
+import { type AureliaGridInstance, type Column, Editors, type GridOption, type ItemMetadata } from 'aurelia-slickgrid';
 
 import './example43.scss';
 
@@ -172,7 +166,7 @@ export class Example43 {
           },
         },
       },
-      rowTopOffsetRenderType: 'top', // rowspan doesn't render well with 'transform', default is 'top'
+      rowTopOffsetRenderType: 'top', // RowDetail and/or RowSpan don't render well with "transform", you should use "top"
     };
   }
 
@@ -416,7 +410,6 @@ export class Example43 {
     ];
   }
 
-
   // when a side effect happens (e.g. show/hide EmployeeID),
   // you have to recalculate the metadata by yourself
   // if column index(es) aren't changing then "invalidateRows()" or "invalidate()" might be sufficient
@@ -447,5 +440,12 @@ export class Example43 {
     this.metadata = newMetadata;
     this.aureliaGrid.slickGrid.remapAllColumnsRowSpan();
     this.aureliaGrid.slickGrid.invalidate();
+  }
+
+  toggleSubTitle() {
+    this.hideSubTitle = !this.hideSubTitle;
+    const action = this.hideSubTitle ? 'add' : 'remove';
+    document.querySelector('.subtitle')?.classList[action]('hidden');
+    this.aureliaGrid.resizerService.resizeGrid(0);
   }
 }

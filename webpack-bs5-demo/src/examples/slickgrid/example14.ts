@@ -1,5 +1,5 @@
 import { ExcelExportService } from '@slickgrid-universal/excel-export';
-import { type AureliaGridInstance, type Column, FieldType, type GridOption, type ItemMetadata } from 'aurelia-slickgrid';
+import { type AureliaGridInstance, type Column, type GridOption, type ItemMetadata } from 'aurelia-slickgrid';
 import './example14.scss'; // provide custom CSS/SASS styling
 
 export class Example14 {
@@ -19,6 +19,7 @@ export class Example14 {
   gridOptions2!: GridOption;
   dataset1: any[] = [];
   dataset2: any[] = [];
+  hideSubTitle = false;
 
   constructor() {
     this.definedGrid1();
@@ -43,7 +44,7 @@ export class Example14 {
       { id: 'start', name: 'Start', field: 'start', columnGroup: 'Period' },
       { id: 'finish', name: 'Finish', field: 'finish', columnGroup: 'Period' },
       { id: '%', name: '% Complete', field: 'percentComplete', selectable: false, columnGroup: 'Analysis' },
-      { id: 'effort-driven', name: 'Effort Driven', field: 'effortDriven', type: FieldType.boolean, columnGroup: 'Analysis' }
+      { id: 'effort-driven', name: 'Effort Driven', field: 'effortDriven', type: 'boolean', columnGroup: 'Analysis' },
     ];
 
     this.gridOptions1 = {
@@ -58,26 +59,39 @@ export class Example14 {
       gridWidth: 800,
       enableExcelExport: true,
       excelExportOptions: {
-        exportWithFormatter: false
+        exportWithFormatter: false,
       },
       externalResources: [new ExcelExportService()],
       explicitInitialization: true,
-      colspanCallback: this.renderDifferentColspan,
+      dataView: {
+        globalItemMetadataProvider: {
+          getRowMetadata: (item: any, row: number) => this.renderDifferentColspan(item, row),
+        },
+      },
       gridMenu: {
-        iconButtonContainer: 'preheader' // we can display the grid menu icon in either the preheader or in the column header (default)
+        iconButtonContainer: 'preheader', // we can display the grid menu icon in either the preheader or in the column header (default)
       },
     };
   }
 
   definedGrid2() {
     this.columnDefinitions2 = [
-      { id: 'sel', name: '#', field: 'num', behavior: 'select', cssClass: 'cell-selection', width: 40, resizable: false, selectable: false },
+      {
+        id: 'sel',
+        name: '#',
+        field: 'num',
+        behavior: 'select',
+        cssClass: 'cell-selection',
+        width: 40,
+        resizable: false,
+        selectable: false,
+      },
       { id: 'title', name: 'Title', field: 'title', sortable: true, columnGroup: 'Common Factor' },
       { id: 'duration', name: 'Duration', field: 'duration', columnGroup: 'Common Factor' },
       { id: 'start', name: 'Start', field: 'start', columnGroup: 'Period' },
       { id: 'finish', name: 'Finish', field: 'finish', columnGroup: 'Period' },
       { id: '%', name: '% Complete', field: 'percentComplete', selectable: false, columnGroup: 'Analysis' },
-      { id: 'effort-driven', name: 'Effort Driven', field: 'effortDriven', type: FieldType.boolean, columnGroup: 'Analysis' }
+      { id: 'effort-driven', name: 'Effort Driven', field: 'effortDriven', type: 'boolean', columnGroup: 'Analysis' },
     ];
 
     this.gridOptions2 = {
@@ -92,11 +106,11 @@ export class Example14 {
       frozenColumn: 2,
       enableExcelExport: true,
       excelExportOptions: {
-        exportWithFormatter: false
+        exportWithFormatter: false,
       },
       externalResources: [new ExcelExportService()],
       gridMenu: { hideClearFrozenColumnsCommand: false },
-      headerMenu: { hideFreezeColumnsCommand: false }
+      headerMenu: { hideFreezeColumnsCommand: false },
     };
   }
 
@@ -112,7 +126,7 @@ export class Example14 {
         percentComplete: Math.round(Math.random() * 100),
         start: '01/01/2009',
         finish: '01/05/2009',
-        effortDriven: (i % 5 === 0)
+        effortDriven: i % 5 === 0,
       };
     }
     return mockDataset;
@@ -128,22 +142,22 @@ export class Example14 {
    * Your callback will always have the "item" argument which you can use to decide on the colspan
    * Your return must always be in the form of:: return { columns: {}}
    */
-  renderDifferentColspan(item: any): ItemMetadata {
-    if (item.id % 2 === 1) {
+  renderDifferentColspan(item: any, row: number): ItemMetadata {
+    if (item.id % 2 === 1 || row % 2 === 1) {
       return {
         columns: {
           duration: {
-            colspan: 3 // "duration" will span over 3 columns
-          }
-        }
+            colspan: 3, // "duration" will span over 3 columns
+          },
+        },
       };
     }
     return {
       columns: {
         0: {
-          colspan: '*' // starting at column index 0, we will span accross all column (*)
-        }
-      }
+          colspan: '*', // starting at column index 0, we will span accross all column (*)
+        },
+      },
     };
   }
 }

@@ -1,4 +1,5 @@
-import type { IBindingContext, ICustomElementController } from '@aurelia/runtime-html';
+import type { IBindingContext } from '@aurelia/runtime';
+import type { ICustomElementController } from '@aurelia/runtime-html';
 
 import {
   AureliaUtilService,
@@ -147,18 +148,18 @@ export class CustomAureliaViewModelEditor implements Editor {
     this.defaultItem = itemObject;
 
     // add a delay so that the editor has time to be enhanced (created) prior to changing the value
-    setTimeout(() => {
+    window.setTimeout(() => {
       this.focus();
       if (this.elmBindingContext) {
         this.elmBindingContext.selectedItem = itemObject;
 
         // whenever the selected item changed (from the @bindable() selectedItem), we'll save the new value
-        this.elmBindingContext.selectedItemChanged = ((newItem: any) => {
+        this.elmBindingContext.selectedItemChanged = (newItem: any) => {
           this.selectedItem = newItem;
           if (newItem !== itemObject) {
             this.save();
           }
-        });
+        };
       }
     }, 0);
   }
@@ -168,7 +169,9 @@ export class CustomAureliaViewModelEditor implements Editor {
   }
 
   isValueChanged() {
-    return (!(this.selectedItem.id === '' && (this.defaultId === null || this.defaultId === undefined))) && (this.selectedItem.id !== this.defaultId);
+    return (
+      !(this.selectedItem.id === '' && (this.defaultId === null || this.defaultId === undefined)) && this.selectedItem.id !== this.defaultId
+    );
   }
 
   validate(): EditorValidationResult {
@@ -181,7 +184,7 @@ export class CustomAureliaViewModelEditor implements Editor {
     // if user want it to be required, he would have to provide his own validator
     return {
       valid: true,
-      msg: null
+      msg: null,
     };
   }
 }
