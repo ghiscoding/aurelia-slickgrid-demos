@@ -36,12 +36,12 @@ jobs:
       - name: Install npm dependencies
         run: |
           cd webpack-bs5-demo-with-locales
-          npm install
+          yarn install
 
       - name: Bootstrap 5 Prod Build for GitHub demo website
         run: |
           cd webpack-bs5-demo-with-locales
-          npm run build
+          yarn run build
 
       - name: Deploy to gh-pages
         if: github.ref == 'refs/heads/master'
