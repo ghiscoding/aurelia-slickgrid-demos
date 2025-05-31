@@ -20,6 +20,7 @@ import { CustomAureliaViewModelFilter } from './custom-aureliaViewModelFilter';
 import { CustomTitleFormatter } from './custom-title-formatter';
 import { EditorSelect } from './editor-select';
 import { FilterSelect } from './filter-select';
+import './example26.scss';
 
 const NB_ITEMS = 100;
 
