@@ -1,24 +1,25 @@
 {
   "name": "aurelia-slickgrid-demo",
   "private": true,
-  "description": "Slickgrid components made available in Aurelia",
+  "description": "An Aurelia-Slickgrid client application demo with Bootstrap 5",
   "keywords": [
-    "aurelia",
+    "react",
     "datagrid",
     "datatable",
     "plugin",
     "slickgrid"
   ],
-  "homepage": "https://github.com/ghiscoding/aurelia-slickgrid",
+  "homepage": "https://github.com/ghiscoding/slickgrid-universal/tree/master/frameworks/aurelia-slickgrid",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ghiscoding/slickgrid-universal.git",
+    "directory": "frameworks/aurelia-slickgrid"
+  },
   "bugs": {
-    "url": "https://github.com/ghiscoding/aurelia-slickgrid/issues"
+    "url": "https://github.com/ghiscoding/slickgrid-universal/issues"
   },
   "license": "MIT",
   "author": "Ghislain B.",
-  "repository": {
-    "type": "git",
-    "url": "git+ssh://git@github.com/ghiscoding/aurelia-slickgrid.git"
-  },
   "browserslist": [
     "last 2 version",
     "> 1%",
