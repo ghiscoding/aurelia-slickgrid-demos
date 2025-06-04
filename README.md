@@ -1,5 +1,5 @@
 # Aurelia-Slickgrid - Client Demos
-## [Aurelia-Slickgrid](https://github.com/ghiscoding/aurelia-slickgrid) library client demos with different bundler types.
+## [Aurelia-Slickgrid](https://github.com/ghiscoding/slickgrid-universal/tree/master/frameworks/aurelia-slickgrid) library client demos with different bundler types.
 
 ### Requires Aurelia 2
 The latest code only works with Aurelia 2, if you still wish to use Aurelia 1 then take a look at the [version6](https://github.com/ghiscoding/aurelia-slickgrid-demos/tree/version6) branch.
