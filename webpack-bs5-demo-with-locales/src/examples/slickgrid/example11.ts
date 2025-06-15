@@ -21,7 +21,7 @@ export class Example11 {
     <li>Add/Update an item requires a valid Slickgrid Selection Model, you have 2 choices to deal with this:</li>
     <ul><li>You can enable "enableCheckboxSelector" or "enableRowSelection" to True</li></ul>
     <li>Click on any of the buttons below to test this out</li>
-    <li>You can change the highlighted color &amp; animation by changing the <a href="https://github.com/ghiscoding/aurelia-slickgrid/blob/master/aurelia-slickgrid/src/aurelia-slickgrid/styles/_variables.scss" target="_blank">SASS Variables</a></li>
+    <li>You can change the highlighted color &amp; animation by changing the <a href="https://github.com/ghiscoding/slickgrid-universal/blob/master/packages/common/src/styles/_variables.scss" target="_blank">SASS Variables</a></li>
     <ul>
       <li>"$row-highlight-background-color" or "$row-highlight-fade-animation"</li>
     </ul>
