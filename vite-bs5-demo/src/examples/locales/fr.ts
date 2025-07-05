@@ -22,6 +22,7 @@ export const localeFrench = {
   TEXT_HIDE_COLUMN: 'Cacher la colonne',
   TEXT_LAST_UPDATE: 'Dernière mise à jour',
   TEXT_OK: 'Terminé',
+  TEXT_OPTIONS: 'Options',
   TEXT_REMOVE_FILTER: 'Supprimer le filtre',
   TEXT_REMOVE_SORT: 'Supprimer le tri',
   TEXT_SAVE: 'Sauvegarder',
