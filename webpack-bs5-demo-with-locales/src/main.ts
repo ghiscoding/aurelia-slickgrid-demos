@@ -6,7 +6,7 @@ import 'bootstrap';
 // import shared from './shared.css';
 import { AureliaSlickGridConfiguration } from 'aurelia-slickgrid';
 import DOMPurify from 'dompurify';
-import { RouterConfiguration } from '@aurelia/router';
+import { RouterConfiguration } from '@aurelia/router-direct';
 
 import { MyApp } from './my-app';
 import { DateFormatValueConverter, DecimalValueConverter, StringifyValueConverter } from './examples/resources/value-converters';
