@@ -590,127 +590,127 @@
   resolved "https://registry.yarnpkg.com/@slickgrid-universal/binding/-/binding-9.3.0.tgz#54e8b39123c674bc7b8589ba66867279e737b10a"
   integrity sha512-zpPgmoMeMDiGOATdr9+LvFZwwTztc+HyjWIxVpePUwFxRcysH6rhoHiU7ltqP2Tri3Agrx5yl39TKaxE3fO9GQ==
 
-"@slickgrid-universal/common@9.4.0", "@slickgrid-universal/common@^9.4.0":
-  version "9.4.0"
-  resolved "https://registry.yarnpkg.com/@slickgrid-universal/common/-/common-9.4.0.tgz#6491ec6943e51b544b0d50c92de8db4a5d3787b9"
-  integrity sha512-9LHyZ5oMBVK/L9oO/kGf1ecu9iZaq2MBOYZqCEXEWWYVOqqIww++FWE1t2sFIZj5rxfhFR9Pjn0scSl/tMXW9g==
+"@slickgrid-universal/common@9.5.0", "@slickgrid-universal/common@^9.5.0":
+  version "9.5.0"
+  resolved "https://registry.yarnpkg.com/@slickgrid-universal/common/-/common-9.5.0.tgz#6147f741fee3ba725de57e61e90c9ea69e111e1f"
+  integrity sha512-w5ePSdF6iU1cK8JuPfCwb/P+/thzwFJPmkMmB0rVjIoX9dxXXccmWL5S0N001e+HXeGJMsFx8Y1Atmqxe4mu6g==
   dependencies:
     "@excel-builder-vanilla/types" "^4.0.1"
     "@formkit/tempo" "^0.1.2"
     "@slickgrid-universal/binding" "9.3.0"
-    "@slickgrid-universal/event-pub-sub" "9.3.0"
-    "@slickgrid-universal/utils" "9.3.0"
+    "@slickgrid-universal/event-pub-sub" "9.5.0"
+    "@slickgrid-universal/utils" "9.5.0"
     "@types/sortablejs" "^1.15.8"
     "@types/trusted-types" "^2.0.7"
     autocompleter "^9.3.2"
     dequal "^2.0.3"
-    multiple-select-vanilla "^4.3.4"
+    multiple-select-vanilla "^4.3.5"
     sortablejs "^1.15.6"
     un-flatten-tree "^2.0.12"
-    vanilla-calendar-pro "^3.0.4"
+    vanilla-calendar-pro "^3.0.5"
 
-"@slickgrid-universal/composite-editor-component@^9.4.0":
-  version "9.4.0"
-  resolved "https://registry.yarnpkg.com/@slickgrid-universal/composite-editor-component/-/composite-editor-component-9.4.0.tgz#412e25e85b52429b0d1f3171b584d8e9acc7a0b0"
-  integrity sha512-5mJmPb9ZIIjsxPnTpejkD54R9qe/hP9+gBtQwF8TJSdi6jdWQ/wdrQephc3CUKwsLuZUvCYdFuHVrzkHvVPTTw==
+"@slickgrid-universal/composite-editor-component@^9.5.0":
+  version "9.5.0"
+  resolved "https://registry.yarnpkg.com/@slickgrid-universal/composite-editor-component/-/composite-editor-component-9.5.0.tgz#5f5b24f4f5777100f2a4e36078c5e4b495485cbd"
+  integrity sha512-b9QSmCYSTqLzw1Re/yWkGAmEElieVea3NBhws8Z+ysgo930Rkw8mK7qx6oz3KLn1SeSLQi3rFKI9jhV7Drbqlg==
   dependencies:
     "@slickgrid-universal/binding" "9.3.0"
-    "@slickgrid-universal/common" "9.4.0"
-    "@slickgrid-universal/utils" "9.3.0"
+    "@slickgrid-universal/common" "9.5.0"
+    "@slickgrid-universal/utils" "9.5.0"
 
-"@slickgrid-universal/custom-footer-component@9.4.0":
-  version "9.4.0"
-  resolved "https://registry.yarnpkg.com/@slickgrid-universal/custom-footer-component/-/custom-footer-component-9.4.0.tgz#99cfd7576d9d7fc29d03f48cfed161d9b70dc6e6"
-  integrity sha512-iKD0nNX2IcV9doCdMZTYTr/MMnl6EPrzs19+uQGdWKlYellPTTzfDlU6dHiUShSKUVvfgeJ8695JcG7nu3qQtA==
+"@slickgrid-universal/custom-footer-component@9.5.0":
+  version "9.5.0"
+  resolved "https://registry.yarnpkg.com/@slickgrid-universal/custom-footer-component/-/custom-footer-component-9.5.0.tgz#8f8b1fa8e70f3236f3f44d7367cf95b731f72174"
+  integrity sha512-nzuRsJM0IlMcktk9i/LP1zVut0cE35GVvWg4sRtifjBqIaRNnA8QskwTI1j0MsE6s9XfMc7cMtG3ycdEZYVHnA==
   dependencies:
     "@formkit/tempo" "^0.1.2"
     "@slickgrid-universal/binding" "9.3.0"
-    "@slickgrid-universal/common" "9.4.0"
+    "@slickgrid-universal/common" "9.5.0"
 
-"@slickgrid-universal/custom-tooltip-plugin@^9.4.0":
-  version "9.4.0"
-  resolved "https://registry.yarnpkg.com/@slickgrid-universal/custom-tooltip-plugin/-/custom-tooltip-plugin-9.4.0.tgz#e8537bc42ee811ca24238b3bf8b3c3dc93b19dd9"
-  integrity sha512-z8vcgS/fr6zEF1YdJyBRhkiECIgpO+RPu1j0e25sx9ujH7Oxdp47EcjpnuuzyJoq5GaaXfNWJr5G9Ik7JK0bDQ==
+"@slickgrid-universal/custom-tooltip-plugin@^9.5.0":
+  version "9.5.0"
+  resolved "https://registry.yarnpkg.com/@slickgrid-universal/custom-tooltip-plugin/-/custom-tooltip-plugin-9.5.0.tgz#bd8c548faecea0d9bf510edacfc5646b18d36fc5"
+  integrity sha512-xD6m3oCbDZabgIciCHXVRjlXiFyIEc8YbxWyfkwVr3cTuSrvKWnHSRMsuBprP2WpTeDwcfQuoPeC+zKcTUVzaw==
   dependencies:
-    "@slickgrid-universal/common" "9.4.0"
-    "@slickgrid-universal/utils" "9.3.0"
+    "@slickgrid-universal/common" "9.5.0"
+    "@slickgrid-universal/utils" "9.5.0"
 
-"@slickgrid-universal/empty-warning-component@9.4.0":
-  version "9.4.0"
-  resolved "https://registry.yarnpkg.com/@slickgrid-universal/empty-warning-component/-/empty-warning-component-9.4.0.tgz#c913afb7d39ca54e49eaa1f18ed82450a92f3e3d"
-  integrity sha512-s2RVKMIKpMAvcUG8bLD7piewPaqr3l3R2QCeeOCd9JHHzWM+gVeDOUNQ1c7A0C0UhE8oJ02TuYoRKblaTfaB4A==
+"@slickgrid-universal/empty-warning-component@9.5.0":
+  version "9.5.0"
+  resolved "https://registry.yarnpkg.com/@slickgrid-universal/empty-warning-component/-/empty-warning-component-9.5.0.tgz#d94701663818acb596ce9dacef1b13301fa8c123"
+  integrity sha512-2xLh9alB78AJT89CGgNkGVW7dgGSlYxpvF5z+hT64S+aB0qzdUk3PQVX66nApXOobmWMB0FI8iphp0ZLkYrcgg==
   dependencies:
-    "@slickgrid-universal/common" "9.4.0"
+    "@slickgrid-universal/common" "9.5.0"
 
-"@slickgrid-universal/event-pub-sub@9.3.0":
-  version "9.3.0"
-  resolved "https://registry.yarnpkg.com/@slickgrid-universal/event-pub-sub/-/event-pub-sub-9.3.0.tgz#41637cef6ad9237c919727a2322abd615d552873"
-  integrity sha512-xCVyvDZ3D4Vmsec8xcXML0RuaTgkClwK2p2R2NHXtHQfGCDPh+r0baUCRAAe8NTp7vHi2npJIWlqzJtu0TdWvg==
+"@slickgrid-universal/event-pub-sub@9.5.0":
+  version "9.5.0"
+  resolved "https://registry.yarnpkg.com/@slickgrid-universal/event-pub-sub/-/event-pub-sub-9.5.0.tgz#1674767f1402b917116bd1d950472c4b9df786e9"
+  integrity sha512-iRIhI6zhSlVhavxUhF3KsOCQz8jB1MrhLjPOXNDNNefem7nMs0g/nKTQQUSMZ9dfHV6cNhniw2RCqJ8hc/dvGA==
   dependencies:
-    "@slickgrid-universal/utils" "9.3.0"
+    "@slickgrid-universal/utils" "9.5.0"
 
-"@slickgrid-universal/excel-export@^9.4.0":
-  version "9.4.0"
-  resolved "https://registry.yarnpkg.com/@slickgrid-universal/excel-export/-/excel-export-9.4.0.tgz#18e2569b51555e56ec5880630951a44fdce41526"
-  integrity sha512-5bW9uuRoGYJQJaUeq/YotMfCTtapLcAc+kjKHmcXWzmf8zXlqAsL8pS1iYskvOPJ0xO2F+OTJSxsIibKbB/W9g==
+"@slickgrid-universal/excel-export@^9.5.0":
+  version "9.5.0"
+  resolved "https://registry.yarnpkg.com/@slickgrid-universal/excel-export/-/excel-export-9.5.0.tgz#51575c15278453e8ee0902e6de066cd7d79b921e"
+  integrity sha512-0z8P9JOSKCFQyryFRJQ430yflcHLbChpT8/gqcybBeY5Pj6pD5jpZmuhpqEK71VvM2PTlhbuoUzhM4S6pFqNNQ==
   dependencies:
-    "@slickgrid-universal/common" "9.4.0"
-    "@slickgrid-universal/utils" "9.3.0"
+    "@slickgrid-universal/common" "9.5.0"
+    "@slickgrid-universal/utils" "9.5.0"
     excel-builder-vanilla "^4.0.1"
 
-"@slickgrid-universal/graphql@^9.4.0":
-  version "9.4.0"
-  resolved "https://registry.yarnpkg.com/@slickgrid-universal/graphql/-/graphql-9.4.0.tgz#00455d7c66a8987651e01511cf2f1adf8f97f0d2"
-  integrity sha512-nQl23b37aQYCPemh+Ptb/w4YQuAyoz1jCcTxJusDH42rUN/wAfRGVsutoWuhHsOEVxC/ygjjeg2fEmJtwANMrg==
+"@slickgrid-universal/graphql@^9.5.0":
+  version "9.5.0"
+  resolved "https://registry.yarnpkg.com/@slickgrid-universal/graphql/-/graphql-9.5.0.tgz#262c61d82a614d41812373e960d49a0cbbeae275"
+  integrity sha512-TVja38xJL4HosYeziYZIwFSzV6XAcnBNRvQGCgBlNBiXfA/Dcqs/vl4VbTiRcw3SydmYTVNPCaI//Ab3te3/6Q==
   dependencies:
-    "@slickgrid-universal/common" "9.4.0"
-    "@slickgrid-universal/utils" "9.3.0"
+    "@slickgrid-universal/common" "9.5.0"
+    "@slickgrid-universal/utils" "9.5.0"
 
-"@slickgrid-universal/odata@^9.4.0":
-  version "9.4.0"
-  resolved "https://registry.yarnpkg.com/@slickgrid-universal/odata/-/odata-9.4.0.tgz#823c781420341f03295b8d0e4464e60ad66d11a1"
-  integrity sha512-Ni3eR87Py2QOeL2M18FrOLw99wF++DonUK85k3T3O5cb0Or8sS8fyVXToqhcA2RMYZGwQXZjVlCLcBfa0Ok3RA==
+"@slickgrid-universal/odata@^9.5.0":
+  version "9.5.0"
+  resolved "https://registry.yarnpkg.com/@slickgrid-universal/odata/-/odata-9.5.0.tgz#ef1e6ed74fdc57345b9de89afdc444e1aad3901e"
+  integrity sha512-1o7yeVU4rBTljMa2EXyc9ZHXUd3hs7TQIUeKbR+QwTZjGp7+Jxmd9xIpMWSYCyvNZZD1dIrCiTMcj3D9TdRITw==
   dependencies:
-    "@slickgrid-universal/common" "9.4.0"
-    "@slickgrid-universal/utils" "9.3.0"
+    "@slickgrid-universal/common" "9.5.0"
+    "@slickgrid-universal/utils" "9.5.0"
 
-"@slickgrid-universal/pagination-component@9.4.0":
-  version "9.4.0"
-  resolved "https://registry.yarnpkg.com/@slickgrid-universal/pagination-component/-/pagination-component-9.4.0.tgz#1b3783855b537f0e85b8255ec50547f8c2736dbd"
-  integrity sha512-+jdngfhkkNz3dy7XwPzkHDH92Bv3RCOsq4baL2jiblZyvwwWDnsHfnyQna7OX8T5f14yiwiMAxfoH4R8ah44lQ==
+"@slickgrid-universal/pagination-component@9.5.0":
+  version "9.5.0"
+  resolved "https://registry.yarnpkg.com/@slickgrid-universal/pagination-component/-/pagination-component-9.5.0.tgz#47cb5e5b5441dcc6a54c80f0da3c9956629b3703"
+  integrity sha512-cVPd5ZzJCmh9eu0MyPlwWexrxoMOIfBpFxPe0d9gvs/C5ipncxrD0Z4I5sotdwYqPyslM9BgByc6y2x0knQz+Q==
   dependencies:
     "@slickgrid-universal/binding" "9.3.0"
-    "@slickgrid-universal/common" "9.4.0"
+    "@slickgrid-universal/common" "9.5.0"
 
-"@slickgrid-universal/row-detail-view-plugin@9.4.0", "@slickgrid-universal/row-detail-view-plugin@^9.4.0":
-  version "9.4.0"
-  resolved "https://registry.yarnpkg.com/@slickgrid-universal/row-detail-view-plugin/-/row-detail-view-plugin-9.4.0.tgz#107d3ebe2bea9f03a1334f143f89706dee98648b"
-  integrity sha512-ohJtCd4Qp9VcUQo9mzbdp4wu59wFnIqMOcCP1sFj08e1JxVLzfcw++QUnG3p9i19hER7uV2FFoJS95alS5OgzQ==
+"@slickgrid-universal/row-detail-view-plugin@9.5.0", "@slickgrid-universal/row-detail-view-plugin@^9.5.0":
+  version "9.5.0"
+  resolved "https://registry.yarnpkg.com/@slickgrid-universal/row-detail-view-plugin/-/row-detail-view-plugin-9.5.0.tgz#cf4c2f7a7210be428b69eb681c0cc1799c7fb266"
+  integrity sha512-mC2Av9StlaDSd8eCKoi3VncoLHgdAfspLH5CmUtVSWqKIuXZmmjgbeOyYRhs7vMKX3xmUvNy2yZZuAnGfWPETQ==
   dependencies:
-    "@slickgrid-universal/common" "9.4.0"
-    "@slickgrid-universal/utils" "9.3.0"
+    "@slickgrid-universal/common" "9.5.0"
+    "@slickgrid-universal/utils" "9.5.0"
 
-"@slickgrid-universal/rxjs-observable@^9.4.0":
-  version "9.4.0"
-  resolved "https://registry.yarnpkg.com/@slickgrid-universal/rxjs-observable/-/rxjs-observable-9.4.0.tgz#857a5854f5e79bf6a5d501a3f972cecee3026aec"
-  integrity sha512-F+dClgzyIRCyqIJx8DBJuhLqKHdYqBeym9sUn+tgJnx7z74JKEOzVFIkXioUasvJnPNf0CyOgWCpawMP/N8K0Q==
+"@slickgrid-universal/rxjs-observable@^9.5.0":
+  version "9.5.0"
+  resolved "https://registry.yarnpkg.com/@slickgrid-universal/rxjs-observable/-/rxjs-observable-9.5.0.tgz#2a8d31a0557033457b1777607267b21f38c5a6c7"
+  integrity sha512-vkFC0XA9rcHSlERSAO/EwvS3pBlGLc7DVrqZEXng0c1w0zaFbMiwYrXD9EuhSwKn7s7XPEvgnRN59tmXZMTnhw==
   dependencies:
-    "@slickgrid-universal/common" "9.4.0"
+    "@slickgrid-universal/common" "9.5.0"
     rxjs "^7.8.2"
 
-"@slickgrid-universal/text-export@^9.4.0":
-  version "9.4.0"
-  resolved "https://registry.yarnpkg.com/@slickgrid-universal/text-export/-/text-export-9.4.0.tgz#a2a5b247a5faa5382e78f79277f422a4cc879649"
-  integrity sha512-VyfU9lZ/7fYrPe9q9HiyHD1pT91RXC0Y61MPVjjcFHisrbdF/H5LzpMU0ulB4hiUcMrlsQQTHYi3fGu4/BujxQ==
+"@slickgrid-universal/text-export@^9.5.0":
+  version "9.5.0"
+  resolved "https://registry.yarnpkg.com/@slickgrid-universal/text-export/-/text-export-9.5.0.tgz#cc47e9cb431af93655adb72652bdbf1737e68ebc"
+  integrity sha512-G3Oq54vJpZGB3TZouS1VCd4YpU2UBSmOjRwxO2th0egOYlKs0qaN0LjvcUAQFI6JTudcJijmp0lXpqmeHpMBpg==
   dependencies:
-    "@slickgrid-universal/common" "9.4.0"
-    "@slickgrid-universal/utils" "9.3.0"
+    "@slickgrid-universal/common" "9.5.0"
+    "@slickgrid-universal/utils" "9.5.0"
     text-encoding-utf-8 "^1.0.2"
 
-"@slickgrid-universal/utils@9.3.0":
-  version "9.3.0"
-  resolved "https://registry.yarnpkg.com/@slickgrid-universal/utils/-/utils-9.3.0.tgz#e3bfb87cfcc8519dec87e3261312ae28e160348a"
-  integrity sha512-YWAnn66/mSDRekDAsjMdQDd3o9BUG1PBYBw1sSJniIwrrPDNYlOunyiMJb4SlpTtuNMyO1QhH1aubxYEieHQFA==
+"@slickgrid-universal/utils@9.5.0":
+  version "9.5.0"
+  resolved "https://registry.yarnpkg.com/@slickgrid-universal/utils/-/utils-9.5.0.tgz#eaad0eda99f88986fd41145e10ee7f1b57ef7be3"
+  integrity sha512-z7UPFdIBYy3sVOmicgjb3GZ78iaHcWuKccrNCnVWjDTp/KRWzfjJ2GhwNLN9zwuu6bvjgrDQ/o92ao3eH7dlSw==
 
 "@tsconfig/node10@^1.0.7":
   version "1.0.11"
@@ -853,22 +853,22 @@ aurelia-polyfills@^1.3.4:
   dependencies:
     aurelia-pal "^1.0.0"
 
-aurelia-slickgrid@^9.4.0:
-  version "9.4.0"
-  resolved "https://registry.yarnpkg.com/aurelia-slickgrid/-/aurelia-slickgrid-9.4.0.tgz#b16568bcd0357bd540fc2820a08de3d14c5b59e0"
-  integrity sha512-A1TqdkaNtYPCoaurvYZPdHWGscC3MsZ8uVmF778XBoufr3ZTWI/NCJf72hOrjLnOpAeVOHZwMsG/sCRWNJGbVw==
+aurelia-slickgrid@^9.5.0:
+  version "9.5.0"
+  resolved "https://registry.yarnpkg.com/aurelia-slickgrid/-/aurelia-slickgrid-9.5.0.tgz#08fb776ef98927e5899e9c98a4cceb8863830751"
+  integrity sha512-H38EZIs2Ow/eHnJgNF8RaPZb+YlOvJ0gNiJkZmRW3EdPxk3LZtHbhtIuQTzH7SmSnt6kutCcS+AZgJmoBFdvBw==
   dependencies:
     "@aurelia/i18n" "^2.0.0-beta.25"
     "@aurelia/runtime" "^2.0.0-beta.25"
     "@aurelia/runtime-html" "^2.0.0-beta.25"
     "@formkit/tempo" "^0.1.2"
-    "@slickgrid-universal/common" "9.4.0"
-    "@slickgrid-universal/custom-footer-component" "9.4.0"
-    "@slickgrid-universal/empty-warning-component" "9.4.0"
-    "@slickgrid-universal/event-pub-sub" "9.3.0"
-    "@slickgrid-universal/pagination-component" "9.4.0"
-    "@slickgrid-universal/row-detail-view-plugin" "9.4.0"
-    "@slickgrid-universal/utils" "9.3.0"
+    "@slickgrid-universal/common" "9.5.0"
+    "@slickgrid-universal/custom-footer-component" "9.5.0"
+    "@slickgrid-universal/empty-warning-component" "9.5.0"
+    "@slickgrid-universal/event-pub-sub" "9.5.0"
+    "@slickgrid-universal/pagination-component" "9.5.0"
+    "@slickgrid-universal/row-detail-view-plugin" "9.5.0"
+    "@slickgrid-universal/utils" "9.5.0"
     dequal "^2.0.3"
     sortablejs "^1.15.6"
 
@@ -1204,10 +1204,10 @@ i18next-fetch-backend@^6.0.0:
   dependencies:
     "@babel/runtime" "^7.27.1"
 
-i18next@^25.3.1:
-  version "25.3.1"
-  resolved "https://registry.yarnpkg.com/i18next/-/i18next-25.3.1.tgz#bfb1cb6ef464a0bc89172c45b1d23c8fa48ba73e"
-  integrity sha512-S4CPAx8LfMOnURnnJa8jFWvur+UX/LWcl6+61p9VV7SK2m0445JeBJ6tLD0D5SR0H29G4PYfWkEhivKG5p4RDg==
+i18next@^25.3.2:
+  version "25.3.2"
+  resolved "https://registry.yarnpkg.com/i18next/-/i18next-25.3.2.tgz#3d6a7d1dc058caa1b9bdca47fd585483e2e7a637"
+  integrity sha512-JSnbZDxRVbphc5jiptxr3o2zocy5dEqpVm9qCGdJwRNO+9saUJS0/u4LnM/13C23fUEWxAylPqKU/NpMV/IjqA==
   dependencies:
     "@babel/runtime" "^7.27.6"
 
@@ -1368,10 +1368,10 @@ modify-code@^2.1.3:
   dependencies:
     source-map "^0.7.4"
 
-multiple-select-vanilla@^4.3.4:
-  version "4.3.4"
-  resolved "https://registry.yarnpkg.com/multiple-select-vanilla/-/multiple-select-vanilla-4.3.4.tgz#212c9831563147bb86bc2776217ca1748ec5498a"
-  integrity sha512-PnEY9/jq/nSlfHvMa/mEgQGWgX/LlpZySNiKlcS7VKeAXNzsh1UbPVAJBQIMijumnCM/bZqSM5xY55QlmkCXSg==
+multiple-select-vanilla@^4.3.5:
+  version "4.3.5"
+  resolved "https://registry.yarnpkg.com/multiple-select-vanilla/-/multiple-select-vanilla-4.3.5.tgz#e0611ceb9bcd241b7484ac5fe4df42bf68fd26bd"
+  integrity sha512-UDXPIdIoENXc2DGBSsFMqb1xKwIHjTRedRUUKLenRGRLVrb+D9Fsvgk7lMdNQcKQMX+Se67XXsYTEhUtjnL5iQ==
   dependencies:
     "@types/trusted-types" "^2.0.7"
 
@@ -1700,10 +1700,10 @@ v8-compile-cache-lib@^3.0.1:
   resolved "https://registry.yarnpkg.com/v8-compile-cache-lib/-/v8-compile-cache-lib-3.0.1.tgz#6336e8d71965cb3d35a1bbb7868445a7c05264bf"
   integrity sha512-wa7YjyUGfNZngI/vtK0UHAN+lgDCxBPCylVXGp0zu59Fz5aiGtNXaq3DhIov063MorB+VfufLh3JlF2KdTK3xg==
 
-vanilla-calendar-pro@^3.0.4:
-  version "3.0.4"
-  resolved "https://registry.yarnpkg.com/vanilla-calendar-pro/-/vanilla-calendar-pro-3.0.4.tgz#248b2c4d4409c89e4b3188f435298a6e7bb5d2a4"
-  integrity sha512-i13aJsfovlfRGm7zkoxYh9WylkdLVJkjmfZjJms5cb5i/lbnPTBaDQ0J51joC3Q4h66sFpEUjA4bXLAr/OPZ2w==
+vanilla-calendar-pro@^3.0.5:
+  version "3.0.5"
+  resolved "https://registry.yarnpkg.com/vanilla-calendar-pro/-/vanilla-calendar-pro-3.0.5.tgz#4832d508a7dcb7eeb7e104c8397d08526f99b64e"
+  integrity sha512-4X9bmTo1/KzbZrB7B6mZXtvVXIhcKxaVSnFZuaVtps7tshKJDxgaIElkgdia6IjB5qWetWuu7kZ+ZaV1sPxy6w==
 
 vite-plugin-sass-dts@^1.3.31:
   version "1.3.31"
@@ -1716,6 +1716,20 @@ vite@^7.0.2:
   version "7.0.2"
   resolved "https://registry.yarnpkg.com/vite/-/vite-7.0.2.tgz#66ddf890c4357f4fb6803a787dc210538591b917"
   integrity sha512-hxdyZDY1CM6SNpKI4w4lcUc3Mtkd9ej4ECWVHSMrOdSinVc2zYOAppHeGc/hzmRo3pxM5blMzkuWHOJA/3NiFw==
+  dependencies:
+    esbuild "^0.25.0"
+    fdir "^6.4.6"
+    picomatch "^4.0.2"
+    postcss "^8.5.6"
+    rollup "^4.40.0"
+    tinyglobby "^0.2.14"
+  optionalDependencies:
+    fsevents "~2.3.3"
+
+vite@^7.0.5:
+  version "7.0.5"
+  resolved "https://registry.yarnpkg.com/vite/-/vite-7.0.5.tgz#deb2d3b777378f6d3e47c3d41b59f3c93f485738"
+  integrity sha512-1mncVwJxy2C9ThLwz0+2GKZyEXuC3MyWtAAlNftlZZXZDP3AJt5FmwcMit/IGGaNZ8ZOB2BNO/HFUB+CpN0NQw==
   dependencies:
     esbuild "^0.25.0"
     fdir "^6.4.6"
