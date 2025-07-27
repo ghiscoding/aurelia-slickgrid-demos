@@ -52,7 +52,7 @@
     "@slickgrid-universal/rxjs-observable": "^9.6.0",
     "@slickgrid-universal/text-export": "^9.6.0",
     "aurelia": "^2.0.0-beta.25",
-    "aurelia-slickgrid": "^9.6.0",
+    "aurelia-slickgrid": "^9.6.1",
     "bootstrap": "^5.3.7",
     "i18next": "^25.3.2",
     "i18next-fetch-backend": "^6.0.0",

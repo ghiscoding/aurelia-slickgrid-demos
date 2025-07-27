@@ -1292,10 +1292,10 @@ aurelia-polyfills@^1.3.4:
   dependencies:
     aurelia-pal "^1.0.0"
 
-aurelia-slickgrid@^9.6.0:
-  version "9.6.0"
-  resolved "https://registry.yarnpkg.com/aurelia-slickgrid/-/aurelia-slickgrid-9.6.0.tgz#d4efdaeabb5982e3ad62400e69d4788c4dd436f2"
-  integrity sha512-YHEUQbv3uZVk5jCZRkfbTfl8P2IGXwTimX7Zx8HeUdIv2LM4DVSn9/ERmdK/Xd0hNb08agTHfao2nSTWtAs85g==
+aurelia-slickgrid@^9.6.1:
+  version "9.6.1"
+  resolved "https://registry.yarnpkg.com/aurelia-slickgrid/-/aurelia-slickgrid-9.6.1.tgz#f74148fddf843f8c0bb8e80b1eea0912dece6cc2"
+  integrity sha512-m/ooH8YCbh2K1zknD+aTGfo6F8yUeSCGr1DHyUXBDqNwVUbCs9Lymz4EnOfrGtnegNPiDVyS+cdBkpIZ6YMd/A==
   dependencies:
     "@aurelia/i18n" "^2.0.0-beta.25"
     "@aurelia/runtime" "^2.0.0-beta.25"
