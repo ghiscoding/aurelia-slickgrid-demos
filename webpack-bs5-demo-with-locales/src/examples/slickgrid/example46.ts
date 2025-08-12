@@ -3,7 +3,7 @@ import { TextExportService } from '@slickgrid-universal/text-export';
 import { bindable } from 'aurelia';
 import { type AureliaGridInstance, type Column, Filters, Formatters, type GridOption } from 'aurelia-slickgrid';
 
-import { showToast } from './utilities.js';
+import { showToast } from './utilities';
 import './example46.scss'; // provide custom CSS/SASS styling
 
 interface Chapter {
