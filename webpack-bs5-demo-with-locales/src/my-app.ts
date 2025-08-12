@@ -49,6 +49,7 @@ export class MyApp {
     { path: 'example43', component: () => import('./examples/slickgrid/example43'), title: '43- Colspan/Rowspan (timesheets)' },
     { path: 'example44', component: () => import('./examples/slickgrid/example44'), title: '44- Colspan/Rowspan (large data)' },
     { path: 'example45', component: () => import('./examples/slickgrid/example45'), title: '45- Row Detail with inner Grid' },
+    { path: 'example46', component: () => import('./examples/slickgrid/example46'), title: '46- Tree Data with Lazy Loading' },
     { path: 'home', component: () => import('./home-page'), title: 'Home' },
   ];
 
