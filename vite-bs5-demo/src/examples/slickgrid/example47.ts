@@ -1,33 +1,50 @@
 import { bindable } from 'aurelia';
-import { type AureliaGridInstance, type Column, Editors, ExtensionName, Filters, Formatters, type GridOption } from 'aurelia-slickgrid';
+import {
+  Aggregators,
+  type AureliaGridInstance,
+  type Column,
+  Editors,
+  ExtensionName,
+  Filters,
+  Formatters,
+  type GridOption,
+  type Grouping,
+  GroupTotalFormatters,
+  type SlickDataView,
+  type SlickGrid,
+  SortComparers,
+  SortDirectionNumber,
+} from 'aurelia-slickgrid';
 
-import { ExampleDetailPreload } from './example-detail-preload.js';
-import { Example19DetailView } from './example19-detail-view.js';
+import { ExampleDetailPreload } from './example-detail-preload';
+import { Example47DetailView } from './example47-detail-view';
 
 const FAKE_SERVER_DELAY = 250;
-const NB_ITEMS = 1000;
+const NB_ITEMS = 1200;
 
-export class Example19 {
+interface Item {
+  id: number;
+  title: string;
+  duration: number;
+  cost: number;
+  percentComplete: number;
+  start: Date;
+  finish: Date;
+  effortDriven: boolean;
+}
+
+export class Example47 {
   private _darkMode = false;
   @bindable detailViewRowCount = 9;
   @bindable serverWaitDelay = FAKE_SERVER_DELAY;
 
-  title = 'Example 19: Row Detail View';
-  subTitle = `
-    Add functionality to show extra information with a Row Detail View, (<a href="https://ghiscoding.gitbook.io/aurelia-slickgrid/grid-functionalities/row-detail" target="_blank">Wiki docs</a>)
-    <ul>
-      <li>Click on the row "+" icon or anywhere on the row to open it (the latter can be changed via property "useRowClick: false")</li>
-      <li>Pass a View/Model as a Template to the Row Detail</li>
-      <li>You can use "expandableOverride()" callback to override logic to display expand icon on every row (for example only show it every 2nd row)</li>
-    </ul>
-  `;
-
   aureliaGrid!: AureliaGridInstance;
+  dataviewObj!: SlickDataView;
+  gridObj!: SlickGrid;
   gridOptions!: GridOption;
-  columnDefinitions: Column[] = [];
-  dataset: any[] = [];
+  columnDefinitions: Column<Item>[] = [];
+  dataset: Item[] = [];
   // extensions!: ExtensionList<any>;
-  flashAlertType = 'info';
   hideSubTitle = false;
   message = '';
 
@@ -56,6 +73,13 @@ export class Example19 {
     document.querySelector<HTMLDivElement>('#demo-container')!.dataset.bsTheme = 'light';
   }
 
+  aureliaGridReady(aureliaGrid: AureliaGridInstance) {
+    this.aureliaGrid = aureliaGrid;
+    this.dataviewObj = aureliaGrid.dataView;
+    this.gridObj = aureliaGrid.slickGrid;
+    this.groupByDuration(); // group by duration on page load
+  }
+
   /* Define grid Options and Columns */
   defineGrid() {
     this.columnDefinitions = [
@@ -72,24 +96,24 @@ export class Example19 {
         id: 'duration',
         name: 'Duration (days)',
         field: 'duration',
-        formatter: Formatters.decimal,
-        params: { minDecimal: 1, maxDecimal: 2 },
         sortable: true,
         type: 'number',
         minWidth: 90,
         filterable: true,
       },
       {
-        id: 'percent2',
+        id: '%',
         name: '% Complete',
-        field: 'percentComplete2',
-        editor: { model: Editors.slider },
-        formatter: Formatters.progressBar,
-        type: 'number',
-        sortable: true,
-        minWidth: 100,
+        field: 'percentComplete',
+        minWidth: 200,
+        width: 250,
+        resizable: false,
         filterable: true,
-        filter: { model: Filters.slider, operator: '>' },
+        sortable: true,
+        type: 'number',
+        formatter: Formatters.percentCompleteBar,
+        groupTotalsFormatter: GroupTotalFormatters.avgTotalsPercentage,
+        params: { groupFormatterPrefix: '<i>Avg</i>: ' },
       },
       {
         id: 'start',
@@ -114,6 +138,19 @@ export class Example19 {
         exportWithFormatter: true,
         filterable: true,
         filter: { model: Filters.compoundDate },
+      },
+      {
+        id: 'cost',
+        name: 'Cost',
+        field: 'cost',
+        minWidth: 70,
+        width: 80,
+        sortable: true,
+        filterable: true,
+        filter: { model: Filters.compoundInputNumber },
+        type: 'number',
+        formatter: Formatters.dollar,
+        groupTotalsFormatter: GroupTotalFormatters.sumTotalsDollarBold,
       },
       {
         id: 'effort-driven',
@@ -141,10 +178,10 @@ export class Example19 {
         rightPadding: 10,
       },
       enableFiltering: true,
+      enableGrouping: true,
       enableRowDetailView: true,
       rowTopOffsetRenderType: 'top', // RowDetail and/or RowSpan don't render well with "transform", you should use "top"
       darkMode: this._darkMode,
-      datasetIdPropertyName: 'rowId', // optionally use a different "id"
       rowDetailView: {
         // optionally change the column index position of the icon (defaults to 0)
         // columnIndexPosition: 1,
@@ -159,72 +196,45 @@ export class Example19 {
         // limit expanded row to only 1 at a time
         singleRowExpand: false,
 
-        // false by default, clicking anywhere on the row will open the detail view
-        // when set to false, only the "+" icon would open the row detail
-        // if you use editor or cell navigation you would want this flag set to false (default)
-        useRowClick: true,
-
         // how many grid rows do we want to use for the row detail panel (this is only set once and will be used for all row detail)
         // also note that the detail view adds an extra 1 row for padding purposes
         // so if you choose 4 panelRows, the display will in fact use 5 rows
         panelRows: this.detailViewRowCount,
 
-        // you can override the logic for showing (or not) the expand icon
-        // for example, display the expand icon only on every 2nd row
-        // expandableOverride: (row: number, dataContext: any) => (dataContext.rowId % 2 === 1),
-
         // Preload View Template
         preloadViewModel: ExampleDetailPreload,
 
         // ViewModel Template to load when row detail data is ready
-        viewModel: Example19DetailView,
+        viewModel: Example47DetailView,
 
         // Optionally pass your Parent Component reference to your Child Component (row detail component)
         parentRef: this,
-
-        onBeforeRowDetailToggle: (e, args) => {
-          // you coud cancel opening certain rows
-          // if (args.item.rowId === 1) {
-          //   e.preventDefault();
-          //   return false;
-          // }
-          console.log('before toggling row detail', args.item);
-          return true;
-        },
       },
       rowSelectionOptions: {
         // True (Single Selection), False (Multiple Selections)
         selectActiveRow: true,
       },
-
-      // You could also enable Row Selection as well, but just make sure to disable `useRowClick: false`
-      // enableCheckboxSelector: true,
-      // enableRowSelection: true,
-      // checkboxSelector: {
-      //   hideInFilterHeaderRow: false,
-      //   hideSelectAllCheckbox: true,
-      // },
     };
   }
 
   getData() {
     // mock a dataset
-    const dataset: any[] = [];
+    const dataset: Item[] = [];
     for (let i = 0; i < NB_ITEMS; i++) {
       const randomYear = 2000 + Math.floor(Math.random() * 10);
       const randomMonth = Math.floor(Math.random() * 11);
       const randomDay = Math.floor(Math.random() * 29);
       const randomPercent = Math.round(Math.random() * 100);
+      const randomCost = Math.round(Math.random() * 10000) / 100;
 
       dataset[i] = {
-        rowId: i,
+        id: i,
         title: 'Task ' + i,
-        duration: i % 33 === 0 ? null : Math.random() * 100 + '',
+        duration: Math.floor(Math.random() * 100),
         percentComplete: randomPercent,
-        percentComplete2: randomPercent,
-        percentCompleteNumber: randomPercent,
         start: new Date(randomYear, randomMonth, randomDay),
         finish: new Date(randomYear, randomMonth + 1, randomDay),
+        cost: i % 3 ? randomCost : -randomCost,
         effortDriven: i % 5 === 0,
       };
     }
@@ -240,26 +250,62 @@ export class Example19 {
     }
   }
 
-  changeEditableGrid() {
-    // this.rowDetailInstance.setOptions({ useRowClick: false });
-    this.rowDetailInstance.collapseAll();
-    (this.rowDetailInstance as any).addonOptions.useRowClick = false;
-    this.gridOptions.autoCommitEdit = !this.gridOptions.autoCommitEdit;
-    this.aureliaGrid?.slickGrid.setOptions({
-      editable: true,
-      autoEdit: true,
-      enableCellNavigation: true,
-    });
-    return true;
-  }
-
   closeAllRowDetail() {
     this.rowDetailInstance.collapseAll();
   }
 
-  showFlashMessage(message: string, alertType = 'info') {
-    this.message = message;
-    this.flashAlertType = alertType;
+  clearGrouping() {
+    this.dataviewObj.setGrouping([]);
+  }
+
+  collapseAllGroups() {
+    this.dataviewObj.collapseAllGroups();
+  }
+
+  expandAllGroups() {
+    this.dataviewObj.expandAllGroups();
+  }
+
+  groupByDuration() {
+    // you need to manually add the sort icon(s) in UI
+    this.aureliaGrid.filterService.setSortColumnIcons([{ columnId: 'duration', sortAsc: true }]);
+    this.dataviewObj.setGrouping({
+      getter: 'duration',
+      formatter: (g) => `Duration: ${g.value} <span style="color:green">(${g.count} items)</span>`,
+      comparer: (a, b) => {
+        return SortComparers.numeric(a.value, b.value, SortDirectionNumber.asc);
+      },
+      aggregators: [new Aggregators.Avg('percentComplete'), new Aggregators.Sum('cost')],
+      aggregateCollapsed: false,
+      lazyTotalsCalculation: true,
+    } as Grouping);
+    this.gridObj.invalidate(); // invalidate all rows and re-render
+  }
+
+  groupByDurationEffortDriven() {
+    // you need to manually add the sort icon(s) in UI
+    const sortColumns = [
+      { columnId: 'duration', sortAsc: true },
+      { columnId: 'effortDriven', sortAsc: true },
+    ];
+    this.aureliaGrid.filterService.setSortColumnIcons(sortColumns);
+    this.dataviewObj.setGrouping([
+      {
+        getter: 'duration',
+        formatter: (g) => `Duration: ${g.value} <span style="color:green">(${g.count} items)</span>`,
+        aggregators: [new Aggregators.Sum('duration'), new Aggregators.Sum('cost')],
+        aggregateCollapsed: true,
+        lazyTotalsCalculation: true,
+      },
+      {
+        getter: 'effortDriven',
+        formatter: (g) => `Effort-Driven: ${g.value ? 'True' : 'False'} <span style="color:green">(${g.count} items)</span>`,
+        aggregators: [new Aggregators.Avg('percentComplete'), new Aggregators.Sum('cost')],
+        collapsed: true,
+        lazyTotalsCalculation: true,
+      },
+    ] as Grouping[]);
+    this.gridObj.invalidate(); // invalidate all rows and re-render
   }
 
   /** Just for demo purposes, we will simulate an async server call and return more details on the selected row item */
@@ -280,7 +326,7 @@ export class Example19 {
 
     // fill the template on async delay
     return new Promise((resolve) => {
-      window.setTimeout(() => {
+      setTimeout(() => {
         const itemDetail = item;
 
         // let's add some extra properties to our item for a better async simulation

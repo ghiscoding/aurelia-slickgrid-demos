@@ -19,9 +19,10 @@ import { CustomTitleFormatter } from './examples/slickgrid/custom-title-formatte
 import { EditorSelect } from './examples/slickgrid/editor-select';
 import { FilterSelect } from './examples/slickgrid/filter-select';
 import { Example19DetailView } from './examples/slickgrid/example19-detail-view';
-import { Example19Preload } from './examples/slickgrid/example19-preload';
+import { ExampleDetailPreload } from './examples/slickgrid/example-detail-preload';
 import { Example45DetailView } from './examples/slickgrid/example45-detail-view';
 import { Example45Preload } from './examples/slickgrid/example45-preload';
+import { Example47DetailView } from './examples/slickgrid/example47-detail-view';
 
 import localeEn from './assets/i18n/en/aurelia-slickgrid.json';
 import localeFr from './assets/i18n/fr/aurelia-slickgrid.json';
@@ -41,9 +42,10 @@ Aurelia
     CustomTitleFormatter,
     CustomPagerComponent,
     Example19DetailView,
-    Example19Preload,
+    ExampleDetailPreload,
     Example45DetailView,
     Example45Preload,
+    Example47DetailView,
     EditorSelect,
     FilterSelect,
   )

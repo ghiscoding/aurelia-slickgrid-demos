@@ -1,4 +1,4 @@
-import { type IRoute } from '@aurelia/router';
+import { type IRoute } from '@aurelia/router-direct';
 
 import './styles.scss';
 export class MyApp {
@@ -50,6 +50,7 @@ export class MyApp {
     { path: 'example44', component: () => import('./examples/slickgrid/example44'), title: '44- Colspan/Rowspan (large data)' },
     { path: 'example45', component: () => import('./examples/slickgrid/example45'), title: '45- Row Detail with inner Grid' },
     { path: 'example46', component: () => import('./examples/slickgrid/example46'), title: '46- Tree Data with Lazy Loading' },
+    { path: 'example47', component: () => import('./examples/slickgrid/example47'), title: '47- Row Detail + Grouping' },
     { path: 'home', component: () => import('./home-page'), title: 'Home' },
   ];
 

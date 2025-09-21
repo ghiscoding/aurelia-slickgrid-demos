@@ -7,7 +7,7 @@ import { customElement } from 'aurelia';
     <h4>Loading...</h4>
   </div>`,
 })
-export class Example19Preload {
+export class ExampleDetailPreload {
   dispose() {
     console.log('preload detaching');
   }

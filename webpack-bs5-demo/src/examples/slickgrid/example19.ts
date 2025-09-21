@@ -1,7 +1,7 @@
 import { bindable } from 'aurelia';
 import { type AureliaGridInstance, type Column, Editors, ExtensionName, Filters, Formatters, type GridOption } from 'aurelia-slickgrid';
 
-import { Example19Preload } from './example19-preload';
+import { ExampleDetailPreload } from './example-detail-preload';
 import { Example19DetailView } from './example19-detail-view';
 
 const FAKE_SERVER_DELAY = 250;
@@ -174,7 +174,7 @@ export class Example19 {
         // expandableOverride: (row: number, dataContext: any) => (dataContext.rowId % 2 === 1),
 
         // Preload View Template
-        preloadViewModel: Example19Preload,
+        preloadViewModel: ExampleDetailPreload,
 
         // ViewModel Template to load when row detail data is ready
         viewModel: Example19DetailView,
