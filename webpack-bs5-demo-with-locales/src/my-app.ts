@@ -1,6 +1,6 @@
 import { type IRoute } from '@aurelia/router-direct';
-
 import './styles.scss';
+
 export class MyApp {
   static routes: IRoute[] = [
     { path: '', redirectTo: 'example1' },
@@ -51,6 +51,8 @@ export class MyApp {
     { path: 'example45', component: () => import('./examples/slickgrid/example45'), title: '45- Row Detail with inner Grid' },
     { path: 'example46', component: () => import('./examples/slickgrid/example46'), title: '46- Tree Data with Lazy Loading' },
     { path: 'example47', component: () => import('./examples/slickgrid/example47'), title: '47- Row Detail + Grouping' },
+    { path: 'example48', component: () => import('./examples/slickgrid/example48'), title: '48- Hybrid Selection Model' },
+    { path: 'example49', component: () => import('./examples/slickgrid/example49'), title: '49- Spreadsheet Drag-Fill' },
     { path: 'home', component: () => import('./home-page'), title: 'Home' },
   ];
 
@@ -60,7 +62,7 @@ export class MyApp {
     this.addGitHubStarsLogo();
 
     // scroll to active link route, there's probably a better way to do this but couldn't find lifecycle for it
-    window.setTimeout(() => {
+    setTimeout(() => {
       const linkElm = document.querySelector('.nav-link.active');
       linkElm?.scrollIntoView({ block: 'nearest' });
     }, 45);
@@ -75,7 +77,7 @@ export class MyApp {
       ghStarLinkElm.href = 'https://github.com/ghiscoding/slickgrid-universal/tree/master/frameworks/aurelia-slickgrid';
 
       const imgStarElm = document.createElement('img');
-      imgStarElm.src = 'https://img.shields.io/github/stars/ghiscoding/aurelia-slickgrid?style=social';
+      imgStarElm.src = 'https://img.shields.io/github/stars/ghiscoding/slickgrid-universal?style=social';
 
       const ghButtonContainerElm = document.querySelector('.github-button-container');
       if (ghButtonContainerElm && !ghButtonContainerElm.querySelector('a')) {
