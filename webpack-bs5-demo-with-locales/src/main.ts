@@ -6,7 +6,7 @@ import 'bootstrap';
 // import shared from './shared.css';
 import { AureliaSlickGridConfiguration } from 'aurelia-slickgrid';
 import DOMPurify from 'dompurify';
-import { RouterConfiguration } from '@aurelia/router-direct';
+import { RouterConfiguration } from '@aurelia/router';
 
 import { MyApp } from './my-app';
 import { DateFormatValueConverter, DecimalValueConverter, StringifyValueConverter } from './examples/resources/value-converters';
@@ -25,7 +25,11 @@ import { Example47DetailView } from './examples/slickgrid/example47-detail-view'
 Aurelia
   // Register all exports of the plugin
   .register(
-    RouterConfiguration.customize({ useHref: false }),
+    RouterConfiguration.customize({
+      activeClass: 'active',
+      useUrlFragmentHash: true,
+      useHref: true,
+    }),
 
     // dynamic components to enhance
     CustomTitleFormatter,

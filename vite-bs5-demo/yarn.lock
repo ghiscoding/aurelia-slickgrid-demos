@@ -77,10 +77,10 @@
   resolved "https://registry.yarnpkg.com/@aurelia/route-recognizer/-/route-recognizer-2.0.0-beta.25.tgz#e6ef966b49bff94797fc3085b3b162c615cdf9ab"
   integrity sha512-iHJlmUzHwl27BA1MgMn0SyUB18iUOkFdyvWz4DAEMgpVujrL71OghpY1oQrFoSUxpSC43DOxFC+FAIiMDqKagw==
 
-"@aurelia/router-direct@^2.0.0-beta.25":
+"@aurelia/router@^2.0.0-beta.25":
   version "2.0.0-beta.25"
-  resolved "https://registry.yarnpkg.com/@aurelia/router-direct/-/router-direct-2.0.0-beta.25.tgz#bdfb9fa955e395ad647d6a0ae8ee0709031984be"
-  integrity sha512-P4l2jjwQNPQgxxqjT/aCjectA782e1XzNE75EhrXXqX6uu1qq7TSzhyGk71zraRsbxHspgabLwrA63RSTHjd9A==
+  resolved "https://registry.yarnpkg.com/@aurelia/router/-/router-2.0.0-beta.25.tgz#84c0c2260ff170340103f6d5937815704d294457"
+  integrity sha512-XSwpgpqQiyR8Z6y5VL7iELouia6cYffnkgz30nomF28lQuQhv0/J5mifux8m/A2BDtN55c9pUov0idJx3nqg+Q==
   dependencies:
     "@aurelia/kernel" "2.0.0-beta.25"
     "@aurelia/metadata" "2.0.0-beta.25"
@@ -89,7 +89,6 @@
     "@aurelia/route-recognizer" "2.0.0-beta.25"
     "@aurelia/runtime" "2.0.0-beta.25"
     "@aurelia/runtime-html" "2.0.0-beta.25"
-    "@aurelia/template-compiler" "2.0.0-beta.25"
 
 "@aurelia/runtime-html@2.0.0-beta.25", "@aurelia/runtime-html@^2.0.0-beta.25":
   version "2.0.0-beta.25"
