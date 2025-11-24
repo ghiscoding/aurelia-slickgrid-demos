@@ -1,4 +1,4 @@
-# [![Aurelia](https://avatars.githubusercontent.com/u/9808864?s=65&v=4)](https://aurelia.io/) Aurelia-Slickgrid - Client Demos
+# [![Aurelia](https://avatars.githubusercontent.com/u/9808864?s=55&v=4)](https://aurelia.io/) Aurelia-Slickgrid - Client Demos
 ## [Aurelia-Slickgrid](https://github.com/ghiscoding/slickgrid-universal/tree/master/frameworks/aurelia-slickgrid) library client demos with different bundler types.
 
 ### Requires Aurelia 2
