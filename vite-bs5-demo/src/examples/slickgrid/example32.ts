@@ -18,7 +18,6 @@ import {
   type SearchTerm,
   type VanillaCalendarOption,
 } from 'aurelia-slickgrid';
-
 import './example32.scss'; // provide custom CSS/SASS styling
 import COUNTRIES_COLLECTION_URL from './data/countries.json?url';
 
@@ -688,8 +687,8 @@ export class Example32 {
     this.aureliaGrid.slickGrid?.setOptions({ autoEdit: state });
   }
 
-  toggleAutoEditByKey(state: boolean) {
-    this.aureliaGrid.slickGrid?.setOptions({ autoEditByKey: state });
+  toggleAutoEditByKeypress(state: boolean) {
+    this.aureliaGrid.slickGrid?.setOptions({ autoEditByKeypress: state });
   }
 
   undoLastEdit(showLastEditor = false) {
