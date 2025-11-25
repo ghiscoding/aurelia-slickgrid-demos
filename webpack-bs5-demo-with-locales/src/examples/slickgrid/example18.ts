@@ -2,38 +2,24 @@ import { ExcelExportService } from '@slickgrid-universal/excel-export';
 import { TextExportService } from '@slickgrid-universal/text-export';
 import {
   Aggregators,
-  type AureliaGridInstance,
-  type Column,
   Filters,
   Formatters,
-  type GridOption,
-  type GroupingGetterFunction,
-  type Grouping,
   GroupTotalFormatters,
   SortComparers,
   SortDirectionNumber,
+  type AureliaGridInstance,
+  type Column,
+  type GridOption,
+  type Grouping,
+  type GroupingGetterFunction,
   type SlickDataView,
   type SlickGrid,
 } from 'aurelia-slickgrid';
 
+const NB_ITEMS = 10_000;
+
 export class Example18 {
   private _darkMode = false;
-  title = 'Example 18: Draggable Grouping & Aggregators';
-  subTitle = `
-  <ul>
-  <li><a href="https://ghiscoding.gitbook.io/aurelia-slickgrid/grid-functionalities/grouping-aggregators" target="_blank">Wiki docs</a></li>
-  <li>This example shows 3 ways of grouping</li>
-  <ol>
-  <li>Drag any Column Header on the top placeholder to group by that column (support moti-columns grouping by adding more columns to the drop area).</li>
-  <li>Use buttons and defined functions to group by whichever field you want</li>
-  <li>Use the Select dropdown to group, the position of the Selects represent the grouping level</li>
-  </ol>
-  <li>Fully dynamic and interactive multi-level grouping with filtering and aggregates ovor 50'000 items</li>
-  <li>Each grouping level can have its own aggregates (over child rows, child groups, or all descendant rows)..</li>
-  <li>Use "Aggregators" and "GroupTotalFormatters" directly from Aurelia-Slickgrid</li>
-  </ul>
-  `;
-
   aureliaGrid!: AureliaGridInstance;
   columnDefinitions: Column[] = [];
   dataset: any[] = [];
@@ -50,7 +36,7 @@ export class Example18 {
 
   constructor() {
     // define the grid options & columns and then create the grid itself
-    this.loadData(500);
+    this.loadData(NB_ITEMS);
     this.defineGrid();
   }
 
@@ -99,7 +85,7 @@ export class Example18 {
         groupTotalsFormatter: GroupTotalFormatters.sumTotals,
         grouping: {
           getter: 'duration',
-          formatter: (g) => `Duration: ${g.value}  <span class="text-primary">(${g.count} items)</span>`,
+          formatter: (g) => `Duration: ${g.value} <span class="text-primary">(${g.count} items)</span>`,
           comparer: (a, b) => {
             return this.durationOrderByCount ? a.count - b.count : SortComparers.numeric(a.value, b.value, SortDirectionNumber.asc);
           },
@@ -257,11 +243,12 @@ export class Example18 {
       draggableGrouping: {
         dropPlaceHolderText: 'Drop a column header here to group by the column',
         // groupIconCssClass: 'mdi mdi-drag-vertical',
-        deleteIconCssClass: 'mdi mdi-close text-color-danger',
+        deleteIconCssClass: 'mdi mdi-close color-danger',
         sortAscIconCssClass: 'mdi mdi-arrow-up',
         sortDescIconCssClass: 'mdi mdi-arrow-down',
         onGroupChanged: (_e, args) => this.onGroupChanged(args),
         onExtensionRegistered: (extension) => (this.draggableGroupingPlugin = extension),
+        initialGroupBy: ['duration'],
       },
       darkMode: this._darkMode,
       enableTextExport: true,

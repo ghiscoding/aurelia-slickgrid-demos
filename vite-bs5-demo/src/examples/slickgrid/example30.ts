@@ -1,30 +1,30 @@
 import { IHttpClient } from '@aurelia/fetch-client';
 import { newInstanceOf, resolve } from '@aurelia/kernel';
-import { ExcelExportService } from '@slickgrid-universal/excel-export';
-import { SlickCustomTooltip } from '@slickgrid-universal/custom-tooltip-plugin';
 import { SlickCompositeEditor, SlickCompositeEditorComponent } from '@slickgrid-universal/composite-editor-component';
-
+import { SlickCustomTooltip } from '@slickgrid-universal/custom-tooltip-plugin';
+import { ExcelExportService } from '@slickgrid-universal/excel-export';
 import {
+  Editors,
+  Filters,
+  formatNumber,
+  Formatters,
+  SlickGlobalEditorLock,
+  SortComparers,
   type AureliaGridInstance,
   type AutocompleterOption,
   type Column,
   type CompositeEditorModalType,
   type EditCommand,
-  Editors,
-  Filters,
-  formatNumber,
   type Formatter,
-  Formatters,
   type GridOption,
   type GridStateChange,
   type LongTextEditorOption,
+  type MultipleSelectOption,
   type OnCompositeEditorChangeEventArgs,
-  SlickGlobalEditorLock,
   type SlickGrid,
-  SortComparers,
+  type SliderOption,
   type VanillaCalendarOption,
 } from 'aurelia-slickgrid';
-
 import './example30.scss'; // provide custom CSS/SASS styling
 import COUNTRIES_COLLECTION_URL from './data/countries.json?url';
 
@@ -85,10 +85,6 @@ const myCustomTitleValidator = (value: any, args: any) => {
 
 export class Example30 {
   private _darkMode = false;
-  title = 'Example 30: Composite Editor Modal';
-  subTitle = `Composite Editor allows you to Create, Clone, Edit, Mass Update & Mass Selection Changes inside a nice Modal Window.
-  <br>The modal is simply populated by looping through your column definition list and also uses a lot of the same logic as inline editing (see <a href="https://ghiscoding.gitbook.io/aurelia-slickgrid/grid-functionalities/composite-editor-modal" target="_blank">Composite Editor - Wiki</a>.)`;
-
   aureliaGrid!: AureliaGridInstance;
   compositeEditorInstance: SlickCompositeEditorComponent;
   gridOptions!: GridOption;
@@ -144,6 +140,7 @@ export class Example30 {
         editor: {
           model: Editors.longText,
           massUpdate: false,
+          compositeEditorFormOrder: 0, // you can use this option to always keep same order and make this the 1st input
           required: true,
           alwaysSaveOnEnterKey: true,
           maxLength: 12,
@@ -175,6 +172,7 @@ export class Example30 {
         },
         editor: {
           model: Editors.float,
+          compositeEditorFormOrder: 2, // inverse order of Duration & Percent Complete in the form
           massUpdate: true,
           decimal: 2,
           valueStep: 1,
@@ -210,6 +208,7 @@ export class Example30 {
         editor: {
           model: Editors.slider,
           massUpdate: true,
+          compositeEditorFormOrder: 1, // inverse order of Duration & Percent Complete in the form
           minValue: 0,
           maxValue: 100,
         },
@@ -254,6 +253,7 @@ export class Example30 {
         filter: {
           model: Filters.multipleSelect,
           collection: this.complexityLevelList,
+          options: { showClear: true } as MultipleSelectOption,
         },
         editor: {
           model: Editors.singleSelect,
@@ -275,7 +275,7 @@ export class Example30 {
         saveOutputType: 'dateUtc',
         filterable: true,
         filter: { model: Filters.compoundDate },
-        editor: { model: Editors.date, massUpdate: true, options: { hideClearButton: false } },
+        editor: { model: Editors.date, massUpdate: true, options: { hideClearButton: false } as SliderOption },
       },
       {
         id: 'completed',
@@ -297,6 +297,7 @@ export class Example30 {
             { value: false, label: 'False' },
           ],
           model: Filters.singleSelect,
+          options: { showClear: true } as MultipleSelectOption,
         },
         editor: { model: Editors.checkbox, massUpdate: true },
         // editor: { model: Editors.singleSelect, collection: [{ value: true, label: 'Yes' }, { value: false, label: 'No' }], },
@@ -318,15 +319,14 @@ export class Example30 {
         editor: {
           model: Editors.date,
           options: {
-            displayDateMin: 'today',
+            displayDateMin: 'today', // set minimum date as today
 
             // if we want to preload the date picker with a different date,
-            // we could do it by assigning settings.seleted.dates
+            // we could do it by assigning `selectedDates: []`
             // NOTE: vanilla-calendar doesn't automatically focus the picker to the year/month and you need to do it yourself
-            // selectedDates: ['2021-06-04'],
-            // selectedMonth: 6 - 1, // Note: JS Date month (only) is zero index based, so June is 6-1 => 5
-            // selectedYear: 2021
-            // }
+            //  selectedDates: ['2021-06-04'],
+            //  selectedMonth: 6 - 1, // Note: JS Date month (only) is zero index based, so June is 6-1 => 5
+            //  selectedYear: 2021
           } as VanillaCalendarOption,
           massUpdate: true,
           validator: (value, args) => {
@@ -376,6 +376,7 @@ export class Example30 {
         filter: {
           model: Filters.inputText,
           // placeholder: '🔎︎ search product',
+          type: 'string',
           queryField: 'product.itemName',
         },
       },
@@ -402,6 +403,7 @@ export class Example30 {
         },
         filter: {
           model: Filters.inputText,
+          type: 'string',
           queryField: 'origin.name',
         },
       },
@@ -614,8 +616,8 @@ export class Example30 {
     return false;
   }
 
-  handleItemDeleted(itemId: string) {
-    console.log('item deleted with id:', itemId);
+  handleItemDeleted(itemIds: string[]) {
+    console.log('item deleted with ids:', itemIds);
   }
 
   handleOnBeforeEditCell(e: Event, args: any) {
@@ -741,7 +743,7 @@ export class Example30 {
         // when processing a mass update or mass selection
         if (modalType === 'mass-update' || modalType === 'mass-selection') {
           return new Promise((resolve, reject) => {
-            window.setTimeout(() => {
+            setTimeout(() => {
               if (formValues.percentComplete >= 50) {
                 resolve(true);
               } else {
@@ -754,7 +756,7 @@ export class Example30 {
           // we'll just apply the change without any rejection from the server and
           // note that we also have access to the "dataContext" which is only available for these modal
           console.log(`${modalType} item data context`, dataContext);
-          return new Promise((resolve) => window.setTimeout(() => resolve(true), serverResponseDelay));
+          return new Promise((resolve) => setTimeout(() => resolve(true), serverResponseDelay));
         }
       },
     });
