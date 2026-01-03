@@ -4,7 +4,6 @@ import {
   type Column,
   type GridOption,
   type OnClickEventArgs,
-  type RowSelectionModelOption
 } from 'aurelia-slickgrid';
 
 export interface Customer {
@@ -67,7 +66,8 @@ export class Example50 {
       enableHybridSelection: true,
       rowSelectionOptions: {
         selectionType: 'row',
-      } as RowSelectionModelOption,
+        selectActiveRow: true,
+      },
     };
 
     this.columnDefinitions2 = [
