@@ -1,10 +1,4 @@
-import {
-  Formatters,
-  type AureliaGridInstance,
-  type Column,
-  type GridOption,
-  type OnClickEventArgs,
-} from 'aurelia-slickgrid';
+import { Formatters, type AureliaGridInstance, type Column, type GridOption, type OnClickEventArgs } from 'aurelia-slickgrid';
 
 export interface Customer {
   id: number;
@@ -31,6 +25,7 @@ export class Example50 {
   columnDefinitions2: Column[] = [];
   dataset1: Customer[] = [];
   dataset2: OrderData[] = [];
+  hideSubTitle = false;
   selectedName = '';
 
   constructor() {
@@ -66,7 +61,6 @@ export class Example50 {
       enableHybridSelection: true,
       rowSelectionOptions: {
         selectionType: 'row',
-        selectActiveRow: true,
       },
     };
 

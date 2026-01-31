@@ -39,5 +39,13 @@ export default defineConfig({
     outDir: 'dist',
     emptyOutDir: true,
     sourcemap: true
-  }
+  },
+  optimizeDeps: {
+    include: ['jspdf'],
+  },
+  resolve: {
+    alias: {
+      jspdf: 'jspdf/dist/jspdf.es.min.js',
+    },
+  },
 });

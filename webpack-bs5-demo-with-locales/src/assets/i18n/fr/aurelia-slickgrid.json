@@ -22,6 +22,7 @@
   "EXPAND_ALL_GROUPS": "Étendre tous les groupes",
   "EXPORT_TO_CSV": "Exporter en format CSV",
   "EXPORT_TO_EXCEL": "Exporter vers Excel",
+  "EXPORT_TO_PDF": "Exporter vers PDF",
   "EXPORT_TO_TAB_DELIMITED": "Exporter en format texte (délimité par tabulation)",
   "EXPORT_TO_TEXT_FORMAT": "Exporter en format texte",
   "FILTER_SHORTCUTS": "Raccourcis de filtre",
@@ -40,6 +41,7 @@
   "LAST_UPDATE": "Dernière mise à jour",
   "LESS_THAN": "Plus petit que",
   "LESS_THAN_OR_EQUAL_TO": "Plus petit ou égal à",
+  "LOADING": "Chargement...",
   "NO_ELEMENTS_FOUND": "Aucun élément trouvé",
   "NOT_CONTAINS": "Ne contient pas",
   "NOT_EQUAL_TO": "Non égal à",
@@ -61,6 +63,7 @@
   "SYNCHRONOUS_RESIZE": "Redimension synchrone",
   "TOGGLE_FILTER_ROW": "Basculer la ligne des filtres",
   "TOGGLE_PRE_HEADER_ROW": "Basculer la ligne de pré-en-tête",
+  "UNFREEZE_COLUMNS": "Dégeler les colonnes",
   "X_OF_Y_SELECTED": "# de % sélectionnés",
   "X_OF_Y_MASS_SELECTED": "{{x}} de {{y}} sélectionnés",
   "BILLING": {

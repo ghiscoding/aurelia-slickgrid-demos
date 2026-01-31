@@ -1,5 +1,5 @@
 <h2>
-  ${title}
+  Example 13: Grouping & Aggregators
   <span class="float-end">
     <a
       style="font-size: 18px"
@@ -14,12 +14,21 @@
   </button>
 </h2>
 
-<div class="subtitle" innerhtml.bind="subTitle"></div>
+<div class="subtitle">
+  <ul>
+    <li>
+      <a href="https://ghiscoding.gitbook.io/aurelia-slickgrid/grid-functionalities/grouping-aggregators" target="_blank">Wiki docs</a>
+    </li>
+    <li>Fully dynamic and interactive multi-level grouping with filtering and aggregates over 50'000 items</li>
+    <li>Each grouping level can have its own aggregates (over child rows, child groups, or all descendant rows)..</li>
+    <li>Use "Aggregators" and "GroupTotalFormatters" directly from Aurelia-Slickgrid</li>
+  </ul>
+</div>
 
 <div class="row">
   <div class="col-sm-12">
-    <button class="btn btn-outline-secondary btn-xs btn-icon" data-test="add-500-rows-btn" click.trigger="loadData(500)">500 rows</button>
-    <button class="btn btn-outline-secondary btn-xs btn-icon" data-test="add-50k-rows-btn" click.trigger="loadData(50000)">50k rows</button>
+    <button class="btn btn-outline-secondary btn-xs btn-icon" data-test="add-5k-rows-btn" click.trigger="loadData(5000)">5K rows</button>
+    <button class="btn btn-outline-secondary btn-xs btn-icon" data-test="add-50k-rows-btn" click.trigger="loadData(50000)">50K rows</button>
     <button class="btn btn-outline-secondary btn-xs btn-icon" data-test="clear-grouping-btn" click.trigger="clearGrouping()">
       <i class="mdi mdi-close"></i> Clear grouping
     </button>
@@ -31,6 +40,9 @@
     </button>
     <button class="btn btn-outline-secondary btn-xs btn-icon" data-test="export-excel-btn" click.trigger="exportToExcel()">
       <i class="mdi mdi-file-excel-outline text-success"></i> Export to Excel
+    </button>
+    <button class="btn btn-outline-secondary btn-xs btn-icon" data-test="export-pdf-btn" click.trigger="exportToPdf()">
+      <i class="mdi mdi-file-pdf-outline text-danger"></i> Export to PDF
     </button>
   </div>
 </div>
@@ -87,6 +99,8 @@
   dataset.bind="dataset"
   on-before-export-to-excel.trigger="processing = true"
   on-after-export-to-excel.trigger="processing = false"
+  on-before-export-to-pdf.trigger="processing = true"
+  on-after-export-to-pdf.trigger="processing = false"
   on-aurelia-grid-created.trigger="aureliaGridReady($event.detail)"
 >
 </aurelia-slickgrid>

@@ -1,31 +1,24 @@
 import { ExcelExportService } from '@slickgrid-universal/excel-export';
+import { PdfExportService } from '@slickgrid-universal/pdf-export';
 import { TextExportService } from '@slickgrid-universal/text-export';
 import {
   Aggregators,
-  type AureliaGridInstance,
-  type Column,
   Filters,
   Formatters,
+  GroupTotalFormatters,
+  SortComparers,
+  SortDirectionNumber,
+  type AureliaGridInstance,
+  type Column,
   type GridOption,
   type Grouping,
-  GroupTotalFormatters,
-  SortDirectionNumber,
-  SortComparers,
   type SlickDataView,
   type SlickGrid,
 } from 'aurelia-slickgrid';
 
-export class Example13 {
-  title = 'Example 13: Grouping & Aggregators';
-  subTitle = `
-    <ul>
-      <li><a href="https://ghiscoding.gitbook.io/aurelia-slickgrid/grid-functionalities/grouping-aggregators" target="_blank">Wiki docs</a></li>
-      <li>Fully dynamic and interactive multi-level grouping with filtering and aggregates over 50'000 items</li>
-      <li>Each grouping level can have its own aggregates (over child rows, child groups, or all descendant rows)..</li>
-      <li>Use "Aggregators" and "GroupTotalFormatters" directly from Aurelia-Slickgrid</li>
-    </ul>
-  `;
+const NB_ITEMS = 1000;
 
+export class Example13 {
   aureliaGrid!: AureliaGridInstance;
   columnDefinitions: Column[] = [];
   gridOptions!: GridOption;
@@ -35,6 +28,7 @@ export class Example13 {
   hideSubTitle = false;
   processing = false;
   excelExportService = new ExcelExportService();
+  pdfExportService = new PdfExportService();
   textExportService = new TextExportService();
 
   constructor() {
@@ -44,13 +38,14 @@ export class Example13 {
 
   attached() {
     // populate the dataset once the grid is ready
-    this.loadData(500);
+    this.loadData(NB_ITEMS);
   }
 
   aureliaGridReady(aureliaGrid: AureliaGridInstance) {
     this.aureliaGrid = aureliaGrid;
     this.dataviewObj = aureliaGrid.dataView;
     this.gridObj = aureliaGrid.slickGrid;
+    this.groupByDuration(); // group by duration on page load
   }
 
   /* Define grid Options and Columns */
@@ -225,13 +220,19 @@ export class Example13 {
       enableTextExport: true,
       excelExportOptions: { sanitizeDataExport: true },
       textExportOptions: { sanitizeDataExport: true },
-      externalResources: [this.excelExportService, this.textExportService],
+      externalResources: [this.excelExportService, this.pdfExportService, this.textExportService],
       showCustomFooter: true,
       customFooterOptions: {
         // optionally display some text on the left footer container
         hideMetrics: false,
         hideTotalItemCount: false,
         hideLastUpdateTimestamp: false,
+      },
+      enablePdfExport: true,
+      pdfExportOptions: {
+        repeatHeadersOnEachPage: false,
+        sanitizeDataExport: true,
+        documentTitle: 'Grouping Grid',
       },
     };
   }
@@ -281,6 +282,10 @@ export class Example13 {
     });
   }
 
+  exportToPdf() {
+    this.pdfExportService.exportToPdf({ filename: 'Export' });
+  }
+
   groupByDuration() {
     // you need to manually add the sort icon(s) in UI
     this.aureliaGrid.filterService.setSortColumnIcons([{ columnId: 'duration', sortAsc: true }]);
@@ -322,7 +327,7 @@ export class Example13 {
     this.dataviewObj.setGrouping([
       {
         getter: 'duration',
-        formatter: (g) => `Duration: ${g.value}  <span style="color:green">(${g.count} items)</span>`,
+        formatter: (g) => `Duration: ${g.value} <span style="color:green">(${g.count} items)</span>`,
         aggregators: [new Aggregators.Sum('duration'), new Aggregators.Sum('cost')],
         aggregateCollapsed: true,
         lazyTotalsCalculation: true,
@@ -349,7 +354,7 @@ export class Example13 {
     this.dataviewObj.setGrouping([
       {
         getter: 'duration',
-        formatter: (g) => `Duration: ${g.value}  <span style="color:green">(${g.count} items)</span>`,
+        formatter: (g) => `Duration: ${g.value} <span style="color:green">(${g.count} items)</span>`,
         aggregators: [new Aggregators.Sum('duration'), new Aggregators.Sum('cost')],
         aggregateCollapsed: true,
         lazyTotalsCalculation: true,
