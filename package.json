@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "license": "MIT",
   "scripts": {
-    "dev": "cd webpack-bs5-demo && npm install && npm run dev"
+    "dev": "cd vite-with-i18n && npm install && npm run dev"
   },
   "private": false,
   "dependencies": {}

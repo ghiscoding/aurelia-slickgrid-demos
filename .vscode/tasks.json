@@ -2,58 +2,40 @@
   "version": "2.0.0",
   "tasks": [
     {
-      "label": "Build Webpack Bootstrap 5 Demo Page",
-      "type": "shell",
-      "command": "npm run build",
-      "options": {
-        "cwd": "${workspaceFolder}/webpack-bs5-demo",
-      },
-      "problemMatcher": []
-    },
-    {
-      "label": "Build Webpack Bootstrap 5 Demo Page - with Custom Locales",
-      "type": "shell",
-      "command": "npm run build",
-      "options": {
-        "cwd": "${workspaceFolder}/webpack-bs5-demo-with-locales",
-      },
-      "problemMatcher": []
-    },
-    {
-      "label": "Start Webpack Bootstrap 5 Demo Page",
-      "type": "shell",
-      "command": "npm run dev",
-      "options": {
-        "cwd": "${workspaceFolder}/webpack-bs5-demo",
-      },
-      "problemMatcher": []
-    },
-    {
-      "label": "Start Webpack Bootstrap 5 Demo Page - with Custom Locales",
-      "type": "shell",
-      "command": "npm run dev",
-      "options": {
-        "cwd": "${workspaceFolder}/webpack-bs5-demo-with-locales",
-      },
-      "problemMatcher": []
-    },
-        {
-      "label": "Start Vite Bootstrap 5 Demo Page",
-      "type": "shell",
-      "command": "npm run dev",
-      "options": {
-        "cwd": "${workspaceFolder}/vite-bs5-demo",
-      },
-      "problemMatcher": []
-    },
-    {
       "label": "Build Vite Bootstrap 5 Demo Page",
       "type": "shell",
       "command": "npm run build",
       "options": {
-        "cwd": "${workspaceFolder}/vite-bs5-demo",
+        "cwd": "${workspaceFolder}/vite-with-i18n",
       },
       "problemMatcher": []
     },
+    {
+      "label": "Build Vite Bootstrap 5 Demo Page - with Custom Locales",
+      "type": "shell",
+      "command": "npm run build",
+      "options": {
+        "cwd": "${workspaceFolder}/vite-single-locale",
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "Start Vite Bootstrap 5 Demo Page",
+      "type": "shell",
+      "command": "npm run dev",
+      "options": {
+        "cwd": "${workspaceFolder}/vite-with-i18n",
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "Start Vite Bootstrap 5 Demo Page - with Custom Locales",
+      "type": "shell",
+      "command": "npm run dev",
+      "options": {
+        "cwd": "${workspaceFolder}/vite-single-locale",
+      },
+      "problemMatcher": []
+    }
   ]
 }

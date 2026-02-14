@@ -1,0 +1,95 @@
+<h2>
+  Example 4: Client Side Sort/Filter
+  <span class="float-end">
+    <a
+      style="font-size: 18px"
+      target="_blank"
+      href="https://github.com/ghiscoding/slickgrid-universal/blob/master/demos/aurelia/src/examples/slickgrid/example4.ts"
+    >
+      <span class="mdi mdi-link-variant"></span> code
+    </a>
+  </span>
+  <button class="ms-2 btn btn-outline-secondary btn-sm btn-icon" type="button" data-test="toggle-subtitle" click.trigger="toggleSubTitle()">
+    <span class="mdi mdi-information-outline" title="Toggle example sub-title details"></span>
+  </button>
+</h2>
+
+<div class="subtitle">
+  Sort/Filter on client side only using SlickGrid DataView (<a
+    href="https://ghiscoding.gitbook.io/aurelia-slickgrid/column-functionalities/sorting"
+    target="_blank"
+    >Wiki docs</a
+  >)
+  <br />
+  <ul class="small">
+    <li>Support multi-sort (by default), hold "Shift" key and click on the next column to sort.</li>
+    <li>All column types support the following operators: (>, >=, <, <=, <>, !=, =, ==, *)</li>
+    <ul>
+      <li>Example: >100 ... >=2001-01-01 ... >02/28/17</li>
+      <li>
+        <b>Note:</b> For filters to work properly (default is string), make sure to provide a FieldType (type is against the dataset, not
+        the Formatter)
+      </li>
+    </ul>
+    <li>Date Filters</li>
+    <ul>
+      <li>
+        FieldType of dateUtc/date (from dataset) can use an extra option of "filterSearchType" to let user filter more easily. For example,
+        in the "UTC Date" field below, you can type "&gt;02/28/2017", also when dealing with UTC you have to take the time difference in
+        consideration.
+      </li>
+    </ul>
+    <li>On String filters, (*) can be used as startsWith (Hello* => matches "Hello Word") ... endsWith (*Doe => matches: "John Doe")</li>
+    <li>
+      Custom Filter are now possible, "Description" column below, is a customized InputFilter with different placeholder. See
+      <a href="https://ghiscoding.gitbook.io/aurelia-slickgrid/column-functionalities/filters/custom-filter" target="_blank"
+        >Wiki - Custom Filter</a
+      >
+    </li>
+  </ul>
+</div>
+
+<br />
+<span if.bind="metrics">
+  <b>Metrics:</b> ${metrics.endTime | dateFormat: 'DD MMM, h:mm:ss a'} | ${metrics.itemCount} of ${metrics.totalItemCount} items
+</span>
+
+<div class="btn-group" role="group" aria-label="...">
+  <button class="btn btn-sm btn-outline-secondary btn-icon" data-test="scroll-top-btn" click.trigger="scrollGridTop()">
+    <i class="mdi mdi-arrow-down mdi-rotate-180 icon"></i>
+  </button>
+  <button class="btn btn-sm btn-outline-secondary btn-icon" data-test="scroll-bottom-btn" click.trigger="scrollGridBottom()">
+    <i class="mdi mdi-arrow-down icon"></i>
+  </button>
+</div>
+
+<button
+  class="btn btn-outline-secondary btn-sm btn-icon"
+  data-test="clear-filters"
+  click.trigger="aureliaGrid.filterService.clearFilters()"
+>
+  Clear Filters
+</button>
+<button class="btn btn-outline-secondary btn-sm btn-icon" data-test="clear-sorting" click.trigger="aureliaGrid.sortService.clearSorting()">
+  Clear Sorting
+</button>
+<button class="btn btn-outline-secondary btn-sm btn-icon" data-test="set-dynamic-filter" click.trigger="setFiltersDynamically()">
+  Set Filters Dynamically
+</button>
+<button class="btn btn-outline-secondary btn-sm btn-icon" data-test="set-dynamic-sorting" click.trigger="setSortingDynamically()">
+  Set Sorting Dynamically
+</button>
+<button class="btn btn-outline-secondary btn-sm btn-icon" click.trigger="logItems()">
+  <span title="console.log all dataset items">Log Items</span>
+</button>
+
+<aurelia-slickgrid
+  grid-id="grid4"
+  columns.bind="columnDefinitions"
+  options.bind="gridOptions"
+  dataset.bind="dataset"
+  on-aurelia-grid-created.trigger="aureliaGridReady($event.detail)"
+  on-grid-state-changed.trigger="gridStateChanged($event.detail)"
+  on-row-count-changed.trigger="refreshMetrics($event.detail.eventData, $event.detail.args)"
+>
+</aurelia-slickgrid>

@@ -1,0 +1,59 @@
+<h2>
+  Example 12: Localization (i18n)
+  <span class="float-end">
+    <a
+      style="font-size: 18px"
+      target="_blank"
+      href="https://github.com/ghiscoding/aurelia-slickgrid-demos/blob/master/vite-single-locale/src/examples/slickgrid/example02.ts"
+    >
+      <span class="mdi mdi-link-variant"></span> code
+    </a>
+  </span>
+  <button class="ms-2 btn btn-outline-secondary btn-sm btn-icon" type="button" data-test="toggle-subtitle" click.trigger="toggleSubTitle()">
+    <span class="mdi mdi-information-outline" title="Toggle example sub-title details"></span>
+  </button>
+</h2>
+
+<div class="subtitle">
+  This Examples uses French Locales but you could use your own custom locales
+  <ul>
+    <li>Defining your own Custom Locales must include all necessary text, see the docs (<a href="https://ghiscoding.gitbook.io/aurelia-slickgrid/localization/localization-with-custom-locales" target="_blank">with Custom Locales</a>)</li>
+  </ul>
+</div>
+
+<hr />
+
+<div class="row">
+  <div class="col-sm-12">
+        <span style="margin-left: 20px">
+      <button class="btn btn-outline-secondary btn-sm btn-icon" click.trigger="exportToFile('csv')">
+        <i class="mdi mdi-download"></i>
+        Download to CSV
+      </button>
+      <button class="btn btn-outline-secondary btn-sm btn-icon" click.trigger="exportToFile('txt')">
+        <i class="mdi mdi-download"></i>
+        Download to Text
+      </button>
+      <button class="btn btn-outline-secondary btn-sm btn-icon" click.trigger="exportToExcel()">
+        <i class="mdi mdi-file-excel-outline text-success"></i>
+        Download to Excel
+      </button>
+    </span>
+    <span style="margin-left: 10px">
+      <button class="btn btn-outline-secondary btn-sm btn-icon" click.trigger="dynamicallyAddTitleHeader()">
+        <i class="mdi mdi-shape-square-plus"></i>
+        Dynamically Duplicate Title Column
+      </button>
+    </span>
+  </div>
+</div>
+
+<aurelia-slickgrid
+  grid-id="grid12"
+  columns.bind="columnDefinitions"
+  options.bind="gridOptions"
+  dataset.bind="dataset"
+  on-grid-state-changed.trigger="gridStateChanged($event.detail)"
+  on-aurelia-grid-created.trigger="aureliaGridReady($event.detail)"
+>
+</aurelia-slickgrid>
