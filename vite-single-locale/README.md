@@ -21,7 +21,7 @@ Again the following dependencies are totally **optional**
 ### Install and Start Demo
 ```bash
 git clone https://github.com/ghiscoding/aurelia-slickgrid-demos
-cd vite-demo
+cd vite-with-i18n
 npm install # OR yarn install
 npm start # OR yarn start
 ```

@@ -4,7 +4,7 @@ import { defineConfig, type PluginOption } from 'vite';
 // import { resolve } from 'path';
 
 export default defineConfig({
-  base: './',
+  base: '',
   css: {
     preprocessorOptions: {
       scss: {
