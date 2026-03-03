@@ -16,7 +16,7 @@ const defaultPageSize = 20;
 const CARET_HTML_ESCAPED = '%5E';
 const PERCENT_HTML_ESCAPED = '%25';
 
-export class Example5 {
+export class Example05 {
   aureliaGrid!: AureliaGridInstance;
   columnDefinitions: Column[] = [];
   gridOptions!: GridOption;
@@ -222,7 +222,7 @@ export class Example5 {
           const filterBy = param.substring('$filter='.length).replace('%20', ' ');
           if (filterBy.includes('matchespattern')) {
             const regex = new RegExp(`matchespattern\\(([a-zA-Z]+),\\s'${CARET_HTML_ESCAPED}(.*?)'\\)`, 'i');
-            const filterMatch = filterBy.match(regex);
+            const filterMatch = filterBy.match(regex) || [];
             const fieldName = filterMatch[1].trim();
             columnFilters[fieldName] = { type: 'matchespattern', term: '^' + filterMatch[2].trim() };
           }

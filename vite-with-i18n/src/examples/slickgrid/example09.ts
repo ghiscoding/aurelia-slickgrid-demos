@@ -10,9 +10,9 @@ import {
   type SlickGrid,
   type SliderOption,
 } from 'aurelia-slickgrid';
-import './example9.scss'; // provide custom CSS/SASS styling
+import './example09.scss'; // provide custom CSS/SASS styling
 
-export class Example9 {
+export class Example09 {
   aureliaGrid!: AureliaGridInstance;
   columnDefinitions: Column[] = [];
   gridOptions!: GridOption;
@@ -20,7 +20,7 @@ export class Example9 {
   dataView!: SlickDataView;
   gridObj!: SlickGrid;
   hideSubTitle = false;
-  selectedLanguage: string;
+  selectedLanguage = '';
 
   constructor(private readonly i18n: I18N = resolve(I18N)) {
     // define the grid options & columns and then create the grid itself
