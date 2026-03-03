@@ -23,7 +23,7 @@ const defaultPageSize = 20;
 const GRAPHQL_QUERY_DATASET_NAME = 'users';
 const FAKE_SERVER_DELAY = 250;
 
-export class Example6 {
+export class Example06 {
   isWithCursor = false;
   aureliaGrid!: AureliaGridInstance;
   columnDefinitions: Column[] = [];
@@ -35,7 +35,7 @@ export class Example6 {
   graphqlQuery = '';
   hideSubTitle = false;
   processing = false;
-  selectedLanguage: string;
+  selectedLanguage = '';
   status = { text: '', class: '' };
   serverWaitDelay = FAKE_SERVER_DELAY; // server simulation with default of 250ms but 50ms for Cypress tests
 
