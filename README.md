@@ -1,4 +1,4 @@
-# <a href="https://aurelia.io/" rel="nofollow"><img alt="Aurelia" src="https://ghiscoding.github.io/aurelia-slickgrid-demos/assets/aurelia-logo.png" width="60"></a> Aurelia-Slickgrid - Client Demos
+# <a href="https://aurelia.io/" rel="nofollow"><img alt="Aurelia" src="https://ghiscoding.github.io/aurelia-slickgrid-demos/assets/aurelia-logo-9YSzF-gF.png" width="70"></a> Aurelia-Slickgrid - Client Demos
 ## [Aurelia-Slickgrid](https://github.com/ghiscoding/slickgrid-universal/tree/master/frameworks/aurelia-slickgrid) library client demos with different bundler types.
 
 ### Requires Aurelia 2
