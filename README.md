@@ -4,6 +4,12 @@
 ### Requires Aurelia 2
 The latest code only works with Aurelia 2, if you still wish to use Aurelia 1 then take a look at the [version6](https://github.com/ghiscoding/aurelia-slickgrid-demos/tree/version6) branch.
 
+### Stackblitz
+
+Open in Stackblitz
+
+[![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/github/ghiscoding/aurelia-slickgrid-demos)
+
 ## Important Note
 ### Aurelia-Slickgrid & Slickgrid-Universal compatibility
 For a full compatibility table of Aurelia-Slickgrid with Slickgrid-Universal, you can consult the [Versions Compatibility Table - Wiki](https://github.com/ghiscoding/aurelia-slickgrid/wiki/Versions-Compatibility-Table)
