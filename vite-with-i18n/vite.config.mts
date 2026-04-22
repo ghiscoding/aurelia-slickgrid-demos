@@ -1,10 +1,10 @@
-import aurelia from '@aurelia/vite-plugin';
-import { defineConfig, type PluginOption } from 'vite';
+import aurelia from "@aurelia/vite-plugin";
+import { defineConfig, type PluginOption } from "vite";
 
 // import { resolve } from 'path';
 
 export default defineConfig({
-  base: '',
+  base: "",
   css: {
     preprocessorOptions: {
       scss: {
@@ -13,7 +13,7 @@ export default defineConfig({
     },
   },
   esbuild: {
-    target: 'es2020',
+    target: "es2020",
   },
   plugins: [
     aurelia({
@@ -26,31 +26,32 @@ export default defineConfig({
   server: {
     port: 7920,
     cors: true,
-    host: 'localhost',
+    host: "localhost",
     hmr: {
       clientPort: 7920,
     },
   },
   build: {
     emptyOutDir: true,
+    chunkSizeWarningLimit: 5000,
     rollupOptions: {
       output: {
         manualChunks: (id) => {
-          if (id.includes('node_modules')) {
-            return 'vendor';
+          if (id.includes("node_modules")) {
+            return "vendor";
           }
 
-          return 'index';
+          return "index";
         },
       },
     },
   },
   optimizeDeps: {
-    include: ['jspdf'],
+    include: ["jspdf"],
   },
   resolve: {
     alias: {
-      jspdf: 'jspdf/dist/jspdf.es.min.js',
+      jspdf: "jspdf/dist/jspdf.es.min.js",
     },
   },
 });
