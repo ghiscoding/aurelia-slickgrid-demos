@@ -1,5 +1,5 @@
-import { ExcelExportService } from '@slickgrid-universal/excel-export';
-import { TextExportService } from '@slickgrid-universal/text-export';
+import { ExcelExportService } from "@slickgrid-universal/excel-export";
+import { TextExportService } from "@slickgrid-universal/text-export";
 
 import {
   type AureliaGridInstance,
@@ -11,29 +11,21 @@ import {
   type GridOption,
   type GridStateChange,
   type SlickGrid,
-} from 'aurelia-slickgrid';
+} from "aurelia-slickgrid";
 
-import { localeFrench } from '../locales/fr';
+import { localeFrench } from "../locales/fr";
 
 const NB_ITEMS = 1500;
 
 // create a custom translate Formatter (typically you would move that a separate file, for separation of concerns)
 const taskFormatter: Formatter = (_row, _cell, value) => {
-  return value !== undefined ? `Titre ${value}` : '';
+  return value !== undefined ? `Titre ${value}` : "";
 };
 const exportBooleanFormatter: Formatter = (_row, _cell, value) => {
-  return value ? 'Vrai' : 'Faux';
+  return value ? "Vrai" : "Faux";
 };
 
 export class Example2 {
-  title = 'Example 12: Localization with Single Custom Locales';
-  subTitle = `This Examples uses French Locales but you could use your own custom locales
-    <ul>
-      <li>Defining your own Custom Locales must include all necessary text, see the default (<a href="https://github.com/ghiscoding/aurelia-slickgrid-demos/blob/master/vite-single-locale/src/locales/en.ts" target="_blank">English Custom Locales</a>)</li>
-      <li>Support Custom Locales (through the "locales" grid option), following these steps (<a href="https://github.com/ghiscoding/aurelia-slickgrid/wiki/Localization-with-Custom-Locales" target="_blank">Wiki docs</a>)</li>
-      <li>For more info about "Download to File", read the <a href=https://github.com/ghiscoding/aurelia-slickgrid/wiki/Export-to-File" target="_blank">Wiki page</a></li>
-    </ul>`;
-
   aureliaGrid!: AureliaGridInstance;
   gridOptions!: GridOption;
   columnDefinitions: Column[] = [];
@@ -62,33 +54,78 @@ export class Example2 {
   /* Define grid Options and Columns */
   defineGrid() {
     this.columnDefinitions = [
-      { id: 'title', name: 'Titre', field: 'id', sortable: true, minWidth: 100, filterable: true, formatter: taskFormatter, params: { useFormatterOuputToFilter: true } },
-      { id: 'description', name: 'Description', field: 'description', filterable: true, sortable: true, minWidth: 80 },
       {
-        id: 'duration', name: 'Durée (jours)', field: 'duration', sortable: true,
+        id: "title",
+        name: "Titre",
+        field: "id",
+        sortable: true,
+        minWidth: 100,
+        filterable: true,
+        formatter: taskFormatter,
+        params: { useFormatterOuputToFilter: true },
+      },
+      {
+        id: "description",
+        name: "Description",
+        field: "description",
+        filterable: true,
+        sortable: true,
+        minWidth: 80,
+      },
+      {
+        id: "duration",
+        name: "Durée (jours)",
+        field: "duration",
+        sortable: true,
         formatter: Formatters.percentCompleteBar,
         minWidth: 100,
         filterable: true,
-        filter: { model: Filters.compoundSlider, operator: '>=' }
+        filter: { model: Filters.compoundSlider, operator: ">=" },
       },
-      { id: 'start', name: 'Début', field: 'start', formatter: Formatters.dateIso, outputType: 'dateIso', type: 'date', minWidth: 100, filterable: true, filter: { model: Filters.compoundDate } },
-      { id: 'finish', name: 'Fin', field: 'finish', formatter: Formatters.dateIso, outputType: 'dateIso', type: 'date', minWidth: 100, filterable: true, filter: { model: Filters.compoundDate } },
       {
-        id: 'completedBool', name: 'Complétée', field: 'completedBool', minWidth: 100,
+        id: "start",
+        name: "Début",
+        field: "start",
+        formatter: Formatters.dateIso,
+        outputType: "dateIso",
+        type: "date",
+        minWidth: 100,
+        filterable: true,
+        filter: { model: Filters.compoundDate },
+      },
+      {
+        id: "finish",
+        name: "Fin",
+        field: "finish",
+        formatter: Formatters.dateIso,
+        outputType: "dateIso",
+        type: "date",
+        minWidth: 100,
+        filterable: true,
+        filter: { model: Filters.compoundDate },
+      },
+      {
+        id: "completedBool",
+        name: "Complétée",
+        field: "completedBool",
+        minWidth: 100,
         sortable: true,
         formatter: Formatters.checkmarkMaterial,
         exportCustomFormatter: exportBooleanFormatter,
         filterable: true,
         filter: {
-          collection: [{ value: true, label: 'Vrai' }, { value: false, label: 'Faux' }],
+          collection: [
+            { value: true, label: "Vrai" },
+            { value: false, label: "Faux" },
+          ],
           model: Filters.multipleSelect,
-        }
-      }
+        },
+      },
     ];
 
     this.gridOptions = {
       autoResize: {
-        container: '#demo-container',
+        container: "#demo-container",
         rightPadding: 10,
       },
       enableAutoResize: true,
@@ -102,17 +139,17 @@ export class Example2 {
       enableCheckboxSelector: true,
       enableSelection: true,
       // Provide a custom locales set
-      locale: 'fr', // this helps certain elements to know which locale to use, for example the Date Filter/Editor
+      locale: "fr", // this helps certain elements to know which locale to use, for example the Date Filter/Editor
       locales: localeFrench,
       showCustomFooter: true, // display some metrics in the bottom custom footer
       customFooterOptions: {
         metricTexts: {
           // default text displayed in the metrics section on the right
-          items: 'Éléments',
-          of: 'de',
-          lastUpdate: 'Dernière mise à jour',
+          items: "Éléments",
+          of: "de",
+          lastUpdate: "Dernière mise à jour",
         },
-        dateFormat: 'YYYY-MM-DD hh:mm a',
+        dateFormat: "YYYY-MM-DD hh:mm a",
         hideTotalItemCount: false,
         hideLastUpdateTimestamp: false,
       },
@@ -127,7 +164,10 @@ export class Example2 {
         exportWithFormatter: true,
         sanitizeDataExport: true,
       },
-      excelExportOptions: { exportWithFormatter: true, sanitizeDataExport: true },
+      excelExportOptions: {
+        exportWithFormatter: true,
+        sanitizeDataExport: true,
+      },
       externalResources: [this.excelExportService, this.textExportService],
     };
   }
@@ -142,12 +182,12 @@ export class Example2 {
 
       tmpData[i] = {
         id: i,
-        description: i % 5 ? 'desc ' + i : '🚀🦄 español', // also add some random to test NULL field
-        duration: Math.round(Math.random() * 100) + '',
+        description: i % 5 ? "desc " + i : "🚀🦄 español", // also add some random to test NULL field
+        duration: Math.round(Math.random() * 100) + "",
         start: new Date(randomYear, randomMonth, randomDay),
         finish: new Date(randomYear, randomMonth + 1, randomDay),
         completedBool: i % 5 === 0 ? true : false,
-        completed: i % 5 === 0 ? 'TRUE' : 'FALSE',
+        completed: i % 5 === 0 ? "TRUE" : "FALSE",
       };
     }
     this.dataset = tmpData;
@@ -156,7 +196,16 @@ export class Example2 {
   dynamicallyAddTitleHeader() {
     // you can dynamically add your column to your column definitions
     // and then use the spread operator [...cols] OR slice to force Aurelia to review the changes
-    const newCol = { id: `title${this.duplicateTitleHeaderCount++}`, field: 'id', name: 'Titre', formatter: taskFormatter, sortable: true, minWidth: 100, filterable: true, params: { useFormatterOuputToFilter: true } };
+    const newCol = {
+      id: `title${this.duplicateTitleHeaderCount++}`,
+      field: "id",
+      name: "Titre",
+      formatter: taskFormatter,
+      sortable: true,
+      minWidth: 100,
+      filterable: true,
+      params: { useFormatterOuputToFilter: true },
+    };
     this.columnDefinitions.push(newCol);
     this.columnDefinitions = this.columnDefinitions.slice(); // or use spread operator [...cols]
 
@@ -172,29 +221,29 @@ export class Example2 {
 
   exportToExcel() {
     this.excelExportService.exportToExcel({
-      filename: 'Export',
-      format: 'xlsx',
+      filename: "Export",
+      format: "xlsx",
     });
   }
 
-  exportToFile(type = 'csv') {
+  exportToFile(type = "csv") {
     this.textExportService.exportToFile({
-      delimiter: type === 'csv' ? ',' : '\t',
-      filename: 'myExport',
-      format: type === 'csv' ? 'csv' : 'txt',
+      delimiter: type === "csv" ? "," : "\t",
+      filename: "myExport",
+      format: type === "csv" ? "csv" : "txt",
     });
   }
 
   /** Dispatched event of a Grid State Changed event */
   gridStateChanged(gridStateChanges: GridStateChange) {
-    console.log('Grid State changed:: ', gridStateChanges);
-    console.log('Grid State changed:: ', gridStateChanges.change);
+    console.log("Grid State changed:: ", gridStateChanges);
+    console.log("Grid State changed:: ", gridStateChanges.change);
   }
 
   toggleSubTitle() {
     this.hideSubTitle = !this.hideSubTitle;
-    const action = this.hideSubTitle ? 'add' : 'remove';
-    document.querySelector('.subtitle')?.classList[action]('hidden');
+    const action = this.hideSubTitle ? "add" : "remove";
+    document.querySelector(".subtitle")?.classList[action]("hidden");
     this.aureliaGrid.resizerService.resizeGrid(0);
   }
 }

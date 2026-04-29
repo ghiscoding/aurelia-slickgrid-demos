@@ -1,5 +1,5 @@
 <h2>
-  Example 50: Master/Detail Grids
+  Example 3: Master/Detail Grids
   <span class="float-end">
     <a
       style="font-size: 18px"
@@ -9,8 +9,16 @@
       <span class="mdi mdi-link-variant"></span> code
     </a>
   </span>
-  <button class="ms-2 btn btn-outline-secondary btn-sm btn-icon" type="button" data-test="toggle-subtitle" click.trigger="toggleSubTitle()">
-    <span class="mdi mdi-information-outline" title="Toggle example sub-title details"></span>
+  <button
+    class="ms-2 btn btn-outline-secondary btn-sm btn-icon"
+    type="button"
+    data-test="toggle-subtitle"
+    click.trigger="toggleSubTitle()"
+  >
+    <span
+      class="mdi mdi-information-outline"
+      title="Toggle example sub-title details"
+    ></span>
   </button>
 </h2>
 
@@ -31,7 +39,14 @@
 
 <h5>
   <span>Detail Grid - Orders for:</span>
-  <span class="fst-italic text-secondary customer-detail">${ selectedName }</span>
+  <span class="fst-italic text-secondary customer-detail"
+    >${ selectedName }</span
+  >
 </h5>
-<aurelia-slickgrid grid-id="grid50-2" columns.bind="columnDefinitions2" options.bind="gridOptions2" dataset.bind="dataset2">
+<aurelia-slickgrid
+  grid-id="grid50-2"
+  columns.bind="columnDefinitions2"
+  options.bind="gridOptions2"
+  dataset.bind="dataset2"
+>
 </aurelia-slickgrid>
