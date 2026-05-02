@@ -1,9 +1,10 @@
-import { route, type Routeable } from '@aurelia/router';
-import { customElement } from 'aurelia';
-import AureliaLogo from './assets/aurelia-logo.png?url';
-import template from './my-app.html?raw';
-import './styles.scss';
+import { route, type Routeable } from "@aurelia/router";
+import { customElement } from "aurelia";
+import AureliaLogo from "./assets/aurelia-logo.png?url";
+import template from "./my-app.html?raw";
+import "./styles.scss";
 
+// prettier-ignore
 const myRoutes: Routeable[] = [
   { path: '', redirectTo: 'example01' },
   { path: 'example01', component: () => import('./examples/slickgrid/example01.js'), title: '1- Basic Grid / 2 Grids' },
@@ -58,13 +59,14 @@ const myRoutes: Routeable[] = [
   { path: 'example50', component: () => import('./examples/slickgrid/example50.js'), title: '50- Master/Detail Grids' },
   { path: 'example51', component: () => import('./examples/slickgrid/example51.js'), title: '51- Menus with Slots' },
   { path: 'example52', component: () => import('./examples/slickgrid/example52.js'), title: '52- SQL Backend Service' },
+  { path: 'example53', component: () => import('./examples/slickgrid/example53.js'), title: '53- Custom Filter Bar' },
   { path: 'home', component: () => import('./home-page.js'), title: 'Home' },
 ];
 @route({
   routes: myRoutes,
-  fallback: 'example01',
+  fallback: "example01",
 })
-@customElement({ name: 'my-app', template })
+@customElement({ name: "my-app", template })
 export class MyApp {
   aureliaLogo = AureliaLogo;
   routes = myRoutes;
@@ -74,8 +76,8 @@ export class MyApp {
 
     // scroll to active link route, there's probably a better way to do this but couldn't find lifecycle for it
     setTimeout(() => {
-      const linkElm = document.querySelector('.nav-link.active');
-      linkElm?.scrollIntoView({ block: 'nearest' });
+      const linkElm = document.querySelector(".nav-link.active");
+      linkElm?.scrollIntoView({ block: "nearest" });
     }, 45);
   }
 
@@ -83,15 +85,19 @@ export class MyApp {
     // GitHub logo with Stars shouldn't be created while testing in Cypress (which always wait few seconds even minutes to load the logo)
     // <a href="https://github.com/ghiscoding/slickgrid-universal"><img src="https://img.shields.io/github/stars/ghiscoding/slickgrid-universal?style=social"></a>
     const decodedCookie = decodeURIComponent(document.cookie);
-    if (decodedCookie !== 'serve-mode=cypress') {
-      const ghStarLinkElm = document.createElement('a');
-      ghStarLinkElm.href = 'https://github.com/ghiscoding/slickgrid-universal/tree/master/frameworks/aurelia-slickgrid';
+    if (decodedCookie !== "serve-mode=cypress") {
+      const ghStarLinkElm = document.createElement("a");
+      ghStarLinkElm.href =
+        "https://github.com/ghiscoding/slickgrid-universal/tree/master/frameworks/aurelia-slickgrid";
 
-      const imgStarElm = document.createElement('img');
-      imgStarElm.src = 'https://img.shields.io/github/stars/ghiscoding/slickgrid-universal?style=social';
+      const imgStarElm = document.createElement("img");
+      imgStarElm.src =
+        "https://img.shields.io/github/stars/ghiscoding/slickgrid-universal?style=social";
 
-      const ghButtonContainerElm = document.querySelector('.github-button-container');
-      if (ghButtonContainerElm && !ghButtonContainerElm.querySelector('a')) {
+      const ghButtonContainerElm = document.querySelector(
+        ".github-button-container",
+      );
+      if (ghButtonContainerElm && !ghButtonContainerElm.querySelector("a")) {
         ghStarLinkElm.appendChild(imgStarElm);
         ghButtonContainerElm.appendChild(ghStarLinkElm);
       }
