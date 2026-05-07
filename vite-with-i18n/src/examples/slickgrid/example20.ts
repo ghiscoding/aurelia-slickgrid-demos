@@ -10,6 +10,7 @@ import {
   type GridOption,
   type SlickGrid,
 } from 'aurelia-slickgrid';
+import { showToast } from './utilities';
 import './example20.scss'; // provide custom CSS/SASS styling
 
 export class Example20 {
@@ -318,7 +319,7 @@ export class Example20 {
   }
 
   onCellValidationError(_e: Event, args: any) {
-    alert(args.validationResults.msg);
+    showToast(args.validationResults.msg, 'danger');
   }
 
   setFrozenColumns(frozenCols: number) {
