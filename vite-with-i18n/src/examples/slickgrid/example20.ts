@@ -10,8 +10,8 @@ import {
   type GridOption,
   type SlickGrid,
 } from 'aurelia-slickgrid';
-import { showToast } from './utilities';
 import './example20.scss'; // provide custom CSS/SASS styling
+import { showToast } from './utilities.js';
 
 export class Example20 {
   aureliaGrid!: AureliaGridInstance;
