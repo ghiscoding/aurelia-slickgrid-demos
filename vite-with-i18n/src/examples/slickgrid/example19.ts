@@ -12,8 +12,8 @@ export class Example19 {
   @bindable detailViewRowCount = 9;
   @bindable serverWaitDelay = FAKE_SERVER_DELAY;
 
-  aureliaGrid!: AureliaGridInstance;
-  gridOptions!: GridOption;
+  aureliaGrid = {} as AureliaGridInstance;
+  gridOptions = {} as GridOption;
   columns: Column[] = [];
   dataset: any[] = [];
   // extensions!: ExtensionList<any>;

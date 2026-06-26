@@ -22,7 +22,7 @@ export interface OrderData {
 }
 
 export class Example45DetailView {
-  @bindable() model!: Distributor;
+  @bindable() model = {} as Distributor;
   innerColDefs: Column[] = [];
   innerGridOptions!: GridOption;
   aureliaGrid!: AureliaGridInstance;

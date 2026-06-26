@@ -16,12 +16,12 @@ interface Item {
 }
 
 export class Example19DetailView {
-  @bindable() model!: Item;
+  @bindable() model = {} as Item;
 
   // you also have access to the following objects (it must match the exact property names shown below)
-  @bindable() addon!: AureliaRowDetailView; // row detail addon instance
-  @bindable() grid!: SlickGrid;
-  @bindable() dataView!: SlickDataView;
+  @bindable() addon = {} as AureliaRowDetailView; // row detail addon instance
+  @bindable() grid = {} as SlickGrid;
+  @bindable() dataView = {} as SlickDataView;
 
   // you can also optionally use the Parent Component reference
   // NOTE that you MUST provide it through the "parentRef" property in your "rowDetail" grid options
