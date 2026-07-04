@@ -1,51 +1,39 @@
 name: GitHub Actions
+
 on:
-  # Trigger the workflow on push or pull request,
-  # but only for the master branch on Push and any branches on PR
   push:
-    branches:
-      - master
+    branches: [master]
   pull_request:
-    branches:
-      - "**"
+    branches: ['**']
 
 jobs:
-  run:
-    name: Node ${{ matrix.node }}
+  deploy_gh_pages:
+    if: github.event_name == 'push' && github.ref == 'refs/heads/master'
     runs-on: ubuntu-latest
 
-    strategy:
-      fail-fast: false
-      matrix:
-        node: [24]
-
     steps:
-      - name: Clone repository
+      - name: Checkout
         uses: actions/checkout@v5
-        with:
-          fetch-depth: 3
 
-      - name: Set Node.js version
+      - name: Setup Node
         uses: actions/setup-node@v6
         with:
-          node-version: ${{ matrix.node }}
+          node-version: 24
 
-      - run: node --version
-      - run: npm --version
-
-      - name: Install npm dependencies
+      - name: Install dependencies
         run: |
           cd vite-with-i18n
-          npm install
+          npm ci
 
-      - name: Bootstrap 5 Prod Build for GitHub demo website
+      - name: Build
         run: |
           cd vite-with-i18n
           npm run build
 
       - name: Deploy to gh-pages
-        if: github.ref == 'refs/heads/master'
         uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./vite-with-i18n/dist
+          publish_branch: gh-pages
+          force_orphan: true
