@@ -13,8 +13,8 @@ import {
   type Pagination,
 } from 'aurelia-slickgrid';
 import { Observable, of, type Subject } from 'rxjs';
-import './example31.scss'; // provide custom CSS/SASS styling
 import SAMPLE_DATA_URL from './data/customers_100.json?url';
+import './example31.scss'; // provide custom CSS/SASS styling
 
 const defaultPageSize = 20;
 
@@ -393,13 +393,13 @@ export class Example31 {
   }
 
   // YOU CAN CHOOSE TO PREVENT EVENT FROM BUBBLING IN THE FOLLOWING 3x EVENTS
-  // note however that internally the cancelling the search is more of a rollback
   handleOnBeforeSort(_e: Event) {
     // e.preventDefault();
     // return false;
     return true;
   }
 
+  // note that internally the cancelling the search is more of a rollback
   handleOnBeforeSearchChange(_e: Event) {
     // e.preventDefault();
     // return false;

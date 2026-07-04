@@ -245,8 +245,8 @@ export class Example53 {
     modal.style.left = offset.left + 'px';
 
     // check if we already have a filter value, is so update the custom filter input with same value
-    const currentFilters = this.aureliaGrid?.filterService.getColumnFilters();
-    for (const filter of Object.values(currentFilters || {})) {
+    const currentFilters = this.aureliaGrid?.filterService.getColumnFilters() || [];
+    for (const filter of Object.values(currentFilters)) {
       if (filter.columnId === args.column.id) {
         const operator = filter.operator && filter.operator !== 'Contains' ? filter.operator + ' ' : '';
         const filterValue = filter.searchTerms?.[0];
@@ -286,9 +286,9 @@ export class Example53 {
         operator: op,
         searchTerms: [searchTerm],
       };
-      const allFilters = this.aureliaGrid?.filterService.getColumnFilters();
+      const allFilters = this.aureliaGrid?.filterService.getColumnFilters() || [];
       const allCurrentFilters: CurrentFilter[] = [];
-      for (const f of Object.values(allFilters || {})) {
+      for (const f of Object.values(allFilters)) {
         allCurrentFilters.push({
           columnId: String(f.columnId),
           operator: f.operator,

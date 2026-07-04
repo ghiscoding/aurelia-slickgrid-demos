@@ -9,8 +9,8 @@ export class Example10 {
   aureliaGrid2?: AureliaGridInstance;
   columns1: Column[] = [];
   columns2: Column[] = [];
-  gridOptions1!: GridOption;
-  gridOptions2!: GridOption;
+  gridOptions1?: GridOption;
+  gridOptions2?: GridOption;
   dataset1: any[] = [];
   dataset2: any[] = [];
   hideSubTitle = false;

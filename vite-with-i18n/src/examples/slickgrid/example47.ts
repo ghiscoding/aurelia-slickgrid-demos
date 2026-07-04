@@ -41,10 +41,10 @@ export class Example47 {
   aureliaGrid?: AureliaGridInstance;
   dataviewObj?: SlickDataView;
   gridObj?: SlickGrid;
-  gridOptions = {} as GridOption;
+  gridOptions?: GridOption;
   columns: Column<Item>[] = [];
   dataset: Item[] = [];
-  // extensions!: ExtensionList<any>;
+  // extensions?: ExtensionList<any>;
   hideSubTitle = false;
   message = '';
 

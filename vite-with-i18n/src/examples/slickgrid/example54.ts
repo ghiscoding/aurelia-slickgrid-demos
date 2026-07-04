@@ -11,7 +11,7 @@ export class Example54 {
   aureliaGrid?: AureliaGridInstance;
   columns: Column[] = [];
   gridContainerElm?: HTMLDivElement;
-  gridOptions = {} as GridOption;
+  gridOptions?: GridOption;
   dataset: any[] = [];
   hideSubTitle = false;
   mcpService = new WebMcpService();

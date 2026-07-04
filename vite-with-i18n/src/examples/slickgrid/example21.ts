@@ -8,7 +8,7 @@ export class Example21 {
   @bindable() searchValue = '';
   aureliaGrid?: AureliaGridInstance;
   columns: Column[] = [];
-  gridOptions = {} as GridOption;
+  gridOptions?: GridOption;
   dataset: any[] = [];
   hideSubTitle = false;
   operatorList: OperatorType[] = ['=', '<', '<=', '>', '>=', '<>', 'StartsWith', 'EndsWith'];
