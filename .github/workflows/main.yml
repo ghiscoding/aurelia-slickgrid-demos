@@ -30,5 +30,11 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./vite-with-i18n/dist
           publish_branch: gh-pages
-          # publish_action: commit # (leave default)
-          # keep_history: true       # (leave default)
+          force_orphan: false
+        env:
+          LOG_LEVEL: debug
+
+      - name: Show build output
+        run: |
+          ls -la vite-with-i18n/dist
+          test -f vite-with-i18n/dist/index.html && echo "index.html exists" || (echo "index.html missing" && exit 1)
