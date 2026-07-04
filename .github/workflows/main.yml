@@ -1,0 +1,40 @@
+name: GitHub Actions
+
+on:
+  push:
+    branches: [master]
+
+permissions:
+  contents: write
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 24
+
+      - run: |
+          cd vite-with-i18n
+          npm ci
+          npm run build
+
+      - name: Deploy to gh-pages (debug)
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./vite-with-i18n/dist
+          publish_branch: gh-pages
+          commit_message: "CI deploy"
+        env:
+          DEBUG: "peaceiris*"
+
+      - name: Show build output
+        run: |
+          ls -la vite-with-i18n/dist
+          test -f vite-with-i18n/dist/index.html && echo "index.html exists" || (echo "index.html missing" && exit 1)
