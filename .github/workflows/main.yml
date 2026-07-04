@@ -3,17 +3,13 @@ name: GitHub Actions
 on:
   push:
     branches: [master]
-  pull_request:
-    branches: ['**']
 
 permissions:
   contents: write
 
 jobs:
   deploy:
-    if: github.event_name == 'push' && github.ref == 'refs/heads/master'
     runs-on: ubuntu-latest
-
     steps:
       - uses: actions/checkout@v5
         with:
@@ -23,19 +19,16 @@ jobs:
         with:
           node-version: 24
 
-      - name: Install
-        run: |
+      - run: |
           cd vite-with-i18n
           npm ci
-
-      - name: Build
-        run: |
-          cd vite-with-i18n
           npm run build
 
-      - name: Deploy to gh-pages
+      - name: Deploy to gh-pages (debug)
         uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./vite-with-i18n/dist
           publish_branch: gh-pages
+          # publish_action: commit # (leave default)
+          # keep_history: true       # (leave default)
