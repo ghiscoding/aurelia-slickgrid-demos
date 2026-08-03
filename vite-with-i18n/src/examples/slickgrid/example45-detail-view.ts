@@ -25,14 +25,16 @@ export class Example45DetailView {
   @bindable() model?: Distributor;
   innerColDefs: Column[] = [];
   innerGridOptions!: GridOption;
-  aureliaGrid!: AureliaGridInstance;
+  aureliaGrid?: AureliaGridInstance;
   innerDataset: any[] = [];
   showGrid = false;
   gridId = '';
   innerGridClass = '';
 
   attached() {
-    if (!this.model) return;
+    if (!this.model) {
+      return;
+    }
 
     this.gridId = `innergrid-${this.model.id}`;
     this.innerGridClass = `row-detail-${this.model.id}`;
@@ -85,7 +87,7 @@ export class Example45DetailView {
 
   handleBeforeGridDestroy() {
     console.log('handleBeforeGridDestroy', this.model);
-    if (this.model?.isUsingInnerGridStatePresets) {
+    if (this.model?.isUsingInnerGridStatePresets && this.aureliaGrid?.gridStateService) {
       const gridState = this.aureliaGrid.gridStateService.getCurrentGridState();
       sessionStorage.setItem(`gridstate_${this.innerGridClass}`, JSON.stringify(gridState));
     }
