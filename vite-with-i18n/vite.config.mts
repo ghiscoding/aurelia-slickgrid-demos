@@ -1,11 +1,11 @@
-import aurelia from "@aurelia/vite-plugin";
-import babel from "@rolldown/plugin-babel";
-import { defineConfig, type PluginOption } from "vite";
+import aurelia from '@aurelia/vite-plugin';
+import babel from '@rolldown/plugin-babel';
+import { defineConfig, type PluginOption } from 'vite';
 
 // import { resolve } from 'path';
 
 export default defineConfig({
-  base: "",
+  base: './',
   css: {
     preprocessorOptions: {
       scss: {
@@ -14,14 +14,14 @@ export default defineConfig({
     },
   },
   esbuild: {
-    target: "es2020",
+    target: 'es2020',
   },
   plugins: [
     aurelia({
       useDev: true,
     }) as PluginOption,
     babel({
-      plugins: [["@babel/plugin-proposal-decorators", { version: "2023-11" }]],
+      plugins: [['@babel/plugin-proposal-decorators', { version: '2023-11' }]],
     }),
   ],
   preview: {
@@ -30,7 +30,7 @@ export default defineConfig({
   server: {
     port: 7920,
     cors: true,
-    host: "localhost",
+    host: 'localhost',
     hmr: {
       clientPort: 7920,
     },
@@ -41,21 +41,21 @@ export default defineConfig({
     rollupOptions: {
       output: {
         manualChunks: (id) => {
-          if (id.includes("node_modules")) {
-            return "vendor";
+          if (id.includes('node_modules')) {
+            return 'vendor';
           }
 
-          return "index";
+          return 'index';
         },
       },
     },
   },
   optimizeDeps: {
-    include: ["jspdf"],
+    include: ['jspdf'],
   },
   resolve: {
     alias: {
-      jspdf: "jspdf/dist/jspdf.es.min.js",
+      jspdf: 'jspdf/dist/jspdf.es.min.js',
     },
   },
 });
