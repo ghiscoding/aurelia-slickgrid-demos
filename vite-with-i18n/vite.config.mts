@@ -1,8 +1,5 @@
 import aurelia from '@aurelia/vite-plugin';
-import babel from '@rolldown/plugin-babel';
 import { defineConfig, type PluginOption } from 'vite';
-
-// import { resolve } from 'path';
 
 export default defineConfig({
   base: './',
@@ -13,16 +10,10 @@ export default defineConfig({
       },
     },
   },
-  esbuild: {
-    target: 'es2020',
-  },
   plugins: [
     aurelia({
       useDev: true,
     }) as PluginOption,
-    babel({
-      plugins: [['@babel/plugin-proposal-decorators', { version: '2023-11' }]],
-    }),
   ],
   preview: {
     port: 7920,
